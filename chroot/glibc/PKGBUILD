@@ -26,7 +26,8 @@ build() {
 	cd glibc-$pkgver
 	cd build
 
-	CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/} \
+	CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+
 	BUILD_CC="$HOSTCC" \
 	CC="$XTARGET-gcc" \
 	AR="$XTARGET-ar" \

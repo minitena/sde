@@ -37,6 +37,8 @@ package() {
 	install -dm755 $pkgdir/etc
 	install -m644 $srcdir/makepkg.conf $pkgdir/etc
 
+	sed -i 's/CheckSpace/#CheckSpace/' $pkgdir/etc/pacman.conf
+
 	sed -i $pkgdir/etc/makepkg.conf \
 		-e "s|@CARCH[@]|$CARCH|g" \
 		-e "s|@CHOST[@]|$CHOST|g" \
