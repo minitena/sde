@@ -1,0 +1,26 @@
+pkgname=chroot-libarchive
+pkgver=3.3.3
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(http://www.libarchive.org/downloads/libarchive-$pkgver.tar.gz)
+
+build() {
+	cd libarchive-$pkgver
+	./configure \
+		--prefix=/tools \
+		--libdir=/tools/lib \
+		--bindir=/tools/bin \
+		--includedir=/tools/include \
+		--build=$XHOST \
+		--host=$XTARGET \
+		--without-xml2 \
+		--without-iconv \
+		--without-nettle \
+		--without-expat
+	make
+}
+
+package() {
+	cd libarchive-$pkgver
+	make DESTDIR=$pkgdir install
+}

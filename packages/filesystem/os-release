@@ -1,0 +1,8 @@
+NAME="Edge Linux"
+PRETTY_NAME="Edge Linux"
+ID=edge
+ID_LIKE=edgelinux
+ANSI_COLOR="0;31"
+HOME_URL="https://edgelinuxinc.github.io/"
+SUPPORT_URL="https://github.com/edgelinuxinc/issues"
+BUG_REPORT_URL="https://github.com/edgelinuxinc/issues"

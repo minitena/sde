@@ -1,0 +1,25 @@
+pkgname=chroot-make
+pkgver=4.2.1
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(http://ftpmirror.gnu.org/gnu/make/make-$pkgver.tar.bz2)
+
+prepare() {
+	cd make-$pkgver
+	sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
+}
+
+build() {
+	cd make-$pkgver
+	./configure \
+		--prefix=/tools \
+		--build=$XHOST \
+		--host=$XTARGET \
+		--disable-nls
+	make
+}
+
+package() {
+	cd make-$pkgver
+	make DESTDIR=$pkgdir install
+}

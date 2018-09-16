@@ -1,0 +1,19 @@
+pkgname=chroot-gawk
+pkgver=4.2.1
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(http://ftpmirror.gnu.org/gnu/gawk/gawk-$pkgver.tar.xz)
+
+build() {
+	cd gawk-$pkgver
+	./configure \
+		--prefix=/tools \
+		--build=$XHOST \
+		--host=$XTARGET
+	make
+}
+
+package() {
+	cd gawk-$pkgver
+	make DESTDIR=$pkgdir install
+}

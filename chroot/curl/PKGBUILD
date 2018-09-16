@@ -1,0 +1,24 @@
+pkgname=chroot-curl
+pkgver=7.61.1
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(https://curl.haxx.se/download/curl-$pkgver.tar.xz)
+
+build() {
+	cd curl-$pkgver
+	./configure \
+		--prefix=/tools \
+		--build=$XHOST \
+		--host=$XTARGET \
+		--with-ssl \
+		--with-random=/dev/urandom \
+		--enable-ipv6 \
+		--enable-threaded-resolver \
+		--disable-manual
+	make
+}
+
+package() {
+	cd curl-$pkgver
+	make DESTDIR=$pkgdir install
+}

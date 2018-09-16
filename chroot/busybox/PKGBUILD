@@ -1,0 +1,33 @@
+pkgname=chroot-busybox
+pkgver=1.29.3
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(https://busybox.net/downloads/busybox-$pkgver.tar.bz2)
+
+build() {
+	cd busybox-$pkgver
+	case $BARCH in
+		x86_64)
+			export XKARCH="x86_64"
+			;;
+		aarch64)
+			export XKARCH="arm64"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	make ARCH=$XKARCH CROSS_COMPILE=$CROSS_COMPILE defconfig
+	make ARCH=$XKARCH CROSS_COMPILE=$CROSS_COMPILE EXTRA_CFLAGS="$CFLAGS"
+	make ARCH=$XKARCH CROSS_COMPILE=$CROSS_COMPILE EXTRA_CFLAGS="$CFLAGS" busybox.links
+}
+
+package() {
+	cd busybox-$pkgver
+	install -D busybox $pkgdir/tools/bin/busybox
+
+	for applet in `cat busybox.links|sed 's|^.*/||'`; do ln -s busybox $pkgdir/tools/bin/$applet || true; done
+
+	rm -rf $pkgdir/tools/bin/{lzcat,lzma,patch,strings,unlzma,unxz,xz,xzcat,clear,reset,awk}
+}

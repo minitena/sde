@@ -1,0 +1,25 @@
+pkgname=chroot-m4
+pkgver=1.4.18
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(http://ftpmirror.gnu.org/gnu/m4/m4-$pkgver.tar.xz)
+
+prepare() {
+	cd m4-$pkgver
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+}
+
+build() {
+	cd m4-$pkgver
+	./configure \
+		--prefix=/tools \
+		--build=$XHOST \
+		--host=$XTARGET
+	make
+}
+
+package() {
+	cd m4-$pkgver
+	make DESTDIR=$pkgdir install
+}

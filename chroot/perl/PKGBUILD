@@ -1,0 +1,32 @@
+pkgname=chroot-perl
+pkgver=5.28.0
+crossver=1.2
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(https://www.cpan.org/src/5.0/perl-$pkgver.tar.xz
+	https://github.com/arsv/perl-cross/releases/download/$crossver/perl-cross-$crossver.tar.gz)
+
+prepare() {
+	cp -f -r perl-cross-$crossver/* perl-$pkgver/
+}
+
+build() {
+	cd perl-$pkgver
+	export CFLAGS="$(echo $CFLAGS|sed 's/-O3/-O2/')"
+
+	./configure \
+		--target=$XTARGET \
+		--prefix=/tools \
+		-Doptimize="$CFLAGS" \
+		-Dldflags="$LDFLAGS" \
+		-Dprivlib=/tools/lib/perl5 \
+		-Dsitelib=/tools/lib/perl5/site_perl
+	make
+}
+
+package() {
+	cd perl-$pkgver
+	mkdir -p -- $pkgdir/tools/bin $pkgdir/tools/lib/perl5
+	cp -f perl cpan/podlators/scripts/pod2man $pkgdir/tools/bin
+	cp -R lib/* $pkgdir/tools/lib/perl5
+}

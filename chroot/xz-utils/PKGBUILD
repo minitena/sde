@@ -1,0 +1,20 @@
+pkgname=chroot-xz-utils
+pkgver=5.2.4
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(https://tukaani.org/xz/xz-$pkgver.tar.gz)
+
+build() {
+	cd xz-$pkgver
+	./configure \
+		--prefix=/tools \
+		--build=$XHOST \
+		--host=$XTARGET \
+		--disable-rpath
+	make
+}
+
+package() {
+	cd xz-$pkgver
+	make DESTDIR=$pkgdir install
+}

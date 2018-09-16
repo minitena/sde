@@ -1,0 +1,124 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=filesystem
+pkgver=2018.09
+pkgrel=1
+pkgdesc="Filesystem layout and essential files"
+arch=('any')
+url="https://edgelinuxinc.github.io/"
+license=('MIT')
+source=(env-gen
+	fstab
+	group
+	gshadow
+	host.conf
+	hosts
+	issue
+	ld.so.conf
+	motd
+	nsswitch.conf
+	os-release
+	passwd
+	profile
+	protocols
+	resolv.conf
+	securetty
+	services
+	shadow
+	shells
+	sysctl
+	sysusers)
+md5sums=('2b0344e9639f35f3c0d5637a23556089'
+         'e33f6dfdd61978fcb3ddf1431286e05a'
+         '7fed1e1fb855e41a6d64d41f8521d69a'
+         '1c1e3b08acfa286f4b417c49de3e4366'
+         'a61b9f6548d337c1cc1e5a4de39f7b7f'
+         '0166671b0bfc53018c8d7a6ec53dfcb0'
+         '12b6cc53195e93b83c5125302fd6cbe6'
+         '2c21aad665524d62c8fa27e02a652618'
+         'd41d8cd98f00b204e9800998ecf8427e'
+         '12dcf2806cae99033e093387eb255a15'
+         'f19102351f2406f70bbbfd13527ac9e8'
+         'f7dbbd6e3a0d8a11f0ed733e3123b8de'
+         '4500b3a486055cd302dd0e87d8af348f'
+         'd46c8af3927f3c5f748e359871bdf236'
+         'fe0b9046ae1a0ee676446c08ef4f2af7'
+         '49c1d411ff33b6df4d55a6a6f9a9bf92'
+         '9d39e51e6bd5a30168c26c57b66d2e37'
+         'f64466dd77c7bec37a8b47681468211a'
+         'bdc193807f1f76f8aacd492f5a5b575e'
+         '03f456264db977631ac80106d990b2a7'
+         'ba28c17cca9845b47d8d3a40bfe5f74e')
+backup=('etc/fstab'
+	'etc/group'
+	'etc/gshadow'
+	'etc/host.conf'
+	'etc/hosts'
+	'etc/issue'
+	'etc/ld.so.conf'
+	'etc/motd'
+	'etc/nsswitch.conf'
+	'etc/passwd'
+	'etc/profile'
+	'etc/resolv.conf'
+	'etc/securetty'
+	'etc/shadow'
+	'etc/shells')
+
+package() {
+	cd $pkgdir
+	for d in boot dev etc/{ld.so.conf.d,skel,profile.d,modprobe.d,sysctl.d} home mnt usr var opt srv/http run; do
+		install -d -m755 $d
+	done
+
+	install -d -m555 proc
+	install -d -m555 sys
+	install -d -m0750 root
+	install -d -m1777 tmp
+	install -d -m555 -g 11 srv/ftp
+
+	for f in fstab group gshadow host.conf hosts issue ld.so.conf motd nsswitch.conf os-release passwd profile protocols resolv.conf securetty services shadow shells; do
+		install -m644 $srcdir/$f $pkgdir/etc
+	done
+
+	chmod 0600 $pkgdir/etc/gshadow
+	chmod 0600 $pkgdir/etc/shadow
+
+	ln -sf ../proc/self/mounts etc/mtab
+
+	for d in cache local opt log/old lib/misc empty; do
+		install -d -m755 var/$d
+	done
+
+	install -d -m1777 var/{tmp,spool/mail}
+
+	install -d -m775 -g 50 var/games
+	ln -s spool/mail var/mail
+	ln -s ../run var/run
+	ln -s ../run/lock var/lock
+
+	for d in bin include lib/{modules,firmware} share/misc; do
+		install -d -m755 usr/$d
+	done
+
+	ln -s usr/lib lib
+	case $BARCH in
+		x86_64|aarch64)
+			ln -s usr/lib lib64
+			ln -s lib usr/lib64
+			;;
+	esac
+
+	ln -s usr/bin bin
+	ln -s usr/bin sbin
+	ln -s bin usr/sbin
+
+	for d in bin etc games include lib man sbin share; do
+		install -d -m755 usr/local/$d
+	done
+
+	install -D -m755 $srcdir/env-gen $pkgdir/usr/lib/systemd/system-environment-generators/10-default
+	install -D -m644 $srcdir/sysusers $pkgdir/usr/lib/sysusers.d/default.conf
+	install -D -m644 $srcdir/sysctl $pkgdir/usr/lib/sysctl.d/10-default.conf
+}

@@ -1,0 +1,17 @@
+pkgname=chroot-zlib
+pkgver=1.2.11
+pkgrel=1
+arch=('x86_64' 'aarch64')
+source=(https://zlib.net/zlib-$pkgver.tar.xz)
+
+build() {
+	cd zlib-$pkgver
+	./configure \
+		--prefix=/tools
+	make
+}
+
+package() {
+	cd zlib-$pkgver
+	make DESTDIR=$pkgdir install
+}
