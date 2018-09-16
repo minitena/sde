@@ -3,7 +3,7 @@
 
 pkgname=glibc
 pkgver=2.28
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU C Library"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/libc"
@@ -81,7 +81,7 @@ package() {
 
 	rm -rf $pkgdir/usr/bin/{tzselect,zdump,zic}
 
-	install -dm755 $pkgdir/usr/lib/{systemd/system,tmpfiles.d}
+	install -dm755 $pkgdir/usr/lib/{locale,systemd/system,tmpfiles.d}
 	install -m644 ../nscd/nscd.conf $pkgdir/etc/nscd.conf
 	install -m644 ../nscd/nscd.service $pkgdir/usr/lib/systemd/system
 	install -m644 ../nscd/nscd.tmpfiles $pkgdir/usr/lib/tmpfiles.d/nscd.conf

@@ -67,6 +67,15 @@ pkgnativeinstallforce() {
 	done
 }
 
+pkgnativeinstallnodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C -f
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -d
+	done
+}
+
 pkgnativebuild() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
@@ -86,6 +95,13 @@ pkgnativeinstallonlyforce() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force
+	done
+}
+
+pkgnativeinstallonlynodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -d
 	done
 }
 

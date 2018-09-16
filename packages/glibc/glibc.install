@@ -1,10 +1,9 @@
 post_install() {
-	if [ ! -f /usr/lib/locale/locale-archive ]; then
-		mkdir -p usr/lib/locale
-		localedef -i en_US -f UTF-8 en_US.UTF-8 --prefix=.
-	fi
+	usr/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
 }
 
 post_upgrade() {
+	usr/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
+
 	ldconfig -r .
 }
