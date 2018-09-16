@@ -58,6 +58,15 @@ pkgnativeinstall() {
 	done
 }
 
+pkgnativeinstallforce() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C -f
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force
+	done
+}
+
 pkgnativebuild() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
@@ -70,6 +79,13 @@ pkgnativeinstallonly() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallonlyforce() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force
 	done
 }
 
@@ -291,6 +307,16 @@ adjust_toolchain() {
 	echo "Toolchain adjust is done"
 }
 
+build_final_system() {
+	pkgnativeinstall tzdata
+	pkgnativeinstall linux-headers
+	pkgnativeinstall glibc
+
+	adjust_toolchain
+
+	pkgnativeinstall zlib
+}
+
 case "$1" in
 	toolchain)
 		check_for_root
@@ -310,7 +336,7 @@ case "$1" in
 		update_wok
 		;;
 	final-system)
-		echo "In development"
+		build_final_system
 		;;
 	enter-chroot)
 		check_for_root

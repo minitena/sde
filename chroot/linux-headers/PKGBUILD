@@ -11,7 +11,7 @@ build() {
 
 package() {
 	cd linux-$pkgver
-	case $BARCH in
+	case $CARCH in
 		x86_64)
 			export XKARCH="x86_64"
 			;;

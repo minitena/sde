@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=zlib
+pkgver=1.2.11
+pkgrel=1
+pkgdesc="Compression library implementing the deflate compression method found in gzip and PKZIP"
+arch=('x86_64' 'aarch64')
+url="https://www.zlib.net/"
+license=('zlib')
+depends=('glibc')
+source=("https://zlib.net/zlib-$pkgver.tar.xz")
+md5sums=('85adef240c5f370b308da8c938951a68')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

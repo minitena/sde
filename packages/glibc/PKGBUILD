@@ -1,0 +1,91 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=glibc
+pkgver=2.28
+pkgrel=1
+pkgdesc="The GNU C Library"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/libc"
+license=('GPL' 'LGPL')
+depends=('filesystem' 'tzdata' 'linux-headers')
+backup=(etc/gai.conf
+	etc/nscd.conf)
+source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
+	bz20338.patch
+	bz23497.patch
+	0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch)
+md5sums=('c81d2388896379997bc359d4f2084239'
+         'dc0d3ad59aeaaf591b085a77de6e03e9'
+         '11bca140697b1bdb656742e2a12c2982'
+         '58ffe75a9c5a1b22c535a5c2e725db22')
+install=$pkgname.install
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/bz20338.patch
+	patch -Np1 -i $srcdir/bz23497.patch
+	patch -Np1 -i $srcdir/0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch
+	mkdir build
+}
+
+build() {
+	cd $pkgname-$pkgver
+	cd build
+
+	echo "slibdir=/usr/lib" >> configparms
+	echo "rtlddir=/usr/lib" >> configparms
+	echo "sbindir=/usr/bin" >> configparms
+	echo "rootsbindir=/usr/bin" >> configparms
+
+	CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+
+	../configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--libexecdir=/usr/lib \
+		--with-pkgversion='Edge Linux' \
+		--with-bugurl='https://github.com/edgelinuxinc/issues/issues' \
+		--enable-add-ons \
+		--enable-bind-now \
+		--enable-kernel=3.12.0 \
+		--enable-lock-elision \
+		--enable-multi-arch \
+		--enable-stack-protector=strong \
+		--enable-stackguard-randomization \
+		--enable-static-pie \
+		--disable-profile \
+		--disable-werror \
+		--build=$(cc -dumpmachine)
+
+	echo "build-programs=no" >> configparms
+	make
+
+	sed -i "/build-programs=/s#no#yes#" configparms
+
+	echo "CC += -D_FORTIFY_SOURCE=2" >> configparms
+	echo "CXX += -D_FORTIFY_SOURCE=2" >> configparms
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	cd build
+
+	install -dm755 $pkgdir/etc
+	touch $pkgdir/etc/ld.so.conf
+
+	make install_root=$pkgdir install
+
+	rm -rf $pkgdir/etc/ld.so.{cache,conf}
+
+	rm -rf $pkgdir/usr/bin/{tzselect,zdump,zic}
+
+	install -dm755 $pkgdir/usr/lib/{systemd/system,tmpfiles.d}
+	install -m644 ../nscd/nscd.conf $pkgdir/etc/nscd.conf
+	install -m644 ../nscd/nscd.service $pkgdir/usr/lib/systemd/system
+	install -m644 ../nscd/nscd.tmpfiles $pkgdir/usr/lib/tmpfiles.d/nscd.conf
+	install -dm755 $pkgdir/var/db/nscd
+
+	install -m644 ../posix/gai.conf $pkgdir/etc/gai.conf
+}

@@ -8,7 +8,7 @@ build() {
 	unset CC CXX AS AR LD STRIP RANLIB
 
 	cd openssl-$pkgver
-	case $BARCH in
+	case $CARCH in
 		x86_64)
 			export OPENSSLTARGET="linux-x86_64"
 			export OPENSSLOPTS="enable-ec_nistp_64_gcc_128"
