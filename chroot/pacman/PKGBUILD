@@ -66,5 +66,7 @@ gmp
 mpfr
 mpc
 isl
+binutils
+gcc
 EOF
 }

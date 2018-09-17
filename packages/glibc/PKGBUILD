@@ -44,8 +44,8 @@ build() {
 		--prefix=/usr \
 		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
-		--with-pkgversion='Edge Linux' \
-		--with-bugurl='https://github.com/edgelinuxinc/issues/issues' \
+		--with-pkgversion='Minitena Linux' \
+		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--enable-add-ons \
 		--enable-bind-now \
 		--enable-kernel=3.12.0 \
@@ -56,7 +56,7 @@ build() {
 		--enable-static-pie \
 		--disable-profile \
 		--disable-werror \
-		--build=$(cc -dumpmachine)
+		--build=$CHOST
 
 	echo "build-programs=no" >> configparms
 	make

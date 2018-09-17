@@ -1,17 +1,32 @@
-pkgname=chroot-binutils
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=binutils
 pkgver=2.31.1
 pkgrel=1
+pkgdesc="A set of programs to assemble and manipulate binary and object files"
 arch=('x86_64' 'aarch64')
-source=(http://ftpmirror.gnu.org/gnu/binutils/binutils-$pkgver.tar.xz
+url="http://www.gnu.org/software/binutils"
+license=('GPL')
+depends=('glibc' 'zlib')
+options=('!distcc' '!ccache')
+source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	0001-PR23428-x86-Add-a-GNU_PROPERTY_X86_ISA_1_USED-note-if-needed.patch
 	0002-PR23460-Close-resource-leaks-in-the-BFD-library-s-plugin-han.patch
 	0003-PR23460-Add-a-testcase-for-PR-binutils-23460.patch
 	0004-PR23486-Properly-merge-GNU_PROPERTY_X86_ISA_1_USED-x86_64.patch
 	0005-PR23486-x86-Properly-merge-GNU_PROPERTY_X86_ISA_1_USED.patch
 	0006-PR23428-x86-Properly-add-X86_ISA_1_NEEDED-property.patch)
+md5sums=('5b7c9d4ce96f507d95c1b9a255e52418'
+         'f2d4f2aee9ec2e25210eb132acdcf1d9'
+         '496e7e2d71fe558b3b85cdc27fb4638e'
+         'dd2284134542efe8e38137f5c829a371'
+         '5e4aecddbea729fd045d001e8e8db14e'
+         '02247a5f1c06f8a9ade689b7e68629ce'
+         '2764b8760bdc8d5c20698202d22b7fcf')
 
 prepare() {
-	cd binutils-$pkgver
+	cd $pkgname-$pkgver
 	patch -Np1 -i $srcdir/0001-PR23428-x86-Add-a-GNU_PROPERTY_X86_ISA_1_USED-note-if-needed.patch
 	patch -Np1 -i $srcdir/0004-PR23486-Properly-merge-GNU_PROPERTY_X86_ISA_1_USED-x86_64.patch
 	patch -Np1 -i $srcdir/0005-PR23486-x86-Properly-merge-GNU_PROPERTY_X86_ISA_1_USED.patch
@@ -25,20 +40,20 @@ prepare() {
 }
 
 build() {
-	cd binutils-$pkgver
+	cd $pkgname-$pkgver
 	cd build
 	../configure \
-		--prefix=/tools \
-		--build=$XHOST \
-		--host=$XTARGET \
-		--target=$XTARGET $BINUTILSOPTS \
+		--prefix=/usr \
+		--build=$CHOST $BINUTILSOPTS \
 		--with-bugurl='https://github.com/minitena/issues/issues' \
-		--with-lib-path=/tools/lib \
+		--with-lib-path=/usr/lib:/usr/local/lib \
 		--with-pic \
 		--with-system-zlib \
 		--enable-64-bit-bfd \
 		--enable-deterministic-archives \
 		--enable-gold=yes \
+		--enable-ld=default \
+		--enable-lto \
 		--enable-plugins \
 		--enable-relro \
 		--enable-shared \
@@ -46,17 +61,12 @@ build() {
 		--disable-multilib \
 		--disable-nls \
 		--disable-werror
-	make MAKEINFO="true"
+	make MAKEINFO="true" configure-host
+	make MAKEINFO="true" tooldir=/usr
 }
 
 package() {
-	cd binutils-$pkgver
+	cd $pkgname-$pkgver
 	cd build
-	make MAKEINFO="true" DESTDIR=$pkgdir install
-
-	mkdir -p ld-new-dir
-	make -C ld clean
-	make -C ld LIB_PATH=/usr/lib
-	make -C ld LIB_PATH=/usr/lib DESTDIR=$(pwd)/ld-new-dir install
-	cp ld-new-dir/tools/bin/ld $pkgdir/tools/bin/ld-new
+	make MAKEINFO="true" tooldir=/usr DESTDIR=$pkgdir install
 }

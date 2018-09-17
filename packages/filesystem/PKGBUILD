@@ -6,7 +6,7 @@ pkgver=2018.09
 pkgrel=1
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'aarch64')
-url="https://edgelinuxinc.github.io/"
+url="https://minitena.github.io/"
 license=('MIT')
 source=(env-gen
 	fstab

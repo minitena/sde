@@ -1,8 +1,8 @@
-NAME="Edge Linux"
-PRETTY_NAME="Edge Linux"
-ID=edge
-ID_LIKE=edgelinux
+NAME="Minitena Linux"
+PRETTY_NAME="Minitena Linux"
+ID=minitena
+ID_LIKE=minitena
 ANSI_COLOR="0;31"
-HOME_URL="https://edgelinuxinc.github.io/"
-SUPPORT_URL="https://github.com/edgelinuxinc/issues"
-BUG_REPORT_URL="https://github.com/edgelinuxinc/issues"
+HOME_URL="https://minitena.github.io/"
+SUPPORT_URL="https://github.com/minitena/issues/issues"
+BUG_REPORT_URL="https://github.com/minitena/issues/issues"

@@ -1,0 +1,107 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=('gcc' 'gcc-libs')
+pkgbase=gcc
+pkgver=8.2.1+20180831
+pkgrel=1
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/bison"
+license=('GPL' 'LGPL' 'FDL' 'custom')
+makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
+options=(!emptydirs)
+source=(https://sources.archlinux.org/other/gcc/gcc-${pkgver/+/-}.tar.xz
+	c89
+	c99)
+md5sums=('c5be770aa3a92603d5866074d6fb8d33'
+         '99691641ab044836a25fbcb73a1943cf'
+         'ee387395de79f09b491857f8fbb5551d')
+
+prepare() {
+	cd $pkgbase-${pkgver/+/-}
+	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
+	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
+	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
+
+	mkdir build
+}
+
+build() {
+	cd $pkgbase-${pkgver/+/-}
+	cd build
+	../configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--libexecdir=/usr/lib \
+		--build=$CHOST $GCCOPTS \
+		--with-pkgversion='Minitena Linux' \
+		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-system-zlib \
+		--enable-__cxa_atexit \
+		--enable-bootstrap \
+		--enable-checking=release \
+		--enable-clocale=gnu \
+		--enable-default-pie \
+		--enable-default-ssp \
+		--enable-gnu-indirect-function \
+		--enable-gnu-unique-object \
+		--enable-languages=c,c++,lto,fortran,go,objc,obj-c++ \
+		--enable-install-libiberty \
+		--enable-linker-build-id \
+		--enable-lto \
+		--enable-plugin \
+		--enable-shared \
+		--enable-threads=posix \
+		--disable-libmpx \
+		--disable-libstdcxx-pch \
+		--disable-libunwind-exceptions \
+		--disable-multilib \
+		--disable-nls \
+		--disable-werror
+	make profiledbootstrap
+}
+
+package_gcc-libs() {
+	pkgdesc='Runtime libraries shipped by GCC'
+	depends=('glibc')
+
+	cd $pkgbase-${pkgver/+/-}
+	cd build
+	make -j1 DESTDIR=$pkgdir install
+
+	mkdir $srcdir/libs
+	mv $pkgdir/usr/lib/*.so{,.*} $srcdir/libs
+	rm -rf $pkgdir
+	mkdir -p $pkgdir/usr/lib
+	mv $srcdir/libs/* $pkgdir/usr/lib/
+
+	rm -rf $pkgdir/usr/lib/*gdb.py
+}
+
+package_gcc() {
+	pkgdesc="The GNU Compiler Collection"
+	depends=('linux-headers' 'glibc' 'gcc-libs' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
+
+	cd $pkgbase-${pkgver/+/-}
+	cd build
+	make -j1 DESTDIR=$pkgdir install
+
+	ln -sf gcc $pkgdir/usr/bin/cc
+
+	install -Dm755 $srcdir/c89 $pkgdir/usr/bin/c89
+	install -Dm755 $srcdir/c99 $pkgdir/usr/bin/c99
+
+	ln -s gfortran $pkgdir/usr/bin/f95
+
+	ln -sf ../bin/cpp $pkgdir/usr/lib
+
+	install -dm755 $pkgdir/usr/lib/bfd-plugins/
+	ln -sf /usr/lib/gcc/$CHOST/${pkgver%%+*}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
+
+	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
+	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
+
+	# Provided by gcc-libs
+	rm -rf $pkgdir/usr/lib/*.so{,.*}
+}

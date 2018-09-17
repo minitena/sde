@@ -37,8 +37,8 @@ build() {
 		--libdir=/tools/lib \
 		--build=$XHOST \
 		--host=$XTARGET \
-		--with-pkgversion='Edge Linux' \
-		--with-bugurl='https://github.com/edgelinuxinc/issues/issues' \
+		--with-pkgversion='Minitena Linux' \
+		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--with-binutils=$TOOLS/bin \
 		--with-headers=$ROOTFS/tools/include \
 		--enable-add-ons \
