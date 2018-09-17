@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=mpfr
+pkgver=4.0.1
+pkgrel=1
+pkgdesc="Multiple-precision floating-point library"
+arch=('x86_64' 'aarch64')
+url="http://www.mpfr.org/"
+license=('LGPL')
+depends=('glibc' 'gmp')
+source=("http://www.mpfr.org/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('b8dd19bd9bb1ec8831a6a582a7308073')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--enable-thread-safe \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

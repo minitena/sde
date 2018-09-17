@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=isl
+pkgver=0.19
+pkgrel=1
+pkgdesc="An integer set library for the polyhedral model"
+arch=('x86_64' 'aarch64')
+url="http://isl.gforge.inria.fr/"
+license=('MIT')
+depends=('glibc' 'gmp')
+source=("http://isl.gforge.inria.fr/$pkgname-$pkgver.tar.xz")
+md5sums=('1ae893020fa078531e6158cb243880a5')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
+	mv $pkgdir/usr/lib/libisl*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
+}

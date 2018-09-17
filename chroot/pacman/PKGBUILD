@@ -51,4 +51,20 @@ package() {
 		-e "s|@GCCOPTS[@]|$GCCOPTS|g" \
 		-e "s|@BINUTILSOPTS[@]|$BINUTILSOPTS|g" \
 		-e "s|@MKOPTS[@]|$MAKEFLAGS|g"
+
+	mkdir -p $pkgdir/var
+
+cat > $pkgdir/var/order<< "EOF"
+tzdata
+linux-headers
+glibc
+zlib
+m4
+bison
+flex
+gmp
+mpfr
+mpc
+isl
+EOF
 }

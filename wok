@@ -72,7 +72,7 @@ pkgnativeinstallnodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C -f
-		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -d
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd
 	done
 }
 
@@ -101,7 +101,7 @@ pkgnativeinstallonlyforce() {
 pkgnativeinstallonlynodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
-		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -d
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd
 	done
 }
 
@@ -324,13 +324,32 @@ adjust_toolchain() {
 }
 
 build_final_system() {
-	pkgnativeinstall tzdata
-	pkgnativeinstall linux-headers
-	pkgnativeinstall glibc
-
-	adjust_toolchain
-
-	pkgnativeinstall zlib
+	for finalpkg in $(cat /var/order); do
+		case $finalpkg in
+			glibc)
+				pkgnativeinstall glibc
+				wok adjust-toolchain
+				;;
+			m4)
+				pkgnativeinstallforce m4
+				;;
+			gmp)
+				pkgnativeinstallnodeps gmp
+				;;
+			binutils)
+				pkgnativebuild binutils
+				pkgnativeremove chroot-binutils
+				pkgnativeinstallonly binutils
+				;;
+			gcc)
+				pkgnativebuild gcc
+				pkgnativeremove chroot-gcc
+				pkgnativeinstallonlyforce gcc
+				;;
+			*)
+				pkgnativeinstall $finalpkg
+		esac
+	done
 }
 
 case "$1" in
