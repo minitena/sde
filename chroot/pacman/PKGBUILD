@@ -42,10 +42,8 @@ package() {
 	sed -i $pkgdir/etc/makepkg.conf \
 		-e "s|@CARCH[@]|$CARCH|g" \
 		-e "s|@CHOST[@]|$CHOST|g" \
-		-e "s|@CPPFLAGS[@]|$CPPFLAGS|g" \
 		-e "s|@CFLAGS[@]|$CFLAGS|g" \
 		-e "s|@CXXFLAGS[@]|$CXXFLAGS|g" \
-		-e "s|@LDFLAGS[@]|$LDFLAGS|g" \
 		-e "s|@PKGS[@]|/output/packages|g" \
 		-e "s|@SOURCES[@]|/output/sources|g" \
 		-e "s|@GCCOPTS[@]|$GCCOPTS|g" \

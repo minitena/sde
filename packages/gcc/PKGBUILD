@@ -22,7 +22,6 @@ prepare() {
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
-	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
 
 	mkdir build
 }
@@ -39,7 +38,6 @@ build() {
 		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--with-system-zlib \
 		--enable-__cxa_atexit \
-		--enable-bootstrap \
 		--enable-checking=release \
 		--enable-clocale=gnu \
 		--enable-default-pie \

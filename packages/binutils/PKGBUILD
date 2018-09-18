@@ -34,8 +34,6 @@ prepare() {
 	patch -Np1 -i $srcdir/0002-PR23460-Close-resource-leaks-in-the-BFD-library-s-plugin-han.patch
 	patch -Np1 -i $srcdir/0003-PR23460-Add-a-testcase-for-PR-binutils-23460.patch
 
-	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
-
 	mkdir build
 }
 

@@ -168,10 +168,8 @@ setup_environment() {
 	export HOSTCXX="g++"
 	export MKOPTS="-j$(expr $(nproc) + 1)"
 
-	export CPPFLAGS="-D_FORTIFY_SOURCE=2"
-	export CFLAGS="-O3 -pipe -fomit-frame-pointer -fstack-protector-strong -fno-plt"
+	export CFLAGS="-O3 -s -fomit-frame-pointer -pipe"
 	export CXXFLAGS="$CFLAGS"
-	export LDFLAGS="-s -Wl,-z,relro,-z,now"
 }
 
 build_environment() {
@@ -187,10 +185,8 @@ build_environment() {
 		sed -i $files \
 			-e "s|@CARCH[@]|$BARCH|g" \
 			-e "s|@CHOST[@]|$XTARGET|g" \
-			-e "s|@CPPFLAGS[@]|$CPPFLAGS|g" \
 			-e "s|@CFLAGS[@]|$CFLAGS|g" \
 			-e "s|@CXXFLAGS[@]|$CXXFLAGS|g" \
-			-e "s|@LDFLAGS[@]|$LDFLAGS|g" \
 			-e "s|@MKOPTS[@]|$MKOPTS|g" \
 			-e "s|@PKGS[@]|$PACKAGES|g" \
 			-e "s|@SOURCES[@]|$SOURCES|g" \
