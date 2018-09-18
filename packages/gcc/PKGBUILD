@@ -4,7 +4,7 @@
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
 pkgver=8.2.1+20180831
-pkgrel=2
+pkgrel=3
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
@@ -103,6 +103,8 @@ package_gcc() {
 	mkdir -p $pkgdir/usr/lib/gccgo/bin
 	mv $pkgdir/usr/bin/go $pkgdir/usr/lib/gccgo/bin
 	mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/gccgo/bin
+
+	ln -sf /usr/lib/gccgo/bin /usr/lib/go/${pkgver%%+*}/$CHOST/bin
 
 	# Provided by gcc-libs
 	rm -rf $pkgdir/usr/lib/*.so{,.*}
