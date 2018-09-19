@@ -3,7 +3,7 @@
 
 pkgname=pam
 pkgver=1.3.1
-pkgrel=1
+pkgrel=2
 pkgdesc="PAM (Pluggable Authentication Modules) library"
 arch=('x86_64' 'aarch64')
 url="http://linux-pam.org"
@@ -11,8 +11,18 @@ license=('GPL')
 depends=('glibc' 'cracklib')
 makedepends=('bison' 'flex')
 options=('!emptydirs')
-source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz")
-md5sums=('558ff53b0fc0563ca97f79e911822165')
+source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz
+	other
+	system-account
+	system-auth
+	system-password
+	system-session)
+md5sums=('558ff53b0fc0563ca97f79e911822165'
+         'ad5d2a17e1d49cd993014954c5b983a3'
+         '0fa7b59aa9d33b4d3e8b97cf0f67df0e'
+         '9da98a8a965bc25d212d5de700bd3dc3'
+         '2e1722b942f643231a9a5f7921b39623'
+         'a125adbb145a015a361b082ccb185373')
 
 build() {
 	cd Linux-PAM-$pkgver
@@ -21,6 +31,7 @@ build() {
 		--libdir=/usr/lib \
 		--sbindir=/usr/bin \
 		--sysconfdir=/etc \
+		--disable-db \
 		--disable-regenerate-docu \
 		--build=$CHOST
 	make
@@ -31,4 +42,9 @@ package() {
 	make DESTDIR=$pkgdir install
 
 	chmod +s $pkgdir/usr/bin/unix_chkpwd
+
+	mkdir -p $pkgdir/etc/pam.d
+	for f in other system-account system-auth system-password system-session; do
+		install -m644 $srcdir/$f $pkgdir/etc/pam.d/
+	done
 }
