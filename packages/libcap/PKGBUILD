@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libcap
+pkgver=2.25
+pkgrel=1
+pkgdesc="POSIX 1003.1e capabilities"
+arch=('x86_64' 'aarch64')
+url="http://sites.google.com/site/fullycapable/"
+license=('GPL')
+depends=('glibc' 'pam' 'attr')
+source=("https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/$pkgname-$pkgver.tar.xz")
+md5sums=('6666b839e5d46c2ad33fc8aa2ceb5f77')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's,BUILD_GPERF := ,BUILD_GPERF := no #,' Make.Rules
+	sed -i "/SBINDIR/s#sbin#bin#" Make.Rules
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make RAISE_SETFCAP=no lib=lib prefix=/usr DESTDIR=$pkgdir install
+
+	chmod 755 $pkgdir/usr/lib/libcap.so
+
+	mkdir -p $pkgdir/etc/security
+	install -m644 pam_cap/capability.conf $pkgdir/etc/security
+}

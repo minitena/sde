@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=pam
+pkgver=1.3.1
+pkgrel=1
+pkgdesc="PAM (Pluggable Authentication Modules) library"
+arch=('x86_64' 'aarch64')
+url="http://linux-pam.org"
+license=('GPL')
+depends=('glibc' 'cracklib')
+makedepends=('bison' 'flex')
+options=('!emptydirs')
+source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz")
+md5sums=('558ff53b0fc0563ca97f79e911822165')
+
+build() {
+	cd Linux-PAM-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--disable-regenerate-docu \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd Linux-PAM-$pkgver
+	make DESTDIR=$pkgdir install
+
+	chmod +s $pkgdir/usr/bin/unix_chkpwd
+}

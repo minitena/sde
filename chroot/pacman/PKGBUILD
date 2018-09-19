@@ -66,5 +66,10 @@ mpc
 isl
 binutils
 gcc
+cracklib
+pam
+acl
+attr
+libcap
 EOF
 }
