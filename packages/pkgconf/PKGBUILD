@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=pkgconf
+pkgver=1.5.3
+pkgrel=1
+pkgdesc="Package compiler and linker metadata toolkit"
+arch=('x86_64' 'aarch64')
+url="https://git.dereferenced.org/pkgconf/pkgconf"
+license=('ISC')
+depends=('glibc')
+source=("http://distfiles.dereferenced.org/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('c21743bca14c882c0f282746168a5edc')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-pkg-config-dir="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	# compat
+	ln -sf pkgconf $pkgdir/usr/bin/pkg-config
+}

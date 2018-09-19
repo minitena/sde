@@ -29,5 +29,5 @@ package() {
 
 	for applet in `cat busybox.links|sed 's|^.*/||'`; do ln -s busybox $pkgdir/tools/bin/$applet || true; done
 
-	rm -rf $pkgdir/tools/bin/{lzcat,lzma,patch,strings,unlzma,unxz,xz,xzcat,clear,reset,awk}
+	rm -rf $pkgdir/tools/bin/{lzcat,lzma,patch,strings,unlzma,unxz,xz,xzcat,clear,reset,awk,setfattr}
 }

@@ -1,0 +1,102 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=shadow
+pkgver=4.6
+pkgrel=1
+pkgdesc="Password and account management tool"
+arch=('x86_64' 'aarch64')
+url="https://github.com/shadow-maint/shadow"
+license=('BSD')
+depends=('glibc' 'pam' 'acl')
+backup=(etc/login.defs
+	etc/pam.d/{login,passwd,su,chage}
+	etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod}
+	etc/default/useradd)
+options=('strip' 'debug')
+source=(https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
+	useradd.defaults
+	service
+	timer
+	login
+	passwd
+	su
+	chage)
+md5sums=('b491fecbf1232632c32ff8f1437fd60e'
+         '5c2fb7814137de810046884202e0dcd8'
+         'f08ebd358139e9f74e1b90f7231dc541'
+         '5bd14862ace022d6682b179c18fe30de'
+         'ff37af61ce9b6983c8b6a50918bcd86e'
+         '5227a3c650edbfabae32ebda18b99b27'
+         '73c4ff5b9f90579fe9b4dcb9978d362f'
+         '6524526f7abbcaabd06af3ffa97b432e')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--bindir=/usr/bin \
+		--sbindir=/usr/bin \
+		--libdir=/usr/lib \
+		--mandir=/usr/share/man \
+		--with-group-name-max-length=32 \
+		--with-libpam \
+		--without-selinux \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/useradd.defaults $pkgdir/etc/default/useradd
+
+	for FUNCTION in FAIL_DELAY \
+			FAILLOG_ENAB \
+			LASTLOG_ENAB \
+			MAIL_CHECK_ENAB \
+			OBSCURE_CHECKS_ENAB \
+			PORTTIME_CHECKS_ENAB \
+			QUOTAS_ENAB  \
+			CONSOLE MOTD_FILE \
+			FTMP_FILE NOLOGINS_FILE \
+			ENV_HZ PASS_MIN_LEN \
+			SU_WHEEL_ONLY \
+			CRACKLIB_DICTPATH \
+			PASS_CHANGE_TRIES \
+			PASS_ALWAYS_WARN \
+			CHFN_AUTH ENCRYPT_METHOD \
+			ENVIRON_FILE; do
+		sed -i "s/^${FUNCTION}/# &/" $pkgdir/etc/login.defs
+	done
+
+	install -D -m644 $srcdir/timer $pkgdir/usr/lib/systemd/system/shadow.timer
+	install -D -m644 $srcdir/service $pkgdir/usr/lib/systemd/system/shadow.service
+	install -d -m755 $pkgdir/usr/lib/systemd/system/timers.target.wants
+	ln -sf ../shadow.timer $pkgdir/usr/lib/systemd/system/timers.target.wants/shadow.timer
+
+	mkdir -p $pkgdir/etc/pam.d
+	for f in login passwd su chage; do
+		install -m644 $srcdir/$f $pkgdir/etc/pam.d/
+	done
+
+	for PROGRAM in chfn chgpasswd chpasswd chsh groupadd groupdel groupmems groupmod newusers useradd userdel usermod; do
+		install -m644 $pkgdir/etc/pam.d/chage $pkgdir/etc/pam.d/${PROGRAM}
+		sed -i "s/chage/$PROGRAM/" $pkgdir/etc/pam.d/${PROGRAM}
+	done
+
+	[ -f $pkgdir/etc/login.access ] && mv $pkgdir/etc/login.access{,.NOUSE}
+
+	[ -f $pkgdir/etc/limits ] && mv $pkgdir/etc/limits{,.NOUSE}
+
+	rm $pkgdir/usr/sbin/logoutd
+
+	mv $pkgdir/usr/bin/{newgrp,sg}
+
+	rm -f $pkgdir/run/nologin
+
+	mv $pkgdir/usr/sbin/* $pkgdir/usr/bin
+	rmdir $pkgdir/usr/sbin
+}

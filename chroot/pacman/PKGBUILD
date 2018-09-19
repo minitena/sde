@@ -68,8 +68,16 @@ binutils
 gcc
 cracklib
 pam
-acl
 attr
+acl
 libcap
+sed
+pkgconf
+ncurses
+shadow
+util-linux
+procps-ng
+e2fsprogs
+coreutils
 EOF
 }

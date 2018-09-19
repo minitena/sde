@@ -3,7 +3,7 @@
 
 pkgname=cracklib
 pkgver=2.9.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Password Checking Library"
 arch=('x86_64' 'aarch64')
 url="https://github.com/cracklib/cracklib"
@@ -17,7 +17,7 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--sbindir=/usr/bin \
-		--with-default-dict=/usr/lib/cracklib/pw_dict \
+		--with-default-dict=/usr/share/cracklib/pw_dict \
 		--without-python \
 		--build=$CHOST
 	make
@@ -31,7 +31,10 @@ package() {
 
 	mkdir -p $pkgdir/usr/lib/cracklib/
 
-	util/cracklib-format dicts/cracklib-small | util/cracklib-packer $pkgdir/usr/lib/cracklib/pw_dict
+	util/cracklib-format dicts/cracklib-small | util/cracklib-packer $pkgdir/usr/share/cracklib/pw_dict
 
-	gzip -9 $pkgdir/usr/lib/cracklib/pw_dict.pwd
+	gzip -9 $pkgdir/usr/share/cracklib/pw_dict.pwd
+
+	rm $pkgdir/usr/share/cracklib/cracklib-small
+	rm $pkgdir/usr/share/cracklib/cracklib.magic
 }

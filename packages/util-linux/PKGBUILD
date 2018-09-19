@@ -1,0 +1,69 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=('util-linux' 'util-linux-libs')
+pkgbase=util-linux
+_pkgmajor=2.32
+pkgver=${_pkgmajor}.1
+pkgrel=1
+arch=('x86_64' 'aarch64')
+url="https://www.kernel.org/pub/linux/utils/util-linux/"
+license=('GPL')
+options=('strip' 'debug')
+source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname-$pkgver.tar.xz
+	sysusers)
+md5sums=('9e5b1b8c1dc99455bdb6b462cf9436d9'
+         '095fb3d048d5304cce5719831bdad6dc')
+
+build() {
+	cd $pkgbase-$pkgver
+	./configure \
+		ADJTIME_PATH=/var/lib/hwclock/adjtime \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--bindir=/usr/bin \
+		--localstatedir=/var \
+		--enable-fs-paths-extra=/usr/bin \
+		--with-btrfs \
+		--without-python \
+		--enable-kill \
+		--enable-partx \
+		--enable-raw \
+		--enable-write \
+		--disable-chfn-chsh \
+		--disable-login \
+		--disable-nologin \
+		--disable-pylibmount \
+		--disable-runuser \
+		--disable-setpriv \
+		--disable-su \
+		--disable-sulogin \
+		--build=$CHOST
+	make
+}
+
+package_util-linux() {
+	pkgdesc="Miscellaneous system utilities for Linux"
+	depends=('glibc' 'util-linux-libs' 'zlib' 'ncurses' 'systemd')
+
+	cd $pkgbase-$pkgver
+	make DESTDIR=$pkgdir install
+
+	cd $pkgdir
+	mv {,usr/}sbin/* usr/bin
+	rmdir sbin usr/sbin
+
+	mkdir -p var/lib/hwclock
+
+	install -Dm644 $srcdir/util-linux.sysusers usr/lib/sysusers.d/util-linux.conf
+
+	rm -rf usr/lib/lib*.{a,so}*
+}
+
+package_util-linux-libs() {
+	pkgdesc="Miscellaneous system libraries for Linux"
+	depends=('glibc')
+
+	cd $pkgbase-$pkgver
+	make DESTDIR=$pkgdir install-usrlib_execLTLIBRARIES
+}

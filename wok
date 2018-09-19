@@ -67,6 +67,15 @@ pkgnativeinstallforce() {
 	done
 }
 
+pkgnativeinstallforcenodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C -f
+		yes y | pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd
+	done
+}
+
 pkgnativeinstallnodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
@@ -232,6 +241,9 @@ build_bootstrap() {
 	pkgchinstall openssl
 	pkgchinstall curl
 	pkgchinstall libarchive
+	pkgchinstall attr
+	pkgchinstall acl
+	pkgchinstall libcap
 	pkgchinstall fakeroot
 	pkgchinstall pacman
 }
@@ -341,6 +353,43 @@ build_final_system() {
 				pkgnativebuild gcc
 				pkgnativeremove chroot-gcc
 				pkgnativeinstallonlyforce gcc
+				;;
+			sed)
+				pkgnativeinstallforce sed
+				;;
+			shadow)
+				pkgnativeinstall shadow
+				rm -rf /output/packages/*debug*.pkg*
+				;;
+			util-linux)
+				pkgnativebuild util-linux
+				pkgnativeinstallforcenodeps util-linux
+				rm -rf /output/packages/*debug*.pkg*
+				;;
+			procps-ng)
+				pkgnativebuild procps-ng
+				pkgnativeinstallonlyforce procps-ng
+				;;
+			coreutils)
+				pkgnativeinstallforce coreutils
+				;;
+			gawk)
+				pkgnativeinstallforce gawk
+				;;
+			grep)
+				pkgnativeinstallforce grep
+				;;
+			systemd)
+				pkgnativebuild systemd
+				pkgnativeinstallnodeps systemd
+				pkgnativebuild util-linux
+				pkgnativeinstallonlyforce util-linux
+				rm -rf /output/packages/*debug*.pkg*
+				pkgnativebuild procps-ng
+				pkgnativeinstallonlyforce procps-ng
+				;;
+			curl)
+				pkgnativeinstallforce curl
 				;;
 			*)
 				pkgnativeinstall $finalpkg
