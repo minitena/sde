@@ -3,21 +3,24 @@
 
 pkgname=cracklib
 pkgver=2.9.6
-pkgrel=3
+pkgrel=4
 pkgdesc="Password Checking Library"
 arch=('x86_64' 'aarch64')
 url="https://github.com/cracklib/cracklib"
 license=('GPL')
 depends=('glibc' 'zlib')
-source=("https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('c52f463585d85924b28cdc1e373ae06d')
+source=(https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
+	https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/cracklib-words-$pkgver.gz)
+md5sums=('c52f463585d85924b28cdc1e373ae06d'
+         'cae1257e3a9f95c917cc9dbbab852316')
+install=$pkgname.install
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
 		--sbindir=/usr/bin \
-		--with-default-dict=/usr/share/cracklib/pw_dict \
+		--with-default-dict=/usr/lib/cracklib/pw_dict \
 		--without-python \
 		--build=$CHOST
 	make
@@ -27,14 +30,12 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	chmod 755 util/cracklib-format util/cracklib-packer
+	install -D -m644 $srcdir/cracklib-words-$pkgver.gz $pkgdir/usr/share/dict/cracklib-words.gz
 
-	mkdir -p $pkgdir/usr/lib/cracklib/
+	gunzip $pkgdir/usr/share/dict/cracklib-words.gz
+	rm -rf $pkgdir/usr/share/dict/cracklib-words.gz
 
-	util/cracklib-format dicts/cracklib-small | util/cracklib-packer $pkgdir/usr/share/cracklib/pw_dict
+	ln -sf cracklib-words $pkgdir/usr/share/dict/words
 
-	gzip -9 $pkgdir/usr/share/cracklib/pw_dict.pwd
-
-	rm $pkgdir/usr/share/cracklib/cracklib-small
-	rm $pkgdir/usr/share/cracklib/cracklib.magic
+	install -m755 -d $pkgdir/usr/lib/cracklib
 }

@@ -1,0 +1,3 @@
+post_install() {
+	create-cracklib-dict usr/share/dict/cracklib-words
+}
