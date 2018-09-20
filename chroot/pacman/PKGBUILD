@@ -77,7 +77,7 @@ ncurses
 shadow
 util-linux
 procps-ng
-e2fsprogs
 coreutils
+e2fsprogs
 EOF
 }
