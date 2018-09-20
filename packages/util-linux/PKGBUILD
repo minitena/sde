@@ -10,10 +10,8 @@ arch=('x86_64' 'aarch64')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
 options=('strip' 'debug')
-source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname-$pkgver.tar.xz
-	sysusers)
-md5sums=('9e5b1b8c1dc99455bdb6b462cf9436d9'
-         '095fb3d048d5304cce5719831bdad6dc')
+source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname-$pkgver.tar.xz)
+md5sums=('9e5b1b8c1dc99455bdb6b462cf9436d9')
 
 build() {
 	cd $pkgbase-$pkgver
@@ -54,8 +52,6 @@ package_util-linux() {
 	rmdir sbin usr/sbin
 
 	mkdir -p var/lib/hwclock
-
-	install -Dm644 $srcdir/util-linux.sysusers usr/lib/sysusers.d/util-linux.conf
 
 	rm -rf usr/lib/lib*.{a,so}*
 }
