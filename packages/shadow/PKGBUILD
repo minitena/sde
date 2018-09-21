@@ -3,16 +3,16 @@
 
 pkgname=shadow
 pkgver=4.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Password and account management tool"
 arch=('x86_64' 'aarch64')
 url="https://github.com/shadow-maint/shadow"
 license=('BSD')
 depends=('glibc' 'pam' 'acl')
-backup=(etc/login.defs
-	etc/pam.d/{login,passwd,su,chage}
-	etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod}
-	etc/default/useradd)
+backup=('etc/login.defs'
+	'etc/pam.d/{login,passwd,su,chage}'
+	'etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod}'
+	'etc/default/useradd')
 options=('strip' 'debug')
 source=(https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
 	useradd.defaults

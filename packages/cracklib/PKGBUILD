@@ -3,7 +3,7 @@
 
 pkgname=cracklib
 pkgver=2.9.6
-pkgrel=4
+pkgrel=5
 pkgdesc="Password Checking Library"
 arch=('x86_64' 'aarch64')
 url="https://github.com/cracklib/cracklib"

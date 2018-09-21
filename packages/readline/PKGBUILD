@@ -1,0 +1,50 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=readline
+mainver=7.0
+pkgver=${mainver}.005
+strippedver="$(echo ${mainver} | tr -d '.')"
+pkgrel=1
+pkgdesc="The GNU readline library"
+arch=('x86_64' 'aarch64')
+url="http://tiswww.case.edu/php/chet/readline/rltop.html"
+license=('GPL')
+depends=('glibc' 'ncurses')
+source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}.tar.gz
+	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-001
+	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-002
+	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-003
+	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-004
+	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-005)
+md5sums=('205b03a87fc83dab653b628c59b9fc91'
+         'e299384458a4cbefaaac3f30e9cc2bba'
+         'f9071a353e2fd52a91d32667b23715d6'
+         '03595464cf0283286a6e07f4f01c4a70'
+         '80e29bef54e2164bf9ecca0c8932cf23'
+         '2146e694e0f1f67b025790879111c6cb')
+
+prepare() {
+	cd $pkgname-${mainver}
+	patch -p0 -i $srcdir/$pkgname${strippedver}-001
+	patch -p0 -i $srcdir/$pkgname${strippedver}-002
+	patch -p0 -i $srcdir/$pkgname${strippedver}-003
+	patch -p0 -i $srcdir/$pkgname${strippedver}-004
+	patch -p0 -i $srcdir/$pkgname${strippedver}-005
+
+	sed -i '/MV.*old/d' Makefile.in
+	sed -i '/{OLDSUFF}/c:' support/shlib-install
+}
+
+build() {
+	cd $pkgname-${mainver}
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make SHLIB_LIBS='-lncurses'
+}
+
+package() {
+	cd $pkgname-${mainver}
+	make SHLIB_LIBS='-lncurses' DESTDIR=$pkgdir install
+}

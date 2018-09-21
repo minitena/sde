@@ -273,6 +273,47 @@ build_symlinks() {
 
 update_wok() {
 	cp $CWD/wok $ROOTFS/usr/bin
+
+cat > $ROOTFS/var/order<< "EOF"
+tzdata
+linux-headers
+glibc
+zlib
+m4
+bison
+flex
+gmp
+mpfr
+mpc
+isl
+binutils
+gcc
+cracklib
+pam
+attr
+acl
+libcap
+sed
+pkgconf
+ncurses
+shadow
+util-linux
+procps-ng
+coreutils
+e2fsprogs
+libtool
+iptables
+iproute2
+bzip2
+gdbm
+db
+perl
+readline
+autoconf
+automake
+bash
+bc
+EOF
 }
 
 enter_chroot() {
@@ -379,17 +420,11 @@ build_final_system() {
 			grep)
 				pkgnativeinstallforce grep
 				;;
-			systemd)
-				pkgnativebuild systemd
-				pkgnativeinstallnodeps systemd
-				pkgnativebuild util-linux
-				pkgnativeinstallonlyforce util-linux
-				rm -rf /output/packages/*debug*.pkg*
-				pkgnativebuild procps-ng
-				pkgnativeinstallonlyforce procps-ng
-				;;
 			curl)
 				pkgnativeinstallforce curl
+				;;
+			bash)
+				pkgnativeinstallforce bash
 				;;
 			*)
 				pkgnativeinstall $finalpkg
@@ -448,10 +483,10 @@ case "$1" in
 		pkginstall "$2"
 		;;
 	package|pkg)
-		pkgnativeinstall "$2"
+		pkgnativeinstall $2
 		;;
 	view-sums)
-		viewsums "$2"
+		viewsums $2
 		;;
 	adjust-toolchain)
 		if test -x /tools/bin/ld-new; then

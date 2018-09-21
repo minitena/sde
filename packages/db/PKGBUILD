@@ -1,0 +1,46 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=db
+pkgver=5.3.28
+pkgrel=1
+pkgdesc="The Berkeley DB embedded database system"
+arch=('x86_64' 'aarch64')
+url="http://www.oracle.com/technology/software/products/berkeley-db/index.html"
+license=('custom')
+depends=('glibc' 'gcc-libs')
+source=("http://download.oracle.com/berkeley-db/$pkgname-$pkgver.tar.gz")
+md5sums=('b99454564d5b4479750567031d66fe24')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's/\(__atomic_compare_exchange\)/\1_db/' src/dbinc/atomic.h
+}
+
+build() {
+	cd $pkgname-$pkgver/build_unix
+	../dist/configure \
+		--prefix=/usr \
+		--enable-compat185 \
+		--enable-cxx \
+		--enable-dbm \
+		--enable-stl \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/build_unix
+	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/usr/docs
+
+	find $pkgdir -type f | xargs file | \
+		awk '/ELF/ && /executable/ || /shared object/' | \
+		cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+	find $pkgdir -type f | xargs file | awk '/current ar archive/' | \
+		cut -f 1 -d : | xargs strip --strip-debug 2> /dev/null || true
+
+	chmod -R +w $pkgdir
+}

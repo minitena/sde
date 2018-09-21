@@ -1,0 +1,36 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=iproute2
+pkgver=4.18.0
+pkgrel=1
+pkgdesc="IP Routing Utilities"
+arch=('x86_64' 'aarch64')
+url="https://git.kernel.org/pub/scm/network/iproute2/iproute2.git"
+license=('GPL')
+depends=('glibc' 'libcap' 'iptables')
+backup=('etc/iproute2/ematch_map'
+	'etc/iproute2/rt_dsfield'
+	'etc/iproute2/rt_protos'
+	'etc/iproute2/rt_realms'
+	'etc/iproute2/rt_scopes'
+	'etc/iproute2/rt_tables')
+source=("https://www.kernel.org/pub/linux/utils/net/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('8b8680e91390c57cab788fbf8e929479')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's/-Werror//' Makefile
+	sed -e '/^check_elf$/d' -i configure
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir SBINDIR=/usr/bin install
+}

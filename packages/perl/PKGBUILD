@@ -1,0 +1,50 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=perl
+pkgver=5.28.0
+pkgrel=1
+pkgdesc="A highly capable, feature-rich programming language"
+arch=('x86_64' 'aarch64')
+url="http://www.perl.org/"
+license=('GPL' 'PerlArtistic')
+depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'db')
+source=("https://www.cpan.org/src/5.0/$pkgname-$pkgver.tar.xz")
+md5sums=('f3245183c0a08f65e94a3333995af08e')
+
+build() {
+	cd $pkgname-$pkgver
+	export BUILD_ZLIB=False
+	export BUILD_BZIP2=0
+
+	./Configure -des \
+		-Dprefix=/usr \
+		-Dvendorprefix=/usr \
+		-Dman1dir=/usr/share/man/man1 \
+		-Dman3dir=/usr/share/man/man3 \
+		-Dpager='/usr/bin/less -isR' \
+		-Duseshrplib \
+		-Dusethreads \
+		-Doptimize="$CFLAGS"
+	make
+
+	unset BUILD_ZLIB BUILD_BZIP2
+}
+
+package() {
+	cd $pkgname-$pkgver
+	export BUILD_ZLIB=False
+	export BUILD_BZIP2=0
+
+	make DESTDIR=$pkgdir install
+
+	unset BUILD_ZLIB BUILD_BZIP2
+
+	find $pkgdir \
+		-iname 'TODO*' -or \
+		-iname 'Change*' -or \
+		-iname 'README*' -or \
+		-name '*.bs' -or \
+		-name '.packlist' -or \
+		-name 'perllocal.pod' | xargs 
+}

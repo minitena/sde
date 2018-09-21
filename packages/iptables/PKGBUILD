@@ -1,0 +1,52 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=iptables
+pkgver=1.8.0
+pkgrel=1
+pkgdesc="Linux kernel packet control tool"
+arch=('x86_64' 'aarch64')
+url="http://www.netfilter.org/projects/iptables/index.html"
+license=('GPL')
+depends=('glibc')
+source=(http://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2
+	iptables-flush
+	iptables.service
+	ip6tables.service)
+md5sums=('3874ca08438be68cd793558283df48d1'
+         'ac9619d7bfa1d9157b8cd873b93a1d79'
+         '831be13c245592e93a538b74a89a12bc'
+         '2cce244b70ad60dae86947001ca1c84e')
+
+prepare() {
+	cd $pkgname-$pkgver
+	rm include/linux/types.h
+
+	sed -i -e '/libebt_/s/^/#/' \
+		-e '/libarpt_/s/^/#/' extensions/GNUmakefile.in
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--sbindir=/usr/bin \
+		--libexecdir=/usr/lib/iptables \
+		--with-xtlibdir=/usr/lib/xtables \
+		--enable-libipq \
+		--disable-nftables \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -d $pkgdir/var/lib/{iptables,ip6tables}
+
+	install -Dm644 $srcdir/iptables.service $pkgdir/usr/lib/systemd/system/iptables.service
+	install -Dm644 $srcdir/ip6tables.service $pkgdir/usr/lib/systemd/system/ip6tables.service
+	install -Dm755 $srcdir/iptables-flush $pkgdir/usr/lib/systemd/scripts/iptables-flush
+}

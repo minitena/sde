@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=automake
+pkgver=1.16.1
+pkgrel=1
+pkgdesc="A GNU tool for automatically creating Makefiles"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/automake"
+license=('GPL')
+depends=('glibc' 'm4' 'perl')
+makedepends=('autoconf')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('53f38e7591fa57c3d2cee682be668e5b')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
