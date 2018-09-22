@@ -16,9 +16,11 @@ usb:x:14:
 cdrom:x:15:
 adm:x:16:
 messagebus:x:18:
+locate:x:21:
 systemd-journal:x:23:
 input:x:24:
 mail:x:34:
+wheel:x:39:
 kvm:x:61:
 systemd-bus-proxy:x:72:
 systemd-journal-gateway:x:73:
@@ -29,4 +31,5 @@ systemd-resolve:x:77:
 systemd-timesync:x:78:
 systemd-coredump:x:79:
 nogroup:x:99:
+nobody:x:99:
 users:x:100:

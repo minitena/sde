@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gawk
+pkgver=4.2.1
+pkgrel=1
+pkgdesc="The GNU version of awk"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/gawk"
+license=('GPL')
+depends=('glibc' 'mpfr')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('95cf553f50ec9f386b5dfcd67f30180a')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

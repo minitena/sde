@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=less
+pkgver=530
+pkgrel=1
+pkgdesc="A terminal based program for viewing text files"
+arch=('x86_64' 'aarch64')
+url="http://www.greenwoodsoftware.com/less"
+license=('GPL')
+depends=('glibc' 'ncurses' 'pcre')
+source=("http://www.greenwoodsoftware.com/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('6a39bccf420c946b0fd7ffc64961315b')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-regex=pcre \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

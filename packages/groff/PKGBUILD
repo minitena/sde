@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=groff
+pkgver=1.22.3
+pkgrel=1
+pkgdesc="The GNU troff text-formatting system"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/groff"
+license=('GPL')
+depends=('glibc' 'gcc-libs')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('cc825fa64bc7306a885f2fb2268d3ec5')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--without-x \
+		--build=$CHOST
+	make -j1
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

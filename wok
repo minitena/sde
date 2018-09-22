@@ -177,7 +177,7 @@ setup_environment() {
 	export HOSTCXX="g++"
 	export MKOPTS="-j$(expr $(nproc) + 1)"
 
-	export CFLAGS="-O3 -s -fomit-frame-pointer -pipe"
+	export CFLAGS="-O2 -s -fomit-frame-pointer -pipe"
 	export CXXFLAGS="$CFLAGS"
 }
 
@@ -274,10 +274,11 @@ build_symlinks() {
 update_wok() {
 	cp $CWD/wok $ROOTFS/usr/bin
 
+rm -rf $ROOTFS/var/order
 cat > $ROOTFS/var/order<< "EOF"
-tzdata
 linux-headers
 glibc
+tzdata
 zlib
 m4
 bison
@@ -313,6 +314,19 @@ autoconf
 automake
 bash
 bc
+diffutils
+file
+gawk
+findutils
+mlocate
+gettext
+gperf
+pcre
+pcre2
+grep
+groff
+less
+gzip
 EOF
 }
 
@@ -376,7 +390,7 @@ build_final_system() {
 	for finalpkg in $(cat /var/order); do
 		case $finalpkg in
 			glibc)
-				pkgnativeinstall glibc
+				pkgnativeinstallnodeps glibc
 				wok adjust-toolchain
 				;;
 			m4)
@@ -399,13 +413,14 @@ build_final_system() {
 				pkgnativeinstallforce sed
 				;;
 			shadow)
-				pkgnativeinstall shadow
+				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
+				pkgnativeinstallonly
 				;;
 			util-linux)
 				pkgnativebuild util-linux
-				pkgnativeinstallforcenodeps util-linux
 				rm -rf /output/packages/*debug*.pkg*
+				pkgnativeinstallforcenodeps util-linux
 				;;
 			procps-ng)
 				pkgnativebuild procps-ng
@@ -423,13 +438,27 @@ build_final_system() {
 			curl)
 				pkgnativeinstallforce curl
 				;;
+			perl)
+				pkgnativeinstallforce perl
+				;;
+			file)
+				pkgnativeinstallforce file
+				;;
 			bash)
-				pkgnativeinstallforce bash
+				pkgnativebuild bash
+				;;
+			pacman)
+				pkgnativebuild pacman
+				;;
+			fakeroot)
+				pkgnativebuild fakeroot
 				;;
 			*)
 				pkgnativeinstall $finalpkg
 		esac
 	done
+
+	rm -rf /output/packages/*debug*.pkg*
 }
 
 case "$1" in
@@ -483,6 +512,10 @@ case "$1" in
 		pkginstall "$2"
 		;;
 	package|pkg)
+		pkgnativeinstall $2
+		;;
+	update-package|uppkg)
+		rm -rf /output/packages/$2-*.pkg*
 		pkgnativeinstall $2
 		;;
 	view-sums)

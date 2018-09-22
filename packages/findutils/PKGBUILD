@@ -1,0 +1,36 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=findutils
+pkgver=4.6.0
+pkgrel=1
+pkgdesc="GNU utilities to locate files"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/findutils"
+license=('GPL')
+depends=('glibc')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('9936aa8009438ce185bea2694a997fc1')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
+	sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
+	echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
+
+	sed -i '/^SUBDIRS/s/locate//' Makefile.in
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make -C locate dblocation.texi
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

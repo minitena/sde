@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=grep
+pkgver=3.1
+pkgrel=1
+pkgdesc="A string search utility"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/grep"
+license=('GPL')
+depends=('glibc' 'pcre')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('feca7b3e7c7f4aab2b42ecbfc513b070')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--without-included-regex \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

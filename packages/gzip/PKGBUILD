@@ -1,0 +1,32 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gzip
+pkgver=1.9
+pkgrel=1
+pkgdesc="The GNU compression utility"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/gzip"
+license=('GPL')
+depends=('glibc' 'less')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('9492c6ccb2239ff679a5475a7bb543ed')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

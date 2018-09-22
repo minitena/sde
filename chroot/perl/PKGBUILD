@@ -12,8 +12,6 @@ prepare() {
 
 build() {
 	cd perl-$pkgver
-	export CFLAGS="$(echo $CFLAGS|sed 's/-O3/-O2/')"
-
 	./configure \
 		--target=$XTARGET \
 		--prefix=/tools \

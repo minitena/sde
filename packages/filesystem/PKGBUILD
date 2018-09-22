@@ -3,7 +3,7 @@
 
 pkgname=filesystem
 pkgver=2018.09
-pkgrel=1
+pkgrel=2
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'aarch64')
 url="https://minitena.github.io/"
@@ -27,11 +27,15 @@ source=(env-gen
 	services
 	shadow
 	shells
-	sysctl)
+	sysctl
+	enter-chroot
+	genfstab
+	pacstrap
+	zzz)
 md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'e33f6dfdd61978fcb3ddf1431286e05a'
-         'f4b7a49236567e36a698d7c98d43e134'
-         '9dc74dd778930b9198ed1d68200aa938'
+         'a3ee055b9aad9bcfb22539f527114b9a'
+         '2f5a0f0f17dbca37c33e78fde9b0b0c9'
          'a61b9f6548d337c1cc1e5a4de39f7b7f'
          '0166671b0bfc53018c8d7a6ec53dfcb0'
          '01c1dddff3bcb144c5bb77812e481a90'
@@ -39,15 +43,19 @@ md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'd41d8cd98f00b204e9800998ecf8427e'
          '12dcf2806cae99033e093387eb255a15'
          '6ee851f8ddf7099e90987bedc328e0a8'
-         'd0740dd538300edaeb03d15573c3d186'
+         '36dbb9a9dd7f878d8a27476076023d17'
          '4500b3a486055cd302dd0e87d8af348f'
          'd46c8af3927f3c5f748e359871bdf236'
          'fe0b9046ae1a0ee676446c08ef4f2af7'
          '49c1d411ff33b6df4d55a6a6f9a9bf92'
          '9d39e51e6bd5a30168c26c57b66d2e37'
-         'fe59e4db0b823771ce930c843bfc80c5'
+         '028557ba06b85fb6bd829afead4d7747'
          'bdc193807f1f76f8aacd492f5a5b575e'
-         '03f456264db977631ac80106d990b2a7')
+         '03f456264db977631ac80106d990b2a7'
+         '0ee4a4339934a190b36f1bc6ea8dbaa3'
+         '7add791064fdee57272ead354819b820'
+         'b51958396adece663ddf7d1aa4bb8bcb'
+         'b6bfe108600d3985dd2d8ba0090fe5f7')
 backup=('etc/fstab'
 	'etc/group'
 	'etc/gshadow'
@@ -118,4 +126,9 @@ package() {
 
 	install -D -m755 $srcdir/env-gen $pkgdir/usr/lib/systemd/system-environment-generators/10-default
 	install -D -m644 $srcdir/sysctl $pkgdir/usr/lib/sysctl.d/10-default.conf
+
+	install -D -m755 $srcdir/enter-chroot $pkgdir/usr/bin/enter-chroot
+	install -D -m755 $srcdir/genfstab $pkgdir/usr/bin/genfstab
+	install -D -m755 $srcdir/pacstrap $pkgdir/usr/bin/pacstrap
+	install -D -m755 $srcdir/zzz $pkgdir/usr/bin/zzz
 }

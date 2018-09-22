@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=file
+pkgver=5.34
+pkgrel=1
+pkgdesc="File type identification utility"
+arch=('x86_64' 'aarch64')
+url="https://www.darwinsys.com/file/"
+license=('custom')
+depends=('glibc' 'zlib')
+source=("ftp://ftp.astron.com/pub/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('44b0b6983462b18f96403d4d3ad80254')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

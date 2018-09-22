@@ -1,0 +1,54 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=mlocate
+pkgver=0.26
+pkgrel=1
+pkgdesc="Merging locate/updatedb implementation"
+arch=('x86_64' 'aarch64')
+url="https://pagure.io/mlocate"
+license=('GPL')
+depends=('glibc')
+backup=('etc/updatedb.conf')
+source=(https://releases.pagure.org/$pkgname/$pkgname-$pkgver.tar.xz
+	updatedb.conf
+	updatedb.service
+	updatedb.timer)
+md5sums=('539e6f86bf387358aa2b14d5f880e49a'
+         'b56d81de17fe29b01b4b28861acb8fd4'
+         'c93b6d79c7fd1843095b2cedfef7f3e1'
+         '1b4a1d2a16de577070b4e9b5aad3eea9')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i '/^groupname /s/mlocate/locate/' Makefile.am
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var/lib \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	chgrp 21 $pkgdir/usr/bin/locate
+	chmod 2755 $pkgdir/usr/bin/locate
+	ln -sf locate $pkgdir/usr/bin/slocate
+
+	install -dm755 $pkgdir/var/lib
+	install -dm750 -g21 $pkgdir/var/lib/locate
+	
+	install -Dm644 $srcdir/updatedb.conf $pkgdir/etc/updatedb.conf
+	install -Dm644 $srcdir/updatedb.timer $pkgdir/usr/lib/systemd/system/updatedb.timer
+	install -Dm644 $srcdir/updatedb.service $pkgdir/usr/lib/systemd/system/updatedb.service
+
+	install -d $pkgdir/usr/lib/systemd/system/multi-user.target.wants
+	ln -sf ../updatedb.timer $pkgdir/usr/lib/systemd/system/multi-user.target.wants/updatedb.timer
+}
