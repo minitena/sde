@@ -3,7 +3,7 @@
 
 pkgname=filesystem
 pkgver=2018.09
-pkgrel=2
+pkgrel=3
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'aarch64')
 url="https://minitena.github.io/"
@@ -34,8 +34,8 @@ source=(env-gen
 	zzz)
 md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'e33f6dfdd61978fcb3ddf1431286e05a'
-         'a734c5f2bd405af6fa2cdf4880304fc1'
-         '65e2cad866ceaecbaaec8fb77ed44e3a'
+         'd41d8cd98f00b204e9800998ecf8427e'
+         'fcccab8ef8023e060e3919b4017560d9'
          'a61b9f6548d337c1cc1e5a4de39f7b7f'
          '0166671b0bfc53018c8d7a6ec53dfcb0'
          '01c1dddff3bcb144c5bb77812e481a90'
@@ -49,7 +49,7 @@ md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'fe0b9046ae1a0ee676446c08ef4f2af7'
          '49c1d411ff33b6df4d55a6a6f9a9bf92'
          '9d39e51e6bd5a30168c26c57b66d2e37'
-         '028557ba06b85fb6bd829afead4d7747'
+         'f85f01b6b558b6203b2a2b64400c7acb'
          'bdc193807f1f76f8aacd492f5a5b575e'
          '03f456264db977631ac80106d990b2a7'
          '0ee4a4339934a190b36f1bc6ea8dbaa3'
