@@ -343,7 +343,7 @@ enter_chroot() {
 	mount --bind $REPO $ROOTFS/var/repo
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
-	mount --bind $INITRD $ROOTFS/output/stage
+	mount --bind $STAGE $ROOTFS/output/stage
 	mount --bind $INITRD $ROOTFS/output/initrd
 
 	chroot $ROOTFS /usr/bin/env -i \
