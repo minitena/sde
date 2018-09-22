@@ -2,8 +2,8 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=iptables
-pkgver=1.8.0
-pkgrel=1
+pkgver=1.6.2
+pkgrel=2
 pkgdesc="Linux kernel packet control tool"
 arch=('x86_64' 'aarch64')
 url="http://www.netfilter.org/projects/iptables/index.html"
@@ -13,7 +13,7 @@ source=(http://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz
 	iptables-flush
 	iptables.service
 	ip6tables.service)
-md5sums=('3874ca08438be68cd793558283df48d1'
+md5sums=('7d2b7847e4aa8832a18437b8a4c1873d'
          'ac9619d7bfa1d9157b8cd873b93a1d79'
          '831be13c245592e93a538b74a89a12bc'
          '2cce244b70ad60dae86947001ca1c84e')
