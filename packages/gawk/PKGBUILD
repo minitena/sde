@@ -3,7 +3,7 @@
 
 pkgname=gawk
 pkgver=4.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU version of awk"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/gawk"
@@ -16,6 +16,8 @@ build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
 		--build=$CHOST
 	make
 }
