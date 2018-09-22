@@ -5,7 +5,7 @@ pkgname=('util-linux' 'util-linux-libs')
 pkgbase=util-linux
 _pkgmajor=2.32
 pkgver=${_pkgmajor}.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64' 'aarch64')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
@@ -35,7 +35,6 @@ build() {
 		--disable-runuser \
 		--disable-setpriv \
 		--disable-su \
-		--disable-sulogin \
 		--build=$CHOST
 	make
 }
