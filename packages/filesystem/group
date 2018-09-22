@@ -20,7 +20,7 @@ locate:x:21:
 systemd-journal:x:23:
 input:x:24:
 mail:x:34:
-wheel:x:39:
+wheel:x:39:root
 kvm:x:61:
 systemd-bus-proxy:x:72:
 systemd-journal-gateway:x:73:

@@ -3,7 +3,7 @@
 
 pkgname=shadow
 pkgver=4.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Password and account management tool"
 arch=('x86_64' 'aarch64')
 url="https://github.com/shadow-maint/shadow"
@@ -15,7 +15,6 @@ backup=('etc/login.defs'
 	'etc/default/useradd')
 options=('strip' 'debug')
 source=(https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz
-	useradd.defaults
 	service
 	timer
 	login
@@ -23,13 +22,18 @@ source=(https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgnam
 	su
 	chage)
 md5sums=('b491fecbf1232632c32ff8f1437fd60e'
-         '5c2fb7814137de810046884202e0dcd8'
          'f08ebd358139e9f74e1b90f7231dc541'
          '5bd14862ace022d6682b179c18fe30de'
          'ff37af61ce9b6983c8b6a50918bcd86e'
          '5227a3c650edbfabae32ebda18b99b27'
          '73c4ff5b9f90579fe9b4dcb9978d362f'
          '6524526f7abbcaabd06af3ffa97b432e')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+		-e 's@/var/spool/mail@/var/mail@' etc/login.defs
+}
 
 build() {
 	cd $pkgname-$pkgver
@@ -51,8 +55,6 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	install -Dm644 $srcdir/useradd.defaults $pkgdir/etc/default/useradd
-
 	for FUNCTION in FAIL_DELAY \
 			FAILLOG_ENAB \
 			LASTLOG_ENAB \
@@ -71,6 +73,8 @@ package() {
 			ENVIRON_FILE; do
 		sed -i "s/^${FUNCTION}/# &/" $pkgdir/etc/login.defs
 	done
+
+	sed -i 's/1000/100/' $pkgdir/etc/default/useradd
 
 	install -D -m644 $srcdir/timer $pkgdir/usr/lib/systemd/system/shadow.timer
 	install -D -m644 $srcdir/service $pkgdir/usr/lib/systemd/system/shadow.service

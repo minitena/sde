@@ -34,8 +34,8 @@ source=(env-gen
 	zzz)
 md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'e33f6dfdd61978fcb3ddf1431286e05a'
-         'a3ee055b9aad9bcfb22539f527114b9a'
-         '2f5a0f0f17dbca37c33e78fde9b0b0c9'
+         'a734c5f2bd405af6fa2cdf4880304fc1'
+         '65e2cad866ceaecbaaec8fb77ed44e3a'
          'a61b9f6548d337c1cc1e5a4de39f7b7f'
          '0166671b0bfc53018c8d7a6ec53dfcb0'
          '01c1dddff3bcb144c5bb77812e481a90'
