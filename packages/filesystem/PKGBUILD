@@ -109,7 +109,7 @@ package() {
 	done
 
 	ln -s usr/lib lib
-	case $BARCH in
+	case $CARCH in
 		x86_64|aarch64)
 			ln -s usr/lib lib64
 			ln -s lib usr/lib64
