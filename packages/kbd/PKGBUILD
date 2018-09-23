@@ -1,16 +1,16 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.1
+pkgname=kbd
+pkgver=2.0.4
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Keytable files and keyboard utilities"
 arch=('x86_64' 'aarch64')
-url="http://www.gnu.org/software/bison"
+url="http://www.kbd-project.org"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('db7e431785ad96870bfa570a15cab079')
+depends=('glibc' 'pam')
+source=("https://www.kernel.org/pub/linux/utils/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('c1635a5a83b63aca7f97a3eab39ebaa6')
 
 build() {
 	cd $pkgname-$pkgver
