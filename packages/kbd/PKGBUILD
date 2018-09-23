@@ -3,12 +3,12 @@
 
 pkgname=kbd
 pkgver=2.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Keytable files and keyboard utilities"
 arch=('x86_64' 'aarch64')
 url="http://www.kbd-project.org"
 license=('GPL')
-depends=('glibc' 'pam')
+depends=('glibc')
 source=("https://www.kernel.org/pub/linux/utils/$pkgname/$pkgname-$pkgver.tar.xz")
 md5sums=('c1635a5a83b63aca7f97a3eab39ebaa6')
 
@@ -16,7 +16,8 @@ build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--build=$CHOST
+		--build=$CHOST \
+		--disable-vlock
 	make
 }
 
