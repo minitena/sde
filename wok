@@ -238,7 +238,7 @@ build_bootstrap() {
 	pkgchinstall xz-utils
 	pkgchinstall patch
 	pkgchinstall busybox
-	pkgchinstall openssl
+	pkgchinstall libressl
 	pkgchinstall curl
 	pkgchinstall libarchive
 	pkgchinstall attr
@@ -274,60 +274,8 @@ build_symlinks() {
 update_wok() {
 	cp $CWD/wok $ROOTFS/usr/bin
 
-rm -rf $ROOTFS/var/order
-cat > $ROOTFS/var/order<< "EOF"
-linux-headers
-glibc
-tzdata
-zlib
-m4
-bison
-flex
-gmp
-mpfr
-mpc
-isl
-binutils
-gcc
-cracklib
-pam
-attr
-acl
-libcap
-sed
-pkgconf
-ncurses
-shadow
-util-linux
-procps-ng
-coreutils
-e2fsprogs
-libtool
-iptables
-iproute2
-bzip2
-gdbm
-db
-perl
-readline
-autoconf
-automake
-bash
-bc
-diffutils
-file
-gawk
-findutils
-mlocate
-gettext
-gperf
-pcre
-pcre2
-grep
-groff
-less
-gzip
-EOF
+	rm -rf $ROOTFS/var/order
+	cp $REPO/order $ROOTFS/var/order
 }
 
 enter_chroot() {

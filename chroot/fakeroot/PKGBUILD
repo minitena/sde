@@ -14,7 +14,8 @@ build() {
 	./configure \
 		--prefix=/tools \
 		--build=$XHOST \
-		--host=$XTARGET
+		--host=$XTARGET \
+		--disable-shared
 	make
 }
 
