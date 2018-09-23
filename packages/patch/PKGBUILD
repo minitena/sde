@@ -1,22 +1,21 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=kbd
-pkgver=2.0.4
-pkgrel=2
-pkgdesc="Keytable files and keyboard utilities"
+pkgname=patch
+pkgver=2.7.6
+pkgrel=1
+pkgdesc="A utility to apply patch files to original sources"
 arch=('x86_64' 'aarch64')
-url="http://www.kbd-project.org"
+url="http://www.gnu.org/software/patch"
 license=('GPL')
-depends=('glibc')
-source=("https://www.kernel.org/pub/linux/utils/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('c1635a5a83b63aca7f97a3eab39ebaa6')
+depends=('glibc' 'attr')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('78ad9937e4caadcba1526ef1853730d5')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--disable-vlock \
 		--build=$CHOST
 	make
 }

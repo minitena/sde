@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=perl-xml-parser
+pkgver=2.44
+pkgrel=1
+pkgdesc="Expat-based XML parser module for perl"
+arch=('x86_64' 'aarch64')
+url="http://search.cpan.org/dist/XML-Parser/"
+license=('GPL' 'PerlArtistic')
+depends=('glibc' 'perl' 'expat')
+options=('!emptydirs')
+source=("http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${pkgver}.tar.gz")
+md5sums=('af4813fe3952362451201ced6fbce379')
+
+build() {
+	cd XML-Parser-${pkgver}
+	perl Makefile.PL
+	make
+}
+
+package() {
+	cd XML-Parser-${pkgver}
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,39 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=kmod
+pkgver=25
+pkgrel=1
+pkgdesc="Linux kernel module management tools and library"
+arch=('x86_64' 'aarch64')
+url="http://git.kernel.org/?p=utils/kernel/kmod/kmod.git;a=summary"
+license=('GPL')
+depends=('glibc' 'zlib' 'xz-utils')
+source=(https://www.kernel.org/pub/linux/utils/kernel/$pkgname/$pkgname-$pkgver.tar.xz
+	depmod-search.conf)
+md5sums=('34f325cab568f842fdde4f8b2182f220'
+         'dd62cbf62bd8f212f51ef8c43bec9a77')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-xz \
+		--with-zlib \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -dm755 $pkgdir/{etc,usr/lib}/{depmod,modprobe}.d
+
+	for tool in {ins,ls,rm,dep}mod mod{probe,info}; do
+		ln -sf kmod $pkgdir/usr/bin/$tool
+	done
+
+	install -Dm644 $srcdir/depmod-search.conf $pkgdir/usr/lib/depmod.d/search.conf
+}

@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=xz-utils
+pkgver=5.2.4
+pkgrel=1
+pkgdesc="Library and command line tools for XZ and LZMA compressed files"
+arch=('x86_64' 'aarch64')
+url="https://tukaani.org/xz/"
+license=('GPL' 'LGPL' 'custom')
+depends=('glibc')
+source=("https://tukaani.org/xz/xz-$pkgver.tar.gz")
+md5sums=('5ace3264bdd00c65eeec2891346f65e6')
+
+build() {
+	cd xz-$pkgver
+	./configure \
+		--prefix=/usr \
+		--disable-rpath \
+		--disable-werror \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd xz-$pkgver
+	make DESTDIR=$pkgdir install
+}

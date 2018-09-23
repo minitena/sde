@@ -54,4 +54,13 @@ libunistring
 libidn2
 iputils
 net-tools
+inetutils
 kbd
+make
+xz-utils
+expat
+perl-xml-parser
+intltool
+kmod
+patch
+psmisc

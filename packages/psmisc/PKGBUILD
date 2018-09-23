@@ -1,22 +1,21 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=kbd
-pkgver=2.0.4
-pkgrel=2
-pkgdesc="Keytable files and keyboard utilities"
+pkgname=psmisc
+pkgver=23.2
+pkgrel=1
+pkgdesc="Miscellaneous procfs tools"
 arch=('x86_64' 'aarch64')
-url="http://www.kbd-project.org"
+url="http://psmisc.sourceforge.net/index.html"
 license=('GPL')
-depends=('glibc')
-source=("https://www.kernel.org/pub/linux/utils/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('c1635a5a83b63aca7f97a3eab39ebaa6')
+depends=('glibc' 'ncurses')
+source=("http://downloads.sourceforge.net/psmisc/$pkgname-$pkgver.tar.xz")
+md5sums=('17b72c193b090f379fedf573123e89b8')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--disable-vlock \
 		--build=$CHOST
 	make
 }

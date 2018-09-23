@@ -1,0 +1,12 @@
+[Unit]
+Description=INET daemon
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/inetd.pid
+ExecStart=/usr/bin/inetd
+ExecStopPost=/usr/bin/rm -f /run/inetd.pid
+
+[Install]
+WantedBy=multi-user.target

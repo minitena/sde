@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=make
+pkgver=4.2.1
+pkgrel=1
+pkgdesc="The GNU make utility to maintain groups of programs"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/make"
+license=('GPL')
+depends=('glibc')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('15b012617e7c44c0ed482721629577ac')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

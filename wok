@@ -249,7 +249,7 @@ build_bootstrap() {
 }
 
 build_symlinks() {
-	for file in awk bash cat curl dd du echo env file grep install ln ls m4 makepkg pacman perl pwd rm sed sh stty; do
+	for file in awk bash cat curl dd du echo env fakeroot file grep install ln ls m4 makepkg pacman perl pwd rm sed sh stty; do
 		ln -sf /tools/bin/${file} $ROOTFS/bin
 	done
 
@@ -360,6 +360,10 @@ build_final_system() {
 			sed)
 				pkgnativeinstallforce sed
 				;;
+			cracklib)
+				pkgnativebuild cracklib
+				pkgnativeinstallforcenodeps cracklib
+				;;
 			shadow)
 				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
@@ -372,7 +376,7 @@ build_final_system() {
 				;;
 			procps-ng)
 				pkgnativebuild procps-ng
-				pkgnativeinstallonlyforce procps-ng
+				pkgnativeinstallforcenodeps procps-ng
 				;;
 			coreutils)
 				pkgnativeinstallforce coreutils
