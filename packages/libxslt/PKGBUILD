@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libxslt
+pkgver=1.1.32
+pkgrel=1
+pkgdesc="XML stylesheet transformation library"
+arch=('x86_64' 'aarch64')
+url="http://www.xmlsoft.org/"
+license=('custom')
+depends=('glibc' 'libxml2' 'libgcrypt')
+makedepends=('python')
+source=("http://xmlsoft.org/sources/$pkgname-$pkgver.tar.gz")
+md5sums=('1fc72f98e98bf4443f1651165f3aa146')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-python=/usr/bin/python3 \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
