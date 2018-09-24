@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libffi
+pkgver=3.2.1
+pkgrel=1
+pkgdesc="Portable foreign function interface library"
+arch=('x86_64' 'aarch64')
+url="http://sourceware.org/libffi/"
+license=('MIT')
+depends=('glibc')
+source=("ftp://sourceware.org/pub/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('83b89587607e3eb65c70d361f13bab43')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--enable-pax_emutramp \
+		--disable-static \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -8,27 +8,21 @@ pkgdesc="A collection of common network programs"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/inetuils"
 license=('GPL')
-depends=('glibc' 'pam' 'libcap' 'ncurses')
-backup=('etc/xinetd.d/telnet'
-	'etc/xinetd.d/talk')
+depends=('glibc' 'libcap' 'readline')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
-	ftpd.service
 	inetd.service
+	ftpd.service
 	talk.service
 	talk.socket
-	talk.xinetd
 	telnet.service
-	telnet.socket
-	telnet.xinetd)
+	telnet.socket)
 md5sums=('87fef1fa3f603aef11c41dcc097af75e'
-         'fe181e22d3544456f52e64f3bdf5f291'
          '79256bf3f29f2019805ad714f04a6425'
+         'fe181e22d3544456f52e64f3bdf5f291'
          '2b7ea36e13178c7a3b3c9b38ac7eb588'
          'bd581fa64b91ded853317334b1489346'
-         'ae4539ffbabae314744aea8467125f85'
          'd7e5d8f70b7fc7321ab0e61178829b06'
-         'bafd84474b3a0942307571e742dd096f'
-         'e9a2d3e0bdb02bb6d5191eae0f3cf7f2')
+         'bafd84474b3a0942307571e742dd096f')
 
 build() {
 	cd $pkgname-$pkgver
@@ -37,13 +31,16 @@ build() {
 		--libexec=/usr/bin \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
-		--with-pam \
 		--disable-logger \
+		--disable-inetd \
 		--disable-rcp \
+		--disable-rcpd \
 		--disable-rexec \
+		--disable-rexecd \
 		--disable-rlogin \
+		--disable-rlogind \
 		--disable-rsh \
-		--disable-servers \
+		--disable-rshd \
 		--disable-whois \
 		--build=$CHOST
 	make
@@ -53,11 +50,8 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	install -D -m644 $srcdir/talk.xinetd $pkgdir/etc/xinetd.d/talk
-	install -D -m644 $srcdir/telnet.xinetd $pkgdir/etc/xinetd.d/telnet
-
-	install -D -m644 $srcdir/ftpd.service $pkgdir/usr/lib/systemd/system/ftpd.service
 	install -D -m644 $srcdir/inetd.service $pkgdir/usr/lib/systemd/system/inetd.service
+	install -D -m644 $srcdir/ftpd.service $pkgdir/usr/lib/systemd/system/ftpd.service
 	install -D -m644 $srcdir/talk.service $pkgdir/usr/lib/systemd/system/talk.service
 	install -D -m644 $srcdir/talk.socket $pkgdir/usr/lib/systemd/system/talk.socket
 	install -D -m644 $srcdir/telnet.service $pkgdir/usr/lib/systemd/system/telnet@.service

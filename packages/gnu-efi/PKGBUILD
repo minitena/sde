@@ -1,0 +1,24 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gnu-efi
+pkgver=3.0.8
+pkgrel=1
+pkgdesc="Library for building UEFI Applications using GNU toolchain"
+arch=('x86_64' 'aarch64')
+url="http://sourceforge.net/projects/gnu-efi/"
+license=('GPL')
+depends=('glibc')
+options=('!strip' '!makeflags' '!buildflags')
+source=("http://download.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('ae32011cfe6b1c40c0f244b9a49ba181')
+
+build() {
+	cd $pkgname-$pkgver
+	make -j1
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make INSTALLROOT=$pkgdir PREFIX=/usr LIBDIR=/usr/lib install
+}

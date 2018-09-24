@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=meson
+pkgver=0.47.2
+pkgrel=1
+pkgdesc="High productivity build system"
+arch=('x86_64' 'aarch64')
+url="http://mesonbuild.com/"
+license=('Apache')
+depends=('python' 'ninja')
+source=("https://github.com/mesonbuild/meson/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('31bda3519d8c0eb3438267268a78085e')
+
+build() {
+	cd $pkgname-$pkgver
+	python3 setup.py build
+}
+
+package() {
+	cd $pkgname-$pkgver
+	python3 setup.py install --root="${pkgdir}" --optimize=1 --skip-build
+
+	install -d $pkgdir/usr/share/vim/vimfiles
+	cp -rt $pkgdir/usr/share/vim/vimfiles data/syntax-highlighting/vim/*
+
+	install -Dt $pkgdir/usr/share/zsh/site-functions -m644 data/shell-completions/zsh/*
+}

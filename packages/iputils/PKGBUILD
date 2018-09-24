@@ -3,7 +3,7 @@
 
 pkgname=iputils
 pkgver=s20180629
-pkgrel=1
+pkgrel=2
 pkgdesc="Network monitoring tools"
 arch=('x86_64' 'aarch64')
 url="http://www.skbuff.net/iputils/"
@@ -28,7 +28,6 @@ package() {
 	install -m755 arping $pkgdir/usr/bin
 	install -m755 ipg $pkgdir/usr/bin
 	install -m755 rarpd $pkgdir/usr/bin
-	install -m755 tftpd $pkgdir/usr/bin
 	install -m755 traceroute6 $pkgdir/usr/bin
 	ln -sf ping $pkgdir/usr/bin/ping4
 	ln -sf ping $pkgdir/usr/bin/ping6

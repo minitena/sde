@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=lzip
+pkgver=1.20
+pkgrel=1
+pkgdesc="A lossless file compressor based on the LZMA algorithm"
+arch=('x86_64' 'aarch64')
+url="http://www.nongnu.org/lzip/lzip.html"
+license=('GPL')
+depends=('gcc-libs')
+source=("https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('21c1517da2ace9689fd953918660b3c3')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST \
+		CXXFLAGS="$CXXFLAGS"
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

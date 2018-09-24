@@ -3,7 +3,7 @@
 
 pkgname=glibc
 pkgver=2.28
-pkgrel=2
+pkgrel=3
 pkgdesc="The GNU C Library"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/libc"
@@ -11,6 +11,7 @@ license=('GPL' 'LGPL')
 depends=('filesystem' 'tzdata' 'linux-headers')
 backup=(etc/gai.conf
 	etc/nscd.conf)
+options=('docs')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	bz20338.patch
 	bz23497.patch
@@ -42,7 +43,7 @@ build() {
 		--prefix=/usr \
 		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
-		--with-pkgversion='Minitena Linux' \
+		--with-pkgversion='Minitena' \
 		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--enable-add-ons \
 		--enable-bind-now \
@@ -78,4 +79,7 @@ package() {
 	install -dm755 $pkgdir/var/db/nscd
 
 	install -m644 ../posix/gai.conf $pkgdir/etc/gai.conf
+
+	cd $pkgdir
+	rm -rf {,usr/}{,local/}{,share/}{doc,man,info,locale} {,usr/}{,local/}{,share/},opt/*}/{man,info} {,usr/}{,local/}{,share/}{doc,gtk-doc} opt/*/{doc,gtk-doc}
 }

@@ -1,0 +1,56 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=sqlite
+pkgver=3.25.1
+_a=${pkgver%%.*}
+_b=${pkgver#${_a}.}
+_b=${_b%%.*}
+_c=${pkgver#${_a}.${_b}.}
+_c=${_c%%.*}
+case $pkgver in
+	*.*.*.*)_d=${pkgver##*.};;
+	*.*.*)	_d=0;;
+esac
+[ $_b -lt 10 ] && _b=0$_b
+[ $_c -lt 10 ] && _c=0$_c
+[ $_d -lt 10 ] && _d=0$_d
+ver=${_a}${_b}${_c}${_d}
+pkgrel=1
+pkgdesc="A C library that implements an SQL database engine"
+arch=('x86_64' 'aarch64')
+url="http://www.sqlite.org/"
+license=('Public Domain')
+depends=('glibc' 'zlib' 'readline')
+options=('!emptydirs')
+source=("http://www.sqlite.org/2018/$pkgname-autoconf-$ver.tar.gz")
+md5sums=('d73c42c86012ef5c88d0877fa22b9f99')
+
+amalgamation="-DSQLITE_ENABLE_FTS4 \
+	-DSQLITE_ENABLE_FTS3_PARENTHESIS \
+	-DSQLITE_ENABLE_FTS5 \
+	-DSQLITE_ENABLE_COLUMN_METADATA \
+	-DSQLITE_SECURE_DELETE \
+	-DSQLITE_ENABLE_UNLOCK_NOTIFY \
+	-DSQLITE_ENABLE_RTREE \
+	-DSQLITE_USE_URI \
+	-DSQLITE_ENABLE_DBSTAT_VTAB \
+	-DSQLITE_MAX_VARIABLE_NUMBER=250000 \
+	-DSQLITE_ENABLE_JSON1"
+
+build() {
+	cd $pkgname-autoconf-$ver
+	CFLAGS="$CFLAGS $amalgamation" \
+	./configure \
+		--prefix=/usr \
+		--enable-threadsafe \
+		--enable-readline \
+		--enable-dynamic-extensions \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-autoconf-$ver
+	make DESTDIR=$pkgdir install
+}

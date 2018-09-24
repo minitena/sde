@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=npth
+pkgver=1.6
+pkgrel=1
+pkgdesc="New portable threads library"
+arch=('x86_64' 'aarch64')
+url="http://git.gnupg.org/cgi-bin/gitweb.cgi?p=npth.git"
+license=('LGPL')
+depends=('glibc')
+source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('375d1a15ad969f32d25f1a7630929854')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=re2c
+pkgver=1.1.1
+pkgrel=1
+pkgdesc="A tool for generating C-based recognizers from regular expressions"
+arch=('x86_64' 'aarch64')
+url="http://re2c.org"
+license=('Public Domain')
+depends=('glibc' 'gcc-libs')
+source=("https://github.com/skvadrik/re2c/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('7355fde733bd76cbc480cda10ef49e46')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libassuan
+pkgver=2.5.1
+pkgrel=1
+pkgdesc="IPC library used by some GnuPG related software"
+arch=('x86_64' 'aarch64')
+url="https://www.gnupg.org"
+license=('GPL')
+depends=('glibc' 'libgpg-error')
+source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('4354b7ae296894f232ada226a062d7d7')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

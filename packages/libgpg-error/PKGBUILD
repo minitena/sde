@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libgpg-error
+pkgver=1.32
+pkgrel=1
+pkgdesc="Support library for libgcrypt"
+arch=('x86_64' 'aarch64')
+url="https://www.gnupg.org"
+license=('LGPL')
+depends=('glibc')
+source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('ef3d928a5a453fa701ecc3bb22be1c64')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=cpio
+pkgver=2.12
+pkgrel=1
+pkgdesc="A tool to copy files into or out of a cpio or tar archive"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/cpio"
+license=('GPL')
+depends=('glibc')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('fc207561a86b63862eea4b8300313e86')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/usr/bin/mt $pkgdir/pkg/usr/share/man/man1/mt.1
+	rm -rf $pkgdir/usr/libexec
+	rm -rf $pkgdir/usr/share/man/man8/rmt.8
+}

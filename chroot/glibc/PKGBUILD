@@ -35,7 +35,7 @@ build() {
 		--libdir=/tools/lib \
 		--build=$XHOST \
 		--host=$XTARGET \
-		--with-pkgversion='Minitena Linux' \
+		--with-pkgversion='Minitena' \
 		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--with-binutils=$TOOLS/bin \
 		--with-headers=$ROOTFS/tools/include \

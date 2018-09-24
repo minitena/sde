@@ -1,0 +1,23 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=unrar
+pkgver=5.6.6
+pkgrel=1
+pkgdesc="The RAR uncompression program"
+arch=('x86_64' 'aarch64')
+url="http://www.rarlab.com/rar_add.htm"
+license=('custom')
+depends=('glibc' 'gcc-libs')
+source=("http://www.rarlab.com/rar/unrarsrc-$pkgver.tar.gz")
+md5sums=('f54fdf142f0981ae1840a32fc9220e45')
+
+build() {
+	cd $pkgname
+	make -f makefile
+}
+
+package() {
+	cd $pkgname
+	install -Dm755 unrar $pkgdir/usr/bin/unrar
+}

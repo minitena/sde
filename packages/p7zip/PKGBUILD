@@ -1,0 +1,42 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=p7zip
+pkgver=16.02
+pkgrel=1
+pkgdesc="Command-line file archiver with high compression ratio"
+arch=('x86_64' 'aarch64')
+url="http://p7zip.sourceforge.net/"
+license=('LGPL' 'unRAR')
+depends=('gcc-libs')
+source=(https://downloads.sourceforge.net/$pkgname/${pkgname}_${pkgver}_src_all.tar.bz2
+	CVE-2016-9296.patch
+	CVE-2017-17969.patch
+	CVE-2018-5996.patch
+	CVE-2018-10115.patch)
+md5sums=('a0128d661cfe7cc8c121e73519c54fbf'
+         '2fd6b8aefbe4d2900b167f75ce6988ed'
+         'bb46ad912b4c8b93d4b89d88314210c3'
+         '41e9a16637f6739a46a24fa07d16d94d'
+         '6d500bbce801a7b76d90f33a11a8ca19')
+
+prepare() {
+	cd ${pkgname}_${pkgver}
+	patch -Np1 -i $srcdir/CVE-2016-9296.patch
+	patch -Np1 -i $srcdir/CVE-2017-17969.patch
+	patch -Np1 -i $srcdir/CVE-2018-5996.patch
+	patch -Np1 -i $srcdir/CVE-2018-10115.patch
+}
+
+build() {
+	cd ${pkgname}_${pkgver}
+	make OPTFLAGS="$CFLAGS" all3
+}
+
+package() {
+	cd ${pkgname}_${pkgver}
+	make install \
+		DEST_DIR=$pkgdir \
+		DEST_HOME=/usr \
+		DEST_MAN=/usr/share/man
+}

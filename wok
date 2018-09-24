@@ -378,6 +378,10 @@ build_final_system() {
 				pkgnativebuild procps-ng
 				pkgnativeinstallforcenodeps procps-ng
 				;;
+			systemd)
+				pkgnativebuild systemd
+				pkgnativeinstallforcenodeps systemd
+				;;
 			coreutils)
 				pkgnativeinstallforce coreutils
 				;;

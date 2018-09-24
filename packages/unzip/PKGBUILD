@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=unzip
+pkgver=6.0
+apkgver=${pkgver/./}
+pkgrel=1
+pkgdesc="For extracting and viewing files in .zip archives"
+arch=('x86_64' 'aarch64')
+url='http://www.info-zip.org/UnZip.html'
+license=('custom')
+depends=('glibc' 'bzip2' 'bash')
+source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz")
+md5sums=('62b490407489521db863b523a7f86375')
+
+prepare() {
+	cd $pkgname$apkgver
+	sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
+}
+
+build() {
+	cd $pkgname$apkgver
+	make -f unix/Makefile generic
+}
+
+package() {
+	cd $pkgname$apkgver
+	make prefix=$pkgdir/usr -f unix/Makefile install
+}

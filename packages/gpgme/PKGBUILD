@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gpgme
+pkgver=1.11.1
+pkgrel=1
+pkgdesc="A C wrapper library for GnuPG"
+arch=('x86_64' 'aarch64')
+url="http://www.gnupg.org/related_software/gpgme/"
+license=('LGPL')
+depends=('glibc' 'gnupg')
+options=('!emptydirs')
+source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('129c46fb85a7ffa41e43345e48aee884')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

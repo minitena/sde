@@ -2,8 +2,8 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=filesystem
-pkgver=2018.09
-pkgrel=4
+pkgver=2018.10
+pkgrel=1
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'aarch64')
 url="https://minitena.github.io/"

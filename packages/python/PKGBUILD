@@ -1,0 +1,44 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=python
+pkgver=3.7.0
+pkgrel=1
+pkgdesc="Next generation of the python high-level scripting language"
+arch=('x86_64' 'aarch64')
+url="http://www.python.org/"
+license=('custom')
+depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'readline' 'libressl' 'expat' 'libffi' 'sqlite')
+source=(https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz)
+md5sums=('eb8c2a6b1447d50813c02714af4681f3')
+
+prepare() {
+	cd Python-${pkgver}
+
+	rm -rf Modules/expat Modules/zlib Modules/_ctypes/libffi*
+}
+
+build() {
+	cd Python-${pkgver}
+	./configure \
+		--prefix=/usr \
+		--with-dbmliborder=gdbm:ndbm \
+		--with-ensurepip=yes \
+		--with-system-expat \
+		--with-system-ffi \
+		--with-threads \
+		--enable-ipv6 \
+		--enable-loadable-sqlite-extensions \
+		--enable-shared \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd Python-${pkgver}
+	sed -i 's/^all:.*$/all: build_all/' Makefile
+
+	make DESTDIR=$pkgdir install
+
+	chmod 755 $pkgdir/usr/lib/libpython3.{7m.,}so
+}

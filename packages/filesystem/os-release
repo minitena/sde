@@ -1,5 +1,5 @@
-NAME="Minitena Linux"
-PRETTY_NAME="Minitena Linux"
+NAME="Minitena"
+PRETTY_NAME="Minitena"
 ID=minitena
 ID_LIKE=minitena
 ANSI_COLOR="0;31"
