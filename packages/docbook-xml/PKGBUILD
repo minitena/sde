@@ -3,7 +3,7 @@
 
 pkgname=docbook-xml
 pkgver=4.5
-pkgrel=1
+pkgrel=2
 pkgdesc="A widely used XML scheme for writing documentation and help"
 arch=('x86_64' 'aarch64')
 url="https://www.oasis-open.org/docbook/"
@@ -15,58 +15,10 @@ source=("http://www.docbook.org/xml/$pkgver/$pkgname-$pkgver.zip")
 md5sums=('03083e288e87a7e829e437358da7ef9e')
 
 package() {
-	install -d -m755 $pkgdir/usr/share/xml/docbook/
+	install -d -m755 $pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver
 	install -d -m755 $pkgdir/etc/xml
+
 	chown -R root:root $pkgdir
 
-	cp -af docbook.cat *.dtd ent/ *.mod $pkgdir/usr/share/xml/docbook
-
-	if [ ! -e $pkgdir/etc/xml/docbook ]; then
-		xmlcatalog --noout --create $pkgdir/etc/xml/docbook
-	fi
-
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//DTD DocBook XML V4.5//EN" \
-		"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//DTD DocBook XML CALS Table Model V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/calstblx.dtd" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/soextblx.dtd" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/dbpoolx.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ELEMENTS DocBook XML Document Hierarchy V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/dbhierx.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ELEMENTS DocBook XML HTML Tables V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/htmltblx.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ENTITIES DocBook XML Notations V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/dbnotnx.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ENTITIES DocBook XML Character Entities V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/dbcentx.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "public" \
-		"-//OASIS//ENTITIES DocBook XML Additional General Entities V4.5//EN" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver/dbgenent.mod" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "rewriteSystem" \
-		"http://www.oasis-open.org/docbook/xml/4.5" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver" \
-		$pkgdir/etc/xml/docbook
-	xmlcatalog --noout --add "rewriteURI" \
-		"http://www.oasis-open.org/docbook/xml/4.5" \
-		"file://$pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver" \
-		$pkgdir/etc/xml/docbook
+	cp -af docbook.cat *.dtd ent/ *.mod $pkgdir/usr/share/xml/docbook/xml-dtd-$pkgver
 }
