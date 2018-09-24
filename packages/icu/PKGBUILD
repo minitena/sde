@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=icu
+pkgver=62.1
+pkgrel=1
+pkgdesc="International Components for Unicode library"
+arch=('x86_64' 'aarch64')
+url="http://www.icu-project.org/"
+license=('icu')
+depends=('glibc' 'gcc-libs')
+source=("https://ssl.icu-project.org/files/${pkgname}4c/${pkgver}/${pkgname}4c-${pkgver//./_}-src.tgz")
+md5sums=('490ad9d920158e0314e10ba74ae9a150')
+
+build() {
+	cd icu/source
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd icu/source
+	make DESTDIR=$pkgdir install
+}
