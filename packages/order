@@ -89,3 +89,9 @@ npth
 pinentry
 gnupg
 gpgme
+icu
+libxml2
+libxslt
+sgml-common
+docbook-xml
+docbook-xsl
