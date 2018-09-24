@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=docbook-xsl
+pkgver=1.79.2
+pkgrel=1
+pkgdesc="XML stylesheets for Docbook-xml transformations"
+arch=('x86_64' 'aarch64')
+url="http://docbook.org/"
+license=('custom')
+depends=('glibc' 'libxml2' 'libxslt' 'docbook-xml')
+install=$pkgname.install
+source=(https://github.com/docbook/xslt10-stylesheets/releases/download/release/$pkgver/$pkgname-$pkgver.tar.bz2
+	fix-stack.patch)
+md5sums=('4a400f0264a19329c7f95f69e098744a'
+         '8457bd6ee6b06fbc6dc540e1b096f766')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/fix-stack.patch
+}
+
+package() {
+	cd $pkgname-$pkgver
+	install -m755 -d $pkgdir/usr/share/xml/docbook/xsl-stylesheets-$pkgver
+
+	cp -R VERSION assembly common eclipse epub epub3 extensions fo \
+		highlighting html htmlhelp images javahelp lib manpages params \
+		profiling roundtrip slides template tests tools webhelp website \
+		xhtml xhtml-1_1 xhtml5 \
+		$pkgdir/usr/share/xml/docbook/xsl-stylesheets-$pkgver
+
+	ln -sf VERSION $pkgdir/usr/share/xml/docbook/xsl-stylesheets-$pkgver/VERSION.xsl
+}
