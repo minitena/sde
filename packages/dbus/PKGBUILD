@@ -1,0 +1,38 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dbus
+pkgver=1.12.10
+pkgrel=1
+pkgdesc="Freedesktop.org message bus system"
+arch=('x86_64' 'aarch64')
+url="https://wiki.freedesktop.org/www/Software/dbus/"
+license=('GPL' 'custom')
+depends=('glibc' 'expat')
+source=("https://dbus.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('c3e12b4206e2a7da39d7cc42567790ef')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/dbus-1.0 \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		runstatedir=/run \
+		--with-system-socket=/run/dbus/system_bus_socket \
+		--with-dbus-session-bus-connect-address=unix:runtime=yes \
+		--with-dbus-user=dbus \
+		--without-x \
+		--enable-user-session \
+		--disable-static \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	 rm -r $pkgdir/var/run
+}
