@@ -10,7 +10,7 @@ url="http://psmisc.sourceforge.net/index.html"
 license=('GPL')
 depends=('glibc' 'ncurses')
 source=("http://downloads.sourceforge.net/psmisc/$pkgname-$pkgver.tar.xz")
-md5sums=('17b72c193b090f379fedf573123e89b8')
+md5sums=('SKIP')
 
 build() {
 	cd $pkgname-$pkgver
