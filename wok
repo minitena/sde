@@ -349,12 +349,12 @@ build_final_system() {
 				;;
 			binutils)
 				pkgnativebuild binutils
-				pkgnativeremove chroot-binutils
+				pkgnativeremove chroot-binutils || true
 				pkgnativeinstallonly binutils
 				;;
 			gcc)
 				pkgnativebuild gcc
-				pkgnativeremove chroot-gcc
+				pkgnativeremove chroot-gcc  || true 
 				pkgnativeinstallonlyforce gcc
 				;;
 			sed)
