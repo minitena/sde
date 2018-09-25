@@ -56,6 +56,7 @@ net-tools
 inetutils
 kbd
 make
+xz-utils
 cpio
 lz4
 lzip
@@ -63,7 +64,6 @@ lzo
 p7zip
 unrar
 unzip
-xz-utils
 zip
 zstd
 expat
@@ -95,3 +95,15 @@ libxslt
 sgml-common
 docbook-xml
 docbook-xsl
+libseccomp
+popt
+libaio
+json-c
+dbus
+systemd
+lvm2
+cryptsetup
+systemd
+dbus
+util-linux
+procps-ng

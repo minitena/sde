@@ -1,0 +1,23 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libaio
+pkgver=0.3.111
+pkgrel=2
+pkgdesc="The Linux-native asynchronous I/O facility (aio) library"
+arch=('x86_64' 'aarch64')
+url="http://lse.sourceforge.net/io/aio.html"
+license=('LGPL')
+depends=('glibc')
+source=("http://ftp.debian.org/debian/pool/main/liba/$pkgname/${pkgname}_${pkgver}.orig.tar.gz")
+md5sums=('abb8f46d64b9bd3d0c6097e3a36639be')
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make prefix=$pkgdir/usr install
+}

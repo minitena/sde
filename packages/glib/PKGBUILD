@@ -1,0 +1,38 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=glib
+pkgver=2.58.1
+pkgrel=1
+pkgdesc="Low level core library"
+arch=('x86_64' 'aarch64')
+url="https://wiki.gnome.org/Projects/GLib"
+license=('LGPL')
+depends=('glibc' 'zlib' 'util-linux-libs' 'pcre')
+makedepends=('meson')
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz
+	gio-querymodules.hook
+	glib-compile-schemas.hook)
+md5sums=('4fd2ead128a408c89b9153dfdb99f9a5'
+         'a52ea506b5cf162a4f72d09cc33fae50'
+         '9e25d7de10bc4dc105f171e9ae46ef69')
+
+build() {
+	cd $pkgname-$pkgver
+	cd build 
+
+	meson $srcdir/$pkgname-$pkgver \
+		--prefix=/usr \
+		-Dman=false \
+		-Dselinux=false
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+
+	install -Dt $pkgdir/usr/share/libalpm/hooks -m644 $srcdir/*.hook
+}

@@ -1,0 +1,74 @@
+Submitted By:            Douglas R. Reno
+Date:                    2018-08-03
+Initial Package Version: 239
+Upstream Status:         Unknown
+Origin:                  Self
+Description:             Fix issues with glibc's new statx macro conflicting with the one
+                         installed by the kernel headers.
+
+diff -Naurp systemd-239.orig/meson.build systemd-239/meson.build
+--- systemd-239.orig/meson.build	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/meson.build	2018-08-03 11:11:26.562715430 -0500
+@@ -425,6 +425,7 @@ decl_headers = '''
+ #include <sys/stat.h>
+ '''
+ # FIXME: key_serial_t is only defined in keyutils.h, this is bound to fail
++# FIXME: these should use -D_GNU_SOURCE, since that is defined at build time.
+ 
+ foreach decl : ['char16_t',
+                 'char32_t',
+@@ -439,6 +440,10 @@ foreach decl : ['char16_t',
+         conf.set10('HAVE_' + decl.underscorify().to_upper(), have)
+ endforeach
+ 
++conf.set10('HAVE_STRUCT_STATX_IN_STAT_H', cc.sizeof('struct statx', prefix: '''
++#include <sys/stat.h>
++''', args: '-D_GNU_SOURCE') > 0 )
++
+ foreach decl : [['IFLA_INET6_ADDR_GEN_MODE',         'linux/if_link.h'],
+                 ['IN6_ADDR_GEN_MODE_STABLE_PRIVACY', 'linux/if_link.h'],
+                 ['IFLA_VRF_TABLE',                   'linux/if_link.h'],
+diff -Naurp systemd-239.orig/src/basic/bpf-program.c systemd-239/src/basic/bpf-program.c
+--- systemd-239.orig/src/basic/bpf-program.c	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/src/basic/bpf-program.c	2018-08-03 11:24:42.883798592 -0500
+@@ -1,7 +1,6 @@
+ /* SPDX-License-Identifier: LGPL-2.1+ */
+ 
+ #include <fcntl.h>
+-#include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+ 
+diff -Naurp systemd-239.orig/src/basic/missing.h systemd-239/src/basic/missing.h
+--- systemd-239.orig/src/basic/missing.h	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/src/basic/missing.h	2018-08-03 11:29:52.515416500 -0500
+@@ -15,12 +15,10 @@
+ #include <linux/neighbour.h>
+ #include <linux/oom.h>
+ #include <linux/rtnetlink.h>
+-#include <linux/stat.h>
+ #include <net/ethernet.h>
+ #include <stdlib.h>
+ #include <sys/resource.h>
+ #include <sys/socket.h>
+-#include <sys/stat.h>
+ #include <sys/syscall.h>
+ #include <uchar.h>
+ #include <unistd.h>
+diff -Naurp systemd-239.orig/src/basic/xattr-util.c systemd-239/src/basic/xattr-util.c
+--- systemd-239.orig/src/basic/xattr-util.c	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/src/basic/xattr-util.c	2018-08-03 11:32:10.869458442 -0500
+@@ -2,12 +2,12 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <linux/stat.h>
+ #include <stdint.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/time.h>
+ #include <sys/xattr.h>
++#include <sys/stat.h>
+ 
+ #include "alloc-util.h"
+ #include "fd-util.h"

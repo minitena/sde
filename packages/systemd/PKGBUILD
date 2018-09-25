@@ -1,0 +1,143 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=('systemd' 'systemd-libs')
+pkgbase=systemd
+pkgver=239
+pkgrel=1
+arch=('x86_64' 'aarch64')
+url="https://www.github.com/systemd/systemd"
+license=('GPL' 'LGPL')
+makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl')
+source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar.gz
+	fix-build-glibc2.28.patch
+	loader.conf
+	minitena.conf
+	systemd-binfmt.hook
+	systemd-catalog.hook
+	systemd-hook
+	systemd-hwdb.hook
+	systemd-reload.hook
+	systemd-sysctl.hook
+	systemd-tmpfiles.hook
+	systemd-udev-reload.hook
+	systemd-update.hook
+	systemd-user)
+md5sums=('6137e3f50390391cf34521d071a1a078'
+         'a44057d6a6ca69760bafc126458d89e5'
+         'f47a862de7feb2d36475c745f768493a'
+         'b668e7f3cdea0274401f00c22ffca1be'
+         '981d3730f7d14ac9459aba2753ce6a97'
+         '11d703a47115c3ad4530fe78ae6036d1'
+         'd58e56112a367f12ed2e4db1ed002bd2'
+         'd7a4f3f66ebddf070985c57c35cb9103'
+         'acbe44fa3b3695b0f97cb5c16d901377'
+         'd408bf637f6041ad41f290860353ac62'
+         'ffaf428ee9e0768860eee559c6d3f466'
+         '7af43d77568dd35f984579f7cddebd75'
+         'e45e1b18f66a6c8354f21135b2168272'
+         'e5b097699d2a0566e9f3b3f5ee6124a9')
+
+
+prepare() {
+	cd $pkgbase-$pkgver
+	sed '166,$ d' -i src/resolve/meson.build
+	patch -Np1 -i $srcdir/fix-build-glibc2.28.patch
+	sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
+
+	mkdir build
+}
+
+build() {
+	export LANG=en_US.UTF-8
+
+	cd $pkgbase-$pkgver
+	cd build
+
+	meson $srcdir/$pkgname-$pkgver \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		-Daudit=false \
+		-Dblkid=true \
+		-Dbuildtype=release \
+		-Ddbuspolicydir=/usr/share/dbus-1/system.d \
+		-Ddefault-hierarchy=hybrid \
+		-Ddefault-kill-user-processes=false \
+		-Ddns-servers="1.1.1.1 1.0.0.1 9.9.9.9 8.8.8.8 8.8.4.4 2606:4700:4700::1111 2620:fe::10 2001:4860:4860::8888" \
+		-Dfallback-hostname='minitena' \
+		-Dgnu-efi=true \
+		-Dima=false \
+		-Dinstall-tests=false \
+		-Dlibidn2=true \
+		-Dlz4=true \
+		-Dntp-servers="0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org" \
+		-Drpmmacrosdir=no \
+		-Dsysusers=false \
+		-Dsysvinit-path= \
+		-Dsysvrcnd-path=
+	ninja
+}
+
+package_systemd() {
+	pkgdesc="System and service manager"
+	depends=('glibc' 'systemd-libs' 'pam' 'libcap' 'acl' 'util-linux-libs' 'iptables' 'pcre2' 'libidn2' 'kbd'
+		 'xz-utils' 'lz4' 'kmod' 'hwids' 'libgcrypt' 'libseccomp' 'cryptsetup' 'dbus')
+	backup=(etc/pam.d/systemd-user
+		etc/systemd/coredump.conf
+		etc/systemd/journald.conf
+		etc/systemd/journal-remote.conf
+		etc/systemd/journal-upload.conf
+		etc/systemd/logind.conf
+		etc/systemd/system.conf
+		etc/systemd/timesyncd.conf
+		etc/systemd/resolved.conf
+		etc/systemd/user.conf
+		etc/udev/udev.conf)
+	install=$pkgname.install
+
+	export LANG=en_US.UTF-8
+
+	cd $pkgbase-$pkgver
+	cd build
+
+	DESTDIR="$pkgdir" ninja install
+
+	install -d -m0755 $srcdir/libsystemd
+	mv $pkgdir/usr/lib/lib{nss,systemd,udev}*.so* $srcdir/libsystemd
+
+	rm -rf $pkgdir/usr/lib/rpm
+
+	rm -rf $pkgdir/etc/systemd/system/*
+
+	rm -rf $pkgdir/var/log/journal/remote
+
+	rm $pkgdir/usr/share/factory/etc/nsswitch.conf
+	sed -i '/^C \/etc\/nsswitch\.conf/d' $pkgdir/usr/lib/tmpfiles.d/etc.conf
+
+	install -m0644 ../tmpfiles.d/legacy.conf $pkgdir/usr/lib/tmpfiles.d
+
+	echo 'disable *' >$pkgdir/usr/lib/systemd/system-preset/99-default.preset
+
+	mkdir -p $pkgdir/etc/pam.d
+	install -m644 $srcdir/systemd-user $pkgdir/etc/pam.d
+
+	install -d -o root -g systemd-journal -m 2755 $pkgdir/var/log/journal
+	install -d -o root -g 102 -m 0750 $pkgdir/usr/share/polkit-1/rules.d
+
+	install -D -m0644 $srcdir/minitena.conf $pkgdir/usr/share/systemd/bootctl/minitena.conf
+	install -D -m0644 $srcdir/loader.conf $pkgdir/usr/share/systemd/bootctl/loader.conf
+#	install -D -m0644 $srcdir/splash.bmp $pkgdir/usr/share/systemd/bootctl/splash-minitena.bmp
+
+	install -D -m0755 $srcdir/systemd-hook $pkgdir/usr/share/libalpm/scripts/systemd-hook
+	install -D -m0644 -t $pkgdir/usr/share/libalpm/hooks $srcdir/*.hook
+}
+
+package_systemd-libs() {
+	pkgdesc='systemd client libraries'
+	depends=('glibc' 'libcap' 'libgcrypt' 'lz4' 'xz-utils')
+
+	install -d -m0755 $pkgdir/usr
+	mv libsystemd $pkgdir/usr/lib
+}

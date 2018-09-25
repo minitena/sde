@@ -16,8 +16,8 @@ build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--build=$CHOST \
-		--disable-static
+		--disable-static \
+		--build=$CHOST
 	make
 }
 

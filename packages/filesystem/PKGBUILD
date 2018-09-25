@@ -3,7 +3,7 @@
 
 pkgname=filesystem
 pkgver=2018.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'aarch64')
 url="https://minitena.github.io/"
@@ -28,10 +28,26 @@ source=(env-gen
 	shadow
 	shells
 	sysctl
+	tmpfiles
 	enter-chroot
 	genfstab
 	pacstrap
 	zzz)
+backup=('etc/fstab'
+	'etc/group'
+	'etc/gshadow'
+	'etc/host.conf'
+	'etc/hosts'
+	'etc/issue'
+	'etc/ld.so.conf'
+	'etc/motd'
+	'etc/nsswitch.conf'
+	'etc/passwd'
+	'etc/profile'
+	'etc/resolv.conf'
+	'etc/securetty'
+	'etc/shadow'
+	'etc/shells')
 md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'e33f6dfdd61978fcb3ddf1431286e05a'
          '4f29ef50ed5504141fec3123bf735724'
@@ -52,29 +68,15 @@ md5sums=('2b0344e9639f35f3c0d5637a23556089'
          '3821106936dfd350037ca08d97a37217'
          'bdc193807f1f76f8aacd492f5a5b575e'
          '03f456264db977631ac80106d990b2a7'
+         '4d49ad29e0a1cd0b8e41ee4743a5f085'
          '0ee4a4339934a190b36f1bc6ea8dbaa3'
          '7add791064fdee57272ead354819b820'
          'b51958396adece663ddf7d1aa4bb8bcb'
          'b6bfe108600d3985dd2d8ba0090fe5f7')
-backup=('etc/fstab'
-	'etc/group'
-	'etc/gshadow'
-	'etc/host.conf'
-	'etc/hosts'
-	'etc/issue'
-	'etc/ld.so.conf'
-	'etc/motd'
-	'etc/nsswitch.conf'
-	'etc/passwd'
-	'etc/profile'
-	'etc/resolv.conf'
-	'etc/securetty'
-	'etc/shadow'
-	'etc/shells')
 
 package() {
 	cd $pkgdir
-	for d in boot dev etc/{ld.so.conf.d,skel,profile.d,modprobe.d,sysctl.d} home mnt usr var opt srv/http run; do
+	for d in boot dev etc/{ld.so.conf.d,skel,profile.d,modprobe.d,sysctl.d} home mnt usr/share/factory/etc var opt srv/http run; do
 		install -d -m755 $d
 	done
 
@@ -86,6 +88,7 @@ package() {
 
 	for f in fstab group gshadow host.conf hosts issue ld.so.conf motd nsswitch.conf os-release passwd profile protocols resolv.conf securetty services shadow shells; do
 		install -m644 $srcdir/$f $pkgdir/etc
+		install -m644 $srcdir/$f $pkgdir/usr/share/factory/etc
 	done
 
 	chmod 0600 $pkgdir/etc/gshadow
@@ -125,6 +128,7 @@ package() {
 	done
 
 	install -D -m755 $srcdir/env-gen $pkgdir/usr/lib/systemd/system-environment-generators/10-default
+	install -D -m644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/10-default.conf
 	install -D -m644 $srcdir/sysctl $pkgdir/usr/lib/sysctl.d/10-default.conf
 
 	install -D -m755 $srcdir/enter-chroot $pkgdir/usr/bin/enter-chroot

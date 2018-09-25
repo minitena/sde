@@ -3,12 +3,12 @@
 
 pkgname=findutils
 pkgver=4.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="GNU utilities to locate files"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/findutils"
 license=('GPL')
-depends=('glibc')
+depends=('glibc' 'mlocate')
 source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
 md5sums=('9936aa8009438ce185bea2694a997fc1')
 

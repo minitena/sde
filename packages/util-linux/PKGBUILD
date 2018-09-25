@@ -41,7 +41,7 @@ build() {
 
 package_util-linux() {
 	pkgdesc="Miscellaneous system utilities for Linux"
-	depends=('glibc' 'util-linux-libs' 'zlib' 'ncurses' 'systemd')
+	depends=('glibc' 'util-linux-libs' 'zlib' 'ncurses' 'systemd-libs')
 
 	cd $pkgbase-$pkgver
 	make DESTDIR=$pkgdir install
