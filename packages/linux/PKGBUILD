@@ -3,7 +3,7 @@
 
 pkgname=linux
 pkgver=4.18.9
-pkgrel=1
+pkgrel=2
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -13,7 +13,7 @@ makedepends=('kmod' 'bc' 'libelf' 'xz-utils')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz
 	x86_64-config)
 md5sums=('6f082741ab20f03a334fe533d533880e'
-         '32a29ace10dc7120f88425402eff05bc')
+         '559fbf4297b113db7ed4d462e2945978')
 
 prepare() {
 	msg "Preparing kernel..."
@@ -58,6 +58,7 @@ build() {
 }
 
 package() {
+	set +e
 	msg "Installing kernel contents to the $pkgdir directory..."
 
 	cd $pkgname-$pkgver
@@ -90,4 +91,5 @@ package() {
 			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
 			;;
 	esac
+	set -e
 }
