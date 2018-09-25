@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nettle
+pkgver=3.4
+pkgrel=1
+pkgdesc="A low-level cryptographic library"
+arch=('x86_64' 'aarch64')
+url="https://www.lysator.liu.se/~nisse/nettle"
+license=('GPL')
+depends=('glibc' 'gmp')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('dc0f13028264992f58e67b4e8915f53d')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
