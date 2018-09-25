@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libseccomp
+pkgver=2.3.3
+pkgrel=1
+pkgdesc="Enhanced seccomp library"
+arch=('x86_64' 'aarch64')
+url="https://github.com/seccomp/libseccomp"
+license=('LGPL')
+depends=('glibc')
+source=("https://github.com/seccomp/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('e6b4e463857fe05c09dc56ec3bcaef84')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
