@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=popt
+pkgver=1.16
+pkgrel=1
+pkgdesc="A commandline option parser"
+arch=('x86_64' 'aarch64')
+url="http://rpm5.org"
+license=('custom')
+depends=('glibc')
+source=("http://rpm5.org/files/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('3743beefa3dd6247a73f8f7a32c14c33')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
