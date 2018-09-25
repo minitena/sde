@@ -1,0 +1,93 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=linux
+pkgver=4.18.9
+pkgrel=1
+pkgdesc="The Linux kernel"
+arch=('x86_64')
+url="https://www.kernel.org/"
+license=('GPL')
+options=('!strip')
+makedepends=('kmod' 'bc' 'libelf' 'xz-utils')
+source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz
+	x86_64-config)
+md5sums=('6f082741ab20f03a334fe533d533880e'
+         '32a29ace10dc7120f88425402eff05bc')
+
+prepare() {
+	msg "Preparing kernel..."
+
+	cd $pkgname-$pkgver
+	case $CARCH in
+		x86_64)
+			export XKARCH="x86_64"
+			;;
+		aarch64)
+			export XKARCH="arm64"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	make mrproper
+
+	cp $srcdir/$XKARCH-config .config
+
+	make ARCH=$XKARCH olddefconfig
+}
+
+build() {
+	msg "Building kernel..."
+
+	cd $pkgname-$pkgver
+	case $CARCH in
+		x86_64)
+			export XKARCH="x86_64"
+			;;
+		aarch64)
+			export XKARCH="arm64"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	make ARCH=$XKARCH
+}
+
+package() {
+	msg "Installing kernel contents to the $pkgdir directory..."
+
+	cd $pkgname-$pkgver
+	case $CARCH in
+		x86_64)
+			export XKARCH="x86_64"
+			export IMG="arch/x86/boot/bzImage"
+			;;
+		aarch64)
+			export XKARCH="arm64"
+			export IMG="arch/arm64/boot/Image"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	mkdir -p $pkgdir/usr/lib/modules/
+	make ARCH=$XKARCH INSTALL_MOD_PATH=$pkgdir/usr modules_install
+
+	rm -rf $pkgdir/usr/lib/modules/{source,build}
+
+	mkdir -p $pkgdir/boot
+	cp $IMG $pkgdir/boot/vmlinuz-$pkgver
+
+	ln -sf vmlinuz-$pkgver $pkgdir/boot/vmlinuz
+
+	case $CARCH in
+		aarch64)
+			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
+			;;
+	esac
+}

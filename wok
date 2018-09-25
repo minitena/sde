@@ -93,6 +93,14 @@ pkgnativebuild() {
 	done
 }
 
+pkgnativerebuild() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C -f
+	done
+}
+
 pkgnativeinstallonly() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
@@ -370,7 +378,7 @@ build_final_system() {
 				pkgnativeinstallforcenodeps shadow
 				;;
 			util-linux)
-				pkgnativebuild util-linux
+				pkgnativerebuild util-linux
 				rm -rf /output/packages/*debug*.pkg*
 				pkgnativeinstallforcenodeps util-linux
 				;;
@@ -379,11 +387,11 @@ build_final_system() {
 				pkgnativeinstallforcenodeps procps-ng
 				;;
 			systemd)
-				pkgnativebuild systemd
+				pkgnativerebuild systemd
 				pkgnativeinstallforcenodeps systemd
 				;;
 			dbus)
-				pkgnativebuild dbus
+				pkgnativerebuild dbus
 				pkgnativeinstallforcenodeps dbus
 				;;
 			coreutils)

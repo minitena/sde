@@ -1,19 +1,19 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.1
+pkgname=libelf
+pkgver=0.174
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Libraries to handle ELF object files and DWARF debugging information"
 arch=('x86_64' 'aarch64')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('db7e431785ad96870bfa570a15cab079')
+url="https://sourceware.org/elfutils/"
+license=('GPL' 'LGPL')
+depends=('glibc' 'gcc-libs' 'zlib' 'xz-utils')
+source=("https://sourceware.org/ftp/elfutils/$pkgver/elfutils-$pkgver.tar.bz2")
+md5sums=('48bec24c0c8b2c16820326956dff9378')
 
 build() {
-	cd $pkgname-$pkgver
+	cd elfutils-$pkgver
 	./configure \
 		--prefix=/usr \
 		--build=$CHOST
@@ -21,6 +21,9 @@ build() {
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	cd elfutils-$pkgver
+	make -C libelf DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/usr/lib/pkgconfig
+	install -m644 config/libelf.pc $pkgdir/usr/lib/pkgconfig
 }

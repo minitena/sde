@@ -107,3 +107,5 @@ systemd
 dbus
 util-linux
 procps-ng
+libelf
+linux
