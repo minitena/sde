@@ -367,7 +367,7 @@ build_final_system() {
 			shadow)
 				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativeinstallonly
+				pkgnativeinstallforcenodeps shadow
 				;;
 			util-linux)
 				pkgnativebuild util-linux
