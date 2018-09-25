@@ -4,12 +4,12 @@
 pkgname=unzip
 pkgver=6.0
 apkgver=${pkgver/./}
-pkgrel=1
+pkgrel=2
 pkgdesc="For extracting and viewing files in .zip archives"
 arch=('x86_64' 'aarch64')
 url='http://www.info-zip.org/UnZip.html'
 license=('custom')
-depends=('glibc' 'bzip2' 'bash')
+depends=('glibc' 'bzip2')
 source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz")
 md5sums=('62b490407489521db863b523a7f86375')
 

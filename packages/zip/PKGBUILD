@@ -4,12 +4,12 @@
 pkgname=zip
 pkgver=3.0
 apkgver=${pkgver/./}
-pkgrel=1
+pkgrel=2
 pkgdesc="Compressor/archiver for creating and modifying zipfiles"
 arch=('x86_64' 'aarch64')
 url='http://www.info-zip.org/Zip.html'
 license=('custom')
-depends=('glibc' 'bzip2' 'bash')
+depends=('glibc' 'bzip2')
 source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz")
 md5sums=('7b74551e63f8ee6aab6fbc86676c0d37')
 
