@@ -391,7 +391,7 @@ build_final_system() {
 				pkgnativeinstallforcenodeps systemd
 				;;
 			dbus)
-				pkgnativebuild dbus
+				pkgnativerebuild dbus
 				pkgnativeinstallforcenodeps dbus
 				;;
 			coreutils)

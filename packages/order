@@ -99,6 +99,7 @@ libseccomp
 popt
 libaio
 json-c
+dbus
 systemd
 lvm2
 cryptsetup
