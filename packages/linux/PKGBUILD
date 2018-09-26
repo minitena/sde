@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux
-pkgver=4.18.9
+pkgver=4.18.10
 pkgrel=3
 pkgdesc="The Linux kernel"
 arch=('x86_64')
@@ -12,7 +12,7 @@ options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'openssl')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz
 	x86_64-config)
-md5sums=('6f082741ab20f03a334fe533d533880e'
+md5sums=('c2d42d10d9288a088832d69d36950c8e'
          '559fbf4297b113db7ed4d462e2945978')
 
 prepare() {
