@@ -48,7 +48,7 @@ grep
 groff
 less
 gzip
-libressl
+openssl
 libunistring
 libidn2
 iputils

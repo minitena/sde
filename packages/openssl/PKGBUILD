@@ -1,0 +1,42 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=openssl
+pkgver=1.1.1
+pkgrel=1
+pkgdesc="The Open Source toolkit for Secure Sockets Layer and Transport Layer Security"
+arch=('x86_64' 'aarch64')
+url="https://www.openssl.org"
+license=('BSD')
+depends=('glibc' 'zlib')
+source=("https://openssl.org/source/$pkgname-$pkgver.tar.gz")
+md5sums=('7079eb017429e0ffb9efb42bf80ccb21')
+
+build() {
+	cd $pkgname-$pkgver
+	case $CARCH in
+		x86_64)
+			export OPENSSLTARGET="linux-x86_64"
+			export OPENSSLOPTS="enable-ec_nistp_64_gcc_128"
+			;;
+		aarch64)
+			export OPENSSLTARGET="linux-aarch64"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	./Configure $OPENSSLTARGET \
+		--prefix=/usr \
+		--libdir=lib \
+		--openssldir=/etc/ssl \
+		shared zlib $OPENSSLOPTS \
+		-Wa,--noexecstack $CFLAGS
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
