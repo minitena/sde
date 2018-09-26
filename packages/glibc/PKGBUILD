@@ -3,7 +3,7 @@
 
 pkgname=glibc
 pkgver=2.28
-pkgrel=4
+pkgrel=6
 pkgdesc="The GNU C Library"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/libc"
@@ -83,5 +83,5 @@ package() {
 	cd $pkgdir
 	rm -rf {,usr/}{,local/}{,share/}{doc,man,info,locale} {,usr/}{,local/}{,share/},opt/*}/{man,info} {,usr/}{,local/}{,share/}{doc,gtk-doc} opt/*/{doc,gtk-doc}
 
-	chroot $pkgdir /usr/bin/localedef -i en_US -f UTF-8 en_US.UTF-8
+	make SUPPORTED-LOCALES="en_US.UTF-8/UTF-8" install_root=$pkgdir localedata/install-locales
 }
