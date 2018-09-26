@@ -19,7 +19,7 @@ post_install() {
 
 	add_journal_acls
 
-	mkdir -p -Dm2755 var/log/journal/remote
+	mkdir -p -m2755 var/log/journal/remote
 	chgrp systemd-journal-remote var/log/journal/remote
 }
 
