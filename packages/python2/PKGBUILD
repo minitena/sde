@@ -4,12 +4,12 @@
 pkgname=python2
 pkgver=2.7.15
 pybasever=2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-level scripting language"
 arch=('x86_64' 'aarch64')
 url="http://www.python.org/"
 license=('custom')
-depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'readline' 'libressl' 'expat' 'libffi' 'sqlite')
+depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'readline' 'openssl' 'expat' 'libffi' 'sqlite')
 source=(https://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz)
 md5sums=('a80ae3cc478460b922242f43a1b4094d')
 
