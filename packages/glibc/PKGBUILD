@@ -80,8 +80,8 @@ package() {
 
 	install -m644 ../posix/gai.conf $pkgdir/etc/gai.conf
 
+	make SUPPORTED-LOCALES="en_US.UTF-8/UTF-8" install_root=$pkgdir localedata/install-locales
+
 	cd $pkgdir
 	rm -rf {,usr/}{,local/}{,share/}{doc,man,info,locale} {,usr/}{,local/}{,share/},opt/*}/{man,info} {,usr/}{,local/}{,share/}{doc,gtk-doc} opt/*/{doc,gtk-doc}
-
-	make SUPPORTED-LOCALES="en_US.UTF-8/UTF-8" install_root=$pkgdir localedata/install-locales
 }
