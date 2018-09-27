@@ -3,12 +3,12 @@
 
 pkgname=iputils
 pkgver=s20180629
-pkgrel=3
+pkgrel=4
 pkgdesc="Network monitoring tools"
 arch=('x86_64' 'aarch64')
 url="http://www.skbuff.net/iputils/"
 license=('GPL')
-depends=('glibc' 'libcap' 'openssl' 'libidn2')
+depends=('glibc' 'libcap' 'libressl' 'libidn2')
 source=("https://github.com/iputils/iputils/archive/$pkgver.tar.gz")
 md5sums=('866547f2ffb17b67049472c770703c83')
 

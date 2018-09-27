@@ -3,17 +3,17 @@
 
 pkgname=linux
 pkgver=4.18.10
-pkgrel=5
+pkgrel=6
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
-makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'openssl')
+makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz
 	x86_64-config)
 md5sums=('c2d42d10d9288a088832d69d36950c8e'
-         '70083298f0ae5ac6307a5172cb35fa94')
+         '1e3833ff3ddd96121e0795c2d8da8cf8')
 
 prepare() {
 	msg "Preparing kernel..."
