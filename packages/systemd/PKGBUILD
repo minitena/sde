@@ -110,8 +110,6 @@ package_systemd() {
 
 	rm -rf $pkgdir/usr/lib/rpm
 
-	rmdir $pkgdir/var/log/journal/remote
-
 	rm $pkgdir/usr/share/factory/etc/nsswitch.conf
 	sed -i '/^C \/etc\/nsswitch\.conf/d' $pkgdir/usr/lib/tmpfiles.d/etc.conf
 
