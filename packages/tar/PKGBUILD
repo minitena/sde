@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=tar
+pkgver=1.30
+pkgrel=1
+pkgdesc="Utility used to store, backup, and transport files"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/tar"
+license=('GPL')
+depends=('glibc' 'acl')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('2d01c6cd1387be98f57a0ec4e6e35826')
+
+build() {
+	cd $pkgname-$pkgver
+	export FORCE_UNSAFE_CONFIGURE=1
+
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
