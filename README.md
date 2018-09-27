@@ -16,3 +16,6 @@ Minitena doesn't have any kind of installer. You need to write down commands man
 
 ## Support
 We provide [wiki](https://github.com/minitena/wiki/wiki) also you will rather use [issues page](https://github.com/minitena/issues/issues) to ask the community of this project to get help.
+
+## Development
+Minitena uses `git` as control version system. Main repository with source code hosts at GitHub. To enter to the repository with source code just [click here](https://github.com/minitena/source).
