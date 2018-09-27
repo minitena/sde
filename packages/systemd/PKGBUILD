@@ -37,7 +37,8 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          'd408bf637f6041ad41f290860353ac62'
          'ffaf428ee9e0768860eee559c6d3f466'
          '7af43d77568dd35f984579f7cddebd75'
-         'e45e1b18f66a6c8354f21135b2168272')
+         'e45e1b18f66a6c8354f21135b2168272'
+         'e5b097699d2a0566e9f3b3f5ee6124a9')
 
 prepare() {
 	cd $pkgbase-$pkgver
