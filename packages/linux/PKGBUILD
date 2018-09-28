@@ -10,8 +10,12 @@ url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
-source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz")
-md5sums=('c2d42d10d9288a088832d69d36950c8e')
+source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
+	'x86_64-config'
+	'aarch64-config')
+md5sums=('c2d42d10d9288a088832d69d36950c8e'
+         '948ee9c6624dabe41b0cf66553a8ed20'
+         'b4af02dc4610134bad5331a495da1b0e')
 
 prepare() {
 	msg "Preparing kernel..."
@@ -31,7 +35,7 @@ prepare() {
 
 	make mrproper
 
-	make ARCH=$XKARCH defconfig
+	cp -a $srcdir/$XKARCH-config .config
 }
 
 build() {
