@@ -22,11 +22,11 @@ source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-
 	system-password
 	system-session)
 md5sums=('558ff53b0fc0563ca97f79e911822165'
-         'ad5d2a17e1d49cd993014954c5b983a3'
+         '38e5773861ac415f9e839d9602855c3e'
          '0fa7b59aa9d33b4d3e8b97cf0f67df0e'
          '9da98a8a965bc25d212d5de700bd3dc3'
          '2e1722b942f643231a9a5f7921b39623'
-         'ff5305999ded1dd74516371a9fc282fb')
+         'ca07b6b9ce1e2d655ca0e323d38a9e44')
 
 build() {
 	cd Linux-PAM-$pkgver
