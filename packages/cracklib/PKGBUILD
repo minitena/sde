@@ -3,17 +3,18 @@
 
 pkgname=cracklib
 pkgver=2.9.6
-pkgrel=7
+pkgrel=8
 pkgdesc="Password Checking Library"
 arch=('x86_64' 'aarch64')
 url="https://github.com/cracklib/cracklib"
 license=('GPL')
-depends=('glibc' 'zlib' 'coreutils' 'bash' 'gzip' 'grep')
+depends=('glibc' 'zlib')
 source=(https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
-	https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/cracklib-words-$pkgver.gz)
+	https://github.com/cracklib/cracklib/releases/download/$pkgname-$pkgver/cracklib-words-$pkgver.gz
+	cracklib.hook)
 md5sums=('c52f463585d85924b28cdc1e373ae06d'
-         'cae1257e3a9f95c917cc9dbbab852316')
-install=$pkgname.install
+         'cae1257e3a9f95c917cc9dbbab852316'
+         'f86cfcd8ec03715864d2951ab4ac0e06')
 
 build() {
 	cd $pkgname-$pkgver
@@ -38,4 +39,7 @@ package() {
 	ln -sf cracklib-words $pkgdir/usr/share/dict/words
 
 	install -m755 -d $pkgdir/usr/lib/cracklib
+
+	install -dm755 $pkgdir/usr/share/libalpm/hooks/
+	install -m644 $srcdir/*.hook $pkgdir/usr/share/libalpm/hooks/
 }

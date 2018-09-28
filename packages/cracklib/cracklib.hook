@@ -1,0 +1,11 @@
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Target = usr/share/dict/cracklib-words
+
+[Action]
+Description = Updating the info directory file...
+When = PostTransaction
+Exec = /usr/bin/create-cracklib-dict /usr/share/dict/cracklib-words
+NeedsTargets
