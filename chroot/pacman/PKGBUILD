@@ -3,6 +3,7 @@ pkgver=5.1.1
 pkgrel=1
 arch=('x86_64' 'aarch64')
 source=(https://sources.archlinux.org/other/pacman/pacman-$pkgver.tar.gz
+	pacman.conf
 	makepkg.conf)
 
 prepare() {
@@ -36,6 +37,7 @@ package() {
 
 	install -dm755 $pkgdir/etc
 	install -m644 $srcdir/makepkg.conf $pkgdir/etc
+	install -m644 $srcdir/pacman.conf $pkgdir/etc
 
 	sed -i 's/CheckSpace/#CheckSpace/' $pkgdir/etc/pacman.conf
 

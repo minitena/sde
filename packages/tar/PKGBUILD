@@ -3,7 +3,7 @@
 
 pkgname=tar
 pkgver=1.30
-pkgrel=1
+pkgrel=2
 pkgdesc="Utility used to store, backup, and transport files"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/tar"
@@ -18,6 +18,7 @@ build() {
 
 	./configure \
 		--prefix=/usr \
+		--libexecdir=/usr/lib/tar \
 		--build=$CHOST
 	make
 }
