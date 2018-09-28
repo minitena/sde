@@ -16,6 +16,9 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 md5sums=('c2d42d10d9288a088832d69d36950c8e'
          '948ee9c6624dabe41b0cf66553a8ed20'
          'b4af02dc4610134bad5331a495da1b0e')
+md5sums=('c2d42d10d9288a088832d69d36950c8e'
+         '245723e9d6c622976ac04c65c27afa88'
+         'ccd0e749a97995e68f9ea43997759c3e')
 
 prepare() {
 	msg "Preparing kernel..."
