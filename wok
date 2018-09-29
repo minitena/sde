@@ -133,7 +133,7 @@ pkgnativerebuild() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		makepkg --config /etc/makepkg.conf -d -c -C -f
+		makepkg --config /etc/makepkg.conf -d -c -C -ff
 	done
 }
 
