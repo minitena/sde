@@ -3,7 +3,7 @@
 
 pkgname=linux
 pkgver=4.18.10
-pkgrel=9
+pkgrel=10
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -12,33 +12,29 @@ options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
-	'aarch64-config')
+	'arm64-config')
 md5sums=('c2d42d10d9288a088832d69d36950c8e'
-         '948ee9c6624dabe41b0cf66553a8ed20'
-         'b4af02dc4610134bad5331a495da1b0e')
-md5sums=('c2d42d10d9288a088832d69d36950c8e'
-         '245723e9d6c622976ac04c65c27afa88'
-         'ccd0e749a97995e68f9ea43997759c3e')
+         '1d0f6ee3fa53b6813c610978bb9089ac'
+         'fd233a00ddee110da373b0349e5138d7')
 
 prepare() {
 	msg "Preparing kernel..."
-
 	cd $pkgname-$pkgver
+	make mrproper
+
 	case $CARCH in
 		x86_64)
 			export XKARCH="x86_64"
+			cp $srcdir/x86_64-config .config
 			;;
 		aarch64)
 			export XKARCH="arm64"
+			cp $srcdir/arm64-config .config
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
 	esac
-
-	make mrproper
-
-	cp -a $srcdir/$XKARCH-config .config
 }
 
 build() {
@@ -61,7 +57,6 @@ build() {
 }
 
 package() {
-	set +e
 	msg "Installing kernel contents to the $pkgdir directory..."
 
 	cd $pkgname-$pkgver
@@ -94,5 +89,4 @@ package() {
 			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
 			;;
 	esac
-	set -e
 }

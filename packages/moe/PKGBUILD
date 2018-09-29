@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=moe
+pkgver=1.9
+pkgrel=1
+pkgdesc="A powerful, 8-bit clean, text editor. Supports ISO-8859-15 and ASCII"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/moe"
+license=('GPL')
+depends=('glibc' 'ncurses')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.lz")
+md5sums=('29724ea148b05ef4a33037d5f5f6eab2')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

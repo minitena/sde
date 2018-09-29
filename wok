@@ -457,6 +457,9 @@ build_final_system() {
 			fakeroot)
 				pkgnativebuild fakeroot
 				;;
+			vim)
+				pkgnativebuild vim
+				;;
 			*)
 				pkgnativeinstall $finalpkg
 		esac

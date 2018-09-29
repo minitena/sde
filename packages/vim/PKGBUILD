@@ -1,0 +1,37 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=vim
+pkgver=8.1.0438
+pkgrel=1
+arch=('x86_64' 'aarch64')
+url="https://www.vim.org/"
+pkgdesc="Vi Improved, a highly configurable, improved version of the vi text editor"
+license=('vim')
+depends=('glibc' 'zlib' 'acl' 'ncurses' 'pcre' 'libgcrypt' 'libffi')
+source=("https://github.com/vim/vim/archive/v$pkgver.tar.gz")
+md5sums=('SKIP')
+
+build() {
+	cd $srcdir/$pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--localstatedir=/var/lib/vim \
+		--with-compiledby='Minitena' \
+		--with-features=huge \
+		--without-x \
+		--enable-acl \
+		--enable-cscope \
+		--enable-multibyte \
+		--enable-netbeans \
+		--disable-gui \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $srcdir/$pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	ln -sf vim $pkgdir/usr/bin/vi
+}

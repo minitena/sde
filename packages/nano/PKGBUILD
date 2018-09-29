@@ -1,0 +1,30 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nano
+pkgver=3.1
+pkgrel=1
+pkgdesc="Pico editor clone with enhancements"
+arch=('x86_64' 'aarch64')
+url="http://www.nano-editor.org/"
+license=('GPL')
+depends=('glibc' 'ncurses' 'file')
+source=("https://www.nano-editor.org/dist/v3/${pkgname}-${pkgver}.tar.xz")
+md5sums=('e5cbe298e4362fabb7e55173862b9a3d')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--enable-color \
+		--enable-utf8 \
+		--enable-multibuffer \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
