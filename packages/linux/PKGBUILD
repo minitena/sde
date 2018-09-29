@@ -14,8 +14,8 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
 	'arm64-config')
 md5sums=('c2d42d10d9288a088832d69d36950c8e'
-         '1d0f6ee3fa53b6813c610978bb9089ac'
-         'fd233a00ddee110da373b0349e5138d7')
+         '913c6d537c470adc0c5a5d47fd6df562'
+         'b4875ef306ff7c63f7bbf369802adca1')
 
 prepare() {
 	msg "Preparing kernel..."
