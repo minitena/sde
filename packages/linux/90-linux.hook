@@ -7,4 +7,4 @@ Target = boot/vmlinuz-%KVER%
 [Action]
 Description = Updating initramfs image for Linux...
 When = PostTransaction
-Exec = /usr/bin/dracut --xz -q -k usr/lib/modules/%KVER%/ boot/initramfs-%KVER.img %KVER%
+Exec = /usr/bin/dracut --xz -q -k usr/lib/modules/%KVER%/ boot/initramfs-%KVER%.img %KVER%
