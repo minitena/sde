@@ -3,7 +3,7 @@
 
 pkgname=linux
 pkgver=4.18.11
-pkgrel=10
+pkgrel=11
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -14,8 +14,8 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
 	'arm64-config')
 md5sums=('b193661a2c8afd41ba08fdbc55fe6a8c'
-         '913c6d537c470adc0c5a5d47fd6df562'
-         'b4875ef306ff7c63f7bbf369802adca1')
+         'c1145ab78ce67bcba987a3b82517c34b'
+         '5bb10c7857d62017d46b8148ddb3082a')
 
 prepare() {
 	msg "Preparing kernel..."
