@@ -90,7 +90,7 @@ pkgnativereinstall() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C -f
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed 
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm
 	done
 }
 
@@ -413,22 +413,18 @@ build_final_system() {
 				rm -rf /output/packages/*debug*.pkg*
 				pkgnativeinstallforcenodeps shadow
 				;;
-			util-linux)
-				pkgnativerebuild util-linux
-				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallforcenodeps util-linux
-				;;
 			procps-ng)
 				pkgnativebuild procps-ng
 				pkgnativeinstallforcenodeps procps-ng
 				;;
+			util-linux)
+				wok update-package util-linux
+				;;
 			systemd)
-				pkgnativerebuild systemd
-				pkgnativereinstallforcenodeps systemd
+				wok update-package systemd
 				;;
 			dbus)
-				pkgnativerebuild dbus
-				pkgnativereinstallforcenodeps dbus
+				wok update-package dbus
 				;;
 			coreutils)
 				pkgnativeinstallforce coreutils
