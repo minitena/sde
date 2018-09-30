@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=4
+pkgrel=5
 arch=('x86_64' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -27,7 +27,7 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 md5sums=('6137e3f50390391cf34521d071a1a078'
          'a44057d6a6ca69760bafc126458d89e5'
          'f47a862de7feb2d36475c745f768493a'
-         'b668e7f3cdea0274401f00c22ffca1be'
+         '1ba59e264700da289db837f346e8ba20'
          'e5c714a7f57d320c717e88c1f4259ff5'
          '981d3730f7d14ac9459aba2753ce6a97'
          '11d703a47115c3ad4530fe78ae6036d1'

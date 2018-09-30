@@ -1,0 +1,10 @@
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Target = boot/vmlinuz-linux
+
+[Action]
+Description = Updating initramfs image for Linux...
+When = PostTransaction
+Exec = /usr/bin/dracut --xz -q -f -k usr/lib/modules/4.18.11/ boot/initramfs-4.18.11.img 4.18.11
