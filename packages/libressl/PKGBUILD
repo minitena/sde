@@ -3,7 +3,7 @@
 
 pkgname=libressl
 pkgver=2.8.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Version of the TLS/crypto stack forked from OpenSSL"
 arch=('x86_64' 'aarch64')
 url="http://www.libressl.org/"
@@ -24,4 +24,6 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/etc/ssl/cert.pem
 }
