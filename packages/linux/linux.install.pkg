@@ -1,0 +1,13 @@
+post_install() {
+	ln -sf initramfs-4.18.11.img boot/initramfs-linux.img
+}
+
+post_remove() {
+	rm -rf boot/initramfs-linux.img
+	rm -rf boot/initramfs-4.18.11.img
+}
+
+post_upgrade() {
+	rm -rf boot/initramfs-linux.img
+	ln -sf initramfs-4.18.11.img boot/initramfs-linux.img
+}
