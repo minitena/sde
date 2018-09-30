@@ -6,7 +6,7 @@ post_install() {
 
 post_remove() {
 	rm -rf boot/initramfs-linux.img
-	rm -rf boot/initramfs-$1.img
+	rm -rf boot/initramfs-$KVER.img
 }
 
 post_upgrade() {
