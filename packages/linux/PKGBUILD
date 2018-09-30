@@ -3,13 +3,12 @@
 
 pkgname=linux
 pkgver=4.18.11
-pkgrel=13
+pkgrel=14
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
-install=$pkgname.install
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
@@ -18,7 +17,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 md5sums=('b193661a2c8afd41ba08fdbc55fe6a8c'
          '00f34a283c1a64ce90059c7d9c3a73f1'
          'c0b358fdd4f7e0dc666d02a5190c0fb3'
-         '464d4944339665d47c3d27b9277f3611')
+         '85daf80af04c9c5ebfcd0138bf23de2c')
 
 prepare() {
 	msg "Preparing kernel..."
@@ -81,11 +80,10 @@ package() {
 	make ARCH=$XKARCH INSTALL_MOD_PATH=$pkgdir/usr modules_install
 
 	rm -rf $pkgdir/usr/lib/modules/{source,build}
+	rm -rf $pkgdir/usr/lib/modules/$pkgver/{source,build}
 
 	mkdir -p $pkgdir/boot
-	cp $IMG $pkgdir/boot/vmlinuz-$pkgver
-
-	ln -sf vmlinuz-$pkgver $pkgdir/boot/vmlinuz-linux
+	cp $IMG $pkgdir/boot/vmlinuz-linux
 
 	case $CARCH in
 		aarch64)
