@@ -53,7 +53,7 @@ build() {
 			exit 1
 	esac
 
-	make ARCH=$XKARCH
+	yes '' | make ARCH=$XKARCH
 }
 
 package() {
