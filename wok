@@ -520,6 +520,7 @@ case "$1" in
 	update-package|uppkg)
 		rm -rf /output/packages/$2-*.pkg*
 		pkgnativereinstallforcenodeps $2
+		rm -rf /output/packages/*debug*.pkg*
 		;;
 	view-sums)
 		viewsums $2

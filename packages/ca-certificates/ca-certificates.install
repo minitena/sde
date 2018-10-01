@@ -1,5 +1,0 @@
-post_remove() {
-	find -L etc/ssl/certs -maxdepth 1 \( -type l -o -name ca-certificates.crt \) \
-		-delete
-	rmdir etc/ssl/certs 2>/dev/null || true
-}
