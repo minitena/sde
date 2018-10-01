@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gnutls
+pkgver=3.5.19
+pkgrel=1
+pkgdesc="A library which provides a secure layer over a reliable transport layer"
+arch=('x86_64' 'aarch64')
+url="https://www.gnutls.org/"
+license=('GPL' 'LGPL')
+depends=('gcc-libs' 'zlib' 'readline' 'libunistring' 'libidn2' 'nettle' 'libtasn1' 'p11-kit')
+source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/$pkgname-$pkgver.tar.xz")
+md5sums=('1002f4099ce11d785e9811099aaa59a6')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-default-trust-store-pkcs11="pkcs11:" \
+		--with-idn \
+		--with-zlib \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
