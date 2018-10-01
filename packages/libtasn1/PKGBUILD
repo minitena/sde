@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libtasn1
+pkgver=4.13
+pkgrel=1
+pkgdesc="The ASN.1 library used in GNUTLS"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/libtasn1"
+license=('GPL' 'LGPL')
+depends=('glibc')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('ce2ba4d3088119b48e7531a703669c52')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-packager=Minitena \
+		--with-packager-bug-reports="https://github.com/minitena/issues/issues" \
+		--with-packager-version=${pkgver}-${pkgrel} \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
