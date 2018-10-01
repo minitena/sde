@@ -58,6 +58,14 @@ pkgnativeinstall() {
 	done
 }
 
+pkgnativebuild() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C || true
+	done
+}
+
 pkgnativeinstallforce() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
@@ -123,6 +131,14 @@ pkgnativereinstall() {
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C -f
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm
+	done
+}
+
+pkgnativerebuild() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C -f
 	done
 }
 
