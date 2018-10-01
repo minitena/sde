@@ -76,7 +76,7 @@ libffi
 sqlite
 python
 python2
-#python-six
+python-six
 re2c
 ninja
 meson
