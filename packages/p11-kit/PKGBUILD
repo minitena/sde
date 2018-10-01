@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=p11-kit
+pkgver=0.23.14
+pkgrel=1
+pkgdesc="Provides a way to load and enumerate PKCS#11 modules"
+arch=('x86_64' 'aarch64')
+url="https://p11-glue.freedesktop.org"
+license=('BSD')
+depends=('glibc' 'libffi' 'libtasn1' 'systemd')
+source=("https://github.com/p11-glue/p11-kit/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('85e1cdb5fce0087711ba2521975f0420')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--with-module-path=/usr/lib/pkcs11 \
+		--with-trust-paths=/etc/ca-certificates/trust-source:/usr/share/ca-certificates/trust-source \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
