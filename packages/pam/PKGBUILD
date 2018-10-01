@@ -3,7 +3,7 @@
 
 pkgname=pam
 pkgver=1.3.1
-pkgrel=6
+pkgrel=7
 pkgdesc="PAM (Pluggable Authentication Modules) library"
 arch=('x86_64' 'aarch64')
 url="http://linux-pam.org"
@@ -22,11 +22,11 @@ source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-
 	system-password
 	system-session)
 md5sums=('558ff53b0fc0563ca97f79e911822165'
-         '38e5773861ac415f9e839d9602855c3e'
-         '0fa7b59aa9d33b4d3e8b97cf0f67df0e'
-         '9da98a8a965bc25d212d5de700bd3dc3'
-         '2e1722b942f643231a9a5f7921b39623'
-         'ca07b6b9ce1e2d655ca0e323d38a9e44')
+         '71561ee65e9cfbb212c7df66405789af'
+         '8c62a6d0e2ef350115dcbce756edee05'
+         '313082b0fdcceb592c76c3c9f2df9916'
+         '1108bfca4d7bbffee29c303cce5e5152'
+         'da46419aeb60b64cf620254167a9cd8c')
 
 build() {
 	cd Linux-PAM-$pkgver
@@ -35,7 +35,6 @@ build() {
 		--libdir=/usr/lib \
 		--sbindir=/usr/bin \
 		--sysconfdir=/etc \
-		--disable-db \
 		--disable-regenerate-docu \
 		--build=$CHOST
 	make

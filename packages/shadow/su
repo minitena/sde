@@ -1,12 +1,8 @@
-# always allow root
-auth		sufficient	pam_rootok.so
-auth		include		system-auth
+auth      sufficient  pam_rootok.so
+auth      include     system-auth
 
-# include the default account settings
-account		include		system-account
+account   include     system-account
 
-# Set default environment variables for the service user
-session		required	pam_env.so
+session   required    pam_env.so
 
-# include system session defaults
-session		include		system-session
+session   include     system-session
