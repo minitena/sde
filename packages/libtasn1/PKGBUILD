@@ -9,6 +9,7 @@ arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/libtasn1"
 license=('GPL' 'LGPL')
 depends=('glibc')
+#makedepends=('python-six')
 source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
 md5sums=('ce2ba4d3088119b48e7531a703669c52')
 

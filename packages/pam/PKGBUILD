@@ -3,7 +3,7 @@
 
 pkgname=pam
 pkgver=1.3.1
-pkgrel=7
+pkgrel=8
 pkgdesc="PAM (Pluggable Authentication Modules) library"
 arch=('x86_64' 'aarch64')
 url="http://linux-pam.org"
@@ -12,21 +12,9 @@ depends=('glibc' 'cracklib')
 makedepends=('bison' 'flex')
 options=('!emptydirs')
 backup=('etc/security/{access.conf,group.conf,limits.conf,namespace.conf,namespace.init,pam_env.conf,time.conf}'
-	'etc/default/passwd'
-	'etc/environment'
-	'etc/pam.d/{other,system-account,system-auth,system-password,system-session}')
-source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz
-	other
-	system-account
-	system-auth
-	system-password
-	system-session)
-md5sums=('558ff53b0fc0563ca97f79e911822165'
-         '71561ee65e9cfbb212c7df66405789af'
-         '8c62a6d0e2ef350115dcbce756edee05'
-         '313082b0fdcceb592c76c3c9f2df9916'
-         '1108bfca4d7bbffee29c303cce5e5152'
-         'da46419aeb60b64cf620254167a9cd8c')
+	'etc/environment')
+source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz)
+md5sums=('558ff53b0fc0563ca97f79e911822165')
 
 build() {
 	cd Linux-PAM-$pkgver
@@ -35,7 +23,6 @@ build() {
 		--libdir=/usr/lib \
 		--sbindir=/usr/bin \
 		--sysconfdir=/etc \
-		--disable-regenerate-docu \
 		--build=$CHOST
 	make
 }
@@ -44,10 +31,10 @@ package() {
 	cd Linux-PAM-$pkgver
 	make DESTDIR=$pkgdir install
 
-	chmod +s $pkgdir/usr/bin/unix_chkpwd
+	ln -sf pam_unix.so $pkgdir/usr/lib/security/pam_unix_auth.so
+	ln -sf pam_unix.so $pkgdir/usr/lib/security/pam_unix_acct.so
+	ln -sf pam_unix.so $pkgdir/usr/lib/security/pam_unix_passwd.so
+	ln -sf pam_unix.so $pkgdir/usr/lib/security/pam_unix_session.so
 
-	mkdir -p $pkgdir/etc/pam.d
-	for f in other system-account system-auth system-password system-session; do
-		install -m644 $srcdir/$f $pkgdir/etc/pam.d/
-	done
+	chmod 4755 $pkgdir/usr/bin/unix_chkpwd
 }

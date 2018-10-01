@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=python-six
+pkgver=1.11.0
+pkgrel=1
+pkgdesc="Python 2 and 3 compatibility utilities"
+arch=('any')
+url="http://pypi.python.org/pypi/six/"
+license=('MIT')
+depends=('python' 'python2')
+source=("https://pypi.io/packages/source/s/six/six-$pkgver.tar.gz")
+md5sums=('d12789f9baf7e9fb2524c0c64f1773f8')
+
+prepare() {
+	cp -a six-$pkgver six-$pkgver-python2
+}
+
+package() {
+	cd $srcdir/six-$pkgver
+	python3 setup.py install --root $pkgdir --optimize=1
+
+	cd $srcdir/six-$pkgver-python2
+	python2 setup.py install --root $pkgdir --optimize=1
+}

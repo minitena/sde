@@ -4,7 +4,7 @@
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
 pkgver=8.2.1+20180831
-pkgrel=4
+pkgrel=5
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
@@ -38,6 +38,7 @@ build() {
 		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--with-system-zlib \
 		--enable-__cxa_atexit \
+		--enable-bootstrap \
 		--enable-checking=release \
 		--enable-clocale=gnu \
 		--enable-default-pie \

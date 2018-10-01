@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=7
+pkgrel=8
 arch=('x86_64' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -22,8 +22,7 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	systemd-sysctl.hook
 	systemd-tmpfiles.hook
 	systemd-udev-reload.hook
-	systemd-update.hook
-	systemd-user)
+	systemd-update.hook)
 md5sums=('6137e3f50390391cf34521d071a1a078'
          'a44057d6a6ca69760bafc126458d89e5'
          'f47a862de7feb2d36475c745f768493a'
@@ -37,8 +36,7 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          'd408bf637f6041ad41f290860353ac62'
          'ffaf428ee9e0768860eee559c6d3f466'
          '7af43d77568dd35f984579f7cddebd75'
-         'e45e1b18f66a6c8354f21135b2168272'
-         'e5b097699d2a0566e9f3b3f5ee6124a9')
+         'e45e1b18f66a6c8354f21135b2168272')
 
 prepare() {
 	cd $pkgbase-$pkgver
@@ -119,9 +117,6 @@ package_systemd() {
 	install -m0644 ../tmpfiles.d/legacy.conf $pkgdir/usr/lib/tmpfiles.d
 
 	echo 'disable *' >"$pkgdir"/usr/lib/systemd/system-preset/99-default.preset
-
-	mkdir -p $pkgdir/etc/pam.d
-	install -m644 $srcdir/systemd-user $pkgdir/etc/pam.d
 
 	install -d -o root -g systemd-journal -m 2755 $pkgdir/var/log/journal
 	install -d -o root -g 102 -m 0750 $pkgdir/usr/share/polkit-1/rules.d
