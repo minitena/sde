@@ -426,6 +426,10 @@ build_final_system() {
 			dbus)
 				wok update-package dbus
 				;;
+			dracut)
+				pkgnativebuild dracut
+				pkgnativeinstallforcenodeps dracut
+				;;
 			coreutils)
 				pkgnativeinstallforce coreutils
 				;;
