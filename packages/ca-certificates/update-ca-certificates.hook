@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = File
+Target = usr/share/ca-certificates/*
+
+[Action]
+Description = Rebuilding certificate links...
+When = PostTransaction
+Exec = /usr/bin/update-ca-certificates
