@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=asciidoc
+pkgver=8.6.10
+pkgrel=1
+pkgdesc="Text document format for short documents, articles, books and UNIX man pages"
+arch=('x86_64' 'aarch64')
+url="http://www.methods.co.nz/asciidoc/"
+license=('GPL')
+depends=('python2' 'libxslt' 'docbook-xsl')
+source=("https://github.com/asciidoc/asciidoc/archive/$pkgver.tar.gz")
+md5sums=('SKIP')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i -e 's#python a2x.py#python2 a2x.py#' Makefile.in
+}
+
+build() {
+	cd $pkgname-$pkgver
+	autoconf
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
