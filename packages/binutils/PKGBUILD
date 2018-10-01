@@ -3,7 +3,7 @@
 
 pkgname=binutils
 pkgver=2.31.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A set of programs to assemble and manipulate binary and object files"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/binutils"
@@ -67,4 +67,8 @@ package() {
 	cd $pkgname-$pkgver
 	cd build
 	make MAKEINFO="true" tooldir=/usr DESTDIR=$pkgdir install
+
+	for f in $pkgdir/usr/bin/*; do
+		ln -s ${f##*/} $pkgdir/usr/bin/${CHOST:-${CHOST}}-${f##*/}
+	done
 }
