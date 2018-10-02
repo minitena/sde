@@ -428,7 +428,7 @@ build_final_system() {
 				rm -rf /output/packages/util-linux*.pkg*
 				pkgnativerebuild util-linux
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallonlyforcenodeps util-linux
+				pkgnativereinstallforcenodeps util-linux
 				;;
 			procps-ng)
 				pkgnativebuild procps-ng
