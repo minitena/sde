@@ -97,9 +97,6 @@ package() {
 		s|%KVER%|$pkgver|g
 	"
 
-	sed "$subst" $startdir/$install > $startdir/$install.pkg
-	true && install=$install.pkg
-
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/60-linux.hook
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/90-linux.hook
 }
