@@ -3,7 +3,7 @@
 
 pkgname=inetutils
 pkgver=1.9.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A collection of common network programs"
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/inetuils"
@@ -32,7 +32,6 @@ build() {
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--disable-logger \
-		--disable-inetd \
 		--disable-rcp \
 		--disable-rcpd \
 		--disable-rexec \
