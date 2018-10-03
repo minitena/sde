@@ -8,4 +8,4 @@ Target = usr/lib/modules/%KVER%/*
 [Action]
 Description = Updating initramfs image for Linux...
 When = PostTransaction
-Exec = /usr/bin/dracut --force --xz -q -k usr/lib/modules/%KVER%/ boot/initramfs-linux.img %KVER%
+Exec = /usr/bin/dracut --force --xz -q -k usr/lib/modules/%KVER%/ boot/initramfs-linux.img linux
