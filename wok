@@ -435,10 +435,13 @@ build_final_system() {
 				pkgnativeinstallonlyforcenodeps procps-ng
 				;;
 			systemd)
-				wok update-package systemd
+				rm -rf /output/packages/systemd*.pkg*
+				pkgnativerebuild systemd
+				pkgnativereinstallforcenodeps systemd
 				;;
 			dbus)
-				wok update-package dbus
+				pkgnativebuild dbus
+				pkgnativeinstallonlyforcenodeps dbus
 				;;
 			dracut)
 				pkgnativebuild dracut
