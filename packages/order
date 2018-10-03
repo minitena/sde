@@ -22,7 +22,6 @@ ncurses
 shadow
 util-linux
 coreutils
-e2fsprogs
 libtool
 iptables
 iproute2
@@ -109,6 +108,7 @@ systemd
 dbus
 util-linux
 procps-ng
+e2fsprogs
 libelf
 dracut
 linux
