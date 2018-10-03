@@ -1,0 +1,116 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=shadow
+pkgver=4.6
+pkgrel=1
+pkgdesc="Password and account management tool suite"
+arch=('x86_64' 'aarch64')
+url="https://github.com/shadow-maint/shadow"
+license=('BSD')
+depends=('glibc' 'pam' 'acl')
+backup=('etc/login.defs'
+	'etc/login.access'
+	'etc/default/useradd'
+	'etc/limits'
+	'etc/pam.d/{chage,chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel}'
+	'etc/pam.d/{groupmems,groupmod,login,newusers,other,passwd}'
+	'etc/pam.d/{sshd,su,system-account,system-auth,system-password}'
+	'etc/pam.d/{system-session,useradd,userdel,usermod}')
+source=("https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz"
+	'chage'
+	'chpasswd'
+	'login'
+	'other'
+	'passwd'
+	'sshd'
+	'su'
+	'system-account'
+	'system-auth'
+	'system-password'
+	'system-session')
+md5sums=('b491fecbf1232632c32ff8f1437fd60e'
+         '34f473198e205271c100293e18367e94'
+         '5743e25d0c402f22b429b0d102ad696a'
+         '362c6580b1c92664eff38052b8cf40ad'
+         '71561ee65e9cfbb212c7df66405789af'
+         'e67d61f85b95f060a715f65ec4248154'
+         'd5c2a5bc9f2a1a28a62053a7077747e8'
+         'e450bf7603abfaf06fdb3a551a7b7c08'
+         '8c62a6d0e2ef350115dcbce756edee05'
+         '313082b0fdcceb592c76c3c9f2df9916'
+         '1108bfca4d7bbffee29c303cce5e5152'
+         'da46419aeb60b64cf620254167a9cd8c')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+	find man -name Makefile.in -exec sed -i 's/groups\.1 / /' {} \;
+	sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
+		-e 's@/var/spool/mail@/var/mail@' etc/login.defs
+	sed -i 's@DICTPATH.*@DICTPATH\t/usr/lib/cracklib/pw_dict@' \
+		etc/login.defs
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--bindir=/usr/bin \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--with-libcrack \
+		--with-libpam \
+		--with-group-name-max-length=32 \
+		--without-selinux \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	sed -i 's/yes/no/' $pkgdir/etc/default/useradd
+	sed -i 's/GROUP.*/GROUP=100/' $pkgdir/etc/default/useradd
+	sed -i 's/USERGROUPS_ENAB.*/USERGROUPS_ENAB no/' $pkgdir/etc/login.defs
+
+	cp etc/{limits,login.access} $pkgdir/etc
+	for FUNCTION in FAIL_DELAY \
+		FAILLOG_ENAB \
+		LASTLOG_ENAB \
+		MAIL_CHECK_ENAB \
+		OBSCURE_CHECKS_ENAB \
+		PORTTIME_CHECKS_ENAB \
+		QUOTAS_ENAB \
+		CONSOLE MOTD_FILE \
+		FTMP_FILE NOLOGINS_FILE \
+		ENV_HZ PASS_MIN_LEN \
+		SU_WHEEL_ONLY \
+		CRACKLIB_DICTPATH \
+		PASS_CHANGE_TRIES \
+		PASS_ALWAYS_WARN \
+		CHFN_AUTH ENCRYPT_METHOD \
+		ENVIRON_FILE
+	do
+		sed -i "s/^${FUNCTION}/# &/" $pkgdir/etc/login.defs
+	done
+
+	sed -i "s/^PASS_MAX_DAYS.*/PASS_MAX_DAYS    90/" $pkgdir/etc/login.defs
+
+	for PROGRAM in chage chpasswd login other passwd sshd su system-account system-auth system-password system-session; do
+		install -m644 $srcdir/${PROGRAM} $pkgdir/etc/pam.d/${PROGRAM}
+	done
+
+	for PROGRAM in chfn chgpasswd chsh groupadd groupdel groupmems groupmod newusers useradd userdel usermod; do
+		install -m644 $pkgdir/etc/pam.d/chage $pkgdir/etc/pam.d/${PROGRAM}
+		sed -i "s/chage/$PROGRAM/" $pkgdir/etc/pam.d/${PROGRAM}
+	done
+
+	rm $pkgdir/usr/sbin/logoutd
+
+	mv $pkgdir/usr/sbin/* $pkgdir/usr/bin
+	rmdir $pkgdir/usr/sbin
+}
