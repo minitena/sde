@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=10
+pkgrel=11
 arch=('x86_64' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -103,8 +103,6 @@ package_systemd() {
 
 	DESTDIR="$pkgdir" ninja install
 
-	rm -r $pkgdir/etc/systemd/system/
-
 	install -d -m0755 $srcdir/libsystemd
 	mv $pkgdir/usr/lib/lib{nss,systemd,udev}*.so* $srcdir/libsystemd
 
@@ -114,8 +112,6 @@ package_systemd() {
 	sed -i '/^C \/etc\/nsswitch\.conf/d' $pkgdir/usr/lib/tmpfiles.d/etc.conf
 
 	install -m0644 ../tmpfiles.d/legacy.conf $pkgdir/usr/lib/tmpfiles.d
-
-	echo 'disable *' >"$pkgdir"/usr/lib/systemd/system-preset/99-default.preset
 
 	install -d -o root -g systemd-journal -m 2755 $pkgdir/var/log/journal
 	install -d -o root -g 102 -m 0750 $pkgdir/usr/share/polkit-1/rules.d
