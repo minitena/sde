@@ -3,7 +3,7 @@
 
 pkgname=linux
 pkgver=4.18.11
-pkgrel=18
+pkgrel=19
 pkgdesc="The Linux kernel"
 arch=('x86_64')
 url="https://www.kernel.org/"
@@ -16,8 +16,8 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('b193661a2c8afd41ba08fdbc55fe6a8c'
-         '29e169890fc50382ad99ced8d916f6c0'
-         '4376a75262aa5d038dd03a7bfce669c6'
+         'df364edfa4b7d7b7b14dd60ad2f2f2b0'
+         '1b1fd53bc8c0595b2cc14f70c5d1857e'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
 
