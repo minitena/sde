@@ -1,0 +1,53 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nss
+pkgver=3.39
+pkgrel=1
+pkgdesc="Network Security Services"
+arch=('x86_64' 'aarch64')
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
+license=('GPL' 'MPL')
+depends=('glibc' 'zlib' 'nspr' 'sqlite' 'p11-kit')
+source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz"
+	'nss-3.39-standalone-1.patch')
+md5sums=('10720fc70fd483de1b085402fb10ed59'
+         'de42751a0a6d86d48e5d1cbb0e65096d')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/nss-3.39-standalone-1.patch
+}
+
+build() {
+	cd $pkgname-$pkgver/$pkgname
+	unset CFLAGS
+	unset CXXFLAGS
+
+	case $CARCH in
+		x86_64|aarch64)
+			export USE_64=1
+			;;
+	esac
+
+	make -j1 \
+		BUILD_OPT=1 \
+		NSPR_INCLUDE_DIR=/usr/include/nspr \
+		USE_SYSTEM_ZLIB=1 \
+		ZLIB_LIBS=-lz \
+		NSS_ENABLE_WERROR=0 \
+		NSS_USE_SYSTEM_SQLITE=1
+}
+
+package() {
+	cd $pkgname-$pkgver/dist
+	mkdir -p $pkgdir/usr/lib/pkgconfig $pkgdir/usr/include/nss $pkgdir/usr/bin
+
+	install -m755 Linux*/lib/*.so $pkgdir/usr/lib
+	install -m644 Linux*/lib/{*.chk,libcrmf.a} $pkgdir/usr/lib
+	install -m755 Linux*/bin/{certutil,nss-config,pk12util} $pkgdir/usr/bin 
+	install -m644 Linux*/lib/pkgconfig/nss.pc $pkgdir/usr/lib/pkgconfig
+
+	cp -RL {public,private}/nss/* $pkgdir/usr/include/nss
+	chmod 644 $pkgdir/usr/include/nss/*
+}

@@ -3,9 +3,9 @@
 
 pkgname=asciidoc
 pkgver=8.6.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Text document format for short documents, articles, books and UNIX man pages"
-arch=('x86_64' 'aarch64')
+arch=('any')
 url="http://www.methods.co.nz/asciidoc/"
 license=('GPL')
 depends=('python2' 'libxslt' 'docbook-xsl')

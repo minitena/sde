@@ -1,0 +1,49 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=js52
+pkgver=52.6.0
+pkgrel=1
+pkgdesc="JavaScript interpreter and libraries - Version 52"
+arch=('x86_64' 'aarch64')
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+license=('MPL')
+depends=('gcc-libs' 'zlib' 'readline' 'nspr' 'icu')
+makedepends=('automake2.13' 'python2' 'yasm' 'zip')
+source=("http://ftp.gnome.org/pub/gnome/teams/releng/tarballs-needing-help/mozjs/mozjs-${pkgver}gnome1.tar.xz")
+md5sums=('f9e7947364f31781c40eac4dbf2a365a')
+
+build() {
+	cd js/src
+
+	export CC=gcc
+	export CXX=g++
+	export PYTHON=/usr/bin/python2
+	export SHELL=/bin/bash
+
+	./configure \
+		--prefix=/usr \
+		--with-intl-api \
+		--with-system-icu \
+		--with-system-nspr \
+		--with-system-zlib \
+		--enable-gold \
+		--enable-optimize="-O2" \
+		--enable-pie \
+		--enable-readline \
+		--enable-release \
+		--enable-shared-js \
+		--enable-threadsafe \
+		--disable-debug \
+		--disable-debug-symbols \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd js/src
+	make DESTDIR=$pkgdir install
+
+	rm $pkgdir/usr/lib/*.ajs
+	find $pkgdir/usr/{lib/pkgconfig,include} -type f -exec chmod -c a-x {} +
+}

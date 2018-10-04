@@ -1,0 +1,36 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=autoconf2.13
+pkgver=2.13
+pkgrel=2
+pkgdesc="A GNU tool for automatically configuring source code (Legacy 2.1x version)"
+arch=('any')
+url="http://www.gnu.org/software/autoconf"
+license=('GPL')
+depends=('glibc' 'perl')
+source=("http://ftpmirror.gnu.org/gnu/autoconf/autoconf-$pkgver.tar.gz"
+	'autoconf-2.13-consolidated_fixes-1.patch')
+md5sums=('9de56d4a161a723228220b0f425dc711'
+         '9ceaee69e62767770eb473d5242db70d')
+
+prepare() {
+	cd autoconf-$pkgver
+	patch -Np1 -i $srcdir/autoconf-2.13-consolidated_fixes-1.patch
+	mv autoconf.texi autoconf213.texi
+	rm autoconf.info
+}
+
+build() {
+	cd autoconf-$pkgver
+	./configure \
+		--prefix=/usr \
+		--program-suffix=2.13 \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd autoconf-$pkgver
+	make DESTDIR=$pkgdir install
+}

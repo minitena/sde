@@ -32,6 +32,8 @@ perl
 readline
 autoconf
 automake
+autoconf2.13
+autoconf-archive
 bash
 bc
 diffutils
@@ -79,6 +81,8 @@ python-six
 re2c
 ninja
 meson
+nasm
+yasm
 hwids
 gnu-efi
 libgpg-error
@@ -100,6 +104,7 @@ libseccomp
 popt
 libaio
 json-c
+argon2
 systemd
 lvm2
 cryptsetup
@@ -121,3 +126,10 @@ libtasn1
 p11-kit
 gnutls
 ca-certificates
+glib
+gobject-introspection
+nspr
+nss
+js52
+js60
+polkit

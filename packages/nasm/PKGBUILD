@@ -1,0 +1,33 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nasm
+pkgver=2.13.03
+pkgrel=1
+pkgdesc="An 80x86 assembler designed for portability and modularity"
+arch=('x86_64' 'aarch64')
+url="http://www.nasm.us/"
+license=('BSD')
+depends=('glibc')
+source=("http://www.nasm.us/pub/nasm/releasebuilds/$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('d5ca2ad7121ccbae69dd606b1038532c')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -e '/seg_init/d' \
+		-e 's/pure_func seg_alloc/seg_alloc/' \
+		-i include/nasmlib.h
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

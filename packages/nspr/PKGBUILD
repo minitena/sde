@@ -1,0 +1,43 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nspr
+pkgver=4.20
+pkgrel=1
+pkgdesc="Netscape Portable Runtime"
+arch=('x86_64' 'aarch64')
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSPR"
+license=('GPL' 'MPL')
+depends=('glibc')
+source=("https://archive.mozilla.org/pub/nspr/releases/v$pkgver/src/$pkgname-$pkgver.tar.gz")
+md5sums=('1c198c7e73f6b0e2bb9153a644ba246b')
+
+prepare() {
+	cd $pkgname-$pkgver/$pkgname
+	sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in
+}
+
+build() {
+	cd $pkgname-$pkgver/$pkgname
+
+	case $CARCH in
+		x86_64|aarch64)
+			export conf="--enable-64bit"
+			;;
+	esac
+
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--with-mozilla \
+		--with-pthreads \
+		--enable-optimize \
+		--disable-debug \
+		--build=$CHOST $conf
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/$pkgname
+	make DESTDIR=$pkgdir install
+}

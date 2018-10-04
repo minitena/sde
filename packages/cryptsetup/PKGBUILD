@@ -3,12 +3,12 @@
 
 pkgname=cryptsetup
 pkgver=2.0.4
-pkgrel=3
+pkgrel=4
 pkgdesc="Userspace setup tool for transparent encryption of block devices using dm-crypt"
 arch=('x86_64' 'aarch64')
 url="https://gitlab.com/cryptsetup/cryptsetup/"
 license=('GPL')
-depends=('glibc' 'util-linux-libs' 'popt' 'json-c' 'lvm2' 'libressl')
+depends=('glibc' 'util-linux-libs' 'popt' 'json-c' 'lvm2' 'libressl' 'argon2')
 source=("https://www.kernel.org/pub/linux/utils/cryptsetup/v2.0/$pkgname-$pkgver.tar.xz")
 md5sums=('ed42b31f67d05b05e392d1943d467b8d')
 
@@ -18,6 +18,8 @@ build() {
 		--prefix=/usr \
 		--sbindir=/usr/bin \
 		--with-crypto_backend=openssl \
+		--enable-cryptsetup-reencrypt \
+		--enable-libargon2 \
 		--build=$CHOST
 	make
 }
