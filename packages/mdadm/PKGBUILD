@@ -1,0 +1,37 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=mdadm
+pkgver=4.0
+pkgrel=1
+pkgdesc="A tool for managing/monitoring Linux md device arrays, also known as Software RAID"
+arch=('x86_64' 'aarch64')
+url="http://neil.brown.name/blog/mdadm"
+license=('GPL')
+depends=('glibc')
+backup=('etc/mdadm.conf')
+source=("https://www.kernel.org/pub/linux/utils/raid/$pkgname/$pkgname-$pkgver.tar.xz"
+	'mdadm.conf')
+md5sums=('2cb4feffea9167ba71b5f346a0c0a40d'
+         '5a37c112aa07dccdde62f9fa5b888607')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed 's@-Werror@@' -i Makefile
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make CXFLAGS="$CFLAGS" BINDIR=/usr/bin UDEVDIR=/usr/lib/udev
+	make MDASSEMBLE_AUTO=1 mdassemble
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make INSTALL=/usr/bin/install BINDIR=/usr/bin UDEVDIR=/usr/lib/udev DESTDIR=$pkgdir install
+	make SYSTEMD_DIR=$pkgdir/usr/lib/systemd/system install-systemd
+
+	install -D -m755 mdassemble $pkgdir/usr/bin/mdassemble
+
+	install -D -m644 $srcdir/mdadm.conf $pkgdir/etc/mdadm.conf
+}
