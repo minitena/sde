@@ -3,7 +3,7 @@
 
 pkgname=polkit
 pkgver=0.114
-pkgrel=3
+pkgrel=4
 pkgdesc="Application development toolkit for controlling system-wide privileges"
 arch=('x86_64' 'aarch64')
 url="https://www.freedesktop.org/wiki/Software/polkit/"
@@ -43,4 +43,6 @@ package() {
 	mkdir -p $pkgdir/etc/pam.d/
 	rm -rf $pkgdir/etc/pam.d/polkit-1
 	install -m644 $srcdir/polkit.pam $pkgdir/etc/pam.d/polkit-1
+
+	install -d -o root -g 102 -m 750 $pkgdir/{etc,usr/share}/polkit-1/rules.d
 }
