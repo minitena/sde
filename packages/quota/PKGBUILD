@@ -1,0 +1,30 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=quota
+pkgver=4.04
+pkgrel=1
+pkgdesc="Tools to manage kernel-level quotas in Linux"
+arch=('x86_64' 'aarch64')
+url="http://sourceforge.net/projects/linuxquota/"
+license=('GPL' 'BSD')
+depends=('glibc' 'dbus')
+backup=('etc/warnquota.conf' 'etc/quotatab' 'etc/quotagrpadmins')
+options=('!emptydirs')
+source=("http://downloads.sourceforge.net/sourceforge/linuxquota/quota-${pkgver}.tar.gz")
+md5sums=('f46f3b0b5141f032f25684005dac49d3')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--enable-ldapmail=no \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir sbindir=/usr/bin root_sbindir=/usr/bin STRIP="" install
+}
