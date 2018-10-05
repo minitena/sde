@@ -1,0 +1,32 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libcap-ng
+pkgver=0.7.9
+pkgrel=1
+pkgdesc="Library making programming with POSIX capabilities easier than traditional libcap"
+arch=('x86_64' 'aarch64')
+url="http://people.redhat.com/sgrubb/libcap-ng/"
+license=('LGPL')
+depends=('glibc')
+source=("https://github.com/stevegrubb/libcap-ng/archive/v$pkgver.tar.gz")
+md5sums=('944ef76c0dcce9b7e4bfa2d5d528d19e')
+
+prepare() {
+	cd $pkgname-$pkgver
+	autoreconf -vif
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--without-python \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
