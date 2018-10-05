@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=parted
+pkgver=3.2
+pkgrel=1
+pkgdesc="A program for creating, destroying, resizing, checking and copying partitions"
+arch=('x86_64' 'aarch64')
+url="http://www.gnu.org/software/parted"
+license=('GPL')
+depends=('glibc' 'lvm2')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('0247b6a7b314f8edeb618159fa95f9cb')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i '/utsname.h/a#include <sys/sysmacros.h>' libparted/arch/linux.c
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--disable-debug \
+		--disable-rpath \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
