@@ -3,14 +3,14 @@
 
 pkgname=asciidoc
 pkgver=8.6.10
-pkgrel=2
+pkgrel=3
 pkgdesc="Text document format for short documents, articles, books and UNIX man pages"
 arch=('any')
 url="http://www.methods.co.nz/asciidoc/"
 license=('GPL')
 depends=('python2' 'libxslt' 'docbook-xsl')
 source=("https://github.com/asciidoc/asciidoc/archive/$pkgver.tar.gz")
-md5sums=('SKIP')
+md5sums=('4e69960f4d431780e9828f53417d8d7a')
 
 prepare() {
 	cd $pkgname-$pkgver

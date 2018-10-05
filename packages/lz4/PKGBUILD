@@ -3,14 +3,14 @@
 
 pkgname=lz4
 pkgver=1.8.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Extremely fast compression algorithm"
 arch=('x86_64' 'aarch64')
 url="http://www.lz4.org/"
 license=('GPL')
 depends=('glibc')
 source=("https://github.com/lz4/lz4/archive/v$pkgver.tar.gz")
-md5sums=('SKIP')
+md5sums=('d5ce78f7b1b76002bbfffa6f78a5fc4e')
 
 build() {
 	cd $pkgname-$pkgver
