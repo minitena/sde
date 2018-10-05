@@ -105,6 +105,9 @@ popt
 libaio
 json-c
 argon2
+swig
+libcap-ng
+audit
 systemd
 lvm2
 cryptsetup
@@ -133,3 +136,7 @@ nss
 js52
 js60
 polkit
+apparmor
+mdadm
+parted
+quota

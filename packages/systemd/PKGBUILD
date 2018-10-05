@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=12
+pkgrel=13
 arch=('x86_64' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -14,9 +14,10 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	loader.conf
 	minitena.conf
 	splash.bmp
+	systemd-user.pam
+	systemd-hook
 	systemd-binfmt.hook
 	systemd-catalog.hook
-	systemd-hook
 	systemd-hwdb.hook
 	systemd-reload.hook
 	systemd-sysctl.hook
@@ -28,9 +29,10 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          'f47a862de7feb2d36475c745f768493a'
          '1ba59e264700da289db837f346e8ba20'
          'e5c714a7f57d320c717e88c1f4259ff5'
+         '9020f08c13d9e17cb780b526a9f8b6f6'
+         'd58e56112a367f12ed2e4db1ed002bd2'
          '981d3730f7d14ac9459aba2753ce6a97'
          '11d703a47115c3ad4530fe78ae6036d1'
-         'd58e56112a367f12ed2e4db1ed002bd2'
          'd7a4f3f66ebddf070985c57c35cb9103'
          'acbe44fa3b3695b0f97cb5c16d901377'
          'd408bf637f6041ad41f290860353ac62'
@@ -82,7 +84,7 @@ build() {
 package_systemd() {
 	pkgdesc="System and service manager"
 	depends=('glibc' 'systemd-libs' 'pam' 'libcap' 'acl' 'util-linux-libs' 'iptables' 'pcre2' 'libidn2' 'kbd'
-		 'xz-utils' 'lz4' 'kmod' 'hwids' 'libgcrypt' 'libseccomp' 'cryptsetup' 'dbus')
+		 'xz-utils' 'lz4' 'kmod' 'hwids' 'libgcrypt' 'libseccomp' 'cryptsetup' 'audit' 'dbus')
 	backup=(etc/pam.d/systemd-user
 		etc/systemd/coredump.conf
 		etc/systemd/journald.conf
@@ -124,8 +126,7 @@ package_systemd() {
 	install -D -m0644 $srcdir/loader.conf $pkgdir/usr/share/systemd/bootctl/loader.conf
 	install -D -m0644 $srcdir/splash.bmp $pkgdir/usr/share/systemd/bootctl/splash-minitena.bmp
 
-	sed 's|account required pam_unix.so|account  include system-login|g' -i $pkgdir/etc/pam.d/systemd-user
-	sed 's|session optional pam_systemd.so|session  include system-login|g' -i $pkgdir/etc/pam.d/systemd-user
+	install -D -m0644 $srcdir/systemd-user.pam $pkgdir/etc/pam.d/systemd-user
 
 	rm $pkgdir/usr/lib/systemd/system/default.target
 	ln -sf multi-user.target $pkgdir/usr/lib/systemd/system/default.target

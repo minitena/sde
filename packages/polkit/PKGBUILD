@@ -40,9 +40,7 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	mkdir -p $pkgdir/etc/pam.d/
-	rm -rf $pkgdir/etc/pam.d/polkit-1
-	install -m644 $srcdir/polkit.pam $pkgdir/etc/pam.d/polkit-1
+	install -D -m0644 $srcdir/polkit.pam $pkgdir/etc/pam.d/polkit-1
 
 	install -d -o root -g 102 -m 750 $pkgdir/{etc,usr/share}/polkit-1/rules.d
 }

@@ -1,0 +1,55 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=audit
+pkgver=2.8.4
+pkgrel=1
+pkgdesc="Userspace components of the audit framework"
+arch=('x86_64' 'aarch64')
+url="https://people.redhat.com/sgrubb/audit"
+license=('GPL')
+depends=('glibc' 'libcap-ng')
+makedepends=('swig')
+backup=('etc/libaudit.conf'
+	'etc/audit/audit-stop.rules'
+	'etc/audit/auditd.conf'
+	'etc/audisp/audispd.conf'
+	'etc/audisp/audisp-remote.conf'
+	'etc/audisp/plugins.d/af_unix.conf'
+	'etc/audisp/plugins.d/audispd-zos-remote.conf'
+	'etc/audisp/plugins.d/au-remote.conf'
+	'etc/audisp/plugins.d/syslog.conf'
+)
+source=("https://people.redhat.com/sgrubb/audit/${pkgname}-${pkgver}.tar.gz")
+md5sums=('ec9510312564c3d9483bccf8dbda4779')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/audit \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--with-libcap-ng=yes \
+		--enable-systemd=yes \
+		--disable-zos-remote \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	cd $pkgdir
+	install -d var/log/audit
+	rm -rf etc/rc.d \
+		etc/sysconfig
+
+	sed -ri 's|/sbin|/usr/bin|' \
+		etc/audit/*.conf \
+		etc/audisp/plugins.d/*.conf \
+		usr/lib/systemd/system/auditd.service
+
+	chmod 644 usr/lib/systemd/system/auditd.service
+}
