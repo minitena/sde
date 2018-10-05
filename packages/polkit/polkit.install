@@ -4,6 +4,6 @@ pre_install() {
 }
 
 post_remove() {
-	groupdel polkitd
 	userdel polkitd
+	groupdel polkitd
 }
