@@ -54,7 +54,7 @@ pkgnativeinstall() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed 
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -71,7 +71,7 @@ pkgnativeinstallforce() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -80,7 +80,7 @@ pkgnativeinstallforcenodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -89,7 +89,7 @@ pkgnativeinstallnodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -97,7 +97,7 @@ pkgnativeinstallonly() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed 
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -105,7 +105,7 @@ pkgnativeinstallonlyforce() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -113,7 +113,7 @@ pkgnativeinstallonlyforcenodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -121,7 +121,7 @@ pkgnativeinstallonlynodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed --arch $BARCH
 	done
 }
 
@@ -130,7 +130,7 @@ pkgnativereinstall() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C -f
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --arch $BARCH
 	done
 }
 
@@ -147,7 +147,7 @@ pkgnativereinstallforce() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --arch $BARCH
 	done
 }
 
@@ -156,7 +156,7 @@ pkgnativereinstallforcenodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --arch $BARCH
 	done
 }
 
@@ -165,7 +165,7 @@ pkgnativereinstallnodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
 	done
 }
 
