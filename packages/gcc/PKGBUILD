@@ -4,7 +4,7 @@
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
 pkgver=8.2.1+20180831
-pkgrel=5
+pkgrel=6
 arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
@@ -27,6 +27,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd $pkgbase-${pkgver/+/-}
 	cd build
 	../configure \
@@ -58,7 +61,7 @@ build() {
 		--disable-multilib \
 		--disable-nls \
 		--disable-werror
-	make
+	make profiledbootstrap
 }
 
 package_gcc-libs() {
