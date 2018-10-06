@@ -9,7 +9,7 @@ arch=('x86_64' 'aarch64')
 url="http://www.gnu.org/software/binutils"
 license=('GPL')
 depends=('glibc' 'zlib')
-options=('!distcc' '!ccache')
+options=('staticlibs' '!distcc' '!ccache')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	0001-PR23428-x86-Add-a-GNU_PROPERTY_X86_ISA_1_USED-note-if-needed.patch
 	0002-PR23460-Close-resource-leaks-in-the-BFD-library-s-plugin-han.patch

@@ -11,6 +11,7 @@ license=('GPL' 'LGPL' 'MIT')
 depends=('glibc' 'util-linux-libs')
 makedepends=('util-linux')
 backup=('etc/mke2fs.conf')
+options=('staticlibs')
 source=("https://downloads.sourceforge.net/project/$pkgname/$pkgname/v$pkgver/$pkgname-$pkgver.tar.gz")
 md5sums=('156e94a6169ca1fa3f0c6749ae5921b9')
 
