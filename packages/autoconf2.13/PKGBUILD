@@ -27,10 +27,10 @@ build() {
 		--prefix=/usr \
 		--program-suffix=2.13 \
 		--build=$CHOST
-	make
+	make MAKEINFO="true"
 }
 
 package() {
 	cd autoconf-$pkgver
-	make DESTDIR=$pkgdir install
+	make MAKEINFO="true" DESTDIR=$pkgdir install
 }
