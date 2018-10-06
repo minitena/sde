@@ -19,12 +19,6 @@ md5sums=('539e6f86bf387358aa2b14d5f880e49a'
          'c93b6d79c7fd1843095b2cedfef7f3e1'
          '1b4a1d2a16de577070b4e9b5aad3eea9')
 
-prepare() {
-	cd $pkgname-$pkgver
-	sed -i '/^groupname /s/mlocate/locate/' Makefile.am
-	autoreconf -vif
-}
-
 build() {
 	cd $pkgname-$pkgver
 	./configure \
