@@ -2,7 +2,7 @@ pkgname=chroot-bash
 mainver=4.4
 pkgver=${mainver}.023
 pkgrel=1
-arch=('x86_64' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64')
 source=(http://ftpmirror.gnu.org/gnu/bash/bash-${mainver}.tar.gz
 	http://ftpmirror.gnu.org/gnu/bash/bash-4.4-patches/bash44-001
 	http://ftpmirror.gnu.org/gnu/bash/bash-4.4-patches/bash44-002

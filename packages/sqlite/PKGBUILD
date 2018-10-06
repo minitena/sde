@@ -18,7 +18,7 @@ esac
 ver=${_a}${_b}${_c}${_d}
 pkgrel=1
 pkgdesc="A C library that implements an SQL database engine"
-arch=('x86_64' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64')
 url="http://www.sqlite.org/"
 license=('Public Domain')
 depends=('glibc' 'zlib' 'readline')

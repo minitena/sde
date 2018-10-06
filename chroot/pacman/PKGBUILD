@@ -1,7 +1,7 @@
 pkgname=chroot-pacman
 pkgver=5.1.1
 pkgrel=1
-arch=('x86_64' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64')
 source=(https://sources.archlinux.org/other/pacman/pacman-$pkgver.tar.gz
 	pacman.conf
 	makepkg.conf)

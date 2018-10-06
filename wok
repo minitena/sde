@@ -200,6 +200,13 @@ setup_architecture() {
 			export GCCOPTS="--with-arch=x86-64 --with-tune=generic --with-linker-hash-style=gnu"
 			export BINUTILSOPTS="--enable-targets=x86_64-pep"
 			;;
+		i586)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="i586-generic-linux"
+			export XKARCH="i386"
+			export GCCOPTS="--with-arch=i586 --with-tune=generic --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			;;
 		aarch64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="aarch64-generic-linux"
@@ -488,7 +495,7 @@ build_final_system() {
 	done
 
 	case $BARCH in
-		x86_64)
+		x86_64|i586)
 			pkgnativeinstall syslinux
 			pkgnativeinstall efivar
 			pkgnativeinstall efibootmgr
