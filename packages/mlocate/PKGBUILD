@@ -3,7 +3,7 @@
 
 pkgname=mlocate
 pkgver=0.26
-pkgrel=1
+pkgrel=2
 pkgdesc="Merging locate/updatedb implementation"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://pagure.io/mlocate"
@@ -22,6 +22,7 @@ md5sums=('539e6f86bf387358aa2b14d5f880e49a'
 prepare() {
 	cd $pkgname-$pkgver
 	sed -i '/^groupname /s/mlocate/locate/' Makefile.am
+	autoreconf -vif
 }
 
 build() {
