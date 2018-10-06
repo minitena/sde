@@ -361,6 +361,7 @@ enter_chroot() {
 		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
 		PATH="/usr/bin:/tools/bin" \
 		PS1='(chroot) \u:\w\$ ' \
+		BARCH="$BARCH" \
 		/usr/bin/sh
 
 	umount $ROOTFS/var/repo
