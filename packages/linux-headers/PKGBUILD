@@ -23,6 +23,9 @@ package() {
 		x86_64)
 			export XKARCH="x86_64"
 			;;
+		i586)
+			export XKARCH="i386"
+			;;
 		aarch64)
 			export XKARCH="arm64"
 			;;
