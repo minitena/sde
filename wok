@@ -504,6 +504,8 @@ build_final_system() {
 			;;
 	esac
 
+	pkgnativebuild meta
+
 	rm -rf /output/packages/*debug*.pkg*
 }
 

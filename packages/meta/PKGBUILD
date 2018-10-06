@@ -1,0 +1,48 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=('meta-base' 'meta-devel')
+pkgver=2018.10
+pkgrel=1
+arch=('any')
+url="http://minitena.github.io/"
+license=('GPL')
+
+package_meta-base() {
+	pkgdesc='Meta-package for basic system'
+	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
+		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
+		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'crytpsetup' 'mdadm' 'systemd'
+		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux')
+	:
+}
+
+package_meta-base() {
+	pkgdesc='Meta-package for development system'
+	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
+		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
+		 'gperf' 'groff' 'make' 'patch' 'texinfo')
+	:
+}
+
+#package_meta-base() {
+#	pkgdesc='Meta-package for development system'
+#	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
+#		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
+#		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'fakeroot' 'which')
+#	:
+#}
+
+#package_meta-base() {
+#	pkgdesc='Meta-package for basic system'
+#	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
+#		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
+#		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+#		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'crytpsetup' 'mdadm' 'systemd'
+#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+#		 'e2fsprogs' 'btrfs-progs' 'xfsprogs' 'f2fs-tools' 'dosfstools'
+#		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils'
+#		 'logrotate' 'which' 'ca-certificates' 'curl' 'wget' 'libarchive' 'pacman')
+#	:
+#}
