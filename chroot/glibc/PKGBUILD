@@ -23,6 +23,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd glibc-$pkgver
 	cd build
 
