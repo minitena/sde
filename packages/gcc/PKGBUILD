@@ -30,6 +30,10 @@ build() {
 	export CFLAGS="${CFLAGS/-Os/-O3}"
 	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
 
+	export CFLAGS_FOR_TARGET="$CFLAGS"
+	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
+	export FFLAGS_FOR_TARGET="$FFLAGS"
+
 	cd $pkgbase-${pkgver/+/-}
 	cd build
 	../configure \
