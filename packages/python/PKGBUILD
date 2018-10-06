@@ -3,7 +3,7 @@
 
 pkgname=python
 pkgver=3.7.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Next generation of the python high-level scripting language"
 arch=('x86_64' 'aarch64')
 url="http://www.python.org/"
@@ -19,6 +19,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd Python-${pkgver}
 	./configure \
 		--prefix=/usr \
@@ -30,12 +33,16 @@ build() {
 		--with-threads \
 		--enable-ipv6 \
 		--enable-loadable-sqlite-extensions \
+		--enable-optimizations \
 		--enable-shared \
 		--build=$CHOST
 	make
 }
 
 package() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd Python-${pkgver}
 	sed -i 's/^all:.*$/all: build_all/' Makefile
 
