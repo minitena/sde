@@ -13,6 +13,9 @@ source=("http://isl.gforge.inria.fr/$pkgname-$pkgver.tar.xz")
 md5sums=('2ee25141b7d1688afb63e5bf3ac12999')
 
 build() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
