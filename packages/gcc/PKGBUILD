@@ -29,6 +29,7 @@ prepare() {
 build() {
 	export CFLAGS="${CFLAGS/-Os/-O3}"
 	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+	export FFLAGS="$CFLAGS"
 
 	export CFLAGS_FOR_TARGET="$CFLAGS"
 	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
