@@ -1,0 +1,24 @@
+diff -ruN systemd-239-a/units/container-getty@.service.m4 systemd-239/units/container-getty@.service.m4
+--- systemd-239-a/units/container-getty@.service.m4	2018-06-22 14:11:49.000000000 +0300
++++ systemd-239/units/container-getty@.service.m4	2018-10-07 16:47:27.461269708 +0300
+@@ -28,7 +28,7 @@
+ # The '-o' option value tells agetty to replace 'login' arguments with an
+ # option to preserve environment (-p), followed by '--' for safety, and then
+ # the entered username.
+-ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear --keep-baud pts/%I 115200,38400,9600 $TERM
++ExecStart=-/sbin/agetty -o '-p -- \\u' --keep-baud pts/%I 115200,38400,9600 $TERM
+ Type=idle
+ Restart=always
+ RestartSec=0
+diff -ruN systemd-239-a/units/getty@.service.m4 systemd-239/units/getty@.service.m4
+--- systemd-239-a/units/getty@.service.m4	2018-06-22 14:11:49.000000000 +0300
++++ systemd-239/units/getty@.service.m4	2018-10-07 16:48:48.821267606 +0300
+@@ -38,7 +38,7 @@
+ # The '-o' option value tells agetty to replace 'login' arguments with an
+ # option to preserve environment (-p), followed by '--' for safety, and then
+ # the entered username.
+-ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear %I $TERM
++ExecStart=-/sbin/agetty -o '-p -- \\u' %I $TERM
+ Type=idle
+ Restart=always
+ RestartSec=0
