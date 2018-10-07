@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=13
+pkgrel=14
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -27,7 +27,7 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 md5sums=('6137e3f50390391cf34521d071a1a078'
          'a44057d6a6ca69760bafc126458d89e5'
          'f47a862de7feb2d36475c745f768493a'
-         '1ba59e264700da289db837f346e8ba20'
+         '1dc87bb74876c8faed41711a67bff6b8'
          'e5c714a7f57d320c717e88c1f4259ff5'
          '9020f08c13d9e17cb780b526a9f8b6f6'
          'd58e56112a367f12ed2e4db1ed002bd2'
@@ -122,9 +122,9 @@ package_systemd() {
 	install -d -o root -g systemd-journal -m 2755 $pkgdir/var/log/journal
 	install -d -o root -g 102 -m 0750 $pkgdir/usr/share/polkit-1/rules.d
 
-	install -D -m0644 $srcdir/minitena.conf $pkgdir/usr/share/systemd/bootctl/minitena.conf
-	install -D -m0644 $srcdir/loader.conf $pkgdir/usr/share/systemd/bootctl/loader.conf
-	install -D -m0644 $srcdir/splash.bmp $pkgdir/usr/share/systemd/bootctl/splash-minitena.bmp
+	install -D -m0644 $srcdir/loader.conf $pkgdir/usr/lib/systemd/boot/loader/loader.conf
+	install -D -m0644 $srcdir/minitena.conf $pkgdir/usr/lib/systemd/boot/loader/entries/minitena.conf
+	install -D -m0644 $srcdir/splash.bmp $pkgdir/usr/lib/systemd/boot/splash.bmp
 
 	install -D -m0644 $srcdir/systemd-user.pam $pkgdir/etc/pam.d/systemd-user
 
