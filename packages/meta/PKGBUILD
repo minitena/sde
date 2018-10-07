@@ -13,7 +13,7 @@ package_meta-base() {
 	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
-		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'crytpsetup' 'mdadm' 'systemd'
+		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux')
 	:
 }
@@ -39,7 +39,7 @@ package_meta-devel() {
 #	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
-#		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'crytpsetup' 'mdadm' 'systemd'
+#		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 #		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 #		 'e2fsprogs' 'btrfs-progs' 'xfsprogs' 'f2fs-tools' 'dosfstools'
 #		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils'
