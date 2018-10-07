@@ -3,9 +3,9 @@
 
 pkgname=linux
 pkgver=4.18.12
-pkgrel=19
+pkgrel=20
 pkgdesc="The Linux kernel"
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -14,12 +14,14 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
 	'i586-config'
 	'arm64-config'
+	'arm-config'
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('4f6af94e58a89e89aa1683475544a58a'
-         'c46825a1be4b21a30304eebc91d27608'
-         '67b3a77fe66e06178ac5448c94a44c73'
-         '37db9085802ff8430a7d1bcd447e65b0'
+         '72c4f1637dfe0558d9081d52633750aa'
+         '3eaa980b4945f5b55df41b5586b0a5cf'
+         'ce578e784a1ce58b8b66491935c58d88'
+         '2e20ea98c8a8a4ccb5b070d937e9006d'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
 
@@ -41,6 +43,10 @@ prepare() {
 			export XKARCH="arm64"
 			cp $srcdir/arm64-config .config
 			;;
+		arm)
+			export XKARCH="arm"
+			cp $srcdir/arm-config .config
+			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
@@ -55,15 +61,21 @@ build() {
 		x86_64)
 			export XKARCH="x86_64"
 			;;
+		i586)
+			export XKARCH="i386"
+			;;
 		aarch64)
 			export XKARCH="arm64"
+			;;
+		arm)
+			export XKARCH="arm"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
 	esac
 
-	yes '' | make ARCH=$XKARCH
+	make ARCH=$XKARCH
 }
 
 package() {
@@ -75,9 +87,17 @@ package() {
 			export XKARCH="x86_64"
 			export IMG="arch/x86/boot/bzImage"
 			;;
+		i586)
+			export XKARCH="i386"
+			export IMG="arch/x86/boot/bzImage"
+			;;
 		aarch64)
 			export XKARCH="arm64"
 			export IMG="arch/arm64/boot/Image"
+			;;
+		arm)
+			export XKARCH="arm"
+			export IMG="arch/arm/boot/zImage"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -91,7 +111,7 @@ package() {
 	cp $IMG $pkgdir/boot/vmlinuz-linux
 
 	case $CARCH in
-		aarch64)
+		aarch64|arm)
 			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
 			;;
 	esac
