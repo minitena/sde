@@ -17,7 +17,7 @@ cdrom:x:15:
 adm:x:16:
 console:x:17:
 messagebus:x:18:
-locate:x:21:
+mlocate:x:21:
 systemd-journal:x:23:
 input:x:24:
 news:x:31:news
