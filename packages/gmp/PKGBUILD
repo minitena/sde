@@ -13,9 +13,6 @@ source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
 md5sums=('f58fa8001d60c4c77595fbbb62b63c1d')
 
 build() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \

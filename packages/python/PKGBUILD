@@ -19,8 +19,8 @@ prepare() {
 }
 
 build() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+	export CFLAGS="${CFLAGS/-O2/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
 
 	cd Python-${pkgver}
 	./configure \
@@ -40,8 +40,8 @@ build() {
 }
 
 package() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+	export CFLAGS="${CFLAGS/-O2/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
 
 	cd Python-${pkgver}
 	sed -i 's/^all:.*$/all: build_all/' Makefile

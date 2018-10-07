@@ -13,9 +13,6 @@ source=("https://zlib.net/zlib-$pkgver.tar.xz")
 md5sums=('85adef240c5f370b308da8c938951a68')
 
 build() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr

@@ -13,9 +13,6 @@ source=("https://sourceware.org/ftp/elfutils/$pkgver/elfutils-$pkgver.tar.bz2")
 md5sums=('48bec24c0c8b2c16820326956dff9378')
 
 build() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
-
 	cd elfutils-$pkgver
 	./configure \
 		--prefix=/usr \

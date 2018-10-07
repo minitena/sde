@@ -13,9 +13,6 @@ source=("http://www.mpfr.org/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz")
 md5sums=('b8dd19bd9bb1ec8831a6a582a7308073')
 
 build() {
-	export CFLAGS="${CFLAGS/-Os/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
