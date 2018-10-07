@@ -18,7 +18,7 @@ package_meta-base() {
 	:
 }
 
-package_meta-base() {
+package_meta-devel() {
 	pkgdesc='Meta-package for development system'
 	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
 		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
