@@ -9,7 +9,6 @@ arch=('x86_64' 'i586' 'aarch64')
 url="https://sourceware.org/elfutils/"
 license=('GPL' 'LGPL')
 depends=('glibc' 'gcc-libs' 'zlib' 'xz-utils')
-options=('staticlibs')
 source=("https://sourceware.org/ftp/elfutils/$pkgver/elfutils-$pkgver.tar.bz2")
 md5sums=('48bec24c0c8b2c16820326956dff9378')
 

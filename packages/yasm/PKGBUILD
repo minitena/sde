@@ -9,7 +9,6 @@ arch=('x86_64' 'i586' 'aarch64')
 url="http://www.tortall.net/projects/yasm/"
 license=('GPL' 'LGPL' 'BSD' 'PerlArtistic')
 depends=('glibc')
-options=('staticlibs')
 source=("http://www.tortall.net/projects/$pkgname/releases/$pkgname-$pkgver.tar.gz")
 md5sums=('fc9e586751ff789b34b1f21d572d96af')
 
