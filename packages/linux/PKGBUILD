@@ -3,7 +3,8 @@
 
 pkgname=linux
 pkgver=4.18.12
-pkgrel=20
+reiserfs4patchver=4.18.0
+pkgrel=21
 pkgdesc="The Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
@@ -11,6 +12,7 @@ license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
+	"http://downloads.sourceforge.net/project/reiser4/reiser4-for-linux-4.x/reiser4-for-$reiserfs4patchver.patch.gz"
 	'x86_64-config'
 	'i586-config'
 	'arm64-config'
@@ -18,16 +20,19 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('4f6af94e58a89e89aa1683475544a58a'
-         '72c4f1637dfe0558d9081d52633750aa'
-         '3eaa980b4945f5b55df41b5586b0a5cf'
-         'ce578e784a1ce58b8b66491935c58d88'
+         '4aa8cdbac33df4bee88fadefa9cdb8c4'
+         '4b715ed9b7b5be8f8f39b7f5a855407b'
+         '1628443ef20299286b3cea62cb7d1890'
+         '54917d77879b88ad5457f9e7f8ddb40d'
          '2e20ea98c8a8a4ccb5b070d937e9006d'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
 
 prepare() {
-	msg "Preparing kernel..."
 	cd $pkgname-$pkgver
+	gzip -dc $srcdir/reiser4-for-$reiserfs4patchver.patch.gz | patch -p1
+
+	msg "Preparing kernel..."
 	make mrproper
 
 	case $CARCH in
@@ -51,6 +56,8 @@ prepare() {
 			echo "Architecture is not set or is not supported"
 			exit 1
 	esac
+
+	make ARCH=$XKARCH olddefconfig
 }
 
 build() {
