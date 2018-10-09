@@ -21,9 +21,6 @@ prepare() {
 }
 
 build() {
-	export CFLAGS="${CFLAGS/-O2/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
-
 	cd Python-${pkgver}
 	export OPT="${CFLAGS}"
 	./configure \
@@ -35,7 +32,6 @@ build() {
 		--with-system-ffi \
 		--with-threads \
 		--enable-ipv6 \
-		--enable-optimizations \
 		--enable-shared \
 		--enable-unicode=ucs4 \
 		--build=$CHOST
@@ -43,9 +39,6 @@ build() {
 }
 
 package() {
-	export CFLAGS="${CFLAGS/-O2/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
-
 	cd Python-${pkgver}
 	sed -i 's/^all:.*$/all: build_all/' Makefile
 
