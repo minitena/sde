@@ -1,0 +1,33 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=reiserfsprogs
+pkgver=3.6.27
+pkgrel=1
+pkgdesc="Reiserfs utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://www.kernel.org/"
+license=('GPL')
+depends=('glibc' 'util-linux')
+source=("https://www.kernel.org/pub/linux/kernel/people/jeffm/$pkgname/v$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('90c139542725efc6da3a6b1709695395')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i '/parse_time.h/i #define _GNU_SOURCE' lib/parse_time.c
+	autoreconf -fiv
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
