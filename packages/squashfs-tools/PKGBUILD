@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=squashfs-tools
+pkgver=4.3
+pkgrel=1
+pkgdesc="Tools for squashfs, a highly compressed read-only filesystem for Linux"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://squashfs.sourceforge.net/"
+license=('GPL')
+depends=('glibc' 'zlib' 'xz-utils' 'lz4' 'lzo')
+source=("http://downloads.sourceforge.net/sourceforge/squashfs/squashfs${pkgver}.tar.gz"
+	'fix-glibc-2.28.patch')
+md5sums=('d92ab59aabf5173f2a59089531e30dbf'
+         '466f4b9e8f81f446f0218cebde4206a5')
+
+prepare() {
+	cd squashfs${pkgver}/${pkgname}
+	patch -Np1 -i $srcdir/fix-glibc-2.28.patch
+}
+
+build() {
+	cd squashfs${pkgver}/${pkgname}
+	make XZ_SUPPORT=1 LZO_SUPPORT=1 LZMA_XZ_SUPPORT=1 LZ4_SUPPORT=1 ZSTD_SUPPORT=1
+}
+
+package() {
+	cd squashfs${pkgver}/${pkgname}
+	install -Dm755 mksquashfs $pkgdir/usr/bin/mksquashfs
+	install -m755 unsquashfs $pkgdir/usr/bin/unsquashfs
+}
