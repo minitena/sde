@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=sysfsutils
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="System Utilities Based on Sysfs"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://linux-diag.sourceforge.net/Sysfsutils.html"
+license=('GPL' 'LGPL')
+depends=('glibc')
+source=("http://downloads.sourceforge.net/sourceforge/linux-diag/$pkgname-$pkgver.tar.gz")
+md5sums=('14e7dcd0436d2f49aa403f67e1ef7ddc')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
