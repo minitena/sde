@@ -3,7 +3,7 @@
 
 pkgname=('meta-base' 'meta-devel')
 pkgver=2018.10
-pkgrel=1
+pkgrel=2
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -14,7 +14,8 @@ package_meta-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux')
+		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux'
+		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'ca-certificates')
 	:
 }
 
@@ -26,11 +27,11 @@ package_meta-devel() {
 	:
 }
 
-#package_meta-base() {
+#package_meta-devel() {
 #	pkgdesc='Meta-package for development system'
 #	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
 #		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
-#		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'fakeroot' 'which')
+#		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'fakeroot' 'which' 'sudo')
 #	:
 #}
 
@@ -40,9 +41,7 @@ package_meta-devel() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-#		 'e2fsprogs' 'btrfs-progs' 'xfsprogs' 'f2fs-tools' 'dosfstools'
-#		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils'
-#		 'logrotate' 'which' 'ca-certificates' 'curl' 'wget' 'libarchive' 'pacman')
+#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux' 'which' 
+#		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}
