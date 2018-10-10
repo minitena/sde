@@ -9,6 +9,7 @@ arch=('x86_64' 'i586' 'aarch64')
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
 license=('GPL' 'MPL')
 depends=('glibc' 'zlib' 'nspr' 'sqlite' 'p11-kit')
+options=('staticlibs')
 source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz"
 	'nss-3.39-standalone-1.patch')
 md5sums=('10720fc70fd483de1b085402fb10ed59'
