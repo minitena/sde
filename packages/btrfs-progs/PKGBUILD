@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=btrfs-progs
+pkgver=4.17.1
+pkgrel=1
+pkgdesc="Btrfs filesystem utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://btrfs.wiki.kernel.org"
+license=('GPL')
+depends=('glibc' 'zlib' 'util-linux-libs' 'e2fsprogs' 'lzo' 'zstd')
+makedepends=('python' 'xmlto' 'asciidoc' 'systemd')
+source=("https://www.kernel.org/pub/linux/kernel/people/kdave/$pkgname/$pkgname-v$pkgver.tar.xz"
+	'service'
+	'timer')
+md5sums=('130be469ced99b01948af64b6a6312f6'
+         '917b31f4eb90448d6791e17ea0f386c7'
+         '502221c1b47a3bb2c06703d4fb90a0c2')
+
+build() {
+	cd $pkgname-v$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-v$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/btrfs-scrub@.service
+	install -Dm644 $srcdir/timer $pkgdir/usr/lib/systemd/system/btrfs-scrub@.timer
+}
