@@ -10,6 +10,7 @@ url="https://btrfs.wiki.kernel.org"
 license=('GPL')
 depends=('glibc' 'zlib' 'util-linux-libs' 'e2fsprogs' 'lzo' 'zstd')
 makedepends=('python' 'xmlto' 'asciidoc' 'systemd')
+options=('staticlibs')
 source=("https://www.kernel.org/pub/linux/kernel/people/kdave/$pkgname/$pkgname-v$pkgver.tar.xz"
 	'service'
 	'timer')

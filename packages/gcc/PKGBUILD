@@ -9,7 +9,7 @@ arch=('x86_64' 'i586' 'aarch64')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
-options=('!emptydirs')
+options=('staticlibs' '!emptydirs')
 source=(https://sources.archlinux.org/other/gcc/gcc-${pkgver/+/-}.tar.xz
 	c89
 	c99)

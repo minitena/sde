@@ -11,7 +11,7 @@ license=('GPL' 'LGPL')
 depends=('filesystem' 'tzdata' 'linux-headers')
 backup=(etc/gai.conf
 	etc/nscd.conf)
-options=('docs')
+options=('docs' 'staticlibs')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	bz20338.patch
 	bz23497.patch
