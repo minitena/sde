@@ -1,0 +1,39 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=ntfs-3g
+pkgbase=ntfs-3g_ntfsprogs
+pkgver=2017.3.23
+pkgrel=1
+pkgdesc="NTFS filesystem driver and utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.tuxera.com/community/open-source-ntfs-3g/"
+license=('GPL')
+depends=('glibc' 'util-linux-libs')
+source=("https://tuxera.com/opensource/$pkgbase-$pkgver.tgz")
+md5sums=('d97474ae1954f772c6d2fa386a6f462c')
+
+prepare() {
+	cd $pkgbase-$pkgver
+	sed 's|$(DESTDIR)/sbin|$(DESTDIR)/usr/bin|' -i {ntfsprogs,src}/Makefile.in
+}
+
+build() {
+	cd $pkgbase-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbin=/usr/bin \
+		--with-fuse=internal \
+		--enable-extras \
+		--enable-posix-acls \
+		--enable-xattr-mappings \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgbase-$pkgver
+	make DESTDIR=$pkgdir rootbindir=/usr/bin rootsbindir=/usr/bin rootlibdir=/usr/lib install
+
+	chmod 4755 $pkgdir/usr/bin/ntfs-3g
+}

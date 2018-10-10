@@ -15,7 +15,7 @@ package_meta-base() {
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux'
-		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'ca-certificates')
+		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'ca-certificates')
 	:
 }
 
@@ -42,6 +42,6 @@ package_meta-devel() {
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 #		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux' 'which' 
-#		 'sysfsutils' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
+#		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}

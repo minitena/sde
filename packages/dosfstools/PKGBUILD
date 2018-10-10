@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dosfstools
+pkgver=4.1
+pkgrel=1
+pkgdesc="DOS filesystem utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://github.com/dosfstools/dosfstools"
+license=('GPL')
+depends=('glibc')
+source=("https://github.com/$pkgname/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('07a1050db1a898e9a2e03b0c4569c4bd')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sbindir=/usr/bin \
+		--mandir=/usr/share/man \
+		--docdir=/usr/share/doc/dosfstools \
+		--enable-compat-symlinks \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
