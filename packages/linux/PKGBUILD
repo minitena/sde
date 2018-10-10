@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux
-pkgver=4.18.12
+pkgver=4.18.13
 reiserfs4patchver=4.18.0
 pkgrel=21
 pkgdesc="The Linux kernel"
@@ -19,7 +19,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'arm-config'
 	'60-linux.hook'
 	'90-linux.hook')
-md5sums=('4f6af94e58a89e89aa1683475544a58a'
+md5sums=('fd508f503ffe20504fca9dccf41c4d09'
          '4aa8cdbac33df4bee88fadefa9cdb8c4'
          '4b715ed9b7b5be8f8f39b7f5a855407b'
          '1628443ef20299286b3cea62cb7d1890'

@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux-headers
-pkgver=4.18.12
+pkgver=4.18.13
 pkgrel=1
 pkgdesc="Header files and scripts for building modules for Linux kernel"
 arch=('x86_64' 'i586' 'aarch64')
@@ -10,7 +10,7 @@ url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz")
-md5sums=('4f6af94e58a89e89aa1683475544a58a')
+md5sums=('fd508f503ffe20504fca9dccf41c4d09')
 
 prepare() {
 	cd linux-$pkgver
