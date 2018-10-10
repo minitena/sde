@@ -99,6 +99,7 @@ libxslt
 sgml-common
 docbook-xml
 docbook-xsl
+xmlto
 asciidoc
 libseccomp
 popt
