@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=reiser4progs
+pkgver=1.2.1
+pkgrel=1
+pkgdesc="Reiser4 filesystem programs"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://sourceforge.net/projects/reiser4/"
+license=('GPL')
+depends=('glibc' 'libaal' 'e2fsprogs')
+source=("http://sourceforge.net/projects/reiser4/files/reiser4-utils/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('5c3af8644a4ab291fd59ccff6539a1ed')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
