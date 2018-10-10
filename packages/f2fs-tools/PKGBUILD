@@ -1,0 +1,33 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=f2fs-tools
+pkgver=1.11.0
+pkgrel=1
+pkgdesc="Tools for Flash-Friendly File System (F2FS)"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/about/"
+license=('GPL')
+depends=('glibc' 'util-linux')
+source=("https://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/$pkgname-$pkgver.tar.gz")
+md5sums=('2bdd535186858c96e139b1f16d357c5f')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i '/sg_write_buffer/d' tools/Makefile.am
+	autoreconf -fi
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir sbindir=/usr/bin install
+}
