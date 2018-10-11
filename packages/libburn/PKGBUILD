@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libburn
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Library for reading, mastering and writing optical discs"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://dev.lovelyhq.com/libburnia"
+license=('GPL')
+depends=('glibc')
+options=('!emptydirs')
+source=("http://files.libburnia-project.org/releases/$pkgname-$pkgver.tar.gz")
+md5sums=('b32edefdd9a978edc65aacddfe7c588a')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

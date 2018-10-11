@@ -129,6 +129,9 @@ squashfs-tools
 fuse      
 fuse2
 ntfs-3g
+libburn
+libisofs
+libisoburn
 libelf
 dracut
 linux

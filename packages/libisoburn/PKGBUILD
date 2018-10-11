@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libisoburn
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="A frontend for libraries libburn and libisofs"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://dev.lovelyhq.com/libburnia"
+license=('GPL')
+depends=('glibc' 'readline' 'libburn' 'libisofs')
+provides=('xorriso')
+source=("http://files.libburnia-project.org/releases/$pkgname-$pkgver.tar.gz")
+md5sums=('760258ca2b7edf95109ee44de4665daf')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

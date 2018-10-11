@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libisofs
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Library to pack up hard disk files and directories into a ISO 9660 disk image"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://dev.lovelyhq.com/libburnia"
+license=('GPL')
+depends=('glibc' 'zlib' 'acl')
+source=("http://files.libburnia-project.org/releases/$pkgname-$pkgver.tar.gz")
+md5sums=('6207379ff84e6988b479e09a8698fb6d')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--enable-libacl \
+		--enable-xattr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
