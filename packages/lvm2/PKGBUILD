@@ -13,6 +13,7 @@ depends=('glibc' 'util-linux-libs' 'readline' 'libaio' 'systemd-libs')
 backup=('etc/lvm/lvm.conf'
 	'etc/lvm/lvmlocal.conf')
 source=("https://sourceware.org/ftp/lvm2/LVM2.$pkgver.tgz")
+md5sums=('7d6380d9a34981fd7b605eaa371295b3')
 
 prepare() {
 	cd LVM2.$pkgver
