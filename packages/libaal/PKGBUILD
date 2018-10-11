@@ -3,12 +3,13 @@
 
 pkgname=libaal
 pkgver=1.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Reiser4 filesystem support library"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://sourceforge.net/projects/reiser4/"
 license=('GPL')
 depends=('glibc')
+options=('staticlibs')
 source=("http://sourceforge.net/projects/reiser4/files/reiser4-utils/$pkgname/$pkgname-$pkgver.tar.gz")
 md5sums=('144b5ef9f13cb43cb053cb09aef63390')
 
