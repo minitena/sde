@@ -222,7 +222,7 @@ setup_architecture() {
 
 setup_environment() {
 	export CWD="$(pwd)"
-	export BUILD="$CWD/build"
+	export BUILD="$CWD/build_$BARCH"
 	export SOURCES="$BUILD/sources"
 	export PACKAGES="$BUILD/packages"
 	export ROOTFS="$BUILD/rootfs"
@@ -533,6 +533,7 @@ case "$1" in
 		;;
 	enter-chroot)
 		check_for_root
+		setup_architecture
 		setup_environment
 		enter_chroot
 		;;
