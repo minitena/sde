@@ -31,7 +31,6 @@ build() {
 		--with-system-icu \
 		--with-system-nspr \
 		--with-system-zlib \
-		--enable-linker=gold \
 		--enable-hardening \
 		--enable-optimize \
 		--enable-readline \
@@ -39,7 +38,9 @@ build() {
 		--enable-shared-js \
 		--disable-debug \
 		--disable-debug-symbols \
-		--disable-jemalloc
+		--disable-jemalloc \
+		--host=$CHOST \
+		--target=$CHOST
 	make
 }
 

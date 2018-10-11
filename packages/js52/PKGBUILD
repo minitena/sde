@@ -27,8 +27,6 @@ build() {
 		--with-system-icu \
 		--with-system-nspr \
 		--with-system-zlib \
-		--enable-gold \
-		--enable-optimize="-O2" \
 		--enable-pie \
 		--enable-readline \
 		--enable-release \
@@ -36,7 +34,8 @@ build() {
 		--enable-threadsafe \
 		--disable-debug \
 		--disable-debug-symbols \
-		--build=$CHOST
+		--host=$CHOST \
+		--target=$CHOST
 	make
 }
 
