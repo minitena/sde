@@ -3,7 +3,8 @@
 
 pkgname=bash
 mainver=4.4
-pkgver=${mainver}.023
+patchver=023
+pkgver=${mainver}.${patchver}
 strippedver="$(echo ${mainver} | tr -d '.')"
 pkgrel=1
 pkgdesc="The GNU Bourne Again shell"
@@ -72,29 +73,9 @@ md5sums=('148888a7c95ac23705559b6f477dfe25'
 
 prepare() {
 	cd $pkgname-${mainver}
-	patch -p0 -i $srcdir/$pkgname${strippedver}-001
-	patch -p0 -i $srcdir/$pkgname${strippedver}-002
-	patch -p0 -i $srcdir/$pkgname${strippedver}-003
-	patch -p0 -i $srcdir/$pkgname${strippedver}-004
-	patch -p0 -i $srcdir/$pkgname${strippedver}-005
-	patch -p0 -i $srcdir/$pkgname${strippedver}-006
-	patch -p0 -i $srcdir/$pkgname${strippedver}-007
-	patch -p0 -i $srcdir/$pkgname${strippedver}-008
-	patch -p0 -i $srcdir/$pkgname${strippedver}-009
-	patch -p0 -i $srcdir/$pkgname${strippedver}-010
-	patch -p0 -i $srcdir/$pkgname${strippedver}-011
-	patch -p0 -i $srcdir/$pkgname${strippedver}-012
-	patch -p0 -i $srcdir/$pkgname${strippedver}-013
-	patch -p0 -i $srcdir/$pkgname${strippedver}-014
-	patch -p0 -i $srcdir/$pkgname${strippedver}-015
-	patch -p0 -i $srcdir/$pkgname${strippedver}-016
-	patch -p0 -i $srcdir/$pkgname${strippedver}-017
-	patch -p0 -i $srcdir/$pkgname${strippedver}-018
-	patch -p0 -i $srcdir/$pkgname${strippedver}-019
-	patch -p0 -i $srcdir/$pkgname${strippedver}-020
-	patch -p0 -i $srcdir/$pkgname${strippedver}-021
-	patch -p0 -i $srcdir/$pkgname${strippedver}-022
-	patch -p0 -i $srcdir/$pkgname${strippedver}-023
+	for (( _p=1; _p<=$((10#${patchver})); _p++ )); do
+		patch -p0 -i ../bash${mainver//.}-$(printf "%03d" $_p)
+	done
 }
 
 build() {
