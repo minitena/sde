@@ -30,7 +30,7 @@ session   required    pam_limits.so
 # Display date of last login - Disabled by default
 #session   optional    pam_lastlog.so
 
-# Display the message of the day - Disabled by default
+# Display the message of the day
 session   optional    pam_motd.so
 
 # Check user's mail - Disabled by default
