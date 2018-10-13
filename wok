@@ -637,12 +637,20 @@ EOF
 }
 
 build_isoimage() {
-	xorriso -as mkisofs -v -o $BUILD/minitena-$BARCH.iso \
-		-no-emul-boot -boot-load-size 4 -boot-info-table \
+	xorriso -as mkisofs \
 		-isohybrid-mbr $SOURCES/syslinux-6.03/bios/mbr/isohdpfx.bin \
-		-b "isolinux.bin" -c "boot.cat" \
-		-eltorito-alt-boot -e uefi.img -isohybrid-gpt-basdat \
-		-A 'Minitena' -V 'Minitena' $ISODIR/
+		-c boot.cat \
+		-b isolinux.bin \
+		-no-emul-boot \
+		-boot-load-size 4 \
+		-boot-info-table \
+		-eltorito-alt-boot \
+		-e uefi.img \
+		-no-emul-boot \
+		-isohybrid-gpt-basdat \
+		-A 'Minitena' -V 'Minitena' \
+		-o $BUILD/minitena-$BARCH.iso \
+		$ISODIR/
 }
 
 case "$1" in
@@ -678,7 +686,7 @@ case "$1" in
 			build_liveos
 			prepare_efi
 			prepare_bios
-#			build_isoimage
+			build_isoimage
 		fi
 		;;
 	final-system)
