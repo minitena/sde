@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=efivar
+pkgver=36
+pkgrel=1
+pkgdesc="Tools and library to manipulate EFI variables"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://github.com/rhinstaller/efivar"
+license=('LGPL')
+depends=('glibc' 'popt')
+source=("https://github.com/rhboot/efivar/releases/download/$pkgver/$pkgname-$pkgver.tar.bz2")
+md5sums=('e98140ab7105e90059dc57a67c8c07e9')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed 's|-O0|-Os|g' -i Make.defaults || true
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make libdir=/usr/lib/ bindir=/usr/bin/ mandir=/usr/share/man/ includedir=/usr/include/
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make -j1 libdir=/usr/lib/ bindir=/usr/bin/ mandir=/usr/share/man/ includedir=/usr/include/ DESTDIR=$pkgdir install
+}
