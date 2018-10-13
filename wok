@@ -364,15 +364,15 @@ enter_chroot() {
 		BARCH="$BARCH" \
 		/usr/bin/sh
 
-	umount $ROOTFS/var/repo
-	umount $ROOTFS/proc
-	umount $ROOTFS/sys
-	umount $ROOTFS/dev
-	umount $ROOTFS/tmp
-	umount $ROOTFS/output/sources
-	umount $ROOTFS/output/packages
-	umount $ROOTFS/output/stage
-	umount $ROOTFS/output/initrd
+	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/proc
+	umount -l $ROOTFS/sys
+	umount -l $ROOTFS/dev
+	umount -l $ROOTFS/tmp
+	umount -l $ROOTFS/output/sources
+	umount -l $ROOTFS/output/packages
+	umount -l $ROOTFS/output/stage
+	umount -l $ROOTFS/output/initrd
 
 	set -e
 }
