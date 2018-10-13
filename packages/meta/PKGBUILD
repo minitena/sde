@@ -14,7 +14,7 @@ package_meta-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux'
+		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'ca-certificates')
 	:
 }
@@ -41,7 +41,7 @@ package_meta-devel() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'vim' 'dracut' 'linux' 'which' 
+#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux' 'which' 
 #		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}
