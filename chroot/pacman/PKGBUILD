@@ -51,4 +51,8 @@ package() {
 		-e "s|@GCCOPTS[@]|$GCCOPTS|g" \
 		-e "s|@BINUTILSOPTS[@]|$BINUTILSOPTS|g" \
 		-e "s|@MKOPTS[@]|$MAKEFLAGS|g"
+
+	sed -i $pkgdir/etc/pacman.conf \
+		-e "s|@CARCH[@]|$CARCH|g" \
+		-e "s|@PKGS[@]|$PKGDEST|g"
 }

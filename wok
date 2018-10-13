@@ -228,8 +228,9 @@ setup_environment() {
 	export ROOTFS="$BUILD/rootfs"
 	export TOOLS="$BUILD/tools"
 	export ISODIR="$BUILD/isodir"
-	export INITRD="$BUILD/initrd"
-	export STAGE="$BUILD/stage"
+	export ISOBUILD="$BUILD/isobuild"
+	export LIVEOS="$BUILD/liveos"
+	export EFIBUILD="$BUILD/efibuild"
 	export REPO="$CWD/packages"
 	export TCREPO="$CWD/toolchain"
 	export CHREPO="$CWD/chroot"
@@ -245,9 +246,9 @@ setup_environment() {
 
 build_environment() {
 	rm -rf $BUILD
-	mkdir -p $BUILD $SOURCES $PACKAGES $ROOTFS $TOOLS $ISODIR $INITRD $STAGE
+	mkdir -p $BUILD $SOURCES $PACKAGES $ROOTFS $TOOLS $LIVEOS $EFIBUILD $ISOBUILD $ISODIR
 
-	initdb $TOOLS $ROOTFS $INITRD $STAGE
+	initdb $TOOLS $ROOTFS
 
 	cp -a $TCREPO/makepkg.conf $BUILD/host-makepkg.conf
 	cp -a $CHREPO/makepkg.conf $BUILD/target-makepkg.conf
@@ -353,8 +354,6 @@ enter_chroot() {
 	mount --bind $REPO $ROOTFS/var/repo
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
-	mount --bind $STAGE $ROOTFS/output/stage
-	mount --bind $INITRD $ROOTFS/output/initrd
 
 	chroot $ROOTFS /usr/bin/env -i \
 		TERM="$TERM" \
@@ -371,8 +370,6 @@ enter_chroot() {
 	umount -l $ROOTFS/tmp
 	umount -l $ROOTFS/output/sources
 	umount -l $ROOTFS/output/packages
-	umount -l $ROOTFS/output/stage
-	umount -l $ROOTFS/output/initrd
 
 	set -e
 }
@@ -495,19 +492,157 @@ build_final_system() {
 		esac
 	done
 
-#	case $BARCH in
-#		x86_64|i586)
-#			pkgnativeinstall syslinux
-#			pkgnativeinstall efivar
-#			pkgnativeinstall efibootmgr
-#			pkgnativeinstall grub
-#			pkgnativeinstall os-prober
-#			;;
-#	esac
-
 	pkgnativebuild meta
 
 	rm -rf /output/packages/*debug*.pkg*
+
+	cd /output/packages/
+	repo-add core.db.tar.xz *.pkg*
+}
+
+download_loader() {
+	cd $SOURCES
+	curl -k -C - -L -O https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.tar.xz
+	curl -k -C - -L -O https://github.com/ivandavidov/systemd-boot/releases/download/systemd-boot_26-May-2018/systemd-boot_26-May-2018.tar.xz
+	tar -xf syslinux-6.03.tar.xz
+	tar -xf systemd-boot_26-May-2018.tar.xz
+}
+
+install_base() {
+	$ROOTFS/usr/bin/pacstrap -C $ROOTFS/etc/pacman.conf $LIVEOS meta-base
+}
+
+configure_liveos() {
+	rm -rf $LIVEOS/var/cache/pacman/*
+	rm -rf $LIVEOS/usr/include
+	rm -rf $LIVEOS/usr/lib/*.a
+	rm -rf $LIVEOS/usr/lib/pkgconfig
+	rm -rf $LIVEOS/usr/share/pkgconfig
+
+	mkdir -p $LIVEOS/etc/systemd/system/getty@tty1.service.d/
+cat > $LIVEOS/etc/systemd/system/getty@tty1.service.d/override.conf << "EOF"
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin root %I $TERM
+EOF
+}
+
+build_initramfs() {
+	mv $LIVEOS/boot/vmlinuz-linux $ISODIR/kernel
+	rm -rf $LIVEOS/boot/initramfs-linux.img
+
+	chroot $LIVEOS /usr/bin/dracut --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live" --force --xz -q boot/initramfs-linux.img 4.18.14
+	mv $LIVEOS/boot/initramfs-linux.img $ISODIR/initrd
+}
+
+build_liveos() {
+	export ROOTFS_SIZE=$(du -sm "$LIVEOS"|awk '{print $1}')
+	if [ -z "$ROOTFS_FREESIZE" ]; then
+		export ROOTFS_FREESIZE="$((ROOTFS_SIZE/6))"
+	fi
+
+	mkdir -p $ISOBUILD/tmp/LiveOS
+	truncate -s "$((ROOTFS_SIZE+ROOTFS_FREESIZE))M" \
+		$ISOBUILD/tmp/LiveOS/rootfs.img >/dev/null 2>&1
+	mkdir -p $ISOBUILD/tmp-rootfs
+	mkfs.ext4 -F -m1 $ISOBUILD/tmp/LiveOS/rootfs.img >/dev/null 2>&1
+	mount -o loop $ISOBUILD/tmp/LiveOS/rootfs.img $ISOBUILD/tmp-rootfs
+	cp -a $LIVEOS/* $ISOBUILD/tmp-rootfs/
+	umount -f $ISOBUILD/tmp-rootfs
+	mkdir -p $ISODIR/LiveOS
+	mksquashfs $ISOBUILD/tmp $ISODIR/LiveOS/squashfs.img -comp xz || exit 1
+	chmod 444 $ISODIR/LiveOS/squashfs.img
+}
+
+prepare_bios() {
+	cp $SOURCES/syslinux-6.03/bios/core/isolinux.bin $ISODIR/isolinux.bin
+	cp $SOURCES/syslinux-6.03/bios/com32/elflink/ldlinux/ldlinux.c32 $ISODIR/ldlinux.c32
+	cp $SOURCES/syslinux-6.03/bios/com32/libutil/libutil.c32 $ISODIR/libutil.c32
+	cp $SOURCES/syslinux-6.03/bios/com32/menu/menu.c32 $ISODIR/menu.c32
+
+cat > $ISODIR/isolinux.cfg << "EOF"
+UI menu.c32
+PROMPT 0
+ 
+MENU TITLE Boot Menu:
+TIMEOUT 60
+DEFAULT minitena
+ 
+LABEL minitena
+	MENU LABEL Minitena
+	LINUX /kernel
+	INITRD /initrd
+	APPEND root=live:LABEL=Minitena ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
+EOF
+}
+
+prepare_efi() {
+	case $BARCH in
+		x86_64)
+			export EFIVER="x86_64"
+			export BOOTEFI="BOOTx64.EFI"
+			;;
+		i586)
+			export EFIVER="x86"
+			export BOOTEFI="BOOTIA32.EFI"
+			;;
+	esac
+
+	export kernel_size=`du -b $ISODIR/kernel | awk '{print \$1}'`
+	export rootfs_size=`du -b $ISODIR/initrd | awk '{print \$1}'`
+	export loader_size=`du -b $SOURCES/systemd-boot_26-May-2018/uefi_root/EFI/BOOT/$BOOTEFI | awk '{print \$1}'`
+
+	export image_size=$((kernel_size + rootfs_size + loader_size + 65536))
+    
+	rm -f $EFIBUILD/uefi.img
+	truncate -s $image_size $EFIBUILD/uefi.img
+
+	export LOOP_DEVICE_HDD=$(losetup -f)
+	losetup $LOOP_DEVICE_HDD $EFIBUILD/uefi.img
+
+	mkfs.vfat $LOOP_DEVICE_HDD
+
+	rm -rf $EFIBUILD/uefi_image
+	mkdir -p $EFIBUILD/uefi_image
+	mount $EFIBUILD/uefi.img $EFIBUILD/uefi_image
+
+	mkdir -p $EFIBUILD/uefi_image/EFI/BOOT
+	cp $SOURCES/systemd-boot_26-May-2018/uefi_root/EFI/BOOT/$BOOTEFI $EFIBUILD/uefi_image/EFI/BOOT
+
+	mkdir -p $EFIBUILD/uefi_image/loader/entries
+
+	cat > $EFIBUILD/uefi_image/loader/loader.conf << "EOF"
+		default minitena-live
+		timeout 60
+		editor 1
+	EOF
+
+cat > $EFIBUILD/uefi_image/loader/entries/minitena-live.conf << "EOF"
+title Minitena
+version $EFIVER
+efi /kernel
+options initrd=/initrd root=live:LABEL=Minitena ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
+EOF
+
+	sync
+	umount -l -f $EFIBUILD/uefi_image
+	sync
+	sleep 1
+
+	rm -rf $EFIBUILD/uefi_image
+
+	chmod ugo+r $EFIBUILD/uefi.img
+
+	cp $EFIBUILD/uefi.img $ISODIR/uefi.img
+}
+
+build_isoimage() {
+	xorriso -as mkisofs -v -o $BUILD/minitena-$BARCH.iso \
+		-no-emul-boot -boot-load-size 4 -boot-info-table \
+		-isohybrid-mbr $SOURCES/syslinux-6.03/bios/mbr/isohdpfx.bin \
+		-b "isolinux.bin" -c "boot.cat" \
+		-eltorito-alt-boot -e uefi.img -isohybrid-gpt-basdat \
+		-A 'Minitena' -V 'Minitena' $ISODIR/
 }
 
 case "$1" in
@@ -527,6 +662,24 @@ case "$1" in
 		build_bootstrap
 		build_symlinks
 		update_wok
+		;;
+	image)
+            	if [ "$BARCH" = "aarch64" ]; then
+			echo "Sorry we don't produce *.iso images for aarch64"
+			exit 1
+		else
+			check_for_root
+			setup_architecture
+			setup_environment
+			download_loader
+			install_base
+			configure_liveos
+			build_initramfs
+			build_liveos
+			prepare_efi
+			prepare_bios
+#			build_isoimage
+		fi
 		;;
 	final-system)
 		build_final_system
