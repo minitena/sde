@@ -565,7 +565,7 @@ UI menu.c32
 PROMPT 0
  
 MENU TITLE Boot Menu:
-TIMEOUT 60
+TIMEOUT 59
 DEFAULT minitena
  
 LABEL minitena
@@ -588,11 +588,11 @@ prepare_efi() {
 			;;
 	esac
 
-	export kernel_size=`du -b $ISODIR/kernel | awk '{print \$1}'`
-	export rootfs_size=`du -b $ISODIR/initrd | awk '{print \$1}'`
-	export loader_size=`du -b $SOURCES/systemd-boot_26-May-2018/uefi_root/EFI/BOOT/$BOOTEFI | awk '{print \$1}'`
+	kernel_size=`du -b $ISODIR/kernel | awk '{print \$1}'`
+	rootfs_size=`du -b $ISODIR/initrd | awk '{print \$1}'`
+	loader_size=`du -b $SOURCES/systemd-boot_26-May-2018/uefi_root/EFI/BOOT/$BOOTEFI | awk '{print \$1}'`
 
-	export image_size=$((kernel_size + rootfs_size + loader_size + 65536))
+	image_size=$((kernel_size + rootfs_size + loader_size + 65536 + 6291456))
     
 	rm -f $EFIBUILD/uefi.img
 	truncate -s $image_size $EFIBUILD/uefi.img
@@ -609,19 +609,23 @@ prepare_efi() {
 	mkdir -p $EFIBUILD/uefi_image/EFI/BOOT
 	cp $SOURCES/systemd-boot_26-May-2018/uefi_root/EFI/BOOT/$BOOTEFI $EFIBUILD/uefi_image/EFI/BOOT
 
+	cp $ISODIR/kernel $EFIBUILD/uefi_image/kernel
+	cp $ISODIR/initrd $EFIBUILD/uefi_image/initrd
+
 	mkdir -p $EFIBUILD/uefi_image/loader/entries
 
-	cat > $EFIBUILD/uefi_image/loader/loader.conf << "EOF"
-		default minitena-live
-		timeout 60
-		editor 1
-	EOF
+cat > $EFIBUILD/uefi_image/loader/loader.conf << "EOF"
+default minitena-live
+timeout 60
+editor 1
+EOF
 
 cat > $EFIBUILD/uefi_image/loader/entries/minitena-live.conf << "EOF"
 title Minitena
 version $EFIVER
-efi /kernel
-options initrd=/initrd root=live:LABEL=Minitena ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
+linux kernel
+initrd initrd
+options root=live:LABEL=Minitena ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
 EOF
 
 	sync
@@ -679,6 +683,8 @@ case "$1" in
 			check_for_root
 			setup_architecture
 			setup_environment
+			rm -rf $LIVEOS $EFIBUILD $ISOBUILD $ISODIR
+			mkdir -p $LIVEOS $EFIBUILD $ISOBUILD $ISODIR
 			download_loader
 			install_base
 			configure_liveos

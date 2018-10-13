@@ -53,6 +53,5 @@ package() {
 		-e "s|@MKOPTS[@]|$MAKEFLAGS|g"
 
 	sed -i $pkgdir/etc/pacman.conf \
-		-e "s|@CARCH[@]|$CARCH|g" \
-		-e "s|@PKGS[@]|$PKGDEST|g"
+		-e "s|@CARCH[@]|$CARCH|g"
 }
