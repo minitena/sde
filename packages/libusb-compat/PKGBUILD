@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libusb-compat
+pkgver=0.1.5
+pkgrel=1
+pkgdesc="Library to enable user space application programs to communicate with USB devices"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://libusb.sourceforge.net/"
+license=('LGPL')
+depends=('libusb')
+source=("http://downloads.sourceforge.net/${pkgname%-*}/${pkgname}-${pkgver%.*}/$pkgname-$pkgver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('2780b6a758a1e2c2943bdbf7faf740e4')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

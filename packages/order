@@ -156,4 +156,10 @@ apparmor
 mdadm
 parted
 quota
+pciutils
+libusb
+libusb-compat
+usbutils
+efivar
+efibootmgr
 grub
