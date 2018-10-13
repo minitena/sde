@@ -1,0 +1,36 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=pciutils
+pkgver=3.6.2
+pkgrel=1
+pkgdesc="PCI bus configuration space access library and tools"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://mj.ucw.cz/sw/pciutils/"
+license=('GPL')
+depends=('glibc' 'kmod' 'hwids')
+source=("https://www.kernel.org/pub/software/utils/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('77963796d1be4f451b83e6da28ba4f82')
+
+build() {
+	cd $pkgname-$pkgver
+	make \
+		PREFIX=/usr \
+		SBINDIR=/usr/bin \
+		SHAREDIR=/usr/share/hwdata \
+		SHARED=yes
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make \
+		PREFIX=/usr \
+		SBINDIR=/usr/bin \
+		SHAREDIR=/usr/share/hwdata \
+		SHARED=yes \
+		DESTDIR=$pkgdir install install-lib
+
+	chmod 755 $pkgdir/usr/lib/libpci.so
+
+	rm -rf $pkgdir/usr/{sbin/update-pciids,share/{man/man8/update-pciids.8,hwdata}}
+}
