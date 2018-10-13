@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=efibootmgr
+pkgver=17
+pkgrel=1
+pkgdesc="Tool to modify UEFI Firmware Boot Manager Variables"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://github.com/rhinstaller/efibootmgr"
+license=('GPL')
+depends=('glibc' 'zlib' 'dosfstools' 'pciutils' 'efivar')
+options=('!emptydirs')
+source=("https://github.com/rhboot/efibootmgr/archive/$pkgver.tar.gz")
+md5sums=('6ae315936d9bc8613b3a4cb8a4064128')
+
+build() {
+	cd $pkgname-$pkgver
+	make EXTRA_CFLAGS="-Os" EFIDIR=/boot/EFI
+}
+
+package() {
+	cd $pkgname-$pkgver
+	install -d $pkgdir/usr/bin/
+	install -D -m0755 src/efibootmgr $pkgdir/usr/bin/efibootmgr
+}
