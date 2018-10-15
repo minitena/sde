@@ -1,0 +1,49 @@
+Submitted By:            DJ Lucas <dj_AT_linuxfromscratch_DOT_org>
+Date:                    2018-10-10
+Initial Package Version: 239
+Upstream Status:         Unknown
+Origin:                  Self
+Description:             Fixes build issue with reserved 'debug' option.
+
+diff -Naurp systemd-239-orig/meson.build systemd-239/meson.build
+--- systemd-239-orig/meson.build	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/meson.build	2018-10-09 23:14:25.357818825 -0500
+@@ -764,13 +764,13 @@ substs.set('DEBUGTTY', get_option('debug
+ 
+ enable_debug_hashmap = false
+ enable_debug_mmap_cache = false
+-foreach name : get_option('debug')
++foreach name : get_option('debugtype')
+         if name == 'hashmap'
+                 enable_debug_hashmap = true
+         elif name == 'mmap-cache'
+                 enable_debug_mmap_cache = true
+         else
+-                message('unknown debug option "@0@", ignoring'.format(name))
++                message('unknown debugtype option "@0@", ignoring'.format(name))
+         endif
+ endforeach
+ conf.set10('ENABLE_DEBUG_HASHMAP', enable_debug_hashmap)
+@@ -2982,8 +2982,8 @@ foreach tuple : [
+         ['adm group',        get_option('adm-group')],
+         ['wheel group',      get_option('wheel-group')],
+         ['gshadow'],
+-        ['debug hashmap'],
+-        ['debug mmap cache'],
++        ['debugtype hashmap'],
++        ['debugtype mmap cache'],
+         ['valgrind',         conf.get('VALGRIND') == 1],
+ ]
+ 
+diff -Naurp systemd-239-orig/meson_options.txt systemd-239/meson_options.txt
+--- systemd-239-orig/meson_options.txt	2018-06-22 06:11:49.000000000 -0500
++++ systemd-239/meson_options.txt	2018-10-09 23:14:43.093834674 -0500
+@@ -46,7 +46,7 @@ option('debug-shell', type : 'string', v
+        description : 'path to debug shell binary')
+ option('debug-tty', type : 'string', value : '/dev/tty9',
+        description : 'specify the tty device for debug shell')
+-option('debug', type : 'array', choices : ['hashmap', 'mmap-cache'], value : [],
++option('debugtype', type : 'array', choices : ['hashmap', 'mmap-cache'], value : [],
+        description : 'enable extra debugging')
+ option('memory-accounting-default', type : 'boolean',
+        description : 'enable MemoryAccounting= by default')

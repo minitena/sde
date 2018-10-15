@@ -4,13 +4,14 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=19
+pkgrel=20
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
 makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl')
 source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar.gz
 	fix-build-glibc2.28.patch
+	systemd-239-meson-0.48.0_fixes-1.patch
 	clear-consoles.patch
 	systemd-user.pam
 	systemd-hook
@@ -24,6 +25,7 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	systemd-update.hook)
 md5sums=('6137e3f50390391cf34521d071a1a078'
          'a44057d6a6ca69760bafc126458d89e5'
+         '0e12e0722bd6bb84e8a4ec4de8979722'
          '5046abaeeee8047913c7f7c94e44683d'
          '9020f08c13d9e17cb780b526a9f8b6f6'
          'd58e56112a367f12ed2e4db1ed002bd2'
@@ -40,6 +42,7 @@ prepare() {
 	cd $pkgbase-$pkgver
 	sed '166,$ d' -i src/resolve/meson.build
 	patch -Np1 -i $srcdir/fix-build-glibc2.28.patch
+	patch -Np1 -i $srcdir/systemd-239-meson-0.48.0_fixes-1.patch
 	patch -Np1 -i $srcdir/clear-consoles.patch
 	sed -i 's/GROUP="render", //' rules/50-udev-default.rules.in
 

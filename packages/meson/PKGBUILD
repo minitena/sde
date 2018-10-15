@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=meson
-pkgver=0.47.2
+pkgver=0.48.0
 pkgrel=1
 pkgdesc="High productivity build system"
 arch=('x86_64' 'i586' 'aarch64')
@@ -10,7 +10,7 @@ url="http://mesonbuild.com/"
 license=('Apache')
 depends=('python' 'ninja')
 source=("https://github.com/mesonbuild/meson/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('31bda3519d8c0eb3438267268a78085e')
+md5sums=('e92273538c6b8371e68d736287a5d991')
 
 build() {
 	cd $pkgname-$pkgver
