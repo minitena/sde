@@ -1,0 +1,63 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=openssh
+pkgver=7.8p1
+pkgrel=1
+pkgdesc="Premier connectivity tool for remote login with the SSH protocol"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.openssh.com/portable.html"
+license=('BSD')
+depends=('glibc' 'zlib' 'pam' 'libressl')
+backup=('etc/ssh/ssh_config'
+	'etc/ssh/sshd_config'
+	'etc/pam.d/sshd')
+source=("https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz"
+	'asshd.service'
+	'sshd.service'
+	'sshd.socket'
+	'sshdgenkeys.service'
+	'sshd.conf')
+md5sums=('ce1d090fa6239fd38eb989d5e983b074'
+         '51284b11c80c2022c64015084eaf77d2'
+         '26483c2a13e970c55e0ee690dbdd6975'
+         '76f52c66fb3193f301fe0a666e047ab1'
+         'f7c35eab2ca1ea6352da19eb2e1f6b6b'
+         '0dc7eaae0fcaf48a5a0f11c618e503c9')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/ssh \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc/ssh \
+		--with-pid-dir=/run \
+		--with-default-path='/usr/local/sbin:/usr/local/bin:/usr/bin' \
+		--with-xauth=/usr/bin/xauth \
+		--with-privsep-path=/var/empty \
+		--with-privsep-user=nobody \
+		--with-md5-passwords \
+		--with-ssl-engine \
+		--with-pam \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/sshdgenkeys.service $pkgdir/usr/lib/systemd/system/sshdgenkeys.service
+	install -Dm644 $srcdir/asshd.service $pkgdir/usr/lib/systemd/system/sshd@.service
+	install -Dm644 $srcdir/sshd.service $pkgdir/usr/lib/systemd/system/sshd.service
+	install -Dm644 $srcdir/sshd.socket $pkgdir/usr/lib/systemd/system/sshd.socket
+	install -Dm644 $srcdir/sshd.conf $pkgdir/usr/lib/tmpfiles.d/sshd.conf
+
+	mkdir -p $pkgdir/etc/pam.d/
+	echo "PasswordAuthentication no" >> $pkgdir/etc/ssh/sshd_config
+	echo "ChallengeResponseAuthentication no" >> $pkgdir/etc/ssh/sshd_config
+	sed 's@d/login@d/sshd@g' /etc/pam.d/login > $pkgdir/etc/pam.d/sshd
+	chmod 644 $pkgdir/etc/pam.d/sshd
+	echo "UsePAM yes" >> $pkgdir/etc/ssh/sshd_config
+}

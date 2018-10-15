@@ -163,3 +163,5 @@ usbutils
 efivar
 efibootmgr
 grub
+openssh
+dropbear

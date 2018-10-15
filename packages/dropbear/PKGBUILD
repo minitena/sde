@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dropbear
+pkgver=2018.76
+pkgrel=1
+pkgdesc="Lightweight SSH server"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://matt.ucc.asn.au/dropbear/dropbear.html"
+license=('MIT')
+depends=('glibc' 'zlib')
+source=("https://matt.ucc.asn.au/$pkgname/releases/$pkgname-$pkgver.tar.bz2"
+	'service')
+md5sums=('c3912f7fcdcc57c99937e4a79480d2c2'
+         '74211fc182d25b7d02401b0918d944ac')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/dropbear.service
+}
