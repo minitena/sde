@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=20
+pkgrel=21
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -60,6 +60,8 @@ build() {
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
+		-Daudit=true \
+		-Dapparmor=false \
 		-Dblkid=true \
 		-Dbuildtype=release \
 		-Ddbuspolicydir=/etc/dbus-1/system.d \
@@ -77,6 +79,7 @@ build() {
 		-Dntp-servers="0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org" \
 		-Dpam=true \
 		-Drpmmacrosdir=no \
+		-Dselinux=true \
 		-Dsysusers=false
 	ninja
 }
@@ -133,7 +136,7 @@ package_systemd() {
 
 package_systemd-libs() {
 	pkgdesc='systemd client libraries'
-	depends=('glibc' 'libcap' 'libgcrypt' 'lz4' 'xz-utils')
+	depends=('glibc' 'libcap' 'libgcrypt' 'lz4' 'xz-utils' 'libselinux')
 
 	install -d -m0755 $pkgdir/usr
 	mv libsystemd $pkgdir/usr/lib

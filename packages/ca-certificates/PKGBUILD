@@ -2,63 +2,38 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=ca-certificates
-pkgver=20180409
+pkgver=0.10.1
 pkgrel=1
-pkgdesc="Common CA certificates (default providers)"
-arch=('x86_64' 'i586' 'aarch64')
-url="https://minitena.github.io/"
+pkgdesc="Common CA certificates"
+arch=('any')
+url="https://github.com/protonesso/ca-certs/blob/master/README"
 license=('custom')
-depends=('glibc' 'zlib' 'libressl')
-source=("https://github.com/protonesso/yoctus-baselayout/raw/master/ca-certificates_20180409.tar.xz"
-	'certdata2pem.c'
-	'c_rehash.c'
-	'update-ca-certificates.hook')
-md5sums=('8425f4b1219e4e528db2de764e4c6586'
-         '1c759bac40fcae93119696ae24144ee2'
-         'eba0f9b8d993f21c900a12ca03301344'
-         '7b5e5674c33848c1de749f02e10fd8d1')
-
-prepare() {
-	cd "$srcdir/$pkgname"
-	sed -e 's#openssl rehash#c_rehash#' -i sbin/update-ca-certificates
-}
-
-build() {
-	cd "$srcdir/$pkgname"
-
-cat > sbin/Makefile << EOF
-install:
-	install -Dm755 update-ca-certificates \$(DESTDIR)\$(SBINDIR)/update-ca-certificates
-EOF
-
-mv $srcdir/certdata2pem.c mozilla/certdata2pem.c
-
-cat > mozilla/Makefile << EOF
-all:
-	gcc -Wall certdata2pem.c -o certdata2pem
-	./certdata2pem
-clean:
-	-rm -f *.crt
-install:
-	for p in *.crt; do \
-	    install -Dm0644 \$\$p \$(CERTSDIR)/\$\$p ; \
-	done
-EOF
-
-	make
-
-	gcc $srcdir/c_rehash.c -o $srcdir/c_rehash -L$ROOTFS/usr/lib -lssl -lcrypto -lz $CFLAGS
-}
+depends=('libressl' 'p11-kit')
+source=("https://github.com/protonesso/ca-certs/archive/$pkgver.tar.gz"
+	'http://www.cacert.org/certs/root.crt'
+	'http://www.cacert.org/certs/class3.crt'
+	'ca-certificates.hook')
+md5sums=('SKIP'
+	 'SKIP'
+	 'SKIP'
+	 'SKIP')
 
 package() {
-	unset MAKEFLAGS
-	cd "$srcdir/$pkgname"
-	make DESTDIR=$pkgdir SBINDIR=/usr/bin install
+	mkdir -p $pkgdir/etc/ssl/certs
+	mkdir -p $pkgdir/etc/ssl/local
 
-	mkdir -p $pkgdir/etc
-	find $pkgdir/usr/share/${pkgname}/ -name '*.crt' | \
-		rev | cut -d/ -f1-2 | rev | sort > $pkgdir/etc/ca-certificates.conf
+	openssl x509 -in $SRC/root.crt -text -fingerprint -setalias "CAcert Class 1 root" \
+		-addtrust serverAuth -addtrust emailProtection -addtrust codeSigning \
+		> $pkgdir/etc/ssl/local/CAcert_Class_1_root.pem &&
+	openssl x509 -in $SRC/class3.crt -text -fingerprint -setalias "CAcert Class 3 root" \
+		-addtrust serverAuth -addtrust emailProtection -addtrust codeSigning \
+		> $pkgdir/etc/ssl/local/CAcert_Class_3_root.pem
 
-	install -Dm0755 $srcdir/c_rehash $pkgdir/usr/bin/c_rehash
-	install -Dm644 $srcdir/update-ca-certificates.hook $pkgdir/usr/share/libalpm/hooks/update-ca-certificates.hook
+	cd ca-certs-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -dm755 $pkgdir/usr/share/libalpm/hooks/
+	install -m644 $srcdir/ca-certificates.hook $pkgdir/usr/share/libalpm/hooks/
+
+	rm -rf $pkgdir/etc/systemd
 }

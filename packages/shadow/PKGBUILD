@@ -3,12 +3,12 @@
 
 pkgname=shadow
 pkgver=4.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Password and account management tool suite"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://github.com/shadow-maint/shadow"
 license=('BSD')
-depends=('glibc' 'pam' 'acl')
+depends=('glibc' 'pam' 'acl' 'libselinux')
 backup=('etc/default/useradd'
 	'etc/limits'
 	'etc/login.defs'
@@ -51,6 +51,12 @@ prepare() {
 }
 
 build() {
+	if [ -f /usr/lib/libselinux.so ]; then
+		export SELINUXOPTS="--with-selinux"
+	else
+		export SELINUXOPTS="--without-selinux"
+	fi
+
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
@@ -61,8 +67,7 @@ build() {
 		--mandir=/usr/share/man \
 		--with-libpam \
 		--with-group-name-max-length=32 \
-		--without-selinux \
-		--build=$CHOST
+		--build=$CHOST $SELINUXOPTS
 	make
 }
 

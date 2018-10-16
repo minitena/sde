@@ -16,15 +16,13 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'x86_64-config'
 	'i586-config'
 	'arm64-config'
-	'arm-config'
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('7bca53d8f98fe1711efca5083229de69'
          '4aa8cdbac33df4bee88fadefa9cdb8c4'
-         '4b715ed9b7b5be8f8f39b7f5a855407b'
-         '1628443ef20299286b3cea62cb7d1890'
-         '54917d77879b88ad5457f9e7f8ddb40d'
-         '2e20ea98c8a8a4ccb5b070d937e9006d'
+         '40be31559436f9663a617152b97a9732'
+         '13166c217d8f83ebaaf4093fdc6ae912'
+         '671745c943d40f08ae081116b6eee372'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
 
@@ -48,10 +46,6 @@ prepare() {
 			export XKARCH="arm64"
 			cp $srcdir/arm64-config .config
 			;;
-		arm)
-			export XKARCH="arm"
-			cp $srcdir/arm-config .config
-			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
@@ -73,9 +67,6 @@ build() {
 			;;
 		aarch64)
 			export XKARCH="arm64"
-			;;
-		arm)
-			export XKARCH="arm"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -102,10 +93,6 @@ package() {
 			export XKARCH="arm64"
 			export IMG="arch/arm64/boot/Image"
 			;;
-		arm)
-			export XKARCH="arm"
-			export IMG="arch/arm/boot/zImage"
-			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
@@ -118,7 +105,7 @@ package() {
 	cp $IMG $pkgdir/boot/vmlinuz-linux
 
 	case $CARCH in
-		aarch64|arm)
+		aarch64)
 			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
 			;;
 	esac

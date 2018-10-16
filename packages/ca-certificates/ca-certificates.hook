@@ -1,10 +1,12 @@
 [Trigger]
 Operation = Install
 Operation = Upgrade
+Operation = Remove
 Type = File
-Target = usr/share/ca-certificates/*
+Target = etc/ssl/*
+Target = etc/pki/*
 
 [Action]
 Description = Rebuilding certificate links...
 When = PostTransaction
-Exec = /usr/bin/update-ca-certificates
+Exec = /usr/bin/make-ca -g

@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=checkpolicy
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux policy compiler"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('GPL')
+depends=('glibc')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz")
+md5sums=('5d23a3209048c8cf70f3c13c4ce4245f')
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+	install -m 0755 test/dismod $pkgdir/usr/bin/sedismod
+	install -m 0755 test/dispol $pkgdir/usr/bin/sedispol
+}

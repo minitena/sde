@@ -3,7 +3,7 @@
 
 pkgname=grub
 pkgver=2.02
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU GRand Unified Bootloader"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.gnu.org/software/grub"
@@ -65,9 +65,6 @@ build() {
 		--infodir=/usr/share/info \
 		--datarootdir=/usr/share \
 		--sysconfdir=/etc \
-		--program-prefix='' \
-		--with-bootdir=/boot \
-		--with-grubdir=grub \
 		--enable-boot-time \
 		--enable-device-mapper \
 		--disable-werror \
