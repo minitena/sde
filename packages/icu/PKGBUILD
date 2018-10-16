@@ -2,15 +2,15 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=icu
-pkgver=62.1
+pkgver=63.1
 pkgrel=1
 pkgdesc="International Components for Unicode library"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.icu-project.org/"
 license=('icu')
-depends=('glibc' 'gcc-libs')
+depends=('gcc-libs')
 source=("https://ssl.icu-project.org/files/${pkgname}4c/${pkgver}/${pkgname}4c-${pkgver//./_}-src.tgz")
-md5sums=('490ad9d920158e0314e10ba74ae9a150')
+md5sums=('9e40f6055294284df958200e308bce50')
 
 build() {
 	cd icu/source
