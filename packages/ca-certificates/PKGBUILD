@@ -3,7 +3,7 @@
 
 pkgname=ca-certificates
 pkgver=20180409
-pkgrel=1
+pkgrel=2
 pkgdesc="Common CA certificates (default providers)"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://minitena.github.io/"
@@ -54,10 +54,6 @@ package() {
 	unset MAKEFLAGS
 	cd "$srcdir/$pkgname"
 	make DESTDIR=$pkgdir SBINDIR=/usr/bin install
-
-	mkdir -p $pkgdir/etc
-	find $pkgdir/usr/share/${pkgname}/ -name '*.crt' | \
-		rev | cut -d/ -f1-2 | rev | sort > $pkgdir/etc/ca-certificates.conf
 
 	install -Dm0755 $srcdir/c_rehash $pkgdir/usr/bin/c_rehash
 	install -Dm644 $srcdir/update-ca-certificates.hook $pkgdir/usr/share/libalpm/hooks/update-ca-certificates.hook

@@ -1,0 +1,40 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libsemanage
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux binary policy manipulation library"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('LGPL')
+depends=('libselinux>=2.8' 'pcre')
+makedepends=('flex' 'python' 'python2' 'ruby' 'swig')
+options=('!emptydirs')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz"
+	'semanage.conf')
+md5sums=('62ed7bb2ede677a735f2750751677a4f'
+         '85e65f8f33c43f87ad58b7798cc405fb')
+
+build() {
+	cd $pkgname-$pkgver
+	make swigify
+	make all
+	make PYTHON=/usr/bin/python2 pywrap
+	make PYTHON=/usr/bin/python3 pywrap
+	make RUBY=/usr/bin/ruby rubywrap
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir LIBEXECDIR=/usr/lib SHLIBDIR=/usr/lib install
+	make DESTDIR=$pkgdir PYTHON=/usr/bin/python2 SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-pywrap
+	make DESTDIR=$pkgdir PYTHON=/usr/bin/python3 SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-pywrap
+	make DESTDIR=$pkgdir RUBY=/usr/bin/ruby SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-rubywrap
+	/usr/bin/python2 -m compileall "${pkgdir}/$(/usr/bin/python2 -c 'from distutils.sysconfig import *; print(get_python_lib(plat_specific=1))')"
+	/usr/bin/python3 -m compileall "${pkgdir}/$(/usr/bin/python3 -c 'from distutils.sysconfig import *; print(get_python_lib(plat_specific=1))')"
+
+	install -D -m0644 $srcdir/semanage.conf $pkgdir/etc/selinux/semanage.conf
+
+	mkdir -p $pkgdir/var/lib/selinux
+}

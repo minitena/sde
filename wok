@@ -424,10 +424,16 @@ build_final_system() {
 				pkgnativebuild cracklib
 				pkgnativeinstallonlyforcenodeps cracklib
 				;;
+			pam)
+				rm -rf /output/packages/pam*.pkg*
+				pkgnativerebuild pam
+				pkgnativeinstallonlyforcenodeps pam
+				;;
 			shadow)
-				pkgnativebuild shadow
+				rm -rf /output/packages/shadow*.pkg*
+				pkgnativerebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativeinstallonlyforcenodeps shadow
+				pkgnativereinstallonlyforcenodeps shadow
 				;;
 			util-linux)
 				rm -rf /output/packages/util-linux*.pkg*
@@ -437,7 +443,27 @@ build_final_system() {
 				;;
 			procps-ng)
 				pkgnativebuild procps-ng
-				pkgnativeinstallonlyforcenodeps procps-ng
+				pkgnativereinstallonlyforcenodeps procps-ng
+				;;
+			coreutils)
+				rm -rf /output/packages/coreutils*.pkg*
+				pkgnativerebuild coreutils
+				pkgnativereinstallonlyforcenodeps coreutils
+				;;
+			findutils)
+				rm -rf /output/packages/coreutils*.pkg*
+				pkgnativerebuild findutils
+				pkgnativereinstallonlyforcenodeps findutils
+				;;
+			psmisc)
+				rm -rf /output/packages/psmisc*.pkg*
+				pkgnativerebuild psmisc
+				pkgnativereinstallonlyforcenodeps psmisc
+				;;
+			iproute2)
+				rm -rf /output/packages/iproute2*.pkg*
+				pkgnativerebuild iproute2
+				pkgnativereinstallonlyforcenodeps iproute2
 				;;
 			systemd)
 				rm -rf /output/packages/systemd*.pkg*

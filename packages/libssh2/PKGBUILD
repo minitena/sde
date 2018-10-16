@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libssh2
+pkgver=1.8.0
+pkgrel=1
+pkgdesc="A library implementing the SSH2 protocol as defined by Internet Drafts"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.libssh2.org/"
+license=('BSD')
+depends=('glibc' 'zlib' 'libressl')
+source=("https://www.libssh2.org/download/$pkgname-$pkgver.tar.gz")
+md5sums=('3d1147cae66e2959ea5441b183de1b1c')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=wget
+pkgver=1.19.5
+pkgrel=1
+pkgdesc="Network utility to retrieve files from the Web"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://www.gnu.org/software/wget"
+license=('GPL')
+depends=('glibc' 'util-linux-libs' 'ca-certificates' 'pcre')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.lz")
+md5sums=('4ee511011a15f4207bea8b2993c343ee')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-ssl=openssl \
+		--disable-rpath \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	echo "ca-certificate = /etc/ssl/certs/ca-certificates.crt" >>$pkgdir/etc/wgetrc
+}

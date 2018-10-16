@@ -1,0 +1,30 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=policycoreutils
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux policy core utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('GPL')
+depends=('glibc' 'libsemanage>=2.7' 'pam')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz"
+	'relabel-selinux.hook'
+	'selinux-alpm-hook')
+md5sums=('da5ceb9c7e1e6f8c573731031b91cffe'
+         '1e168ecd493ef5f47422fede71bf4be1'
+         '418ea1f02f80ca9d38e58f41d00e5f9e')
+
+build() {
+	cd $pkgname-$pkgver
+	make LSPP_PRIV=y all
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir LIBEXECDIR=/usr/lib SBINDIR=/usr/bin install
+
+	install -D -m 644 $srcdir/relabel-selinux.hook $pkgdir/usr/share/libalpm/hooks/zzz-relabel-selinux.hook
+	install -D -m 755 $srcdir/selinux-alpm-hook $pkgdir/usr/share/libalpm/scripts/selinux-alpm-hook
+}

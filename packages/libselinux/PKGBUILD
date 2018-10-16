@@ -1,0 +1,41 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libselinux
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux library and simple utilities"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('custom')
+depends=('libsepol>=2.8' 'pcre')
+makedepends=('xz-utils' 'python' 'python2' 'ruby' 'swig')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz"
+	'tmpfiles')
+md5sums=('56057e60192b21122c1aede8ff723ca2'
+         '2ab761e094a2b3e0ffa0417729756733')
+
+build() {
+	cd $pkgname-$pkgver
+	export DISABLE_RPM=y
+
+	make swigify
+	make all
+	make PYTHON=/usr/bin/python2 pywrap
+	make PYTHON=/usr/bin/python3 pywrap
+	make RUBY=/usr/bin/ruby rubywrap
+}
+
+package() {
+	cd $pkgname-$pkgver
+	export DISABLE_RPM=y
+
+	make DESTDIR=$pkgdir SBINDIR=/usr/bin SHLIBDIR=/usr/lib install
+	make DESTDIR=$pkgdir PYTHON=/usr/bin/python2 SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-pywrap
+	make DESTDIR=$pkgdir PYTHON=/usr/bin/python3 SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-pywrap
+	make DESTDIR=$pkgdir RUBY=/usr/bin/ruby SBINDIR=/usr/bin SHLIBDIR=/usr/lib install-rubywrap
+	/usr/bin/python2 -m compileall "${pkgdir}/$(/usr/bin/python2 -c 'from distutils.sysconfig import *; print(get_python_lib(plat_specific=1))')"
+	/usr/bin/python3 -m compileall "${pkgdir}/$(/usr/bin/python3 -c 'from distutils.sysconfig import *; print(get_python_lib(plat_specific=1))')"
+
+	install -Dm 0644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/libselinux.conf
+}

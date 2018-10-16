@@ -1,0 +1,25 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libsepol
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux binary policy manipulation library"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('LGPL')
+depends=('glibc')
+makedepends=('flex')
+options=('staticlibs')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c19aa9dde1e78d1c2bd3109579e4d484')
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir SHLIBDIR=/usr/lib install
+}

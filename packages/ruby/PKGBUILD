@@ -1,0 +1,43 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=ruby
+pkgver=2.5.1
+pkgrel=1
+pkgdesc="An object-oriented language for quick and easy programming"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://www.ruby-lang.org/en/"
+license=('BSD' 'custom')
+depends=('glibc' 'zlib' 'gmp' 'gdbm' 'db' 'readline' 'libressl' 'libffi' 'yaml')
+options=('!emptydirs')
+source=("https://cache.ruby-lang.org/pub/ruby/${pkgver:0:3}/ruby-${pkgver}.tar.xz"
+	'libressl.patch')
+md5sums=('b7d48b39fd09933e232f172384d03b94'
+         '87d873f6cab9490cd6db83812a75a37f')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/libressl.patch
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/ruby \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--sharedstatedir=/var/lib \
+		--enable-shared \
+		--disable-install-doc \
+		--disable-install-rdoc \
+		--disable-install-capi \
+		--disable-rpath \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

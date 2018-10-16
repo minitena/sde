@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=sepolgen
+pkgver=2.6
+pkgrel=1
+pkgdesc="SELinux policy generator"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://userspace.selinuxproject.org"
+license=('GPL')
+depends=('python' 'libselinux')
+makedepends=('python' 'python2')
+optdepends=('python2: python2 bindings')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/${pkgname}-${pkgver}.tar.gz")
+md5sums=('84faa46a0eb0b603e903efeed239c244')
+
+build() {
+	cd $pkgname-$pkgver
+	make PYTHON=python2
+	make PYTHON=python3
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make PYTHON=python2 DESTDIR=$pkgdir install
+	make PYTHON=python3 DESTDIR=$pkgdir install
+	python2 -m compileall $pkgdir/$(python2 -c 'import site; print(site.getsitepackages()[0])')
+	python3 -m compileall $pkgdir/$(python3 -c 'import site; print(site.getsitepackages()[0])')
+}
