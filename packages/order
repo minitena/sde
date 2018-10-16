@@ -127,7 +127,7 @@ shadow
 util-linux
 procps-ng
 coreutils
-iprote2
+iproute2
 findutils
 psmisc
 e2fsprogs
