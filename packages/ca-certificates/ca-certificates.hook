@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Operation = Remove
+Type = File
+Target = etc/ssl/*
+Target = etc/pki/*
+
+[Action]
+Description = Rebuilding certificate links...
+When = PostTransaction
+Exec = /usr/bin/make-ca -g
