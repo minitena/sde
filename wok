@@ -427,13 +427,13 @@ build_final_system() {
 			pam)
 				rm -rf /output/packages/pam*.pkg*
 				pkgnativerebuild pam
-				pkgnativeinstallonlyforcenodeps pam
+				pkgnativereinstallforcenodeps pam
 				;;
 			shadow)
 				rm -rf /output/packages/shadow*.pkg*
 				pkgnativerebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallonlyforcenodeps shadow
+				pkgnativereinstallforcenodeps shadow
 				;;
 			util-linux)
 				rm -rf /output/packages/util-linux*.pkg*
@@ -448,22 +448,22 @@ build_final_system() {
 			coreutils)
 				rm -rf /output/packages/coreutils*.pkg*
 				pkgnativerebuild coreutils
-				pkgnativereinstallonlyforcenodeps coreutils
+				pkgnativereinstallforcenodeps coreutils
 				;;
 			findutils)
 				rm -rf /output/packages/coreutils*.pkg*
 				pkgnativerebuild findutils
-				pkgnativereinstallonlyforcenodeps findutils
+				pkgnativereinstallforcenodeps findutils
 				;;
 			psmisc)
 				rm -rf /output/packages/psmisc*.pkg*
 				pkgnativerebuild psmisc
-				pkgnativereinstallonlyforcenodeps psmisc
+				pkgnativereinstallforcenodeps psmisc
 				;;
 			iproute2)
 				rm -rf /output/packages/iproute2*.pkg*
 				pkgnativerebuild iproute2
-				pkgnativereinstallonlyforcenodeps iproute2
+				pkgnativereinstallforcenodeps iproute2
 				;;
 			systemd)
 				rm -rf /output/packages/systemd*.pkg*
