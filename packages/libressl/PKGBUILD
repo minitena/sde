@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libressl
-pkgver=2.8.0
+pkgver=2.8.1
 pkgrel=3
 pkgdesc="Version of the TLS/crypto stack forked from OpenSSL"
 arch=('x86_64' 'i586' 'aarch64')
@@ -10,13 +10,14 @@ url="http://www.libressl.org/"
 license=('custom')
 depends=('glibc')
 source=("https://cloudflare.cdn.openbsd.org/pub/OpenBSD/LibreSSL/$pkgname-$pkgver.tar.gz")
-md5sums=('d922be6690e7de8949948aaec42a4563')
+md5sums=('05584d44c12323c5f17232a9085011e6')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
 		--with-openssldir=/etc/ssl \
+		--enable-hardening \
 		--build=$CHOST
 	make
 }
