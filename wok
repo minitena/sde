@@ -1,7 +1,52 @@
 #!/bin/sh
 #
 
+export WOKVERSION="2.0"
+
 set -e
+
+wokver() {
+	cat <<EOF
+wok - small and simple build framework, made for Minitena
+
+Wok version: wok $WOKVERSION
+
+Copyright (c) 2018 Minitena
+
+EOF
+	exit 0
+}
+
+wokusage() {
+	cat <<EOF
+wok - small and simple build framework, made for Minitena
+Usage:	BARCH=[supported architecture] ./wok [option]
+
+Host options:
+
+	toolchain			Build cross-toolchain
+	bootstrap			Build minimal chroot system
+	image				Build *.iso image
+	update-wok			Update 'wok' for chroot system
+
+Target options:
+
+	final-system			Build repository of Minitena
+
+Target package options: wok [option] [package]
+
+	view-sums			View md5 sums for specific package
+	package				Build specific package
+	update-package			Update specific package
+
+Misc:
+
+	version				Show version of 'wok'
+	usage				Display usage of 'wok'
+
+EOF
+	exit 0
+}
 
 initdb() {
 	local dir="$@"
@@ -776,8 +821,11 @@ case "$1" in
 		setup_environment
 		update_wok
 		;;
+	version)
+		wokver
+		;;
 	*|usage)
-		echo "In developemnt"
+		wokusage
 esac
 
 exit 0
