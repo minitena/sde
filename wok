@@ -636,7 +636,7 @@ LABEL minitena
 	MENU LABEL Minitena
 	LINUX /kernel
 	INITRD /initrd
-	APPEND root=live:LABEL=Minitena loglevel=4 ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
+	APPEND root=live:LABEL=Minitena loglevel=4 ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0 security=selinux selinux=1
 EOF
 }
 
@@ -689,7 +689,7 @@ title Minitena
 version $EFIVER
 linux kernel
 initrd initrd
-options root=live:LABEL=Minitena loglevel=4 ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0
+options root=live:LABEL=Minitena loglevel=4 ro rd.live.image rhgb rd.luks=0 rd.md=0 rd.dm=0 security=selinux selinux=1
 EOF
 
 	sync
