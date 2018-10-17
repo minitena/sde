@@ -3,7 +3,7 @@
 
 pkgname=grub
 pkgver=2.02
-pkgrel=3
+pkgrel=4
 pkgdesc="The GNU GRand Unified Bootloader"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.gnu.org/software/grub"
@@ -31,7 +31,7 @@ md5sums=('8a4a2a95aac551fb0fba860ceabfa1d3'
          '6b7813c4c3cb2704939782430f0314cf'
          '1801dc136206eb7b5bb0592486b82c47'
          'd1ae83c2c43709535c60e5f30d7aab44'
-         'ead077cd96956378b24cd000036925e4')
+         '63b364d85066d55ee7a5144a0ad2678c')
 
 prepare() {
 	cd $pkgname-$pkgver

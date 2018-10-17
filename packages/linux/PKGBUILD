@@ -4,7 +4,7 @@
 pkgname=linux
 pkgver=4.18.14
 reiserfs4patchver=4.18.0
-pkgrel=21
+pkgrel=22
 pkgdesc="The Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
@@ -20,8 +20,8 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'90-linux.hook')
 md5sums=('7bca53d8f98fe1711efca5083229de69'
          '4aa8cdbac33df4bee88fadefa9cdb8c4'
-         '40be31559436f9663a617152b97a9732'
-         '13166c217d8f83ebaaf4093fdc6ae912'
+         '4a4a223920425117178ff0ebd97ed4e6'
+         'af565d8ebcb249ee9fde193c05420bfe'
          '671745c943d40f08ae081116b6eee372'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
