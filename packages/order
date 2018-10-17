@@ -117,6 +117,8 @@ libsemanage
 checkpolicy
 policycoreutils
 sepolgen
+semodule-utils
+selinux-policy
 systemd
 lvm2
 cryptsetup

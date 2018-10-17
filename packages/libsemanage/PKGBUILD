@@ -14,7 +14,7 @@ options=('!emptydirs')
 source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz"
 	'semanage.conf')
 md5sums=('62ed7bb2ede677a735f2750751677a4f'
-         '85e65f8f33c43f87ad58b7798cc405fb')
+         '8c5429ec7f36724b237b279c67774736')
 
 build() {
 	cd $pkgname-$pkgver

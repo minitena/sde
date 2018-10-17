@@ -3,7 +3,7 @@
 
 pkgname=('meta-base' 'meta-devel')
 pkgver=2018.10
-pkgrel=3
+pkgrel=4
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -14,8 +14,9 @@ package_meta-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'checkpolicy' 'policycoreutils' 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'curl')
+		 'checkpolicy' 'policycoreutils' 'selinux-policy' 'shadow' 'util-linux'
+		 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux' 'sysfsutils' 'dosfstools'
+		 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'curl')
 	:
 }
 
@@ -41,7 +42,8 @@ package_meta-devel() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'checkpolicy' 'policycoreutils' 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-#		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
+#		 'checkpolicy' 'policycoreutils' 'selinux-policy' 'shadow' 'util-linux'
+#		 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux' 'sysfsutils' 'dosfstools'
+#		 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}

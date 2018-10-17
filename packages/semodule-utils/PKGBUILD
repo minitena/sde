@@ -1,0 +1,23 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=semodule-utils
+pkgver=2.8
+pkgrel=1
+pkgdesc="SELinux module tools"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://github.com/SELinuxProject/selinux/wiki"
+license=('GPL')
+depends=('glibc' 'libsepol>=2.7')
+source=("https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524/${pkgname}-${pkgver}.tar.gz")
+md5sums=('51c69e612481ce971e2ae825139d2ca0')
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

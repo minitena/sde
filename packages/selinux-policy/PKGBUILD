@@ -1,0 +1,37 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=selinux-policy
+reldate=20180701
+pkgver=2.$reldate
+pkgrel=2
+pkgdesc="Modular SELinux reference policy"
+arch=('any')
+url="https://github.com/SELinuxProject/refpolicy/wiki"
+license=('GPL')
+depends=('policycoreutils>=2.7')
+makedepends=('python' 'checkpolicy>=2.7' 'semodule-utils')
+source=("https://github.com/SELinuxProject/refpolicy/releases/download/RELEASE_2_$reldate/refpolicy-2.$reldate.tar.bz2"
+	'config')
+md5sums=('61e1c261e6698b6401d2f31129976bcd'
+         '47b5ed726185249271e59dd75a3eb1da')
+
+prepare() {
+	cd refpolicy
+	make bare
+	make conf
+}
+
+build() {
+	cd refpolicy
+	make
+}
+
+package() {
+	cd refpolicy
+	make SBINDIR=/usr/bin DESTDIR=$pkgdir install
+	make SBINDIR=/usr/bin DESTDIR=$pkgdir install-headers
+
+	install -d -m0755 $pkgdir/var/lib/selinux
+	install -m644 -D $srcdir/config $pkgdir/etc/selinux/config
+}
