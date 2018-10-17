@@ -15,7 +15,7 @@ package_meta-base() {
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 		 'checkpolicy' 'policycoreutils' 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'ca-certificates')
+		 'sysfsutils' 'dosfstools' 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'curl')
 	:
 }
 

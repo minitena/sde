@@ -8,7 +8,7 @@ pkgdesc="An URL retrieval utility and library"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://curl.haxx.se/"
 license=('MIT')
-depends=('glibc' 'zlib' 'libressl' 'ca-certificates' 'libidn2' 'libssh2')
+depends=('glibc' 'zlib' 'libressl' 'libidn2' 'libssh2')
 source=("https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz")
 md5sums=('feb1856fcdb79ba0386c8e41b02e487d')
 
@@ -17,7 +17,7 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
-		--with-ca-bundle=/etc/ssl/ca-certificates.crt \
+		--with-ca-bundle=/etc/ssl/cert.pem \
 		--with-random=/dev/urandom \
 		--with-gssapi \
 		--with-libssh2 \
