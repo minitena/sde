@@ -27,5 +27,5 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	echo "ca-certificate = /etc/ssl/certs/ca-certificates.crt" >>$pkgdir/etc/wgetrc
+	echo "ca-certificate = /etc/ssl/ca-certificates.crt" >>$pkgdir/etc/wgetrc
 }

@@ -3,7 +3,7 @@
 
 pkgname=curl
 pkgver=7.61.1
-pkgrel=2
+pkgrel=3
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://curl.haxx.se/"
@@ -17,7 +17,7 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
-		--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt \
+		--with-ca-bundle=/etc/ssl/ca-certificates.crt \
 		--with-random=/dev/urandom \
 		--with-gssapi \
 		--with-libssh2 \
