@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=pkgconf
-pkgver=1.5.3
+pkgver=1.5.4
 pkgrel=1
 pkgdesc="Package compiler and linker metadata toolkit"
 arch=('x86_64' 'i586' 'aarch64')
@@ -10,7 +10,7 @@ url="https://git.dereferenced.org/pkgconf/pkgconf"
 license=('ISC')
 depends=('glibc')
 source=("http://distfiles.dereferenced.org/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('c21743bca14c882c0f282746168a5edc')
+md5sums=('a7846cfd1f53664a4ef983bae8355309')
 
 build() {
 	cd $pkgname-$pkgver
