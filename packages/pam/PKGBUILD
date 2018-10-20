@@ -8,7 +8,7 @@ pkgdesc="PAM (Pluggable Authentication Modules) library"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://linux-pam.org"
 license=('GPL')
-depends=('glibc' 'cracklib' 'libselinux')
+depends=('glibc' 'cracklib')
 makedepends=('bison' 'flex')
 options=('!emptydirs')
 backup=('etc/security/{access.conf,group.conf,limits.conf,namespace.conf,namespace.init,pam_env.conf,time.conf}'
@@ -17,19 +17,13 @@ source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-
 md5sums=('558ff53b0fc0563ca97f79e911822165')
 
 build() {
-	if [ -f /usr/lib/libselinux.so ]; then
-		export SELINUXOPTS="--enable-selinux"
-	else
-		export SELINUXOPTS=''
-	fi
-
 	cd Linux-PAM-$pkgver
 	./configure \
 		--prefix=/usr \
 		--libdir=/usr/lib \
 		--sbindir=/usr/bin \
 		--sysconfdir=/etc \
-		--build=$CHOST $SELINUXOPTS
+		--build=$CHOST
 	make
 }
 

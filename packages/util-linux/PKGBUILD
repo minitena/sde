@@ -5,7 +5,7 @@ pkgname=('util-linux' 'util-linux-libs')
 pkgbase=util-linux
 _pkgmajor=2.32
 pkgver=${_pkgmajor}.1
-pkgrel=3
+pkgrel=4
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
@@ -14,12 +14,6 @@ source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname
 md5sums=('9e5b1b8c1dc99455bdb6b462cf9436d9')
 
 build() {
-	if [ -f /usr/lib/libselinux.so ]; then
-		export SELINUXOPTS="--with-selinux"
-	else
-		export SELINUXOPTS=''
-	fi
-
 	cd $pkgbase-$pkgver
 	./configure \
 		ADJTIME_PATH=/var/lib/hwclock/adjtime \
@@ -41,7 +35,7 @@ build() {
 		--disable-runuser \
 		--disable-setpriv \
 		--disable-su \
-		--build=$CHOST $SELINUXOPTS
+		--build=$CHOST
 	make
 }
 
@@ -63,7 +57,7 @@ package_util-linux() {
 
 package_util-linux-libs() {
 	pkgdesc="Miscellaneous system libraries for Linux"
-	depends=('glibc' 'libselinux')
+	depends=('glibc')
 
 	cd $pkgbase-$pkgver
 	make DESTDIR=$pkgdir install-usrlib_execLTLIBRARIES
