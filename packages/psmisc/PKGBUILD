@@ -3,26 +3,20 @@
 
 pkgname=psmisc
 pkgver=23.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Miscellaneous procfs tools"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://psmisc.sourceforge.net/index.html"
 license=('GPL')
-depends=('glibc' 'ncurses' 'libselinux')
+depends=('glibc' 'ncurses')
 source=("http://downloads.sourceforge.net/psmisc/$pkgname-$pkgver.tar.xz")
 md5sums=('0524258861f00be1a02d27d39d8e5e62')
 
 build() {
-	if [ -f /usr/lib/libselinux.so ]; then
-		export SELINUXOPTS="--enable-selinux"
-	else
-		export SELINUXOPTS=''
-	fi
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--build=$CHOST $SELINUX
+		--build=$CHOST
 	make
 }
 
