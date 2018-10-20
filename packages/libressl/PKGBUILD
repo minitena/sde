@@ -3,13 +3,13 @@
 
 pkgname=libressl
 pkgver=2.8.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Version of the TLS/crypto stack forked from OpenSSL"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.libressl.org/"
 license=('custom')
 depends=('glibc')
-source=("https://cloudflare.cdn.openbsd.org/pub/OpenBSD/LibreSSL/$pkgname-$pkgver.tar.gz")
+source=("https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/$pkgname-$pkgver.tar.gz")
 md5sums=('be697a71aa17312a1019af9e91147b03')
 
 build() {

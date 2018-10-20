@@ -3,7 +3,7 @@
 
 pkgname=openssh
 pkgver=7.9p1
-pkgrel=3
+pkgrel=4
 pkgdesc="Premier connectivity tool for remote login with the SSH protocol"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.openssh.com/portable.html"
@@ -12,7 +12,7 @@ depends=('glibc' 'zlib' 'pam' 'libressl')
 backup=('etc/ssh/ssh_config'
 	'etc/ssh/sshd_config'
 	'etc/pam.d/sshd')
-source=("https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz"
+source=("https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgname-$pkgver.tar.gz"
 	'asshd.service'
 	'sshd.service'
 	'sshd.socket'

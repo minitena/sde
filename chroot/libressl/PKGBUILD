@@ -2,7 +2,7 @@ pkgname=chroot-libressl
 pkgver=2.8.2
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64')
-source=(https://cloudflare.cdn.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$pkgver.tar.gz)
+source=(https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$pkgver.tar.gz)
 
 build() {
 	cd libressl-$pkgver
