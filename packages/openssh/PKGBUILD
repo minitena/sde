@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=openssh
-pkgver=7.8p1
+pkgver=7.9p1
 pkgrel=2
 pkgdesc="Premier connectivity tool for remote login with the SSH protocol"
 arch=('x86_64' 'i586' 'aarch64')
@@ -18,7 +18,7 @@ source=("https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/$pkgnam
 	'sshd.socket'
 	'sshdgenkeys.service'
 	'sshd.conf')
-md5sums=('ce1d090fa6239fd38eb989d5e983b074'
+md5sums=('c6af50b7a474d04726a5aa747a5dce8f'
          '51284b11c80c2022c64015084eaf77d2'
          '26483c2a13e970c55e0ee690dbdd6975'
          '76f52c66fb3193f301fe0a666e047ab1'

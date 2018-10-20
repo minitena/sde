@@ -1,5 +1,5 @@
 pkgname=host-file
-pkgver=5.34
+pkgver=5.35
 pkgrel=1
 arch=('any')
 source=(ftp://ftp.astron.com/pub/file/file-$pkgver.tar.gz)

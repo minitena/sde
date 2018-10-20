@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=file
-pkgver=5.34
+pkgver=5.35
 pkgrel=1
 pkgdesc="File type identification utility"
 arch=('x86_64' 'i586' 'aarch64')
@@ -10,7 +10,7 @@ url="https://www.darwinsys.com/file/"
 license=('custom')
 depends=('glibc' 'zlib')
 source=("ftp://ftp.astron.com/pub/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('44b0b6983462b18f96403d4d3ad80254')
+md5sums=('5f10fb45bdaffd729a572e563783b78e')
 
 build() {
 	cd $pkgname-$pkgver

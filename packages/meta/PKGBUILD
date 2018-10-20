@@ -3,7 +3,7 @@
 
 pkgname=('meta-base' 'meta-devel')
 pkgver=2018.10
-pkgrel=4
+pkgrel=5
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -14,15 +14,14 @@ package_meta-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'checkpolicy' 'policycoreutils' 'selinux-policy' 'shadow' 'util-linux'
-		 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux' 'sysfsutils' 'dosfstools'
-		 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'curl')
+		 'shadow' 'util-linux''procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'curl')
 	:
 }
 
 package_meta-devel() {
 	pkgdesc='Meta-package for development system'
-	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
+	depends=('linux-headers' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
 		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
 		 'gperf' 'groff' 'make' 'patch' 'texinfo')
 	:
@@ -42,8 +41,7 @@ package_meta-devel() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'checkpolicy' 'policycoreutils' 'selinux-policy' 'shadow' 'util-linux'
-#		 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux' 'sysfsutils' 'dosfstools'
-#		 'reiserfsprogs' 'reiser4progs' 'pciutils' 'usbutils' 'pacman')
+#		 'shadow' 'util-linux''procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+#		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}
