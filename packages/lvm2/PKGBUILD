@@ -3,7 +3,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=lvm2
-pkgver=2.02.181
+pkgver=2.03.00
 pkgrel=1
 pkgdesc="Logical Volume Manager 2 utilities"
 arch=('x86_64' 'i586' 'aarch64')
@@ -13,16 +13,7 @@ depends=('glibc' 'util-linux-libs' 'readline' 'libaio' 'systemd-libs')
 backup=('etc/lvm/lvm.conf'
 	'etc/lvm/lvmlocal.conf')
 source=("https://sourceware.org/ftp/lvm2/LVM2.$pkgver.tgz")
-md5sums=('7d6380d9a34981fd7b605eaa371295b3')
-
-prepare() {
-	cd LVM2.$pkgver
-	sed -i -e '/^\[Install\]$/,$d' \
-		scripts/dm_event_systemd_red_hat.socket.in \
-		scripts/lvm2_lvmetad_systemd_red_hat.socket.in \
-		scripts/lvm2_lvmpolld_systemd_red_hat.socket.in \
-		scripts/lvm2_monitoring_systemd_red_hat.service.in
-}
+md5sums=('f63cc5feaadd3000138e73f7143ed370')
 
 build() {
 	cd LVM2.$pkgver
@@ -38,10 +29,8 @@ build() {
 		--with-systemdsystemunitdir=/usr/lib/systemd/system \
 		--with-thin=internal \
 		--with-udev-prefix=/usr \
-		--enable-applib \
 		--enable-cmdlib \
 		--enable-dmeventd \
-		--enable-lvmetad \
 		--enable-pkgconfig \
 		--enable-udev_sync \
 		--build=$CHOST
