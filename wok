@@ -469,16 +469,10 @@ build_final_system() {
 				pkgnativebuild cracklib
 				pkgnativeinstallonlyforcenodeps cracklib
 				;;
-			pam)
-				rm -rf /output/packages/pam*.pkg*
-				pkgnativerebuild pam
-				pkgnativereinstallforcenodeps pam
-				;;
 			shadow)
-				rm -rf /output/packages/shadow*.pkg*
-				pkgnativerebuild shadow
+				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallforcenodeps shadow
+				pkgnativeinstallonlyforcenodeps shadow
 				;;
 			util-linux)
 				rm -rf /output/packages/util-linux*.pkg*
@@ -486,25 +480,9 @@ build_final_system() {
 				rm -rf /output/packages/*debug*.pkg*
 				pkgnativereinstallforcenodeps util-linux
 				;;
-			coreutils)
-				rm -rf /output/packages/coreutils*.pkg*
-				pkgnativerebuild coreutils
-				pkgnativereinstallforcenodeps coreutils
-				;;
-			findutils)
-				rm -rf /output/packages/coreutils*.pkg*
-				pkgnativerebuild findutils
-				pkgnativereinstallforcenodeps findutils
-				;;
-			psmisc)
-				rm -rf /output/packages/psmisc*.pkg*
-				pkgnativerebuild psmisc
-				pkgnativereinstallforcenodeps psmisc
-				;;
-			iproute2)
-				rm -rf /output/packages/iproute2*.pkg*
-				pkgnativerebuild iproute2
-				pkgnativereinstallforcenodeps iproute2
+			procps-ng)
+				pkgnativebuild procps-ng
+				pkgnativeinstallonlyforcenodeps procps-ng
 				;;
 			systemd)
 				rm -rf /output/packages/systemd*.pkg*
@@ -523,6 +501,9 @@ build_final_system() {
 				groupadd -fg 27 polkitd || true
 				useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 -g polkitd -s /bin/false polkitd || true
 				pkgnativeinstall polkit
+				;;
+			coreutils)
+				pkgnativeinstallforce coreutils
 				;;
 			gawk)
 				pkgnativeinstallforce gawk
