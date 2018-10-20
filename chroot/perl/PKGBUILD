@@ -15,8 +15,8 @@ build() {
 	./configure \
 		--target=$XTARGET \
 		--prefix=/tools \
-		-Doptimize="$CFLAGS" \
-		-Dldflags="$LDFLAGS" \
+		--all-static \
+		-Dldflags="-static" \
 		-Dprivlib=/tools/lib/perl5 \
 		-Dsitelib=/tools/lib/perl5/site_perl
 	make
