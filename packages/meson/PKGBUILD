@@ -2,15 +2,15 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=meson
-pkgver=0.48.0
+pkgver=0.48.1
 pkgrel=1
 pkgdesc="High productivity build system"
-arch=('x86_64' 'i586' 'aarch64')
+arch=('any')
 url="http://mesonbuild.com/"
 license=('Apache')
 depends=('python' 'ninja')
 source=("https://github.com/mesonbuild/meson/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('e92273538c6b8371e68d736287a5d991')
+md5sums=('d424e2ae88036326cc6c8e3b01e65daf')
 
 build() {
 	cd $pkgname-$pkgver
