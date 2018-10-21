@@ -1,0 +1,58 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dhcp
+pkgver=4.4.1
+pkgrel=1
+pkgdesc="A DHCP server, client, and relay agent"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.isc.org/software/dhcp"
+license=('custom')
+depends=('glibc' 'net-tools')
+backup=('etc/dhcpd.conf'
+	'etc/dhcpd6.conf')
+source=("ftp://ftp.isc.org/isc/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz"
+	'dhclient'
+	'dhcp4'
+	'dhcp6')
+md5sums=('18c7f4dcbb0a63df25098216d47b1ede'
+         'a77e07514c32bd18b9e32ae961ec817d'
+         '69ff774406f786f5a60d0b29bb78c512'
+         '12c7bd9afe9ed55aa10a6f0457481dfe')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--enable-binary-leases \
+		--enable-paranoia \
+		--with-srv-lease-file=/var/lib/dhcp/dhcpd.leases \
+		--with-srv6-lease-file=/var/lib/dhcp/dhcpd6.leases \
+		--with-cli-lease-file=/var/lib/dhclient/dhclient.leases \
+		--with-cli6-lease-file=/var/lib/dhclient/dhclient6.leases \
+		--build=$CHOST
+	make -j1
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make -j1 DESTDIR=$pkgdir install
+
+	mv $pkgdir/etc/dhcpd.conf.example $pkgdir/etc/dhcpd.conf
+	install -D -m644 doc/examples/dhcpd-dhcpv6.conf $pkgdir/etc/dhcpd6.conf
+
+	install -D -m644 $srcdir/dhcp4 $pkgdir/usr/lib/systemd/system/dhcpd4.service
+	install -D -m644 $srcdir/dhcp6 $pkgdir/usr/lib/systemd/system/dhcpd6.service
+
+	install -m755 -d $pkgdir/usr/share/dhclient
+	mv $pkgdir/etc/dhclient.conf.example $pkgdir/usr/share/dhclient
+
+	install -d -m755 $pkgdir/var/lib/dhclient
+
+	install -m755 client/scripts/linux $pkgdir/usr/bin/dhclient-script
+
+	install -m644 -D $srcdir/dhclient $pkgdir/usr/lib/systemd/system/dhclient@.service
+}

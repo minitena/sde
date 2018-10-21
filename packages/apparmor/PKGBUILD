@@ -3,7 +3,7 @@
 
 pkgname=apparmor
 pkgver=2.13.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Mandatory Access Control (MAC) using Linux Security Module (LSM)"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://gitlab.com/apparmor/apparmor"
@@ -68,4 +68,7 @@ package() {
 
 	cd $pkgdir
 	[[ /usr/bin/true ]] && backup=( ${backup[@]} $(find "etc/${pkgname}.d/" -type f) )
+
+	mv $pkgdir/usr/usr/bin/* $pkgdir/usr/bin
+	rm -rf $pkgdir/usr/usr
 }

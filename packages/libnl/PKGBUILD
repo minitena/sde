@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libnl
+pkgver=3.4.0
+pkgrel=1
+pkgdesc="Library for applications dealing with netlink sockets"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://github.com/thom311/libnl/"
+license=('GPL')
+depends=('glibc')
+source=("https://github.com/thom311/libnl/releases/download/libnl${pkgver//./_}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('8f71910c03db363b41e2ea62057a4311')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

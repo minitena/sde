@@ -1,0 +1,42 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dhcpcd
+pkgver=7.0.8
+pkgrel=1
+pkgdesc="RFC2131 compliant DHCP client daemon"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://roy.marples.name/projects/dhcpcd/"
+license=('BSD')
+depends=('glibc' 'systemd')
+options=('emptydirs')
+backup=('etc/dhcpcd.conf')
+source=("https://roy.marples.name/downloads/$pkgname/$pkgname-$pkgver.tar.xz"
+	'service'
+	'aservice')
+md5sums=('77bbb1d73b6f30d6ddcc8b0fd3eae266'
+         '85056d566b3119c02017cfcff768f710'
+         '98cfea55077ba1680c2e902d669585b3')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/dhcpcd \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--dbdir=/var/lib/dhcpcd \
+		--rundir=/run \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	echo noipv4ll >> $pkgdir/etc/dhcpcd.conf
+
+	install -Dm644 $srcdir/aservice $pkgdir/usr/lib/systemd/system/dhcpcd@.service
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/dhcpcd.service
+}

@@ -489,6 +489,11 @@ build_final_system() {
 				pkgnativerebuild systemd
 				pkgnativereinstallforcenodeps systemd
 				;;
+			freetype)
+				rm -rf /output/packages/freetype*.pkg*
+				pkgnativerebuild freetype
+				pkgnativereinstallforcenodeps freetype
+				;;
 			dbus)
 				pkgnativebuild dbus
 				pkgnativeinstallonlyforcenodeps dbus
@@ -537,6 +542,15 @@ build_final_system() {
 		esac
 	done
 
+	case $BARCH in
+		x86_64|i586)
+			pkgnativebuild efivar
+			pkgnativebuild efibootmgr
+			pkgnativebuild syslinux
+			pkgnativebuild grub
+			;;
+	esac
+
 	pkgnativebuild meta
 
 	rm -rf /output/packages/*debug*.pkg*
@@ -554,8 +568,9 @@ download_loader() {
 }
 
 install_base() {
+	export LIVEPACKAGES='meta-base dhcpcd wpa_supplicant'
 	mkdir -p $LIVEOS/var/lib/pacman
-	pacman --config $ROOTFS/etc/pacman.conf -Syy meta-base --root $LIVEOS --arch $BARCH --noconfirm
+	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --root $LIVEOS --arch $BARCH --noconfirm
 }
 
 configure_liveos() {
@@ -776,6 +791,8 @@ case "$1" in
 		;;
 	package|pkg)
 		pkgnativeinstall $2
+		cd /output/packages/
+		repo-add core.db.tar.xz $2-*.pkg*
 		;;
 	update-package|uppkg)
 		rm -rf /output/packages/$2-*.pkg*

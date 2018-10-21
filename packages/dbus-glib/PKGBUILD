@@ -1,0 +1,30 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dbus-glib
+pkgver=0.110
+pkgrel=1
+pkgdesc="GLib bindings for DBUS"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.freedesktop.org/wiki/Software/DBusBindings"
+license=('GPL')
+depends=('dbus' 'glib')
+makedepends=('python')
+source=("https://dbus.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('d7cebf1d69445cbd28b4983392145192')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir completiondir=/usr/share/bash-completion/completions install
+}

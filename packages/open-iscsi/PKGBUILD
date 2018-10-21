@@ -1,0 +1,43 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=open-iscsi
+pkgver=2.0.877
+pkgrel=1
+pkgdesc="iSCSI userland tools"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://www.open-iscsi.com/"
+license=('GPL')
+depends=('glibc' 'util-linux' 'kmod' 'libressl' 'open-isns')
+backup=('etc/iscsi/iscsid.conf'
+	'etc/iscsi/initiatorname.iscsi')
+install=$pkgname.install
+source=("https://github.com/open-iscsi/open-iscsi/archive/$pkgver.tar.gz"
+	'kmod.patch')
+md5sums=('16c83b5ef2bdd243f2b9b0f071bb5683'
+         'f6790a47c132a458d61bcfaae01c8cb1')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/kmod.patch
+	sed -i -e '/^PROGRAMS = /s/$/ usr\/iscsistart/' Makefile
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make user LIB_DIR=/usr/lib
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir LIB_DIR=/usr/lib install
+
+	install -D -m0644 etc/systemd/iscsid.service $pkgdir/usr/lib/systemd/system/iscsid.service
+	install -D -m0644 etc/systemd/iscsid.socket $pkgdir/usr/lib/systemd/system/iscsid.socket
+	install -D -m0644 etc/systemd/iscsi.service $pkgdir/usr/lib/systemd/system/iscsi.service
+
+	install -D -m0644 etc/iscsid.conf $pkgdir/etc/iscsi
+	echo -n > $pkgdir/etc/iscsi/initiatorname.iscsi
+
+	mv $pkgdir/sbin $pkgdir/usr/bin
+}

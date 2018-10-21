@@ -3,7 +3,7 @@
 
 pkgname=lz4
 pkgver=1.8.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Extremely fast compression algorithm"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.lz4.org/"
@@ -20,6 +20,5 @@ build() {
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
 	make install PREFIX=/usr DESTDIR=$pkgdir
 }

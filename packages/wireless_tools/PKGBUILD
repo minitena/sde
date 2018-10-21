@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=wireless_tools
+pkgver=30.pre9
+_pkgver=${pkgver%.pre*}
+pkgrel=1
+pkgdesc="Tools allowing to manipulate the Wireless Extensions"
+arch=('x86_64' 'i586' 'aarch64')
+url="https://hewlettpackard.github.io/wireless-tools/Tools.html"
+license=('GPL')
+depends=('glibc')
+source=("https://hewlettpackard.github.io/wireless-tools/${pkgname}.${pkgver}.tar.gz")
+md5sums=('ca91ba7c7eff9bfff6926b1a34a4697d')
+
+prepare() {
+	cd ${pkgname}.${_pkgver}
+	sed '/BUILD_STATIC =/d' -i Makefile
+}
+
+build() {
+	cd ${pkgname}.${_pkgver}
+	make CFLAGS="${CFLAGS} -I."
+}
+
+package() {
+	cd ${pkgname}.${_pkgver}
+	make \
+		INSTALL_DIR=$pkgdir/usr/bin \
+		INSTALL_LIB=$pkgdir/usr/lib \
+		INSTALL_INC=$pkgdir/usr/include \
+		INSTALL_MAN=$pkgdir/usr/share/man \
+		install
+}

@@ -1,0 +1,49 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=wpa_supplicant
+pkgver=2.6
+pkgrel=1
+pkgdesc="A utility providing key negotiation for WPA wireless networks"
+arch=('x86_64' 'i586' 'aarch64')
+url="http://hostap.epitest.fi/wpa_supplicant"
+license=('GPL')
+depends=('glibc' 'libressl' 'dbus' 'libnl')
+source=("https://w1.fi/releases/${pkgname}-${pkgver}.tar.gz"
+	'libressl.patch'
+	'fixes.patch'
+	'config')
+md5sums=('091569eb4440b7d7f2b4276dbfc03c3c'
+         'df604fec9ca4c387bc64b5fd6d42c370'
+         'a1d5773c02e27fcef1367e4b7ec1e999'
+         '3124d9a6958b0c83c83bd03a72aee89b')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -p1 -i $srcdir/libressl.patch
+	patch -p1 -i $srcdir/fixes.patch
+	cp $srcdir/config $pkgname/.config
+}
+
+build() {
+	cd $pkgname-$pkgver/$pkgname
+	make LIBDIR=/usr/lib BINDIR=/usr/bin
+}
+
+package() {
+	cd $pkgname-$pkgver/$pkgname
+	make LIBDIR=/usr/lib BINDIR=/usr/bin DESTDIR=$pkgdir install
+
+	install -d -m755 $pkgdir/etc/wpa_supplicant
+	install -Dm644 wpa_supplicant.conf $pkgdir/usr/share/doc/wpa_supplicant/wpa_supplicant.conf
+
+	install -d -m755 $pkgdir/usr/share/dbus-1/system-services
+	install -m644 \
+		dbus/fi.{epitest.hostap.WPASupplicant,w1.wpa_supplicant1}.service \
+		$pkgdir/usr/share/dbus-1/system-services/
+
+	install -Dm644 dbus/dbus-wpa_supplicant.conf $pkgdir/etc/dbus-1/system.d/wpa_supplicant.conf
+
+	install -d -m755 $pkgdir/usr/lib/systemd/system
+	install -m644 systemd/*.service $pkgdir/usr/lib/systemd/system/
+}
