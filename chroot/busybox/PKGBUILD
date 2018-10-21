@@ -1,12 +1,12 @@
 pkgname=chroot-busybox
 pkgver=1.29.3
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' ''arm)
 source=(https://busybox.net/downloads/busybox-$pkgver.tar.bz2)
 
 build() {
 	cd busybox-$pkgver
-	case $BARCH in
+	case $CARCH in
 		x86_64)
 			export XKARCH="x86_64"
 			;;
@@ -15,6 +15,9 @@ build() {
 			;;
 		aarch64)
 			export XKARCH="arm64"
+			;;
+		arm)
+			export XKARCH="arm"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"

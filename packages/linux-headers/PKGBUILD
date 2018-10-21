@@ -5,7 +5,7 @@ pkgname=linux-headers
 pkgver=4.18.16
 pkgrel=1
 pkgdesc="Header files and scripts for building modules for Linux kernel"
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -28,6 +28,9 @@ package() {
 			;;
 		aarch64)
 			export XKARCH="arm64"
+			;;
+		arm)
+			export XKARCH="arm"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"

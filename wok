@@ -27,6 +27,7 @@ Host options:
 	toolchain			Build cross-toolchain
 	bootstrap			Build minimal chroot system
 	image				Build *.iso image
+	tarball				Make *.tar.xz archive with minimal system
 	update-wok			Update 'wok' for chroot system
 
 Target options:
@@ -259,6 +260,13 @@ setup_architecture() {
 			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			;;
+		arm)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="armv7l-generic-linux-gnueabihf"
+			export XKARCH="arm"
+			export GCCOPTS="--with-arch=armv7-a --with-float=hard --with-fpu=vfpv3-d16 --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
@@ -275,6 +283,7 @@ setup_environment() {
 	export ISODIR="$BUILD/isodir"
 	export ISOBUILD="$BUILD/isobuild"
 	export LIVEOS="$BUILD/liveos"
+	export TARBALLDIR="$BUILD/tarballdir"
 	export EFIBUILD="$BUILD/efibuild"
 	export REPO="$CWD/packages"
 	export TCREPO="$CWD/toolchain"
@@ -718,6 +727,23 @@ build_isoimage() {
 		$ISODIR/
 }
 
+install_tarball_base() {
+	mkdir -p $TARBALLDIR/var/lib/pacman
+	pacman --config $ROOTFS/etc/pacman.conf -Syy meta-base --root $TARBALLDIR --arch $BARCH --noconfirm
+
+	mkdir -p $TARBALLDIR/etc/systemd/system/getty@tty1.service.d/
+cat > $TARBALLDIR/etc/systemd/system/getty@tty1.service.d/override.conf << "EOF"
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin root %I $TERM
+EOF
+}
+
+make_archive() {
+	cd $TARBALLDIR
+	tar -cJf $BUILD/minitena-$BARCH.tar.xz .
+}
+
 case "$1" in
 	toolchain)
 		check_for_root
@@ -755,6 +781,15 @@ case "$1" in
 			prepare_bios
 			build_isoimage
 		fi
+		;;
+	tarball)
+		check_for_root
+		setup_architecture
+		setup_environment
+		rm -rf $TARBALLDIR
+		mkdir -p $TARBALLDIR
+		install_tarball_base
+		make_archive
 		;;
 	final-system)
 		build_final_system

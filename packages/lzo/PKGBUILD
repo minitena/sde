@@ -5,7 +5,7 @@ pkgname=lzo
 pkgver=2.10
 pkgrel=1
 pkgdesc="Portable lossless data compression library"
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.oberhumer.com/opensource/lzo"
 license=('GPL')
 depends=('glibc')
@@ -13,6 +13,8 @@ source=("http://www.oberhumer.com/opensource/$pkgname/download/$pkgname-$pkgver.
 md5sums=('39d3f3f9c55c87b1e5d6888e1420f4b5')
 
 build() {
+	[[ $CARCH == "arm" ]] && CPPFLAGS="$CPPFLAGS -DLZO_CFG_NO_UNALIGNED"
+
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
@@ -20,7 +22,7 @@ build() {
 		--build=$CHOST
 	make
 
-	cc $CFLAGS -fpic -Iinclude/lzo -o minilzo/minilzo.o -c minilzo/minilzo.c
+	cc $CPPFLAGS $CFLAGS -fpic -Iinclude/lzo -o minilzo/minilzo.o -c minilzo/minilzo.c
 	cc $LDFLAGS -shared -o libminilzo.so.0 -Wl,-soname,libminilzo.so.0 minilzo/minilzo.o
 }
 

@@ -1,7 +1,7 @@
 pkgname=chroot-acl
 pkgver=2.2.53
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(http://download.savannah.gnu.org/releases/acl/acl-$pkgver.tar.gz)
 
 build() {

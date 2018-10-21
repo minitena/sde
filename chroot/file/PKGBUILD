@@ -1,7 +1,7 @@
 pkgname=chroot-file
 pkgver=5.35
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(ftp://ftp.astron.com/pub/file/file-$pkgver.tar.gz)
 
 build() {

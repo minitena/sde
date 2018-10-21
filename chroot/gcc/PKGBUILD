@@ -5,7 +5,7 @@ mpfrver=4.0.1
 mpcver=1.1.0
 islver=0.20
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(https://sources.archlinux.org/other/gcc/gcc-${pkgver/+/-}.tar.xz
 	http://ftpmirror.gnu.org/gnu/gmp/gmp-$gmpver.tar.xz
 	http://www.mpfr.org/mpfr-$mpfrver/mpfr-$mpfrver.tar.xz
