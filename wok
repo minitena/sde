@@ -781,6 +781,7 @@ case "$1" in
 		rm -rf /output/packages/$2-*.pkg*
 		pkgnativereinstallforcenodeps $2
 		rm -rf /output/packages/*debug*.pkg*
+		cd /output/packages/
 		repo-add core.db.tar.xz $2-*.pkg*
 		;;
 	view-sums)
