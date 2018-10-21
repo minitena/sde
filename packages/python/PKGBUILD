@@ -3,7 +3,7 @@
 
 pkgname=python
 pkgver=3.7.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Next generation of the python high-level scripting language"
 arch=('x86_64' 'i586' 'aarch64')
 url="http://www.python.org/"
@@ -20,6 +20,7 @@ prepare() {
 
 build() {
 	cd Python-${pkgver}
+	CXX="/usr/bin/g++" \
 	./configure \
 		--prefix=/usr \
 		--with-dbmliborder=gdbm:ndbm \
@@ -27,7 +28,6 @@ build() {
 		--with-lto \
 		--with-system-expat \
 		--with-system-ffi \
-		--with-threads \
 		--enable-ipv6 \
 		--enable-loadable-sqlite-extensions \
 		--enable-shared \
