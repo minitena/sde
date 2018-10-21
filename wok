@@ -554,7 +554,8 @@ download_loader() {
 }
 
 install_base() {
-	$ROOTFS/usr/bin/pacstrap -C $ROOTFS/etc/pacman.conf $LIVEOS meta-base
+	mkdir -p $LIVEOS/var/lib/pacman
+	pacman --config $ROOTFS/etc/pacman.conf -Syy meta-base --root $LIVEOS --arch $BARCH --noconfirm
 }
 
 configure_liveos() {

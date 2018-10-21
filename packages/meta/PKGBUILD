@@ -3,7 +3,7 @@
 
 pkgname=('meta-base' 'meta-devel')
 pkgver=2018.10
-pkgrel=5
+pkgrel=6
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -14,7 +14,7 @@ package_meta-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux''procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'curl')
 	:
 }
@@ -41,7 +41,7 @@ package_meta-devel() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux''procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 #		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}
