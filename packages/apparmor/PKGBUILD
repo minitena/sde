@@ -3,12 +3,12 @@
 
 pkgname=apparmor
 pkgver=2.13.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Mandatory Access Control (MAC) using Linux Security Module (LSM)"
 arch=('x86_64' 'i586' 'aarch64')
 url="https://gitlab.com/apparmor/apparmor"
 license=('GPL')
-depends=('glibc' 'pam' 'audit')
+depends=('glibc' 'pam' 'audit' 'python')
 backup=('etc/apparmor/easyprof.conf'
 	'etc/apparmor/logprof.conf'
 	'etc/apparmor/notify.conf'
