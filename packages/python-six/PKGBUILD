@@ -3,7 +3,7 @@
 
 pkgname=python-six
 pkgver=1.11.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Python 2 and 3 compatibility utilities"
 arch=('any')
 url="http://pypi.python.org/pypi/six/"
