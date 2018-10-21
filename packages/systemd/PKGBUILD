@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=22
+pkgrel=23
 arch=('x86_64' 'i586' 'aarch64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -60,6 +60,7 @@ build() {
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
+		-Dapparmor=false \
 		-Daudit=true \
 		-Dblkid=true \
 		-Dbuildtype=release \
@@ -78,6 +79,7 @@ build() {
 		-Dntp-servers="0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org" \
 		-Dpam=true \
 		-Drpmmacrosdir=no \
+		-Dselinux=false \
 		-Dsysusers=false
 	ninja
 }
@@ -85,7 +87,7 @@ build() {
 package_systemd() {
 	pkgdesc="System and service manager"
 	depends=('glibc' 'systemd-libs' 'pam' 'libcap' 'acl' 'util-linux-libs' 'iptables' 'pcre2' 'libidn2' 'kbd'
-		 'xz-utils' 'lz4' 'kmod' 'hwids' 'libgcrypt' 'libseccomp' 'cryptsetup' 'audit' 'apparmor' 'dbus')
+		 'xz-utils' 'lz4' 'kmod' 'hwids' 'libgcrypt' 'libseccomp' 'cryptsetup' 'audit' 'dbus')
 	backup=(etc/pam.d/systemd-user
 		etc/systemd/coredump.conf
 		etc/systemd/journald.conf
