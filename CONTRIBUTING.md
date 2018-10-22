@@ -18,6 +18,21 @@ Minitena:
 ```
 pacman -S meta-base syslinux xorriso
 ```
+Building pacman:
+```
+sed -i -e '/x-cpio/s@)@|*application/x-empty*)@' scripts/makepkg.sh.in
+sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
+autoreconf -vif
+./configure \
+--prefix=/dedicated/dir \
+--with-scriptlet-shell=/usr/bin/bash \
+--disable-doc \
+--disable-nls \
+DUFLAGS="-sk" \
+SEDINPLACEFLAGS="-i"
+make -j $(expr $(nproc) + 1)
+make install -j $(expr $(nproc) + 1)
+```
 
 ### Building Minitena
 The first step is building chroot system for Minitena. Minitena supports 4 CPU architectures:
@@ -30,7 +45,7 @@ arm     - 32-bit ARM (version 7)
 **WARNING: If you want to build ARM system on x86 you should do that in virtual machine!***
 Building chroot system:
 ```
-sudo BARCH=[CPU architecture] MKJOBS=[number of CPU cores (if you don't want to specify that ```wok``` will use all of your CPU cores!)] ./wok bootstrap
+sudo BARCH=[CPU architecture] MKJOBS=[number of CPU cores (if you don't want to specify that wok will use all of your CPU cores!)] ./wok bootstrap
 ```
 Then we need to enter chroot:
 ```
