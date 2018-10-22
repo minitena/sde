@@ -5,8 +5,10 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 ## Preparing
 
+
 ### Building tools for ```wok```
 ```wok``` is a framework that builds Minitena. It can build cross-toolchain, chroot system, tarball and *.iso image. ```wok``` uses ```pacman``` as package manager to manipulate chroot and toolchain packages on host system and native packages on the target system. First, we'll install host packages.
+
 Debian or Ubuntu (and derivatives):
 ```
 apt-get install build-essential gcc-multilib g++-multilib m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils -y
@@ -35,6 +37,7 @@ make -j $(expr $(nproc) + 1)
 make install -j $(expr $(nproc) + 1)
 ```
 After building ```pacman``` you need to add path to /dedicated/dir/bin in your bashrc
+
 
 ### Building Minitena
 The first step is building chroot system for Minitena. Minitena supports 4 CPU architectures:
@@ -65,6 +68,7 @@ And *.tar.xz tarball (all architectures)
 ```
 sudo BARCH=[CPU architecture] ./wok tarball
 ```
+
 
 ## Making packages
 TODO
