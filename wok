@@ -635,10 +635,12 @@ EOF
 }
 
 build_initramfs() {
+	. $REPO/linux/PKGBUILD
+
 	mv $LIVEOS/boot/vmlinuz-linux $ISODIR/kernel
 	rm -rf $LIVEOS/boot/initramfs-linux.img
 
-	chroot $LIVEOS /usr/bin/dracut --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live" --force --gzip -q boot/initramfs-linux.img 4.18.16
+	chroot $LIVEOS /usr/bin/dracut --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live" --force --gzip -q boot/initramfs-linux.img $zerover
 	mv $LIVEOS/boot/initramfs-linux.img $ISODIR/initrd
 }
 
