@@ -33,6 +33,7 @@ SEDINPLACEFLAGS="-i"
 make -j $(expr $(nproc) + 1)
 make install -j $(expr $(nproc) + 1)
 ```
+After building ```pacman``` you need to add path to /dedicated/dir/bin in your bashrc
 
 ### Building Minitena
 The first step is building chroot system for Minitena. Minitena supports 4 CPU architectures:
