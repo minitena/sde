@@ -3,7 +3,7 @@
 
 pkgname=grub
 pkgver=2.02
-pkgrel=6
+pkgrel=7
 pkgdesc="The GNU GRand Unified Bootloader"
 arch=('x86_64' 'i586')
 url="http://www.gnu.org/software/grub"
@@ -44,7 +44,7 @@ prepare() {
 	patch -Np1 -i $srcdir/0010-relocation.patch
 
 	sed 's|/usr/share/fonts/dejavu|/usr/share/fonts/dejavu /usr/share/fonts/TTF|g' -i "configure.ac"
-	sed 's|GNU/Linux||' -i "util/grub.d/10_linux.in"
+	sed 's| GNU/Linux||' -i "util/grub.d/10_linux.in"
 
 	./autogen.sh
 }
