@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 
 export WOKVERSION="2.0"
@@ -433,6 +433,38 @@ enter_chroot() {
 	set -e
 }
 
+build_final_system() {
+	set +e
+
+	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
+	mkdir -p $ROOTFS/var/repo
+
+	mount --bind /proc $ROOTFS/proc
+	mount --bind /sys $ROOTFS/sys
+	mount --bind /dev $ROOTFS/dev
+	mount --bind /tmp $ROOTFS/tmp
+	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $PACKAGES $ROOTFS/output/packages
+	mount --bind $SOURCES $ROOTFS/output/sources
+
+	chroot $ROOTFS /usr/bin/env -i \
+		TERM="$TERM" \
+		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
+		PATH="/usr/bin:/tools/bin" \
+		BARCH="$BARCH" \
+		/usr/bin/wok final-system
+
+	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/proc
+	umount -l $ROOTFS/sys
+	umount -l $ROOTFS/dev
+	umount -l $ROOTFS/tmp
+	umount -l $ROOTFS/output/sources
+	umount -l $ROOTFS/output/packages
+
+	set -e
+}
+
 adjust_toolchain() {
 	echo "Please, wait..."
 	sleep 1
@@ -804,6 +836,16 @@ case "$1" in
 		setup_architecture
 		setup_environment
 		enter_chroot
+		;;
+	auto-build)
+		check_for_root
+		setup_architecture
+		setup_environment
+		build_environment
+		build_toolchain
+		build_bootstrap
+		build_symlinks
+		build_final_system
 		;;
 	host-package|host-pkg)
 		check_for_root
