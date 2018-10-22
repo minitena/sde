@@ -22,10 +22,10 @@ pacman -S meta-base syslinux xorriso
 ### Building Minitena
 The first step is building chroot system for Minitena. Minitena supports 4 CPU architectures:
 ```
-x86_64 - 64-bit x86 (AMD64/EMT64)
-i586 - 32-bit x86 (for Pentium-compatible and higher)
+x86_64  - 64-bit x86 (AMD64/EMT64)
+i586    - 32-bit x86 (for Pentium-compatible and higher)
 aarch64 - 64-bit ARM
-arm - 32-bit ARM (version 7)
+arm     - 32-bit ARM (version 7)
 ```
 **WARNING: If you want to build ARM system on x86 you should do that in virtual machine!***
 Building chroot system:
