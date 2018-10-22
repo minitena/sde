@@ -123,8 +123,6 @@ e2fsprogs
 xfsprogs
 btrfs-progs
 reiserfsprogs
-libaal
-reiser4progs
 f2fs-tools
 sysfsutils
 dosfstools
