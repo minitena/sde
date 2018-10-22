@@ -21,7 +21,7 @@ Due to [heartbleed bug](https://en.wikipedia.org/wiki/Heartbleed) Minitena alrea
 Minitena doesn't have any kind of installer. You need to write down commands manually. Also, it allows being flexible because it allows to build your own system and configure that for your needs.
 
 ## Support
-We provide [wiki](https://github.com/minitena/wiki/wiki) also you will rather use [issues page](https://github.com/minitena/issues/issues) to ask the community of this project to get help.
+We provide [wiki](https://github.com/minitena/source/wiki) also you will rather use [issues page](https://github.com/minitena/source/issues) to ask the community of this project to get help.
 
 ## IRC channel and Discord Server
 To communicate with each other person who uses Minitena, we made IRC channel and Discord server. Because they're very popular and easy ways to discuss this project. IRC: #minitena on ```freenode.net``` or [Discord Server](https://discord.gg/bG5Dcnc).
