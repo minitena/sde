@@ -3,7 +3,7 @@
 
 pkgname=dbus
 pkgver=1.12.10
-pkgrel=5
+pkgrel=6
 pkgdesc="Freedesktop.org message bus system"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://wiki.freedesktop.org/www/Software/dbus/"
@@ -27,6 +27,8 @@ build() {
 		--without-x \
 		--enable-libaudit \
 		--enable-systemd \
+		--disable-apparmor \
+		--disable-selinux \
 		--build=$CHOST
 	make
 }
