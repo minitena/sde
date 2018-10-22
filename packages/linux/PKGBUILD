@@ -2,8 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux
-pkgver=4.18.16
-reiserfs4patchver=4.18.0
+pkgver=4.19
 pkgrel=22
 pkgdesc="The Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -12,26 +11,22 @@ license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
-	"http://downloads.sourceforge.net/project/reiser4/reiser4-for-linux-4.x/reiser4-for-$reiserfs4patchver.patch.gz"
 	'x86_64-config'
 	'i586-config'
 	'arm64-config'
 	'arm-config'
 	'60-linux.hook'
 	'90-linux.hook')
-md5sums=('df6309b196f94fdf1df598d160f6ebce'
-         '4aa8cdbac33df4bee88fadefa9cdb8c4'
-         'fb39e0e73980674a43e8e1017c01ec95'
-         '891b910fb5579f5bea8d0e7aca3f81a9'
-         'fee4eee6814d4aa8d156390e04720f76'
-         '9f9e2e0bfd17ce587869a6062563fbd2'
+md5sums=('740a90cf810c2105df8ee12e5d0bb900'
+         'eaf8b1c195cd01e1f43670364b41661b'
+         '170ca3af3965b32b5b017b13e22bb85d'
+         '62840e437b3c384386d3a23a215f4cf0'
+         '9bce8898e818e5ebd880117dde15e92a'
          '8e58bafc66f67c38f306d0f854f92a8b'
          'f99d0be58396fd6564c894f4511c37b2')
 
 prepare() {
 	cd $pkgname-$pkgver
-	gzip -dc $srcdir/reiser4-for-$reiserfs4patchver.patch.gz | patch -p1
-
 	msg "Preparing kernel..."
 	make mrproper
 
