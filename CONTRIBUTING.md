@@ -4,6 +4,7 @@
 Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.com/protonesso) the creator of Minitena. At this page, you can find information about Minitena contribution.
 
 ## Preparing
+
 ### Building tools for ```wok```
 ```wok``` is a framework that builds Minitena. It can build cross-toolchain, chroot system, tarball and *.iso image. ```wok``` uses ```pacman``` as package manager to manipulate chroot and toolchain packages on host system and native packages on the target system. First, we'll install host packages.
 Debian or Ubuntu (and derivatives):
