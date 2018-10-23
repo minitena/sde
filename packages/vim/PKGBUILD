@@ -4,7 +4,7 @@
 pkgname=vim
 pkgver=8.1.0438
 pkgrel=3
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 url="https://www.vim.org/"
 pkgdesc="Vi Improved, a highly configurable, improved version of the vi text editor"
 license=('vim')

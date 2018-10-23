@@ -1,7 +1,7 @@
 pkgname=chroot-xz-utils
 pkgver=5.2.4
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 source=(https://tukaani.org/xz/xz-$pkgver.tar.gz)
 
 build() {

@@ -275,6 +275,22 @@ setup_architecture() {
 			export BINUTILSOPTS=''
 			export QEMUARCH="arm"
 			;;
+		riscv64)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="i586-generic-linux"
+			export XKARCH="riscv64"
+			export GCCOPTS="--with-arch=rv64imafdc --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export QEMUARCH="riscv64"
+			;;
+		riscv32)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="riscv32-generic-linux"
+			export XKARCH="riscv"
+			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export QEMUARCH="riscv32"
+			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
@@ -680,6 +696,16 @@ build_final_system() {
 			*)
 				pkgnativeinstall $finalpkg
 		esac
+
+		case $BARCH in
+			x86_64|i586|aarch64|arm)
+				pkgnativeinstall gnu-efi
+				;;
+			x86_64|i586|aarch64|arm)
+				pkgnativeinstall kexec-tools
+				;;
+		esac
+
 	done
 
 	case $BARCH in

@@ -1,7 +1,7 @@
 pkgname=chroot-bison
 pkgver=3.1
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 source=(http://ftpmirror.gnu.org/gnu/bison/bison-$pkgver.tar.xz)
 
 build() {

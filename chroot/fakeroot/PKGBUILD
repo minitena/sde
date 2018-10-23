@@ -1,7 +1,7 @@
 pkgname=chroot-fakeroot
 pkgver=1.23
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 source=(http://ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_${pkgver}.orig.tar.xz)
 
 prepare() {

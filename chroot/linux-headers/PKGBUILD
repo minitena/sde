@@ -1,7 +1,7 @@
 pkgname=chroot-linux-headers
 pkgver=4.19
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz)
 
 build() {
@@ -23,6 +23,9 @@ package() {
 			;;
 		arm)
 			export XKARCH="arm"
+			;;
+		riscv*)
+			export XKARCH="riscv"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
