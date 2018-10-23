@@ -24,26 +24,30 @@ Usage:	BARCH=[supported architecture] ./wok [option]
 
 Host options:
 
-	toolchain			Build cross-toolchain
-	bootstrap			Build minimal chroot system
-	image				Build *.iso image
-	tarball				Make *.tar.xz archive with minimal system
-	update-wok			Update 'wok' for chroot system
+	toolchain				Build cross-toolchain
+	bootstrap				Build minimal chroot system
+	image					Build *.iso image
+	tarball					Make *.tar.xz archive with minimal system
+	update-wok				Update 'wok' for chroot system
+	enter-chroot				Enter the chroot system
+	enter-chroot-binfmt			Enter the chroot system if host and target architectures are different
+	auto-build				Automatically build Minitena
+	auto-build-binfmt			Automatically build Minitena if host and target architectures are different
 
 Target options:
 
-	final-system			Build repository of Minitena
+	final-system				Build repository of Minitena
 
 Target package options: wok [option] [package]
 
-	view-sums			View md5 sums for specific package
-	package				Build specific package
-	update-package			Update specific package
+	view-sums				View md5 sums for specific package
+	package					Build specific package
+	update-package				Update specific package
 
 Misc:
 
-	version				Show version of 'wok'
-	usage				Display usage of 'wok'
+	version					Show version of 'wok'
+	usage					Display usage of 'wok'
 
 EOF
 	exit 0
@@ -245,6 +249,7 @@ setup_architecture() {
 			export XKARCH="x86_64"
 			export GCCOPTS="--with-arch=x86-64 --with-tune=generic --with-linker-hash-style=gnu"
 			export BINUTILSOPTS="--enable-targets=x86_64-pep"
+			export QEMUARCH="x86_64"
 			;;
 		i586)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
@@ -252,6 +257,7 @@ setup_architecture() {
 			export XKARCH="i386"
 			export GCCOPTS="--with-arch=i586 --with-tune=generic --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export QEMUARCH="i386"
 			;;
 		aarch64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
@@ -259,6 +265,7 @@ setup_architecture() {
 			export XKARCH="arm64"
 			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export QEMUARCH="aarch64"
 			;;
 		arm)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
@@ -266,6 +273,7 @@ setup_architecture() {
 			export XKARCH="arm"
 			export GCCOPTS="--with-arch=armv7-a --with-float=hard --with-fpu=vfpv3-d16 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export QEMUARCH="arm"
 			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
@@ -433,8 +441,89 @@ enter_chroot() {
 	set -e
 }
 
+enter_chroot_binfmt() {
+	set +e
+
+	if [ -f $(which qemu-$QEMUARCH-static) ]; then
+		cp $(which qemu-$QEMUARCH-static) $ROOTFS/usr/bin
+	else
+		set -e
+		echo "Couldn't setup binfmt!"
+		exit 1
+	done
+
+	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
+	mkdir -p $ROOTFS/var/repo
+
+	mount --bind /proc $ROOTFS/proc
+	mount --bind /sys $ROOTFS/sys
+	mount --bind /dev $ROOTFS/dev
+	mount --bind /tmp $ROOTFS/tmp
+	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $PACKAGES $ROOTFS/output/packages
+	mount --bind $SOURCES $ROOTFS/output/sources
+
+	chroot $ROOTFS /usr/bin/env -i \
+		TERM="$TERM" \
+		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
+		PATH="/usr/bin:/tools/bin" \
+		PS1='(chroot) \u:\w\$ ' \
+		BARCH="$BARCH" \
+		/usr/bin/sh
+
+	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/proc
+	umount -l $ROOTFS/sys
+	umount -l $ROOTFS/dev
+	umount -l $ROOTFS/tmp
+	umount -l $ROOTFS/output/sources
+	umount -l $ROOTFS/output/packages
+
+	set -e
+}
+
 build_final_system() {
 	set +e
+
+	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
+	mkdir -p $ROOTFS/var/repo
+
+	mount --bind /proc $ROOTFS/proc
+	mount --bind /sys $ROOTFS/sys
+	mount --bind /dev $ROOTFS/dev
+	mount --bind /tmp $ROOTFS/tmp
+	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $PACKAGES $ROOTFS/output/packages
+	mount --bind $SOURCES $ROOTFS/output/sources
+
+	chroot $ROOTFS /usr/bin/env -i \
+		TERM="$TERM" \
+		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
+		PATH="/usr/bin:/tools/bin" \
+		BARCH="$BARCH" \
+		/usr/bin/wok final-system
+
+	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/proc
+	umount -l $ROOTFS/sys
+	umount -l $ROOTFS/dev
+	umount -l $ROOTFS/tmp
+	umount -l $ROOTFS/output/sources
+	umount -l $ROOTFS/output/packages
+
+	set -e
+}
+
+build_final_system_binfmt() {
+	set +e
+
+	if [ -f $(which qemu-$QEMUARCH-static) ]; then
+		cp $(which qemu-$QEMUARCH-static) $ROOTFS/usr/bin
+	else
+		set -e
+		echo "Couldn't setup binfmt!"
+		exit 1
+	done
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
 	mkdir -p $ROOTFS/var/repo
@@ -853,6 +942,22 @@ case "$1" in
 		build_bootstrap
 		build_symlinks
 		build_final_system
+		;;
+	enter-chroot-binfmt)
+		check_for_root
+		setup_architecture
+		setup_environment
+		enter_chroot_binfmt
+		;;
+	auto-build-binfmt)
+		check_for_root
+		setup_architecture
+		setup_environment
+		build_environment
+		build_toolchain
+		build_bootstrap
+		build_symlinks
+		build_final_system_binfmt
 		;;
 	host-package|host-pkg)
 		check_for_root

@@ -47,11 +47,11 @@ i586    - 32-bit x86 (for Pentium-compatible and higher)
 aarch64 - 64-bit ARM
 arm     - 32-bit ARM (version 7)
 ```
-**WARNING: If you want to build ARM system on x86 you should do that in virtual machine!**
 Building chroot system:
 ```
 sudo BARCH=[CPU architecture] MKJOBS=[number of CPU cores (if you don't want to specify that wok will use all of your CPU cores!)] ./wok bootstrap
 ```
+**WARNING: If you want to build ARM system on x86 you should use enter-chroot-binfmt!**
 Then we need to enter chroot:
 ```
 sudo BARCH=[CPU architecture] ./wok enter-chroot
