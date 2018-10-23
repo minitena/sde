@@ -1,0 +1,45 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=rsync
+pkgver=3.1.3
+pkgrel=1
+pkgdesc="A file transfer program to keep remote files in sync"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://rsync.samba.org/"
+license=('GPL')
+backup=('etc/rsyncd.conf')
+install=$pkgname.install
+depends=('glibc' 'acl' 'perl' 'popt')
+source=("https://rsync.samba.org/ftp/rsync/src/$pkgname-$pkgver.tar.gz"
+	'rsyncd.conf'
+	'service'
+	'aservice'
+	'socket')
+md5sums=('1581a588fde9d89f6bc6201e8129afaf'
+         'aabfa1f445200501a36816fb44be95d8'
+         '852bdcc317279b5d92a5ca4153e488ae'
+         '5b755379b7769c79e48793ac1233088a'
+         'ae4c381e0c02d6132c7f6ded3f473041')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-included-popt=no \
+		--with-included-zlib=yes \
+		--disable-debug \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/rsyncd.conf $pkgdir/etc/rsyncd.conf
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/rsyncd.service
+	install -m644 $srcdir/aservice $pkgdir/usr/lib/systemd/system/rsyncd@.service
+	install -m644 $srcdir/socket $pkgdir/usr/lib/systemd/system/rsyncd.socket
+	install -Dm755 support/rrsync $pkgdir/usr/lib/rsync/rrsync
+}

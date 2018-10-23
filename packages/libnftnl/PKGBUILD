@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libnftnl
+pkgver=1.1.1
+pkgrel=1
+pkgdesc="Netfilter library providing interface to the nf_tables subsystem"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.netfilter.org/projects/libnftnl/"
+license=('GPL')
+depends=('glibc' 'libmnl')
+source=("https://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2")
+md5sums=('c2d35f59cef2d142d5fa19e456b4afdc')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

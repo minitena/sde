@@ -2,21 +2,23 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=iptables
-pkgver=1.8.0
+pkgver=1.8.1
 pkgrel=2
 pkgdesc="Linux kernel packet control tool"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.netfilter.org/projects/iptables/index.html"
 license=('GPL')
-depends=('glibc')
+depends=('glibc' 'libnftnl')
 source=(http://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2
-	iptables-flush
-	iptables.service
-	ip6tables.service)
-md5sums=('3874ca08438be68cd793558283df48d1'
+	'iptables-flush'
+	'iptables.service'
+	'ip6tables.service'
+	'example')
+md5sums=('b5b0b43afc245176c36a14c4fca6e661'
          'ac9619d7bfa1d9157b8cd873b93a1d79'
          '831be13c245592e93a538b74a89a12bc'
-         '2cce244b70ad60dae86947001ca1c84e')
+         '2cce244b70ad60dae86947001ca1c84e'
+         '88fe330e810bb89b3aa08747bae3e3f9')
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -35,7 +37,6 @@ build() {
 		--libexecdir=/usr/lib/iptables \
 		--with-xtlibdir=/usr/lib/xtables \
 		--enable-libipq \
-		--disable-nftables \
 		--build=$CHOST
 	make
 }
@@ -45,6 +46,8 @@ package() {
 	make DESTDIR=$pkgdir install
 
 	install -d $pkgdir/var/lib/{iptables,ip6tables}
+
+	install -Dm644 $srcdir/example $pkgdir/etc/iptables/iptables.rules
 
 	install -Dm644 $srcdir/iptables.service $pkgdir/usr/lib/systemd/system/iptables.service
 	install -Dm644 $srcdir/ip6tables.service $pkgdir/usr/lib/systemd/system/ip6tables.service

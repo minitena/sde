@@ -1,0 +1,11 @@
+post_common() {
+	usr/bin/fc-cache -rs
+}
+
+post_install() {
+	post_common
+}
+
+post_upgrade() {
+	post_common
+}

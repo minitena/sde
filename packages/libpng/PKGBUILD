@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libpng
+pkgver=1.6.35
+apngver=1.6.35
+pkgrel=1
+pkgdesc="A collection of routines used to create PNG format graphics files"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="A collection of routines used to create PNG format graphics files"
+license=('custom')
+depends=('glibc' 'zlib')
+source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.xz"
+	"https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$apngver-apng.patch.gz")
+md5sums=('678b7e696a62a193ed3503b04bf449d6'
+         '9b09826862164e2302827f7af3c52431')
+
+prepare() {
+	cd $pkgname-$pkgver
+	gzip -cd $srcdir/libpng-$apngver-apng.patch.gz | patch -p1
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

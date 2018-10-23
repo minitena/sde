@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=harfbuzz
+pkgver=2.0.2
+pkgrel=1
+pkgdesc="OpenType text shaping engine"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://www.freedesktop.org/wiki/Software/HarfBuzz"
+license=('MIT')
+depends=('glibc' 'icu' 'freetype' 'glib')
+makedepends=('gobject-introspection')
+source=("https://www.freedesktop.org/software/$pkgname/release/$pkgname-$pkgver.tar.bz2")
+md5sums=('e899bc8ae1acc58f8cd1c116edd4d70b')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-freetype \
+		--with-glib \
+		--with-gobject \
+		--with-icu \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

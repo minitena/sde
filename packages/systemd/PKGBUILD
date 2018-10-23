@@ -4,11 +4,11 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=23
+pkgrel=24
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
-makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl')
+makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
 source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar.gz
 	fix-build-glibc2.28.patch
 	systemd-239-meson-0.48.0_fixes-1.patch

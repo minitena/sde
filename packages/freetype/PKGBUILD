@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=freetype
+pkgver=2.9.1
+pkgrel=1
+pkgdesc="Font rasterization library"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.freetype.org/"
+license=('GPL')
+depends=('glibc' 'zlib' 'bzip2' 'libpng' 'harfbuzz')
+source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('60ef7d8160cd4bf8cb118ee9d65367ca')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

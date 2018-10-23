@@ -540,6 +540,11 @@ build_final_system() {
 				pkgnativerebuild freetype
 				pkgnativereinstallforcenodeps freetype
 				;;
+			harfbuzz)
+				rm -rf /output/packages/harfbuzz*.pkg*
+				pkgnativerebuild harfbuzz
+				pkgnativereinstallforcenodeps harfbuzz
+				;;
 			dbus)
 				pkgnativebuild dbus
 				pkgnativeinstallonlyforcenodeps dbus

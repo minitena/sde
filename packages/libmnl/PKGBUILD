@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libmnl
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Minimalistic user-space library oriented to Netlink developers"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.netfilter.org/projects/libmnl/"
+license=('LGPL')
+depends=('glibc')
+source=("https://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2")
+md5sums=('be9b4b5328c6da1bda565ac5dffadb2d')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

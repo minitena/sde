@@ -1,0 +1,3 @@
+post_upgrade() {
+	systemctl -q is-enabled rsyncd.service rsyncd.socket
+}

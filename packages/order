@@ -23,6 +23,8 @@ shadow
 util-linux
 coreutils
 libtool
+libmnl
+libnftnl
 iptables
 iproute2
 bzip2
@@ -112,6 +114,7 @@ swig
 libcap-ng
 audit
 apparmor
+kexec-tools
 systemd
 lvm2
 cryptsetup
@@ -164,6 +167,12 @@ usbutils
 usb_modeswitch
 open-isns
 open-iscsi
+libpng
+freetype
+harfbuzz
+freetype
+fontconfig
+sudo
 openssh
 dropbear
 libssh2
@@ -174,3 +183,5 @@ dhcpcd
 libnl
 wireless_tools
 wpa_supplicant
+nftables
+rsync

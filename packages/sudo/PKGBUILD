@@ -1,0 +1,47 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=sudo
+pkgver=1.8.25p1
+pkgrel=1
+pkgdesc="Give certain users the ability to run some commands as root"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.sudo.ws/sudo/"
+license=('custom')
+backup=('etc/sudoers'
+	'etc/pam.d/sudo')
+depends=('glibc' 'zlib' 'pam' 'libgcrypt')
+source=("http://www.sudo.ws/dist/$pkgname-$pkgver.tar.gz"
+	'sudo')
+md5sums=('d4e0b99809d905d8dcbfbe9ae42aba2b'
+         '6d7850d80d315cd2060c14689d2b95bc')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--libexecdir=/usr/lib \
+		--with-rundir=/run/sudo \
+		--with-vardir=/var/db/sudo \
+		--with-all-insults \
+		--with-env-editor \
+		--with-pam \
+		--with-passprompt="[sudo] password for %p: " \
+		--with-sssd \
+		--enable-tmpfiles.d \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	rm $pkgdir/etc/sudoers.dist
+
+	rmdir $pkgdir/run/sudo
+	rmdir $pkgdir/run
+
+	install -Dm644 $srcdir/sudo $pkgdir/etc/pam.d/sudo
+}
