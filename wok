@@ -450,7 +450,7 @@ enter_chroot_binfmt() {
 		set -e
 		echo "Couldn't setup binfmt!"
 		exit 1
-	done
+	fi
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
 	mkdir -p $ROOTFS/var/repo
@@ -523,7 +523,7 @@ build_final_system_binfmt() {
 		set -e
 		echo "Couldn't setup binfmt!"
 		exit 1
-	done
+	fi
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
 	mkdir -p $ROOTFS/var/repo
