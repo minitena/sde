@@ -1,7 +1,7 @@
 pkgname=chroot-ncurses
 pkgver=6.1
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(http://ftpmirror.gnu.org/gnu/ncurses/ncurses-$pkgver.tar.gz)
 
 build() {

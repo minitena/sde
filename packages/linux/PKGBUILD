@@ -6,7 +6,7 @@ pkgver=4.19
 zerover=$pkgver.0
 pkgrel=23
 pkgdesc="The Linux kernel"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -48,10 +48,6 @@ prepare() {
 			export XKARCH="arm"
 			cp $srcdir/arm-config .config
 			;;
-		riscv*)
-			export XKARCH="riscv"
-			make ARCH=$XKARCH defconfig
-			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
@@ -76,9 +72,6 @@ build() {
 			;;
 		arm)
 			export XKARCH="arm"
-			;;
-		riscv*)
-			export XKARCH="riscv"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -108,14 +101,6 @@ package() {
 		arm)
 			export XKARCH="arm"
 			export IMG="arch/arm/boot/zImage"
-			;;
-		riscv*)
-			export XKARCH="riscv"
-			export IMG="vmlinux"
-			;;
-		mips*)
-			export XKARCH="mips"
-			export IMG="vmlinux"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"

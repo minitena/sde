@@ -11,7 +11,7 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 Debian or Ubuntu (and derivatives):
 ```
-apt-get install build-essential gcc-multilib g++-multilib m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils qemu-user-static -y
+apt-get install build-essential gcc-multilib g++-multilib m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils -y
 ```
 Arch Linux (and derivatives):
 ```
@@ -19,7 +19,7 @@ pacman -S base-devel syslinux xorriso
 ```
 Minitena:
 ```
-pacman -S meta-base syslinux xorriso qemu-user-static
+pacman -S meta-base syslinux xorriso
 ```
 Building pacman:
 ```
@@ -60,11 +60,7 @@ Then we need to enter chroot:
 ```
 sudo BARCH=[CPU architecture] ./wok enter-chroot
 ```
-Let's build stage3:
-```
-wok stage3
-```
-After that let's build final system:
+Let's build final system:
 ```
 wok final-system
 ```

@@ -5,7 +5,7 @@ pkgname=npth
 pkgver=1.6
 pkgrel=1
 pkgdesc="New portable threads library"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://git.gnupg.org/cgi-bin/gitweb.cgi?p=npth.git"
 license=('LGPL')
 depends=('glibc')

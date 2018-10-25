@@ -1,7 +1,7 @@
 pkgname=chroot-glibc
 pkgver=2.28
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
+arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(http://ftpmirror.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz
 	bz20338.patch
 	bz23497.patch
