@@ -90,6 +90,7 @@ yasm
 hwids
 gnu-efi
 libgpg-error
+libgcrypt
 icu
 libxml2
 libxslt
