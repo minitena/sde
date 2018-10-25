@@ -32,7 +32,7 @@ sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
 autoreconf -vif
 ./configure \
 --prefix=/dedicated/dir \
---with-scriptlet-shell=/usr/bin/bash \
+--with-scriptlet-shell=/bin/bash \
 --disable-doc \
 --disable-nls \
 DUFLAGS="-sk" \
