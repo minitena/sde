@@ -481,9 +481,6 @@ build_symlinks() {
 
 update_wok() {
 	cp $CWD/wok $ROOTFS/usr/bin
-
-	rm -rf $ROOTFS/var/order
-	cp $REPO/order $ROOTFS/var/order
 }
 
 enter_chroot() {
