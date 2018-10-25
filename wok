@@ -661,88 +661,76 @@ build_stage3() {
 	for finalpkg in $(cat /var/orders/stage3); do
 		case $finalpkg in
 			glibc)
-				pkgnativeinstallnodeps glibc
+				pkgnativeinstallstage3nodeps glibc
 				wok adjust-toolchain
 				;;
 			m4)
-				pkgnativeinstallforce m4
+				pkgnativeinstallstage3force m4
 				;;
 			gmp)
-				pkgnativeinstallnodeps gmp
+				pkgnativeinstallstage3nodeps gmp
 				;;
 			binutils)
 				pkgnativebuild binutils
 				pkgnativeremove chroot-binutils || true
-				pkgnativeinstallonly binutils
+				pkgnativeinstallstage3only binutils
 				;;
 			gcc)
 				pkgnativebuild gcc
 				pkgnativeremove chroot-gcc  || true 
-				pkgnativeinstallonlyforce gcc
+				pkgnativeinstallstage3onlyforce gcc
 				;;
 			sed)
-				pkgnativeinstallforce sed
+				pkgnativeinstallstage3force sed
 				;;
 			cracklib)
 				pkgnativebuild cracklib
-				pkgnativeinstallonlyforcenodeps cracklib
+				pkgnativeinstallstage3onlyforcenodeps cracklib
 				;;
 			shadow)
 				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativeinstallonlyforcenodeps shadow
+				pkgnativeinstallstage3onlyforcenodeps shadow
 				;;
 			util-linux)
 				rm -rf /output/packages/util-linux*.pkg*
 				pkgnativerebuild util-linux
 				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallforcenodeps util-linux
+				pkgnativereinstallstage3forcenodeps util-linux
 				;;
 			procps-ng)
 				pkgnativebuild procps-ng
-				pkgnativeinstallonlyforcenodeps procps-ng
+				pkgnativeinstallstage3onlyforcenodeps procps-ng
 				;;
 			systemd)
 				rm -rf /output/packages/systemd*.pkg*
 				pkgnativerebuild systemd
-				pkgnativereinstallforcenodeps systemd
+				pkgnativereinstallstage3forcenodeps systemd
 				;;
 			dbus)
 				pkgnativebuild dbus
-				pkgnativeinstallonlyforcenodeps dbus
+				pkgnativeinstallstage3onlyforcenodeps dbus
 				;;
 			coreutils)
-				pkgnativeinstallforce coreutils
+				pkgnativeinstallstage3force coreutils
 				;;
 			gawk)
-				pkgnativeinstallforce gawk
+				pkgnativeinstallstage3force gawk
 				;;
 			grep)
-				pkgnativeinstallforce grep
+				pkgnativeinstallstage3force grep
 				;;
 			curl)
-				pkgnativeinstallforce curl
+				pkgnativeinstallstage3force curl
 				;;
 			perl)
-				pkgnativeinstallforce perl
+				pkgnativeinstallstage3force perl
 				;;
 			file)
-				pkgnativeinstallforce file
-				;;
-			bash)
-				pkgnativebuild bash
-				;;
-			pacman)
-				pkgnativebuild pacman
-				;;
-			fakeroot)
-				pkgnativebuild fakeroot
-				;;
-			vim)
-				pkgnativebuild vim
+				pkgnativeinstallstage3force file
 				;;
 			*)
-				pkgnativeinstall $finalpkg
+				pkgnativeinstallstage3 $finalpkg
 		esac
 
 	done
@@ -753,7 +741,6 @@ build_final_system() {
 		case $finalpkg in
 			glibc)
 				pkgnativeinstallnodeps glibc
-				wok adjust-toolchain
 				;;
 			m4)
 				pkgnativeinstallforce m4
@@ -763,12 +750,10 @@ build_final_system() {
 				;;
 			binutils)
 				pkgnativebuild binutils
-				pkgnativeremove chroot-binutils || true
 				pkgnativeinstallonly binutils
 				;;
 			gcc)
 				pkgnativebuild gcc
-				pkgnativeremove chroot-gcc  || true 
 				pkgnativeinstallonlyforce gcc
 				;;
 			sed)
