@@ -36,6 +36,7 @@ Host options:
 
 Target options:
 
+	stage3					Build initial filesystem of Minitena
 	final-system				Build repository of Minitena
 
 Target package options: wok [option] [package]
@@ -104,7 +105,7 @@ pkgnativeinstall() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --arch $BARCH
 	done
 }
 
@@ -121,7 +122,7 @@ pkgnativeinstallforce() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --arch $BARCH
 	done
 }
 
@@ -130,7 +131,7 @@ pkgnativeinstallforcenodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --arch $BARCH
 	done
 }
 
@@ -139,7 +140,7 @@ pkgnativeinstallnodeps() {
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
 	done
 }
 
@@ -147,7 +148,7 @@ pkgnativeinstallonly() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --arch $BARCH
 	done
 }
 
@@ -155,7 +156,7 @@ pkgnativeinstallonlyforce() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --arch $BARCH
 	done
 }
 
@@ -163,7 +164,7 @@ pkgnativeinstallonlyforcenodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --arch $BARCH
 	done
 }
 
@@ -171,7 +172,7 @@ pkgnativeinstallonlynodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd /var/repo/$mergepkg
-		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed --arch $BARCH
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
 	done
 }
 
@@ -216,6 +217,82 @@ pkgnativereinstallnodeps() {
 		cd /var/repo/$mergepkg
 		makepkg --config /etc/makepkg.conf -d -c -C || true
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
+	done
+}
+
+pkgnativeinstallstage3() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C || true
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3force() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C || true
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3forcenodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C || true
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3nodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		makepkg --config /etc/makepkg.conf -d -c -C || true
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3only() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3onlyforce() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3onlyforcenodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
+	done
+}
+
+pkgnativeinstallstage3onlynodeps() {
+	local pkg="$@"
+	for mergepkg in $pkg; do
+		cd /var/repo/$mergepkg
+		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --arch $BARCH
+		rm -rf /output/packages/$mergepkg-*.pkg.tar.xz
 	done
 }
 
@@ -275,22 +352,6 @@ setup_architecture() {
 			export BINUTILSOPTS=''
 			export QEMUARCH="arm"
 			;;
-		riscv64)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="i586-generic-linux"
-			export XKARCH="riscv64"
-			export GCCOPTS="--with-arch=rv64imafdc --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export QEMUARCH="riscv64"
-			;;
-		riscv32)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="riscv32-generic-linux"
-			export XKARCH="riscv"
-			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export QEMUARCH="riscv32"
-			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
@@ -312,6 +373,7 @@ setup_environment() {
 	export REPO="$CWD/packages"
 	export TCREPO="$CWD/toolchain"
 	export CHREPO="$CWD/chroot"
+	export ORDERS="$CWD/orders"
 
 	export PATH="$TOOLS/bin:$PATH"
 	export HOSTCC="gcc"
@@ -428,13 +490,14 @@ enter_chroot() {
 	set +e
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
-	mkdir -p $ROOTFS/var/repo
+	mkdir -p $ROOTFS/var/{repo,orders}
 
 	mount --bind /proc $ROOTFS/proc
 	mount --bind /sys $ROOTFS/sys
 	mount --bind /dev $ROOTFS/dev
 	mount --bind /tmp $ROOTFS/tmp
 	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $ORDERS $ROOTFS/var/orders
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
 
@@ -447,6 +510,7 @@ enter_chroot() {
 		/usr/bin/sh
 
 	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/var/orders
 	umount -l $ROOTFS/proc
 	umount -l $ROOTFS/sys
 	umount -l $ROOTFS/dev
@@ -469,13 +533,14 @@ enter_chroot_binfmt() {
 	fi
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
-	mkdir -p $ROOTFS/var/repo
+	mkdir -p $ROOTFS/var/{repo,orders}
 
 	mount --bind /proc $ROOTFS/proc
 	mount --bind /sys $ROOTFS/sys
 	mount --bind /dev $ROOTFS/dev
 	mount --bind /tmp $ROOTFS/tmp
 	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $ORDERS $ROOTFS/var/orders
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
 
@@ -488,6 +553,7 @@ enter_chroot_binfmt() {
 		/usr/bin/sh
 
 	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/var/orders
 	umount -l $ROOTFS/proc
 	umount -l $ROOTFS/sys
 	umount -l $ROOTFS/dev
@@ -502,13 +568,14 @@ build_final_system() {
 	set +e
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
-	mkdir -p $ROOTFS/var/repo
+	mkdir -p $ROOTFS/var/{repo,orders}
 
 	mount --bind /proc $ROOTFS/proc
 	mount --bind /sys $ROOTFS/sys
 	mount --bind /dev $ROOTFS/dev
 	mount --bind /tmp $ROOTFS/tmp
 	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $ORDERS $ROOTFS/var/orders
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
 
@@ -520,6 +587,7 @@ build_final_system() {
 		/usr/bin/wok final-system
 
 	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/var/orders
 	umount -l $ROOTFS/proc
 	umount -l $ROOTFS/sys
 	umount -l $ROOTFS/dev
@@ -542,13 +610,14 @@ build_final_system_binfmt() {
 	fi
 
 	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
-	mkdir -p $ROOTFS/var/repo
+	mkdir -p $ROOTFS/var/{repo,orders}
 
 	mount --bind /proc $ROOTFS/proc
 	mount --bind /sys $ROOTFS/sys
 	mount --bind /dev $ROOTFS/dev
 	mount --bind /tmp $ROOTFS/tmp
 	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $ORDERS $ROOTFS/var/orders
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
 
@@ -560,6 +629,7 @@ build_final_system_binfmt() {
 		/usr/bin/wok final-system
 
 	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/var/orders
 	umount -l $ROOTFS/proc
 	umount -l $ROOTFS/sys
 	umount -l $ROOTFS/dev
@@ -590,8 +660,99 @@ adjust_toolchain() {
 	echo "Toolchain adjust is done"
 }
 
+build_stage3() {
+	for finalpkg in $(cat /var/orders/stage3); do
+		case $finalpkg in
+			glibc)
+				pkgnativeinstallnodeps glibc
+				wok adjust-toolchain
+				;;
+			m4)
+				pkgnativeinstallforce m4
+				;;
+			gmp)
+				pkgnativeinstallnodeps gmp
+				;;
+			binutils)
+				pkgnativebuild binutils
+				pkgnativeremove chroot-binutils || true
+				pkgnativeinstallonly binutils
+				;;
+			gcc)
+				pkgnativebuild gcc
+				pkgnativeremove chroot-gcc  || true 
+				pkgnativeinstallonlyforce gcc
+				;;
+			sed)
+				pkgnativeinstallforce sed
+				;;
+			cracklib)
+				pkgnativebuild cracklib
+				pkgnativeinstallonlyforcenodeps cracklib
+				;;
+			shadow)
+				pkgnativebuild shadow
+				rm -rf /output/packages/*debug*.pkg*
+				pkgnativeinstallonlyforcenodeps shadow
+				;;
+			util-linux)
+				rm -rf /output/packages/util-linux*.pkg*
+				pkgnativerebuild util-linux
+				rm -rf /output/packages/*debug*.pkg*
+				pkgnativereinstallforcenodeps util-linux
+				;;
+			procps-ng)
+				pkgnativebuild procps-ng
+				pkgnativeinstallonlyforcenodeps procps-ng
+				;;
+			systemd)
+				rm -rf /output/packages/systemd*.pkg*
+				pkgnativerebuild systemd
+				pkgnativereinstallforcenodeps systemd
+				;;
+			dbus)
+				pkgnativebuild dbus
+				pkgnativeinstallonlyforcenodeps dbus
+				;;
+			coreutils)
+				pkgnativeinstallforce coreutils
+				;;
+			gawk)
+				pkgnativeinstallforce gawk
+				;;
+			grep)
+				pkgnativeinstallforce grep
+				;;
+			curl)
+				pkgnativeinstallforce curl
+				;;
+			perl)
+				pkgnativeinstallforce perl
+				;;
+			file)
+				pkgnativeinstallforce file
+				;;
+			bash)
+				pkgnativebuild bash
+				;;
+			pacman)
+				pkgnativebuild pacman
+				;;
+			fakeroot)
+				pkgnativebuild fakeroot
+				;;
+			vim)
+				pkgnativebuild vim
+				;;
+			*)
+				pkgnativeinstall $finalpkg
+		esac
+
+	done
+}
+
 build_final_system() {
-	for finalpkg in $(cat /var/order); do
+	for finalpkg in $(cat /var/orders/core); do
 		case $finalpkg in
 			glibc)
 				pkgnativeinstallnodeps glibc
@@ -695,15 +856,6 @@ build_final_system() {
 				;;
 			*)
 				pkgnativeinstall $finalpkg
-		esac
-
-		case $BARCH in
-			x86_64|i586|aarch64|arm)
-				pkgnativeinstall gnu-efi
-				;;
-			x86_64|i586|aarch64|arm)
-				pkgnativeinstall kexec-tools
-				;;
 		esac
 
 	done
@@ -949,6 +1101,9 @@ case "$1" in
 		mkdir -p $TARBALLDIR
 		install_tarball_base
 		make_archive
+		;;
+	stage3)
+		build_stage3
 		;;
 	final-system)
 		build_final_system
