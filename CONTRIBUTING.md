@@ -23,6 +23,10 @@ pacman -S meta-base syslinux xorriso qemu-user-static
 ```
 Building pacman:
 ```
+cd /tmp
+wget https://sources.archlinux.org/other/pacman/pacman-5.1.1.tar.gz
+tar -xvf pacman-5.1.1.tar.gz
+cd pacman-5.1.1
 sed -i -e '/x-cpio/s@)@|*application/x-empty*)@' scripts/makepkg.sh.in
 sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
 autoreconf -vif
