@@ -69,6 +69,6 @@ package() {
 	make MAKEINFO="true" tooldir=/usr DESTDIR=$pkgdir install
 
 	for f in $pkgdir/usr/bin/*; do
-		ln -s ${f##*/} $pkgdir/usr/bin/${CHOST:-${CHOST}}-${f##*/}
+		ln -sf ${f##*/} $pkgdir/usr/bin/${CHOST:-${CHOST}}-${f##*/}
 	done
 }
