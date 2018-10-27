@@ -677,14 +677,15 @@ build_final_system() {
 			vim)
 				pkgnativebuild vim
 				;;
+			gnu-efi)
+				case $BARCH in
+					x86_64|i586|aarch64|arm)
+						pkgnativebuild gnu-efi
+						;;
+				esac
+				;;
 			*)
 				pkgnativeinstall $finalpkg
-		esac
-
-		case $BARCH in
-			x86_64|i586|aarch64|arm)
-				pkgnativebuild gnu-efi
-				;;
 		esac
 
 	done
