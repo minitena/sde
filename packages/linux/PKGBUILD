@@ -4,7 +4,7 @@
 pkgname=linux
 pkgver=4.19
 zerover=$pkgver.0
-pkgrel=23
+pkgrel=24
 pkgdesc="The Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
@@ -19,10 +19,10 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('740a90cf810c2105df8ee12e5d0bb900'
-         '45c52383116481be7e7499a3331f95cb'
-         'e502b277a22e8ed4251c2df6fd961d8f'
-         '8c624cf101e5c6a3def2f798674cb4fe'
-         '05c2fe50c359b4c89a869c4b26186a59'
+         '937784417cd2fff47a7fe264f2987562'
+         '4033eac71f4ca7bcdaf1018e92606e79'
+         '515f0f2aca3d2aaab31c2e631a207b8d'
+         'ee1c8102b52fa2f2fc93455093a17faa'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '78509340954a4d0af142ebd92946a015')
 
