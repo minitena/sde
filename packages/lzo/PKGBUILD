@@ -3,7 +3,7 @@
 
 pkgname=lzo
 pkgver=2.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Portable lossless data compression library"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.oberhumer.com/opensource/lzo"
@@ -34,5 +34,5 @@ package() {
 	install -p -m 644 minilzo/minilzo.h $pkgdir/usr/include/lzo
 
 	cd $pkgdir/usr/lib
-	ln -s libminilzo.so.0 libminilzo.so
+	ln -sf libminilzo.so.0 libminilzo.so
 }

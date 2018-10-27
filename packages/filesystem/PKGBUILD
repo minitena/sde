@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=filesystem
-pkgver=2018.10
+pkgver=2018.11
 pkgrel=7
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -106,25 +106,25 @@ package() {
 	install -d -m1777 var/{tmp,spool/mail}
 
 	install -d -m775 -g 50 var/games
-	ln -s spool/mail var/mail
-	ln -s ../run var/run
-	ln -s ../run/lock var/lock
+	ln -sf spool/mail var/mail
+	ln -sf ../run var/run
+	ln -sf ../run/lock var/lock
 
 	for d in bin include lib/{modules,firmware} share/misc; do
 		install -d -m755 usr/$d
 	done
 
-	ln -s usr/lib lib
+	ln -sf usr/lib lib
 	case $CARCH in
 		x86_64|aarch64)
-			ln -s usr/lib lib64
-			ln -s lib usr/lib64
+			ln -sf usr/lib lib64
+			ln -sf lib usr/lib64
 			;;
 	esac
 
-	ln -s usr/bin bin
-	ln -s usr/bin sbin
-	ln -s bin usr/sbin
+	ln -sf usr/bin bin
+	ln -sf usr/bin sbin
+	ln -sf bin usr/sbin
 
 	for d in bin etc games include lib man sbin share; do
 		install -d -m755 usr/local/$d
