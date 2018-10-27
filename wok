@@ -680,7 +680,7 @@ build_final_system() {
 			gnu-efi)
 				case $BARCH in
 					x86_64|i586|aarch64|arm)
-						pkgnativebuild gnu-efi
+						pkgnativeinstall gnu-efi
 						;;
 				esac
 				;;
