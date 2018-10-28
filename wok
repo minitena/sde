@@ -720,7 +720,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='minitena-base zfs dhcpcd wpa_supplicant'
+	export LIVEPACKAGES='minitena-base dhcpcd wpa_supplicant'
 	mkdir -p $LIVEOS/var/lib/pacman
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --root $LIVEOS --arch $BARCH --noconfirm
 }

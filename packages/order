@@ -141,8 +141,6 @@ libelf
 dracut
 linux
 libtirpc
-spl
-zfs
 tar
 texinfo
 vim

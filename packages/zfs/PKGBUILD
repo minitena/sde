@@ -5,7 +5,7 @@ pkgname=zfs
 mainver=0.7.11
 kver=4.19
 pkgver=${mainver}.${kver}
-pkgrel=1
+pkgrel=2
 pkgdesc="The Zettabyte File System"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://zfsonlinux.org/"
@@ -31,7 +31,7 @@ build() {
 		--sysconfdir=/etc \
                 --with-linux=/usr/src/linux \
                 --with-linux-obj=/usr/src/linux \
-                --with-config=user \
+                --with-config=kernel \
 		--with-mounthelperdir=/usr/bin \
 		--with-udevdir=/usr/lib/udev \
 		--with-udevruledir=/usr/lib/udev/rules.d \
