@@ -251,8 +251,8 @@ package_linux-devel() {
 		arm|arm64) _args="x86*";;
 	esac
 
-	for arch in alpha avr32 blackfin cris frv h8300 \
+	for rmarch in alpha avr32 blackfin cris frv h8300 \
 		ia64 m* p* s* um v850 xtensa ${_args}; do
-		rm -rf $pkgdir/usr/src/linux/arch/$KARCH
+		rm -rf $pkgdir/usr/src/linux/arch/$rmarch
 	done
 }
