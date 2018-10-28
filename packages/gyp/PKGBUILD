@@ -1,0 +1,21 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=gyp
+pkgver=81286d388abf5c8f946f3f4be274bd987a690952
+pkgrel=1
+pkgdesc='"Generate Your Projects" Meta-Build system'
+arch=('any')
+url="https://gyp.gsrc.io/"
+license=('custom:BSD')
+depends=('python2' 'ninja')
+source=("https://chromium.googlesource.com/external/gyp/+archive/$pkgver.tar.gz")
+md5sums=('44cb48e3d9c1956c366760a986890267')
+
+build() {
+	python2 setup.py build
+}
+
+package() {
+	python2 setup.py install --root=$pkgdir --optimize=1 --skip-build
+}
