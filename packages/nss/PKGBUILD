@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=nss
-pkgver=3.39
+pkgver=3.40
 pkgrel=1
 pkgdesc="Network Security Services"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,15 +10,8 @@ url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
 license=('GPL' 'MPL')
 depends=('glibc' 'zlib' 'nspr' 'sqlite' 'p11-kit')
 options=('staticlibs')
-source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz"
-	'nss-3.39-standalone-1.patch')
-md5sums=('10720fc70fd483de1b085402fb10ed59'
-         'de42751a0a6d86d48e5d1cbb0e65096d')
-
-prepare() {
-	cd $pkgname-$pkgver
-	patch -Np1 -i $srcdir/nss-3.39-standalone-1.patch
-}
+source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz")
+md5sums=('f7aec858d192ae03d0e9a35a730c70fa')
 
 build() {
 	cd $pkgname-$pkgver/$pkgname

@@ -1,17 +1,17 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=linux
+pkgname=('linux' 'linux-devel')
+pkgbase=linux
 pkgver=4.19
 zerover=$pkgver.0
-pkgrel=24
-pkgdesc="The Linux kernel"
+pkgrel=25
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
-source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
+source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'x86_64-config'
 	'i586-config'
 	'arm64-config'
@@ -19,15 +19,15 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgname-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('740a90cf810c2105df8ee12e5d0bb900'
-         '937784417cd2fff47a7fe264f2987562'
-         '4033eac71f4ca7bcdaf1018e92606e79'
-         '515f0f2aca3d2aaab31c2e631a207b8d'
-         'ee1c8102b52fa2f2fc93455093a17faa'
+         '375fd157c9db7e811ccc9a4df0bb0834'
+         '92f1e04580af49de725024eb129b3594'
+         '8c624cf101e5c6a3def2f798674cb4fe'
+         '05c2fe50c359b4c89a869c4b26186a59'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '78509340954a4d0af142ebd92946a015')
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	msg "Preparing kernel..."
 	make mrproper
 
@@ -59,7 +59,7 @@ prepare() {
 build() {
 	msg "Building kernel..."
 
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	case $CARCH in
 		x86_64)
 			export XKARCH="x86_64"
@@ -81,10 +81,12 @@ build() {
 	make ARCH=$XKARCH
 }
 
-package() {
+package_linux() {
+	pkgdesc="The Linux kernel"
+
 	msg "Installing kernel contents to the $pkgdir directory..."
 
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	case $CARCH in
 		x86_64)
 			export XKARCH="x86_64"
@@ -108,6 +110,8 @@ package() {
 	esac
 
 	mkdir -p $pkgdir/usr/lib/modules/
+
+	sed -i '2iexit 0' scripts/depmod.sh
 	make ARCH=$XKARCH INSTALL_MOD_PATH=$pkgdir/usr modules_install
 
 	mkdir -p $pkgdir/boot
@@ -123,9 +127,132 @@ package() {
 	install -m644 $srcdir/*linux.hook $pkgdir/usr/share/libalpm/hooks/
 
 	local subst="
-		s|%KVER%|$zerover|g
+		s|%KVER%||g
 	"
 
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/60-linux.hook
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/90-linux.hook
+
+	cd $pkgdir/usr/lib/modules/$zerover
+	rm -f source build
+	ln -sf ../../../src/linux build
+}
+
+package_linux-devel() {
+	pkgdesc="Development files of Linux kernel to build various modules"
+
+	case $CARCH in
+		x86_64)
+			export KARCH="x86"
+			export SUBKARCH="x86_64"
+			;;
+		i586)
+			export KARCH="x86"
+			export SUBKARCH="i386"
+			;;
+		aarch64)
+			export KARCH="arm64"
+			;;
+		arm)
+			export KARCH="arm"
+			;;
+		*)
+			echo "Architecture is not set or is not supported"
+			exit 1
+	esac
+
+	cd $pkgbase-$pkgver
+	install -Dm644 Makefile $pkgdir/usr/src/linux/Makefile
+	install -Dm644 kernel/Makefile $pkgdir/usr/src/linux/kernel/Makefile
+	install -Dm644 .config $pkgdir/usr/src/linux/.config
+	mkdir -p $pkgdir/usr/src/linux/include
+
+	for i in acpi asm-generic config crypto drm generated linux math-emu \
+		media net pcmcia scsi sound trace uapi video xen; do
+		if [ -d include/$i ]; then
+			cp -a include/$i $pkgdir/usr/src/linux/include
+		fi
+	done
+
+	mkdir -p $pkgdir/usr/src/linux/arch/$KARCH
+	cp -a arch/$KARCH/include $pkgdir/usr/src/linux/arch/$KARCH
+
+	cp Module.symvers $pkgdir/usr/src/linux
+	cp -a scripts $pkgdir/usr/src/linux
+
+	mkdir -p $pkgdir/usr/src/linux/arch/$KARCH/kernel
+	cp arch/$KARCH/Makefile $pkgdir/usr/src/linux/arch/$KARCH
+	if [ "$SUBKARCH" = "i386" ]; then
+		mkdir -p $pkgdir/usr/src/linux/arch/x86
+		cp arch/x86/Makefile_32.cpu $pkgdir/usr/src/linux/arch/x86
+	fi
+	if [ "$KARCH" = "x86" ]; then
+		mkdir -p $pkgdir/usr/src/linux/arch/x86/kernel
+		cp arch/x86/kernel/asm-offsets.s $pkgdir/usr/src/linux/arch/x86/kernel
+	fi
+
+	for i in bt8xx cx88 saa7134; do
+		mkdir -p $pkgdir/usr/src/linux/drivers/media/pci/${i}
+		cp -a drivers/media/pci/${i}/*.h $pkgdir/usr/src/linux/drivers/media/pci/${i}
+	done
+	for i in cpia2 em28xx pwc; do
+		mkdir -p $pkgdir/usr/src/linux/drivers/media/usb/${i}
+		cp -a drivers/media/usb/${i}/*.h $pkgdir/usr/src/linux/drivers/media/usb/${i}
+	done
+	mkdir -p $pkgdir/usr/src/linux/drivers/media/i2c
+	cp drivers/media/i2c/*.h $pkgdir/usr/src/linux/drivers/media/i2c
+	for i in cx25840; do
+		mkdir -p $pkgdir/usr/src/linux/drivers/media/i2c/${i}
+		cp -a drivers/media/i2c/${i}/*.h $pkgdir/usr/src/linux/drivers/media/i2c/${i}
+	done
+
+	mkdir -p $pkgdir/usr/src/linux/drivers/md
+	cp drivers/md/*.h $pkgdir/usr/src/linux/drivers/md
+
+	mkdir -p $pkgdir/usr/src/linux/include/linux
+	cp include/linux/inotify.h $pkgdir/usr/src/linux/include/linux
+
+	mkdir -p $pkgdir/usr/src/linux/net/mac80211/
+	cp net/mac80211/*.h $pkgdir/usr/src/linux/net/mac80211
+
+	mkdir -p $pkgdir/usr/src/linux/include/config/dvb/
+	cp include/config/dvb/*.h $pkgdir/usr/src/linux/include/config/dvb/
+
+	mkdir -p $pkgdir/usr/src/linux/drivers/media/dvb-frontends
+	cp drivers/media/dvb-frontends/lgdt330x.h \
+		$pkgdir/usr/src/linux/drivers/media/dvb-frontends/
+	cp drivers/media/i2c/msp3400-driver.h $pkgdir/usr/src/linux/drivers/media/i2c/
+
+	mkdir -p $pkgdir/usr/src/linux/drivers/media/usb/dvb-usb
+	cp drivers/media/usb/dvb-usb/*.h $pkgdir/usr/src/linux/drivers/media/usb/dvb-usb/
+	mkdir -p $pkgdir/usr/src/linux/drivers/media/dvb-frontends
+	cp drivers/media/dvb-frontends/*.h $pkgdir/usr/src/linux/drivers/media/dvb-frontends/
+	mkdir -p $pkgdir/usr/src/linux/drivers/media/tuners
+	cp drivers/media/tuners/*.h $pkgdir/usr/src/linux/drivers/media/tuners/
+
+	mkdir -p $pkgdir/usr/src/linux/fs/xfs/libxfs
+	mkdir -p $pkgdir/usr/src/linux/mm
+	cp fs/xfs/libxfs/xfs_sb.h $pkgdir/usr/src/linux/fs/xfs/libxfs/xfs_sb.h
+
+	case "$CHOST" in
+		x86_64*)
+			mkdir -p $pkgdir/usr/src/linux/tools/objtool
+			cp tools/objtool/objtool $pkgdir/usr/src/linux/tools/objtool
+			;;
+	esac
+
+	for i in $(find . -name "Kconfig*"); do
+		mkdir -p $pkgdir/usr/src/linux/$(echo $i | sed 's|/Kconfig.*||')
+		cp $i $pkgdir/usr/src/linux/$i
+	done
+
+	case "$KARCH" in
+		i386|x86_64) _args="arm*";;
+		arm|arm64) _args="x86*";;
+	esac
+
+	for arch in alpha avr32 blackfin cris frv h8300 \
+		ia64 m* p* s* um v850 xtensa ${_args}; do
+		rm -rf $pkgdir/usr/src/linux/arch/$KARCH
+	done
 }
