@@ -5,7 +5,7 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19
 zerover=$pkgver.0
-pkgrel=25
+pkgrel=26
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
@@ -115,7 +115,9 @@ package_linux() {
 	make ARCH=$XKARCH INSTALL_MOD_PATH=$pkgdir/usr modules_install
 
 	mkdir -p $pkgdir/boot
-	cp $IMG $pkgdir/boot/vmlinuz-linux
+	cp -i $IMG $pkgdir/boot/vmlinuz-linux
+	cp -i System.map $pkgdir/boot/System.map-linux
+	cp -i .config $pkgdir/boot/config-linux
 
 	case $CARCH in
 		aarch64|arm)
