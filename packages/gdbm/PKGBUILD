@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=gdbm
-pkgver=1.18
+pkgver=1.18.1
 pkgrel=1
 pkgdesc="The GNU database library"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,7 +10,7 @@ url="http://www.gnu.org/software/gdbm"
 license=('GPL')
 depends=('glibc')
 source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('e316f8e4a3e7e4f23955be65d54fec48')
+md5sums=('988dc82182121c7570e0cb8b4fcd5415')
 
 build() {
 	cd $pkgname-$pkgver
