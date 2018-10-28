@@ -604,6 +604,10 @@ build_final_system() {
 				pkgnativebuild cracklib
 				pkgnativeinstallonlyforcenodeps cracklib
 				;;
+			bash-completion)
+				pkgnativebuild bash-completion
+				pkgnativeinstallonlyforcenodeps bash-completion
+				;;
 			shadow)
 				pkgnativebuild shadow
 				rm -rf /output/packages/*debug*.pkg*
@@ -716,7 +720,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='meta-base dhcpcd wpa_supplicant'
+	export LIVEPACKAGES='minitena-base zfs dhcpcd wpa_supplicant'
 	mkdir -p $LIVEOS/var/lib/pacman
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --root $LIVEOS --arch $BARCH --noconfirm
 }

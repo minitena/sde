@@ -1,0 +1,39 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=glib-networking
+pkgver=2.58.0
+pkgrel=1
+pkgdesc="Network extensions for GLib"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://gitlab.gnome.org/GNOME/glib-networking"
+license=('GPL')
+depends=('glib' 'p11-kit' 'gsettings-desktop-schemas')
+makedepends=('meson')
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('75b14b7e73a67753be9ce307751c661d')
+
+prepare() {
+	cd $pkgname-$pkgver
+	mkdir build
+}
+
+build() {
+	cd $pkgname-$pkgver
+	cd build
+
+	meson $srcdir/$pkgname-$pkgver \
+		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		-Dlibproxy_support=false \
+		-Dpkcs11_support=true
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver
+	cd build
+
+	DESTDIR=$pkgdir ninja install
+}

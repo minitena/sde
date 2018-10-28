@@ -1,14 +1,14 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=('meta-base' 'meta-devel')
+pkgname=('minitena-base' 'minitena-base-zfs' 'minitena-sdk')
 pkgver=2018.10
 pkgrel=6
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
 
-package_meta-base() {
+package_minitena-base() {
 	pkgdesc='Meta-package for basic system'
 	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
@@ -19,7 +19,18 @@ package_meta-base() {
 	:
 }
 
-package_meta-devel() {
+package_minitena-base-zfs() {
+	pkgdesc='Meta-package for basic system'
+	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
+		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
+		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
+		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'curl')
+	:
+}
+
+package_minitena-sdk() {
 	pkgdesc='Meta-package for development system'
 	depends=('linux-headers' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
 		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'

@@ -37,6 +37,7 @@ automake
 autoconf2.13
 autoconf-archive
 bash
+bash-completion
 bc
 diffutils
 file
@@ -139,6 +140,9 @@ libisoburn
 libelf
 dracut
 linux
+libtirpc
+spl
+zfs
 tar
 texinfo
 vim
@@ -152,6 +156,9 @@ glib
 gobject-introspection
 vala
 dbus-glib
+dconf
+gsettings-desktop-schemas
+glib-networking
 nspr
 gyp
 nss

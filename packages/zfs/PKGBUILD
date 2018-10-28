@@ -1,0 +1,47 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=zfs
+mainver=0.7.11
+kver=4.19
+pkgver=${mainver}.${kver}
+pkgrel=1
+pkgdesc="The Zettabyte File System"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://zfsonlinux.org/"
+license=('GPL')
+depends=('spl' 'zlib' 'attr' 'util-linux' 'libtirpc')
+makedepends=('linux-devel')
+source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${mainver}/zfs-${mainver}.tar.gz")
+md5sums=('ad51229183cac5d7ec5fe7577c778a53')
+
+prepare() {
+	cd $pkgname-$mainver
+	./autogen.sh
+}
+
+build() {
+	cd $pkgname-$mainver
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--libexecdir=/usr/lib/zfs \
+		--sbindir=/usr/bin \
+		--datadir=/usr/share \
+		--sysconfdir=/etc \
+                --with-linux=/usr/src/linux \
+                --with-linux-obj=/usr/src/linux \
+                --with-config=user \
+		--with-mounthelperdir=/usr/bin \
+		--with-udevdir=/usr/lib/udev \
+		--with-udevruledir=/usr/lib/udev/rules.d \
+		--with-dracutdir=/usr/lib/dracut \
+		--with-tirpc \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$mainver
+	make DESTDIR=$pkgdir install
+}

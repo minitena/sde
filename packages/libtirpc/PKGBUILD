@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libtirpc
+pkgver=1.1.4
+pkgrel=1
+pkgdesc="Transport Independent RPC library (SunRPC replacement)"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://libtirpc.sourceforge.net/"
+license=('BSD')
+depends=('glibc')
+backup=('etc/netconfig')
+source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('f5d2a623e9dfbd818d2f3f3a4a878e3a')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--disable-gssapi \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

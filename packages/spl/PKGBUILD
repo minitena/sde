@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=spl
+mainver=0.7.11
+kver=4.19
+pkgver=${mainver}.${kver}
+pkgrel=1
+pkgdesc="Solaris Porting Layer"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://zfsonlinux.org/"
+license=('GPL')
+depends=('linux')
+makedepends=('linux-devel')
+source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${mainver}/spl-${mainver}.tar.gz")
+md5sums=('68a4426fd97f4ea00df15033a2bdc284')
+
+build() {
+	cd $pkgname-$mainver
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib \
+		--sbindir=/usr/bin \
+                --with-linux=/usr/src/linux \
+                --with-linux-obj=/usr/src/linux \
+                --with-config=user \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$mainver
+	make DESTDIR=$pkgdir install
+}
