@@ -21,9 +21,9 @@ build() {
 		--prefix=/usr \
 		--libdir=/usr/lib \
 		--sbindir=/usr/bin \
-                --with-linux=/usr/src/linux \
-                --with-linux-obj=/usr/src/linux \
-                --with-config=kernel \
+		--with-linux=/usr/src/linux \
+		--with-linux-obj=/usr/src/linux \
+		--with-config=kernel \
 		--build=$CHOST
 	make
 }

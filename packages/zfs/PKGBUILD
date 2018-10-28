@@ -29,9 +29,9 @@ build() {
 		--sbindir=/usr/bin \
 		--datadir=/usr/share \
 		--sysconfdir=/etc \
-                --with-linux=/usr/src/linux \
-                --with-linux-obj=/usr/src/linux \
-                --with-config=kernel \
+		--with-linux=/usr/src/linux \
+		--with-linux-obj=/usr/src/linux \
+		--with-config=kernel \
 		--with-mounthelperdir=/usr/bin \
 		--with-udevdir=/usr/lib/udev \
 		--with-udevruledir=/usr/lib/udev/rules.d \
