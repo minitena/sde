@@ -3,45 +3,78 @@
 
 pkgname=nss
 pkgver=3.40
+_nsprver=4.20
 pkgrel=1
 pkgdesc="Network Security Services"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS"
 license=('GPL' 'MPL')
 depends=('glibc' 'zlib' 'nspr' 'sqlite' 'p11-kit')
+makedepends=('gyp')
 options=('staticlibs')
 source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RTM/src/nss-${pkgver}.tar.gz")
 md5sums=('f7aec858d192ae03d0e9a35a730c70fa')
 
 build() {
-	cd $pkgname-$pkgver/$pkgname
-	unset CFLAGS
-	unset CXXFLAGS
-
 	case $CARCH in
-		x86_64|aarch64)
-			export USE_64=1
+		x86_64)
+			export NSSTGT="x64"
+			;;
+		i586)
+			export NSSTGT="x86"
+			;;
+		aarch64)
+			export NSSTGT="aarch64"
+			;;
+		arm)
+			export NSSTGT="arm"
 			;;
 	esac
 
-	make -j1 \
-		BUILD_OPT=1 \
-		NSPR_INCLUDE_DIR=/usr/include/nspr \
-		USE_SYSTEM_ZLIB=1 \
-		ZLIB_LIBS=-lz \
-		NSS_ENABLE_WERROR=0 \
-		NSS_USE_SYSTEM_SQLITE=1
+	cd $pkgname-$pkgver/$pkgname
+	PATH="$srcdir/path:$PATH" bash -x ./build.sh \
+		--opt \
+		--system-sqlite \
+		--system-nspr \
+		--enable-libpkix \
+		--disable-tests \
+		-t $NSSTGT
 }
 
 package() {
-	cd $pkgname-$pkgver/dist
-	mkdir -p $pkgdir/usr/lib/pkgconfig $pkgdir/usr/include/nss $pkgdir/usr/bin
+	local vmajor vminor vpatch
+	cd $pkgname-$pkgver
 
-	install -m755 Linux*/lib/*.so $pkgdir/usr/lib
-	install -m644 Linux*/lib/{*.chk,libcrmf.a} $pkgdir/usr/lib
-	install -m755 Linux*/bin/{certutil,nss-config,pk12util} $pkgdir/usr/bin 
-	install -m644 Linux*/lib/pkgconfig/nss.pc $pkgdir/usr/lib/pkgconfig
+	{ read vmajor; read vminor; read vpatch; } \
+		< <(awk '/#define.*NSS_V(MAJOR|MINOR|PATCH)/ {print $3}' nss/lib/nss/nss.h)
 
-	cp -RL {public,private}/nss/* $pkgdir/usr/include/nss
-	chmod 644 $pkgdir/usr/include/nss/*
+	sed nss/pkg/pkg-config/nss.pc.in \
+		-e "s,%libdir%,/usr/lib,g" \
+		-e "s,%prefix%,/usr,g" \
+		-e "s,%exec_prefix%,/usr/bin,g" \
+		-e "s,%includedir%,/usr/include/nss,g" \
+		-e "s,%NSPR_VERSION%,$_nsprver,g" \
+		-e "s,%NSS_VERSION%,$pkgver,g" |
+		install -Dm644 /dev/stdin $pkgdir/usr/lib/pkgconfig/nss.pc
+
+	ln -sf nss.pc $pkgdir/usr/lib/pkgconfig/mozilla-nss.pc
+
+	sed nss/pkg/pkg-config/nss-config.in \
+		-e "s,@libdir@,/usr/lib,g" \
+		-e "s,@prefix@,/usr/bin,g" \
+		-e "s,@exec_prefix@,/usr/bin,g" \
+		-e "s,@includedir@,/usr/include/nss,g" \
+		-e "s,@MOD_MAJOR_VERSION@,$vmajor,g" \
+		-e "s,@MOD_MINOR_VERSION@,$vminor,g" \
+		-e "s,@MOD_PATCH_VERSION@,$vpatch,g" |
+		install -D /dev/stdin $pkgdir/usr/bin/nss-config
+
+	cd $srcdir/$pkgname-$pkgver/dist
+	install -Dt $pkgdir/usr/include/nss -m644 public/nss/*.h
+
+	cd $srcdir/$pkgname-$pkgver/dist/Release/bin
+	install -Dt $pkgdir/usr/bin *util shlibsign signtool signver ssltap
+
+	cd $srcdir/$pkgname-$pkgver/dist/Release/lib
+	install -Dt $pkgdir/usr/lib/ *.so
 }
