@@ -153,6 +153,7 @@ gobject-introspection
 vala
 dbus-glib
 nspr
+gyp
 nss
 js52
 js60
