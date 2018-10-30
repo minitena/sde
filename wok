@@ -247,8 +247,9 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="x86_64-generic-linux"
 			export XKARCH="x86_64"
-			export GCCOPTS="--with-arch=x86-64 --with-tune=generic --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-arch=x86-64 --with-tune=generic --with-linker-hash-style=gnu --enable-cet=auto"
 			export BINUTILSOPTS="--enable-targets=x86_64-pep"
+			export GLIBCOPTS="--enable-static-pie --enable-cet"
 			export QEMUARCH="x86_64"
 			;;
 		i586)
@@ -257,6 +258,7 @@ setup_architecture() {
 			export XKARCH="i386"
 			export GCCOPTS="--with-arch=i586 --with-tune=generic --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export GLIBCOPTS="--enable-static-pie"
 			export QEMUARCH="i386"
 			;;
 		aarch64)
@@ -265,6 +267,7 @@ setup_architecture() {
 			export XKARCH="arm64"
 			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
 			export QEMUARCH="aarch64"
 			;;
 		arm)
@@ -273,6 +276,7 @@ setup_architecture() {
 			export XKARCH="arm"
 			export GCCOPTS="--with-arch=armv7-a --with-float=hard --with-fpu=vfpv3-d16 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
 		*)
@@ -307,7 +311,7 @@ setup_environment() {
 
 	export MKOPTS="-j$MKJOBS"
 
-	export CFLAGS="-O2 -pipe"
+	export CFLAGS="-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong -fno-plt -Wl,-z,relro,-z,now -pipe"
 	export CXXFLAGS="$CFLAGS"
 }
 
@@ -336,6 +340,7 @@ build_environment() {
 			-e "s|@XKARCH[@]|$XKARCH|g" \
 			-e "s|@GCCOPTS[@]|$GCCOPTS|g" \
 			-e "s|@BINUTILSOPTS[@]|$BINUTILSOPTS|g" \
+			-e "s|@GLIBCOPTS[@]|$GLIBCOPTS|g" \
 			-e "s|@HOSTCC[@]|$HOSTCC|g" \
 			-e "s|@HOSTCXX[@]|$HOSTCXX|g" \
 			-e "s|@PATH[@]|$PATH|g"
@@ -722,7 +727,8 @@ download_loader() {
 install_base() {
 	export LIVEPACKAGES='minitena-base dhcpcd wpa_supplicant'
 	mkdir -p $LIVEOS/var/lib/pacman
-	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --root $LIVEOS --arch $BARCH --noconfirm
+	mkdir -p $LIVEOS/var/cache/pacman/pkg
+	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --cachedir $LIVEOS/var/cache/pacman/pkg --root $LIVEOS --arch $BARCH --noconfirm
 }
 
 configure_liveos() {

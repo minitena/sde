@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libnfnetlink
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Low-level library for netfilter related kernel/userspace communication"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.netfilter.org/projects/libnfnetlink/"
+license=('GPL')
+depends=('glibc')
+source=("https://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz2")
+md5sums=('98927583d2016a9fb1936fed992e2c5e')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

@@ -191,3 +191,10 @@ wireless_tools
 wpa_supplicant
 nftables
 rsync
+libpcap
+tcpdump
+ebtables
+bridge-utils
+libnfnetlink
+libnetfilter_conntrack
+dnsmasq

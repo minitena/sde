@@ -1,0 +1,35 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libpcap
+pkgver=1.9.0
+pkgrel=1
+pkgdesc="A system-independent interface for user-level packet capture"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://www.tcpdump.org/"
+license=('BSD')
+depends=('glibc' 'dbus' 'libusb' 'libnl')
+source=("http://www.tcpdump.org/release/$pkgname-$pkgver.tar.gz")
+md5sums=('dffd65cb14406ab9841f421732eb0f33')
+
+build() {
+	cd $pkgname-$pkgver
+	CFLAGS="$CFLAGS -I${srcdir}/include $(pkg-config libnl-genl-3.0 --cflags)" \
+	./configure \
+		--prefix=/usr \
+		--with-libnl \
+		--enable-ipv6 \
+		--build=$CHOST
+	make
+}
+
+package() {
+	install -d -m755 $pkgdir/usr/bin
+
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/usr/include/net
+	cd $pkgdir/usr/include/net
+	ln -sf ../pcap-bpf.h bpf.h
+}

@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=tcpdump
+pkgver=4.9.2
+pkgrel=1
+pkgdesc="Powerful command-line packet analyzer"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://www.tcpdump.org/"
+license=('BSD')
+depends=('glibc' 'libressl' 'libcap-ng' 'libpcap')
+source=("http://www.tcpdump.org/release/$pkgname-$pkgver.tar.gz")
+md5sums=('9bbc1ee33dab61302411b02dd0515576')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	rm -f $pkgdir/usr/bin/tcpdump.${pkgver}
+}

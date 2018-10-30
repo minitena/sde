@@ -26,6 +26,9 @@ build() {
 	export CFLAGS="${CFLAGS/-O2/-O3}"
 	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
 
+	export CFLAGS="${CFLAGS/-fno-plt}"
+	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
+
 	cd glibc-$pkgver
 	cd build
 
@@ -37,7 +40,7 @@ build() {
 		--prefix=/tools \
 		--libdir=/tools/lib \
 		--build=$XHOST \
-		--host=$XTARGET \
+		--host=$XTARGET $GLIBCOPTS \
 		--with-pkgversion='Minitena' \
 		--with-bugurl='https://github.com/minitena/issues/issues' \
 		--with-binutils=$TOOLS/bin \

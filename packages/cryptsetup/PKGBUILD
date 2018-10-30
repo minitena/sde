@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=cryptsetup
-pkgver=2.0.4
+pkgver=2.0.5
 pkgrel=4
 pkgdesc="Userspace setup tool for transparent encryption of block devices using dm-crypt"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,7 +10,7 @@ url="https://gitlab.com/cryptsetup/cryptsetup/"
 license=('GPL')
 depends=('glibc' 'util-linux-libs' 'popt' 'json-c' 'lvm2' 'libressl' 'argon2')
 source=("https://www.kernel.org/pub/linux/utils/cryptsetup/v2.0/$pkgname-$pkgver.tar.xz")
-md5sums=('ed42b31f67d05b05e392d1943d467b8d')
+md5sums=('348f901b3e5849310c9d9f7d75b69d73')
 
 build() {
 	cd $pkgname-$pkgver
