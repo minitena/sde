@@ -1,0 +1,35 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=ipset
+pkgver=7.0
+pkgrel=1
+pkgdesc="Administration tool for IP sets"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://ipset.netfilter.org/"
+license=('GPL')
+depends=('glibc' 'libmnl')
+backup=("etc/$pkgname.conf")
+source=("http://ipset.netfilter.org/$pkgname-$pkgver.tar.bz2"
+	'service')
+md5sums=('64c4e2e7123481c9db7ee1df127d9531'
+         'e20fe62881993078591f1bb8b2fa22bb')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--with-kmod=no \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -Dm644 lib/libipset.pc $pkgdir/usr/lib/pkgconfig/libipset.pc
+	install -Dm 644 $srcdir/service $pkgdir/usr/lib/systemd/system/$pkgname.service
+	install -Dm 644 /dev/null $pkgdir/etc/$pkgname.conf
+}

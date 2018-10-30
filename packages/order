@@ -26,6 +26,7 @@ libtool
 libmnl
 libnftnl
 iptables
+ipset
 iproute2
 bzip2
 gdbm
