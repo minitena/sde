@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=curl
-pkgver=7.61.1
+pkgver=7.62.0
 pkgrel=3
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,7 +10,7 @@ url="https://curl.haxx.se/"
 license=('MIT')
 depends=('glibc' 'zlib' 'libressl' 'libidn2' 'libssh2')
 source=("https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz")
-md5sums=('feb1856fcdb79ba0386c8e41b02e487d')
+md5sums=('d4613e369a8ff80f23951d259808149e')
 
 build() {
 	cd $pkgname-$pkgver
