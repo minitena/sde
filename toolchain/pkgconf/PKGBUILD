@@ -6,6 +6,7 @@ source=(http://distfiles.dereferenced.org/pkgconf/pkgconf-$pkgver.tar.xz)
 
 build() {
 	cd pkgconf-$pkgver
+	unset CFLAGS CXXFLAGS
 	LDFLAGS="-static" \
 	./configure \
 		--prefix='' \
