@@ -23,8 +23,8 @@ Minitena doesn't have any kind of installer. You need to write down commands man
 ## Support
 We provide [wiki](https://github.com/minitena/source/wiki) also you will rather use [issues page](https://github.com/minitena/source/issues) to ask the community of this project to get help.
 
-## IRC channel and Discord Server
-To communicate with each other person who uses Minitena, we made IRC channel and Discord server. Because they're very popular and easy ways to discuss this project. IRC: #minitena on ```freenode.net``` or [Discord Server](https://discord.gg/bG5Dcnc).
+## IRC channel
+To communicate with each other person who uses Minitena, we made IRC channel. Because this is easy way to discuss this project. IRC: #minitena on ```freenode.net```.
 
 ## Development
 Minitena uses `git` as control version system. Main repository with source code hosts at GitHub. To enter to the repository with source code just [click here](https://github.com/minitena/source).
