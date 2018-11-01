@@ -19,8 +19,6 @@ post_install() {
 
 	add_journal_acls
 
-	systemctl enable getty@tty1.service remote-fs.target
-
 	mkdir -m2755 var/log/journal/remote
 	chgrp systemd-journal-remote var/log/journal/remote
 }
