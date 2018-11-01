@@ -64,7 +64,7 @@ pkginstall() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd $REPO/$mergepkg
-		makepkg --config $BUILD/target-makepkg.conf -d -c -C -f --skipchecksums -f
+		makepkg --config $BUILD/target-makepkg.conf -d -c -C -f --skipinteg -f
 		pacman -U $PACKAGES/$mergepkg-*.pkg.tar.xz --root $ROOTFS --arch $BARCH --noconfirm
 	done
 }
@@ -73,7 +73,7 @@ pkgchinstall() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd $CHREPO/$mergepkg
-		makepkg --config $BUILD/target-makepkg.conf -d -c -C -f --skipchecksums -f
+		makepkg --config $BUILD/target-makepkg.conf -d -c -C -f --skipinteg -f
 		pacman -U $PACKAGES/chroot-$mergepkg*.pkg.tar.xz --root $ROOTFS --arch $BARCH --noconfirm
 		rm -rf $PACKAGES/chroot-$mergepkg-*.pkg.tar.xz
 	done
@@ -83,7 +83,7 @@ pkgchtwoinstall() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd $CHREPO/$mergepkg
-		makepkg --config $BUILD/host-makepkg.conf -d -c -C -f --skipchecksums -f
+		makepkg --config $BUILD/host-makepkg.conf -d -c -C -f --skipinteg -f
 		pacman -U $PACKAGES/chroot-$mergepkg*.pkg.tar.xz --root $ROOTFS --arch $BARCH --noconfirm
 		rm -rf $PACKAGES/chroot-$mergepkg-*.pkg.tar.xz
 	done
@@ -93,7 +93,7 @@ pkgtcinstall() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
 		cd $TCREPO/$mergepkg
-		makepkg --config $BUILD/host-makepkg.conf -d -c -C -f --skipchecksums -f
+		makepkg --config $BUILD/host-makepkg.conf -d -c -C -f --skipinteg -f
 		pacman -U $PACKAGES/host-$mergepkg*.pkg.tar.xz --root $TOOLS --force --noconfirm
 		rm -rf $PACKAGES/host-$mergepkg-*.pkg.tar.xz
 	done
