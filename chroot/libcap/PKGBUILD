@@ -12,12 +12,12 @@ prepare() {
 
 build() {
 	cd libcap-$pkgver
-	make
+	make BUILD_CC="$HOSTCC" CC="$CC" CFLAGS="$CFLAGS"
 }
 
 package() {
 	cd libcap-$pkgver
-	make PAM_CAP=no RAISE_SETFCAP=no lib=lib prefix=/tools DESTDIR=$pkgdir install
+	make BUILD_CC="$HOSTCC" CC="$CC" CFLAGS="$CFLAGS" PAM_CAP=no RAISE_SETFCAP=no lib=lib prefix=/tools DESTDIR=$pkgdir install
 
 	chmod 755 $pkgdir/tools/lib/libcap.so
 }
