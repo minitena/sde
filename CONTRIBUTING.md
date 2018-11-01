@@ -11,7 +11,11 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 Debian or Ubuntu (and derivatives):
 ```
-apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils -y
+apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils
+```
+Fedora (and derivatives):
+```
+dnf install fakeroot libarchive-devel libarchive bsdtar openssl-devel curl-devel autoconf automake git autoconf automake gawk m4 bison flex texinfo patchutils gcc gcc-c++ libtool
 ```
 Arch Linux (and derivatives):
 ```
