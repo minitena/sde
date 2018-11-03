@@ -26,6 +26,7 @@ prepare() {
 	patch -Np1 -i $srcdir/io-size.patch
 	patch -Np1 -i $srcdir/speedup.patch
 	patch -p0 -i $srcdir/add-pgo.patch
+	autoreconf -vif
 }
 
 build() {

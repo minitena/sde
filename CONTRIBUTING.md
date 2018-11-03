@@ -15,7 +15,7 @@ apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 pytho
 ```
 Fedora (and derivatives):
 ```
-dnf install fakeroot libarchive-devel libarchive bsdtar openssl-devel curl-devel autoconf automake git autoconf automake gawk m4 bison flex texinfo patchutils gcc gcc-c++ libtool
+dnf install fakeroot libarchive-devel libarchive bsdtar openssl-devel curl-devel autoconf automake git autoconf automake gawk m4 bison flex texinfo patchutils gcc gcc-c++ libtool gettext-devel
 ```
 Arch Linux (and derivatives):
 ```
