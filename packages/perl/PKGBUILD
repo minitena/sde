@@ -35,6 +35,9 @@ build() {
 }
 
 package() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd $pkgname-$pkgver
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0

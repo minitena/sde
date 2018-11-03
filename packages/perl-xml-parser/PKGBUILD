@@ -14,12 +14,18 @@ source=("http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${pkgver}.
 md5sums=('af4813fe3952362451201ced6fbce379')
 
 build() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd XML-Parser-${pkgver}
 	perl Makefile.PL
 	make
 }
 
 package() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd XML-Parser-${pkgver}
 	make DESTDIR=$pkgdir install
 }
