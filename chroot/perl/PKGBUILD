@@ -11,6 +11,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd perl-$pkgver
 	./configure \
 		--target=$XTARGET \

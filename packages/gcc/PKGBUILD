@@ -3,22 +3,60 @@
 
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
-pkgver=8.2.1+20180831
-pkgrel=6
+pkgver=8+20181102
+snapver=8.2.1
+pkgrel=7
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 options=('staticlibs' '!emptydirs')
-source=(https://sources.archlinux.org/other/gcc/gcc-${pkgver/+/-}.tar.xz
+source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/$pkgbase-${pkgver/+/-}.tar.xz
+	0001-Fix-stack-protection-issues.patch
+	openmp-vectorize-v2.patch
+	fortran-vector-v2.patch
+	optimize.patch
+	ipa-cp.patch
+	optimize-at-least-some.patch
+	gomp-relax.patch
+	avx512-when-we-ask-for-it.patch
+	hj.patch
+	pow-optimization.patch
+	zero-regs-gcc8.patch
+	hj-patch-round.patch
 	c89
 	c99)
-md5sums=('c5be770aa3a92603d5866074d6fb8d33'
+md5sums=('e017a6f5a6f5d5e7de323b11efc59121'
+         '71798cd205d3401ab29ba79c8e45ef70'
+         'a767abde6eadd3fe3a573e990a195588'
+         'a6799d6442237da22d6e13507cc7dfb2'
+         '522c1cfbbb099cfc7287978d673a2f26'
+         '4c9bf1aebd3f809ddeebb24137829238'
+         'f1c4a280552cf963d88692c988daa74f'
+         '3e9ce4d3a022245451566e93804f40c0'
+         '1c97a9d030e35fb0147568e56c58bd8f'
+         'b2089d68ddcd7e4708851be77ad436c6'
+         '68ce9f34f638ba0a55dc2e67935f1306'
+         '865817b81a3766d6640a4b68e0698860'
+         '19f27d672b8be161d1c46e3137d0362e'
          '99691641ab044836a25fbcb73a1943cf'
          'ee387395de79f09b491857f8fbb5551d')
 
 prepare() {
 	cd $pkgbase-${pkgver/+/-}
+	patch -p1 -i $srcdir/0001-Fix-stack-protection-issues.patch
+	patch -p1 -i $srcdir/openmp-vectorize-v2.patch
+	patch -p1 -i $srcdir/fortran-vector-v2.patch
+	patch -p1 -i $srcdir/optimize.patch
+	patch -p1 -i $srcdir/ipa-cp.patch
+	patch -p1 -i $srcdir/optimize-at-least-some.patch
+	patch -p1 -i $srcdir/gomp-relax.patch
+	patch -p1 -i $srcdir/avx512-when-we-ask-for-it.patch
+	patch -p1 -i $srcdir/hj.patch
+	patch -p1 -i $srcdir/pow-optimization.patch
+	patch -p1 -i $srcdir/zero-regs-gcc8.patch
+	patch -p1 -i $srcdir/hj-patch-round.patch
+
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
@@ -58,7 +96,7 @@ build() {
 		--disable-multilib \
 		--disable-nls \
 		--disable-werror
-	make
+	make profiledbootstrap
 }
 
 package_gcc-libs() {
@@ -96,16 +134,16 @@ package_gcc() {
 	ln -sf ../bin/cpp $pkgdir/usr/lib
 
 	install -dm755 $pkgdir/usr/lib/bfd-plugins/
-	ln -sf /usr/lib/gcc/$CHOST/${pkgver%%+*}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
+	ln -sf /usr/lib/gcc/$CHOST/${snapver}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 
 	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
 	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
 
-	mkdir -p $pkgdir/usr/lib/go/${pkgver%%+*}/$CHOST/bin
-	mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/${pkgver%%+*}/$CHOST/bin
-	mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/go/${pkgver%%+*}/$CHOST/bin
+	mkdir -p $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
+	mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
+	mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
 
-	ln -sf /usr/lib/go/${pkgver%%+*}/$CHOST $pkgdir/usr/lib/gccgo
+	ln -sf /usr/lib/go/${snapver}/$CHOST $pkgdir/usr/lib/gccgo
 
 	# Provided by gcc-libs
 	rm -rf $pkgdir/usr/lib/*.so{,.*}

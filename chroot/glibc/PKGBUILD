@@ -3,15 +3,47 @@ pkgver=2.28
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 source=(http://ftpmirror.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz
-	bz20338.patch
-	bz23497.patch
-	0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch)
+	0001-Set-host.conf-multi-to-on-by-default.patch
+	skip-error-msg-ld.so.conf.patch
+	ldconfig-format-new.patch
+	mkdir-ldconfig.patch
+	nonscd.patch
+	alternate_trim.patch
+	madvise-bss.patch
+	spinaphore.patch
+	tzselect-proper-zone-file.patch
+	large-page-huge-page.patch
+	use_madv_free.patch
+	malloc_tune.patch
+	mathlto.patch
+	vzeroupper-2.27.patch
+	pause.patch
+	gcc-8-fix.patch
+	spin-smarter.patch
+	nostackshrink.patch
+	strcpy-avx2.patch)
 
 prepare() {
 	cd glibc-$pkgver
-	patch -Np1 -i $srcdir/bz20338.patch
-	patch -Np1 -i $srcdir/bz23497.patch
-	patch -Np1 -i $srcdir/0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch
+	patch -p1 -i $srcdir/0001-Set-host.conf-multi-to-on-by-default.patch
+	patch -p1 -i $srcdir/skip-error-msg-ld.so.conf.patch
+	patch -p1 -i $srcdir/ldconfig-format-new.patch
+	patch -p1 -i $srcdir/mkdir-ldconfig.patch
+	patch -p1 -i $srcdir/nonscd.patch
+	patch -p1 -i $srcdir/alternate_trim.patch
+	patch -p1 -i $srcdir/madvise-bss.patch
+	patch -p1 -i $srcdir/spinaphore.patch
+	patch -p1 -i $srcdir/tzselect-proper-zone-file.patch
+	patch -p1 -i $srcdir/large-page-huge-page.patch
+	patch -p1 -i $srcdir/use_madv_free.patch
+	patch -p1 -i $srcdir/malloc_tune.patch
+	patch -p1 -i $srcdir/mathlto.patch
+	patch -p1 -i $srcdir/vzeroupper-2.27.patch
+	patch -p1 -i $srcdir/pause.patch
+	patch -p1 -i $srcdir/gcc-8-fix.patch
+	patch -p1 -i $srcdir/spin-smarter.patch
+	patch -p1 -i $srcdir/nostackshrink.patch
+	patch -p1 -i $srcdir/strcpy-avx2.patch
 
 	mkdir build
 	cd build
@@ -23,11 +55,10 @@ prepare() {
 }
 
 build() {
-	export CFLAGS="${CFLAGS/-O2/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
-
 	export CFLAGS="${CFLAGS/-fno-plt}"
 	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2}"
 
 	cd glibc-$pkgver
 	cd build

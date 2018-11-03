@@ -301,6 +301,7 @@ setup_environment() {
 	export TCREPO="$CWD/toolchain"
 	export CHREPO="$CWD/chroot"
 
+	export LC_ALL="POSIX"
 	export PATH="$TOOLS/bin:$PATH"
 	export HOSTCC="gcc"
 	export HOSTCXX="g++"
@@ -311,7 +312,7 @@ setup_environment() {
 
 	export MKOPTS="-j$MKJOBS"
 
-	export CFLAGS="-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong -fno-plt -Wl,-z,relro,-z,now -pipe"
+	export CFLAGS="-D_FORTIFY_SOURCE=2 -O3 -fstack-protector-strong -fno-plt -Wl,-z,relro,-z,now -pipe"
 	export CXXFLAGS="$CFLAGS"
 }
 
@@ -343,7 +344,8 @@ build_environment() {
 			-e "s|@GLIBCOPTS[@]|$GLIBCOPTS|g" \
 			-e "s|@HOSTCC[@]|$HOSTCC|g" \
 			-e "s|@HOSTCXX[@]|$HOSTCXX|g" \
-			-e "s|@PATH[@]|$PATH|g"
+			-e "s|@PATH[@]|$PATH|g" \
+			-e "s|@LC_ALL[@]|$LC_ALL|g"
 	done
 }
 
@@ -725,7 +727,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='minitena-base dhcpcd wpa_supplicant'
+	export LIVEPACKAGES='minitena-base dhcpcd wpa_supplicant open-iscsi'
 	mkdir -p $LIVEOS/var/lib/pacman
 	mkdir -p $LIVEOS/var/cache/pacman/pkg
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --cachedir $LIVEOS/var/cache/pacman/pkg --root $LIVEOS --arch $BARCH --noconfirm

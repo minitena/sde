@@ -2,7 +2,19 @@ pkgname=chroot-xz-utils
 pkgver=5.2.4
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-source=(https://tukaani.org/xz/xz-$pkgver.tar.gz)
+source=(https://tukaani.org/xz/xz-$pkgver.tar.gz
+	'default-threading.patch'
+	'io-size.patch'
+	'speedup.patch'
+	'add-pgo.patch')
+
+prepare() {
+	cd xz-$pkgver
+	patch -Np1 -i $srcdir/default-threading.patch
+	patch -Np1 -i $srcdir/io-size.patch
+	patch -Np1 -i $srcdir/speedup.patch
+	patch -p0 -i $srcdir/add-pgo.patch
+}
 
 build() {
 	cd xz-$pkgver

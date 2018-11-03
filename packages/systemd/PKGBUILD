@@ -52,6 +52,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-O3/-O2}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-O2}"
+
 	export LANG=en_US.UTF-8
 
 	cd $pkgbase-$pkgver

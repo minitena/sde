@@ -13,37 +13,86 @@ backup=(etc/gai.conf
 	etc/nscd.conf)
 options=('docs' 'staticlibs')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
-	bz20338.patch
-	bz23497.patch
-	0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch)
+	0001-Set-host.conf-multi-to-on-by-default.patch
+	skip-error-msg-ld.so.conf.patch
+	ldconfig-format-new.patch
+	mkdir-ldconfig.patch
+	nonscd.patch
+	alternate_trim.patch
+	madvise-bss.patch
+	spinaphore.patch
+	tzselect-proper-zone-file.patch
+	large-page-huge-page.patch
+	use_madv_free.patch
+	malloc_tune.patch
+	mathlto.patch
+	vzeroupper-2.27.patch
+	pause.patch
+	gcc-8-fix.patch
+	spin-smarter.patch
+	nostackshrink.patch
+	strcpy-avx2.patch)
 md5sums=('c81d2388896379997bc359d4f2084239'
-         'dc0d3ad59aeaaf591b085a77de6e03e9'
-         '11bca140697b1bdb656742e2a12c2982'
-         '58ffe75a9c5a1b22c535a5c2e725db22')
+         'e6a296c1df749a9b6748fbb919244c4a'
+         'd92e953e3723a804f0fcb8a464f617dd'
+         '5cd42d5b8136cae9fbc1f71957ccb848'
+         'a2f3bf3888598a87f80766c4ef7ea368'
+         '4dec27ee9a2efb2fe72b2b14cc224f28'
+         'e7f3473a369116b0043f706c24fbf9f3'
+         'f966477dc6e0ac52cf32662196f1a112'
+         '5cda914ef4a35d1a21ce3bd71954820b'
+         '0ae8a08e820447f41fbced1b18dacb6a'
+         'cbb093c5b989d055cd15f9a5b4c8cb85'
+         'd641d1105b61a9c0eb8c93e9a9411578'
+         '21b190f92ead0b537b0c499f3b4b58e4'
+         'fe5c44c2f49d51ba043505a895c6f694'
+         '96deb62b272f428406210e272d46a810'
+         'd8b7596a2f43126c28549f576ecfb1da'
+         '3d02d61e0325eaf96afc3716b96ff4ef'
+         '2819faa1fb184fc622f045d07235e3c8'
+         '15ce96f7415600e6ae9053e72cd205f0'
+         '83973dc3e41d8fd34aebcdc08f6ca667')
 install=$pkgname.install
 
 prepare() {
 	cd $pkgname-$pkgver
-	patch -Np1 -i $srcdir/bz20338.patch
-	patch -Np1 -i $srcdir/bz23497.patch
-	patch -Np1 -i $srcdir/0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch
+	patch -p1 -i $srcdir/0001-Set-host.conf-multi-to-on-by-default.patch
+	patch -p1 -i $srcdir/skip-error-msg-ld.so.conf.patch
+	patch -p1 -i $srcdir/ldconfig-format-new.patch
+	patch -p1 -i $srcdir/mkdir-ldconfig.patch
+	patch -p1 -i $srcdir/nonscd.patch
+	patch -p1 -i $srcdir/alternate_trim.patch
+	patch -p1 -i $srcdir/madvise-bss.patch
+	patch -p1 -i $srcdir/spinaphore.patch
+	patch -p1 -i $srcdir/tzselect-proper-zone-file.patch
+	patch -p1 -i $srcdir/large-page-huge-page.patch
+	patch -p1 -i $srcdir/use_madv_free.patch
+	patch -p1 -i $srcdir/malloc_tune.patch
+	patch -p1 -i $srcdir/mathlto.patch
+	patch -p1 -i $srcdir/vzeroupper-2.27.patch
+	patch -p1 -i $srcdir/pause.patch
+	patch -p1 -i $srcdir/gcc-8-fix.patch
+	patch -p1 -i $srcdir/spin-smarter.patch
+	patch -p1 -i $srcdir/nostackshrink.patch
+	patch -p1 -i $srcdir/strcpy-avx2.patch
+
 	mkdir build
-}
-
-build() {
-	export CFLAGS="${CFLAGS/-O2/-O3}"
-	export CXXFLAGS="${CXXFLAGS/-O2/-O3}"
-
-	export CFLAGS="${CFLAGS/-fno-plt}"
-	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
-
-	cd $pkgname-$pkgver
 	cd build
 
 	echo "slibdir=/usr/lib" >> configparms
 	echo "rtlddir=/usr/lib" >> configparms
 	echo "sbindir=/usr/bin" >> configparms
 	echo "rootsbindir=/usr/bin" >> configparms
+}
+
+build() {
+	export CFLAGS="${CFLAGS/-fno-plt}"
+	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2}"
+
+	cd $pkgname-$pkgver
+	cd build
 
 	../configure \
 		--prefix=/usr \

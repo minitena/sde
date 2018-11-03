@@ -23,9 +23,10 @@ build() {
 	CXX="/usr/bin/g++" \
 	./configure \
 		--prefix=/usr \
+		--with-computed-gotos \
 		--with-dbmliborder=gdbm:ndbm \
 		--with-ensurepip=yes \
-		--with-lto \
+		--with-lto=8 \
 		--with-system-expat \
 		--with-system-ffi \
 		--enable-ipv6 \

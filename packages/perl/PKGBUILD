@@ -13,6 +13,9 @@ source=("https://www.cpan.org/src/5.0/$pkgname-$pkgver.tar.xz")
 md5sums=('f3245183c0a08f65e94a3333995af08e')
 
 build() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd $pkgname-$pkgver
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0

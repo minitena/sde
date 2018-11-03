@@ -10,7 +10,6 @@ prepare() {
 	cd pacman-$pkgver
 	sed -i -e '/x-cpio/s@)@|*application/x-empty*)@' scripts/makepkg.sh.in
 	sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
-	autoreconf -vif
 }
 
 build() {
@@ -51,7 +50,8 @@ package() {
 		-e "s|@GCCOPTS[@]|$GCCOPTS|g" \
 		-e "s|@BINUTILSOPTS[@]|$BINUTILSOPTS|g" \
 		-e "s|@GLIBCOPTS[@]|$GLIBCOPTS|g" \
-		-e "s|@MKOPTS[@]|$MAKEFLAGS|g"
+		-e "s|@MKOPTS[@]|$MAKEFLAGS|g" \
+		-e "s|@LC_ALL[@]|$LC_ALL|g"
 
 	sed -i $pkgdir/etc/pacman.conf \
 		-e "s|@CARCH[@]|$CARCH|g" \

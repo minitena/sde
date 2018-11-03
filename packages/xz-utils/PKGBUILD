@@ -3,14 +3,30 @@
 
 pkgname=xz-utils
 pkgver=5.2.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Library and command line tools for XZ and LZMA compressed files"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://tukaani.org/xz/"
 license=('GPL' 'LGPL' 'custom')
 depends=('glibc')
-source=("https://tukaani.org/xz/xz-$pkgver.tar.gz")
-md5sums=('5ace3264bdd00c65eeec2891346f65e6')
+source=("https://tukaani.org/xz/xz-$pkgver.tar.gz"
+	'default-threading.patch'
+	'io-size.patch'
+	'speedup.patch'
+	'add-pgo.patch')
+md5sums=('5ace3264bdd00c65eeec2891346f65e6'
+         '508bda7c84fbf367695d44ead19f9d33'
+         'f714e33e7a11d18946b8cb2fb528885a'
+         'c3457c5a93b78bdc8348f31cab959c86'
+         '481815b1bb9cb143ebfbb070fb37ed57')
+
+prepare() {
+	cd xz-$pkgver
+	patch -Np1 -i $srcdir/default-threading.patch
+	patch -Np1 -i $srcdir/io-size.patch
+	patch -Np1 -i $srcdir/speedup.patch
+	patch -p0 -i $srcdir/add-pgo.patch
+}
 
 build() {
 	cd xz-$pkgver

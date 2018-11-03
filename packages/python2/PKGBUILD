@@ -22,9 +22,9 @@ prepare() {
 
 build() {
 	cd Python-${pkgver}
-	export OPT="${CFLAGS}"
 	./configure \
 		--prefix=/usr \
+		--with-computed-gotos \
 		--with-dbmliborder=gdbm:ndbm \
 		--with-ensurepip=yes \
 		--with-lto \

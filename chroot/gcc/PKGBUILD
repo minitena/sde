@@ -1,19 +1,44 @@
 pkgname=chroot-gcc
-pkgver=8.2.1+20180831
+pkgver=8+20181102
 gmpver=6.1.2
 mpfrver=4.0.1
 mpcver=1.1.0
 islver=0.20
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-source=(https://sources.archlinux.org/other/gcc/gcc-${pkgver/+/-}.tar.xz
+source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/gcc-${pkgver/+/-}.tar.xz
 	http://ftpmirror.gnu.org/gnu/gmp/gmp-$gmpver.tar.xz
 	http://www.mpfr.org/mpfr-$mpfrver/mpfr-$mpfrver.tar.xz
 	http://ftpmirror.gnu.org/gnu/mpc/mpc-$mpcver.tar.gz
-	http://isl.gforge.inria.fr/isl-$islver.tar.xz)
+	http://isl.gforge.inria.fr/isl-$islver.tar.xz
+	0001-Fix-stack-protection-issues.patch
+	openmp-vectorize-v2.patch
+	fortran-vector-v2.patch
+	optimize.patch
+	ipa-cp.patch
+	optimize-at-least-some.patch
+	gomp-relax.patch
+	avx512-when-we-ask-for-it.patch
+	hj.patch
+	pow-optimization.patch
+	zero-regs-gcc8.patch
+	hj-patch-round.patch)
 
 prepare() {
 	cd gcc-${pkgver/+/-}
+	patch -p1 -i $srcdir/0001-Fix-stack-protection-issues.patch
+	patch -p1 -i $srcdir/openmp-vectorize-v2.patch
+	patch -p1 -i $srcdir/fortran-vector-v2.patch
+	patch -p1 -i $srcdir/optimize.patch
+	patch -p1 -i $srcdir/ipa-cp.patch
+	patch -p1 -i $srcdir/optimize-at-least-some.patch
+	patch -p1 -i $srcdir/gomp-relax.patch
+	patch -p1 -i $srcdir/avx512-when-we-ask-for-it.patch
+	patch -p1 -i $srcdir/hj.patch
+	patch -p1 -i $srcdir/pow-optimization.patch
+	patch -p1 -i $srcdir/zero-regs-gcc8.patch
+	patch -p1 -i $srcdir/hj-patch-round.patch
+
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
