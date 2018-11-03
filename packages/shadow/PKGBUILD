@@ -3,19 +3,20 @@
 
 pkgname=shadow
 pkgver=4.6
-pkgrel=3
+pkgrel=4
 pkgdesc="Password and account management tool suite"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://github.com/shadow-maint/shadow"
 license=('BSD')
 depends=('glibc' 'pam' 'acl')
-backup=('etc/default/useradd'
-	'etc/limits'
-	'etc/login.defs'
-	'etc/login.access'
-	'etc/pam.d/{chage,login,other,passwd,su,system-account,system-auth,system-password,system-session}'
-	'etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod}')
+backup=(etc/default/useradd
+	etc/limits
+	etc/login.defs
+	etc/login.access
+	etc/pam.d/{chage,login,other,passwd,su,system-account,system-auth,system-password,system-session}
+	etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod})
 source=("https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz"
+	'0010-Make-glibc-give-up-memory-we-have-already-released.patch'
 	'chage'
 	'login'
 	'other'
@@ -26,6 +27,7 @@ source=("https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgna
 	'system-password'
 	'system-session')
 md5sums=('b491fecbf1232632c32ff8f1437fd60e'
+         '4e1b71cfa7689cd41d36df7de0bd7666'
          '34f473198e205271c100293e18367e94'
          '350589010bcbb9cb59165ca6f2752c8b'
          '71561ee65e9cfbb212c7df66405789af'
@@ -38,6 +40,8 @@ md5sums=('b491fecbf1232632c32ff8f1437fd60e'
 
 prepare() {
 	cd $pkgname-$pkgver
+	patch -p1 -i $srcdir/0010-Make-glibc-give-up-memory-we-have-already-released.patch
+
 	sed -i 's/groups$(EXEEXT) //' src/Makefile.in &&
 
 	find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \; &&

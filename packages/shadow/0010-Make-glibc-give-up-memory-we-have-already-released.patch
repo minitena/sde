@@ -1,0 +1,33 @@
+From fb425f6452f56e261d85c98fb1c50afe7404831c Mon Sep 17 00:00:00 2001
+From: William Douglas <william.douglas@intel.com>
+Date: Tue, 3 Apr 2018 19:57:17 +0000
+Subject: [PATCH 10/10] Make glibc give up memory we have already released
+
+---
+ src/login.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/login.c b/src/login.c
+index 2d2e704..127dc46 100644
+--- a/src/login.c
++++ b/src/login.c
+@@ -45,6 +45,8 @@
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <assert.h>
++#include <malloc.h>
++
+ #include "defines.h"
+ #include "faillog.h"
+ #include "failure.h"
+@@ -785,6 +787,7 @@ int main (int argc, char **argv)
+ 			}
+ #endif
+ 
++                        malloc_trim(0);
+ 			retcode = pam_authenticate (pamh, 0);
+ 
+ 			get_pam_user (&pam_user);
+-- 
+2.16.2
+
