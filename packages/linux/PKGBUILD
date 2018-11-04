@@ -3,8 +3,8 @@
 
 pkgname=('linux' 'linux-devel')
 pkgbase=linux
-pkgver=4.19
-zerover=$pkgver.0
+pkgver=4.19.1
+zerover=$pkgver
 pkgrel=25
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
@@ -18,7 +18,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'arm-config'
 	'60-linux.hook'
 	'90-linux.hook')
-md5sums=('740a90cf810c2105df8ee12e5d0bb900'
+md5sums=('6de5f0c6c0eb5d27386579894fcf31ab'
          'f5caea6773cb4ecd74673683bfb3d22a'
          'a85fb27ffa8da2a09be34fc98000327b'
          '8c624cf101e5c6a3def2f798674cb4fe'
