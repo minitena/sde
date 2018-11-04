@@ -1,0 +1,9 @@
+pre_install() {
+	groupadd -g 87 ntp
+	useradd -c "Network Time Protocol" -d /var/lib/ntp -u 87 -g ntp -s /bin/false ntp
+}
+
+post_remove() {
+	userdel ntp
+	groupdel ntp
+}

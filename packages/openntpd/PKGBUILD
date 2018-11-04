@@ -1,21 +1,34 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=openntpd
+pkgver=6.2p3
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Free, easy to use implementation of the Network Time Protocol"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://www.openntpd.org/"
+license=('BSD')
+depends=('glibc' 'libressl')
+conflicts=('ntp')
+source=("https://cdn.openbsd.org/pub/OpenBSD/OpenNTPD/$pkgname-$pkgver.tar.gz"
+	'service')
+md5sums=('5b67827f8ce7e24f38c895787036658d'
+         '20bf5eba6cd4954667dcaaa766b8f7fb')
+
+prepare() {
+	cd $pkgname-$pkgver
+	autoreconf -fiv
+}
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
+		--sbindir=/usr/bin \
+		--localstatedir=/var \
+		--with-adjtimex \
+		--with-privsep-user=nobody \
 		--build=$CHOST
 	make
 }
@@ -23,4 +36,12 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	rmdir $pkgdir/var/run
+	install -d $pkgdir/var/lib/ntp
+
+	install -Dm 644 $srcdir/service -t $pkgdir/usr/lib/systemd/system
+
+	install -d $pkgdir/usr/lib/systemd/ntp-units.d
+	echo ${pkgname}.service > $pkgdir/usr/lib/systemd/ntp-units.d/${pkgname}.list
 }

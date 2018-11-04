@@ -28,7 +28,7 @@ build() {
 	../configure \
 		--prefix='' \
 		--target=$XTARGET $BINUTILSOPTS \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--with-sysroot=$ROOTFS \
 		--with-lib-path=$ROOTFS/tools/lib \
 		--with-pic \

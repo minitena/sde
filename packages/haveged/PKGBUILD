@@ -1,0 +1,32 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=haveged
+pkgver=1.9.4
+pkgrel=1
+pkgdesc="Entropy harvesting daemon using CPU timings"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://github.com/jirka-h/haveged"
+license=('GPL')
+depends=('glibc')
+source=("https://github.com/jirka-h/$pkgname/archive/$pkgver.tar.gz"
+	'service')
+md5sums=('95867032bb3f2abd36179f92e328e651'
+         '64918fce68570481741ad9ddbbb438a2')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -D -m0644 $srcdir/service $pkgdir/usr/lib/systemd/system/haveged.service
+}

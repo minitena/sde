@@ -100,8 +100,8 @@ build() {
 		--prefix=/usr \
 		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
-		--with-pkgversion='Minitena' \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-pkgversion="Minitena $pkgver" \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--without-gd \
 		--without-selinux \
 		--enable-add-ons \

@@ -30,7 +30,7 @@ build() {
 		--build=$XHOST \
 		--host=$XTARGET \
 		--target=$XTARGET $BINUTILSOPTS \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--with-lib-path=/tools/lib \
 		--with-pic \
 		--with-system-zlib \

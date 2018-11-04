@@ -43,7 +43,7 @@ build() {
 	../configure \
 		--prefix=/usr \
 		--build=$CHOST $BINUTILSOPTS \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--with-lib-path=/usr/lib:/usr/local/lib \
 		--with-pic \
 		--with-system-zlib \

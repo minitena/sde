@@ -1,26 +1,36 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=libevent
+pkgver=2.1.8
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="An event notification library"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://libevent.org/"
+license=('BSD')
+depends=('libressl')
+optdepends=('python2: to use event_rpcgen.py')
+source=("https://github.com/libevent/libevent/releases/download/release-$pkgver-stable/$pkgname-$pkgver-stable.tar.gz"
+	'libressl.patch')
+md5sums=('f3eeaed018542963b7d2416ef1135ecc'
+         'e54149ec1223bd38a153ea787352ad6f')
+
+prepare() {
+	cd $pkgname-$pkgver-stable
+	patch -Np1 -i $srcdir/libressl.patch
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver-stable
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
+		--disable-libevent-regress \
 		--build=$CHOST
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver-stable
 	make DESTDIR=$pkgdir install
 }

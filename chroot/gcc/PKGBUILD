@@ -79,8 +79,8 @@ build() {
 		--build=$XHOST \
 		--host=$XTARGET \
 		--target=$XTARGET $GCCOPTS \
-		--with-pkgversion='Minitena' \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-pkgversion="Minitena $pkgver" \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--with-local-prefix=/tools \
 		--with-native-system-header-dir=/tools/include \
 		--with-system-zlib \

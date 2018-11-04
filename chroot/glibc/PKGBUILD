@@ -74,8 +74,8 @@ build() {
 		--libdir=/tools/lib \
 		--build=$XHOST \
 		--host=$XTARGET $GLIBCOPTS \
-		--with-pkgversion='Minitena' \
-		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--with-pkgversion="Minitena $pkgver" \
+		--with-bugurl='https://github.com/minitena/source/issues' \
 		--with-binutils=$TOOLS/bin \
 		--with-headers=$ROOTFS/tools/include \
 		--without-gd \

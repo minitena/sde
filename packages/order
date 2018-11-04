@@ -202,3 +202,8 @@ bridge-utils
 libnfnetlink
 libnetfilter_conntrack
 dnsmasq
+ntp
+openntpd
+libevent
+tor
+haveged

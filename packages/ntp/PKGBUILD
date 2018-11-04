@@ -1,26 +1,45 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=ntp
+_pkgver=4.2.8p12
+pkgver=${_pkgver/p/.p}
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Network Time Protocol reference implementation"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://www.ntp.org/"
+license=('custom')
+depends=('glibc' 'libcap' 'libressl' 'libedit')
+backup=('etc/ntp.conf')
+options=('!emptydirs')
+source=("https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/$pkgname-${_pkgver}.tar.gz"
+	'ntp.conf'
+	'service'
+	'serviceb')
+md5sums=('1522d66574bae14abb2622746dad2bdc'
+         '718039fed401c3ae203de4497a5f7e4e'
+         '77d51b701d417aeb2e8911e24287496e'
+         '11c7dea7e35034ffc370dafae49f1d45')
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-${_pkgver}
 	./configure \
 		--prefix=/usr \
+		--libexecdir=/usr/lib \
+		--enable-linuxcaps \
+		--enable-ntp-signd \
 		--build=$CHOST
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd $pkgname-${_pkgver}
 	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/ntp.conf $pkgdir/etc/ntp.conf
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/ntpd.service
+	install -Dm644 $srcdir/serviceb $pkgdir/usr/lib/systemd/system/ntpdate.service
+
+	install -d -o 87 $pkgdir/var/lib/ntp
+	echo > $pkgdir/var/lib/ntp/.placeholder
 }
