@@ -19,5 +19,6 @@ build() {
 
 package() {
 	cd $pkgname-$pkgver
+	mkdir -p $pkgdir/usr/bin
 	install -t $pkgdir/usr/bin {,c,s}gdisk fixparts
 }
