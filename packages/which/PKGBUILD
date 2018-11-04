@@ -1,16 +1,16 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=which
+pkgver=2.21
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A utility to show the full path of commands"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="http://savannah.gnu.org/projects/which"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('glibc')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('097ff1a324ae02e0a3b0369f07a7544a')
 
 build() {
 	cd $pkgname-$pkgver

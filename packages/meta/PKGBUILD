@@ -3,7 +3,7 @@
 
 pkgname=('minitena-base' 'minitena-sdk')
 pkgver=2018.10
-pkgrel=6
+pkgrel=7
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -30,29 +30,10 @@ package_minitena-base() {
 #	:
 #}
 
-package_minitena-sdk() {
+package_meta-devel() {
 	pkgdesc='Meta-package for development system'
-	depends=('linux-headers' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
+	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
 		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
-		 'gperf' 'groff' 'make' 'patch' 'texinfo')
+		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'which' 'fakeroot' 'sudo')
 	:
 }
-
-#package_meta-devel() {
-#	pkgdesc='Meta-package for development system'
-#	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
-#		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
-#		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'which' 'fakeroot' 'sudo')
-#	:
-#}
-
-#package_meta-base() {
-#	pkgdesc='Meta-package for basic system'
-#	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
-#		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
-#		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
-#		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-#		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
-#	:
-#}

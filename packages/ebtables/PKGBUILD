@@ -18,7 +18,7 @@ md5sums=('506742a3d44b9925955425a659c1a8d0'
 
 build() {
 	cd $pkgname-v${pkgver/_/-}
-	make CFLAGS='-Wunused -Wall -Werror -Wno-error=unused-but-set-variable'
+	make CFLAGS="$CFLAGS -Wunused -Wall -Wno-error=unused-but-set-variable"
 }
 
 package() {
@@ -32,7 +32,7 @@ package() {
 		SYSCONFIGDIR=/etc
 
 	rm $pkgdir/etc/ebtables-config
-	m -r $pkgdir/etc/rc.d
+	rm -r $pkgdir/etc/rc.d
 
 	install -Dm 755 $srcdir/systemd $pkgdir/usr/lib/systemd/scripts/$pkgname
 	install -Dm 644 $srcdir/service $pkgdir/usr/lib/systemd/system/$pkgname.service

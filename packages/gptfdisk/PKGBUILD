@@ -1,26 +1,23 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=gptfdisk
+pkgver=1.0.4
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A text-mode partitioning tool that works on GUID Partition Table (GPT) disks"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="https://www.rodsbooks.com/gdisk/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('gcc-libs' 'ncurses' 'util-linux-libs' 'popt')
+source=("https://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('5ecc3c44913bb6b53d3708d1ac7ac295')
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	install -t $pkgdir/usr/bin {,c,s}gdisk fixparts
 }

@@ -39,6 +39,7 @@ autoconf2.13
 autoconf-archive
 bash
 bash-completion
+which
 bc
 diffutils
 file
@@ -166,6 +167,7 @@ js60
 polkit
 mdadm
 parted
+gptfdisk
 quota
 pciutils
 libusb
@@ -179,6 +181,7 @@ freetype
 harfbuzz
 freetype
 fontconfig
+fakeroot
 sudo
 openssh
 dropbear
