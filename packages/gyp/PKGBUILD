@@ -10,7 +10,7 @@ url="https://gyp.gsrc.io/"
 license=('custom:BSD')
 depends=('python2' 'ninja')
 source=("https://chromium.googlesource.com/external/gyp/+archive/$pkgver.tar.gz")
-md5sums=('44cb48e3d9c1956c366760a986890267')
+md5sums=('SKIP')
 
 build() {
 	python2 setup.py build
