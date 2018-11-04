@@ -1,21 +1,23 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=bridge-utils
+pkgver=1.6
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Utilities for configuring the Linux ethernet bridge"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="http://www.linuxfoundation.org/collaborate/workgroups/networking/bridge"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('glibc')
+source=("https://www.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('541ae1c50cc268056693608920e6c908')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
 		--build=$CHOST
 	make
 }
