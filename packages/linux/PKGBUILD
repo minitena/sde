@@ -5,12 +5,12 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19
 zerover=$pkgver.0
-pkgrel=26
+pkgrel=25
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
-makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'libressl')
+makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'lz4' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'x86_64-config'
 	'i586-config'
@@ -19,12 +19,12 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('740a90cf810c2105df8ee12e5d0bb900'
-         '375fd157c9db7e811ccc9a4df0bb0834'
-         '92f1e04580af49de725024eb129b3594'
+         'f5caea6773cb4ecd74673683bfb3d22a'
+         'a85fb27ffa8da2a09be34fc98000327b'
          '8c624cf101e5c6a3def2f798674cb4fe'
-         '05c2fe50c359b4c89a869c4b26186a59'
+         '070e4c1a8cae7d277379e82bb971a21f'
          '8e58bafc66f67c38f306d0f854f92a8b'
-         '78509340954a4d0af142ebd92946a015')
+         '19d341591aef282e049b71caf1c23aed')
 
 prepare() {
 	cd $pkgbase-$pkgver
