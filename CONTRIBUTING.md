@@ -11,19 +11,19 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 Debian or Ubuntu (and derivatives):
 ```
-apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils
+apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils squashfs-tools
 ```
 Fedora (and derivatives):
 ```
-dnf install fakeroot libarchive-devel libarchive bsdtar openssl-devel curl-devel autoconf automake git autoconf automake gawk m4 bison flex texinfo patchutils gcc gcc-c++ libtool gettext-devel
+dnf install fakeroot libarchive-devel libarchive bsdtar openssl-devel curl-devel autoconf automake git autoconf automake gawk m4 bison flex texinfo patchutils gcc gcc-c++ libtool gettext-devel squashfs-tools
 ```
 Arch Linux (and derivatives):
 ```
-pacman -S base-devel syslinux xorriso
+pacman -S base-devel syslinux xorriso squashfs-tools
 ```
 Minitena:
 ```
-pacman -S meta-base syslinux xorriso
+pacman -S meta-base syslinux xorriso squashfs-tools
 ```
 Building pacman:
 ```
