@@ -3,7 +3,7 @@
 
 pkgname=iptables
 pkgver=1.8.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Linux kernel packet control tool"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.netfilter.org/projects/iptables/index.html"
@@ -52,7 +52,4 @@ package() {
 	install -Dm644 $srcdir/iptables.service $pkgdir/usr/lib/systemd/system/iptables.service
 	install -Dm644 $srcdir/ip6tables.service $pkgdir/usr/lib/systemd/system/ip6tables.service
 	install -Dm755 $srcdir/iptables-flush $pkgdir/usr/lib/systemd/scripts/iptables-flush
-
-	mv $pkgdir/usr/bin/ebtables{,-compat}
-	mv $pkgdir/usr/bin/arptables{,-compat}
 }

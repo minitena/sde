@@ -3,12 +3,12 @@
 
 pkgname=openssh
 pkgver=7.9p1
-pkgrel=4
+pkgrel=5
 pkgdesc="Premier connectivity tool for remote login with the SSH protocol"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.openssh.com/portable.html"
 license=('BSD')
-depends=('glibc' 'zlib' 'pam' 'libressl')
+depends=('glibc' 'zlib' 'pam' 'libressl' 'libedit')
 backup=('etc/ssh/ssh_config'
 	'etc/ssh/sshd_config'
 	'etc/pam.d/sshd')
@@ -39,6 +39,7 @@ build() {
 		--with-privsep-user=nobody \
 		--with-md5-passwords \
 		--with-ssl-engine \
+		--with-libedit \
 		--with-pam \
 		--build=$CHOST
 	make

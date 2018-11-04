@@ -1,0 +1,28 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libedit
+_pkgver=20180525-3.1
+pkgver=${_pkgver/-/_}
+pkgrel=1
+pkgdesc="Command line editor library providing generic line editing, history, and tokenization functions"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://thrysoee.dk/editline/"
+license=('BSD')
+depends=('glibc' 'ncurses')
+source=("http://thrysoee.dk/editline/libedit-${_pkgver}.tar.gz")
+md5sums=('97679319742f45d6cdcd6075511b14ac')
+
+build() {
+	cd $pkgname-${_pkgver}
+	./configure \
+		--prefix=/usr \
+		--enable-widec \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-${_pkgver}
+	make prefix=$pkgdir/usr install
+}

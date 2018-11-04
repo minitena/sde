@@ -183,6 +183,7 @@ freetype
 fontconfig
 fakeroot
 sudo
+libedit
 openssh
 dropbear
 libssh2
@@ -197,7 +198,6 @@ nftables
 rsync
 libpcap
 tcpdump
-ebtables
 bridge-utils
 libnfnetlink
 libnetfilter_conntrack
