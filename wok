@@ -688,6 +688,9 @@ build_final_system() {
 			vim)
 				pkgnativebuild vim
 				;;
+			openntpd)
+				pkgnativebuild openntpd
+				;;
 			gnu-efi)
 				case $BARCH in
 					x86_64|i586|aarch64|arm)
@@ -727,7 +730,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='minitena-base dhcpcd wpa_supplicant open-iscsi openssh'
+	export LIVEPACKAGES='minitena-base dhcp wpa_supplicant open-iscsi openssh'
 	mkdir -p $LIVEOS/var/lib/pacman
 	mkdir -p $LIVEOS/var/cache/pacman/pkg
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --cachedir $LIVEOS/var/cache/pacman/pkg --root $LIVEOS --arch $BARCH --noconfirm
