@@ -90,6 +90,8 @@ build() {
 	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
 	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2}"
 	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CFLAGS="$CFLAGS -g2"
+	export CXXFLAGS="$CXXFLAGS -g2"
 
 	cd $pkgname-$pkgver
 	cd build
@@ -100,6 +102,8 @@ build() {
 		--libexecdir=/usr/lib \
 		--with-pkgversion='Minitena' \
 		--with-bugurl='https://github.com/minitena/issues/issues' \
+		--without-gd \
+		--without-selinux \
 		--enable-add-ons \
 		--enable-bind-now \
 		--enable-kernel=3.12.0 \

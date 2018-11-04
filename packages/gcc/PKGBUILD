@@ -65,6 +65,13 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="$CFLAGS"
+	export CXXFLAGS="$CFLAGS"
+	export FFLAGS="$CFLAGS"
+	export CFLAGS_FOR_TARGET="$CFLAGS"
+	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
+	export FFLAGS_FOR_TARGET="$FFLAGS"
+
 	cd $pkgbase-${pkgver/+/-}
 	cd build
 	../configure \
