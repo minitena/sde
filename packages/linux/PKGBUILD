@@ -16,6 +16,8 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'i586-config'
 	'arm64-config'
 	'arm-config'
+	'riscv32-config'
+	'riscv64-config'
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('6de5f0c6c0eb5d27386579894fcf31ab'
@@ -23,6 +25,8 @@ md5sums=('6de5f0c6c0eb5d27386579894fcf31ab'
          'a85fb27ffa8da2a09be34fc98000327b'
          '8c624cf101e5c6a3def2f798674cb4fe'
          '070e4c1a8cae7d277379e82bb971a21f'
+         '3c7ee7c9689008b373b9600771a0f281'
+         'edc507e53d2d00069aebdac98d35def1'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '19d341591aef282e049b71caf1c23aed')
 
@@ -48,12 +52,26 @@ prepare() {
 			export XKARCH="arm"
 			cp $srcdir/arm-config .config
 			;;
+		riscv32)
+			export XKARCH="riscv"
+			cp $srcdir/riscv32-config config
+			;;
+		riscv64)
+			export XKARCH="riscv"
+			cp $srcdir/riscv64-config config
+			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
 	esac
 
-	make ARCH=$XKARCH olddefconfig
+	case $CARCH in
+		riscv32|riscv64)
+			make ARCH=$XKARCH allnoconfig KCONFIG_ALLCONFIG=config
+			;;
+		*)
+			make ARCH=$XKARCH olddefconfig
+	esac
 }
 
 build() {
@@ -72,6 +90,9 @@ build() {
 			;;
 		arm)
 			export XKARCH="arm"
+			;;
+		riscv32|riscv64)
+			export XKARCH="riscv"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -103,6 +124,10 @@ package_linux() {
 		arm)
 			export XKARCH="arm"
 			export IMG="arch/arm/boot/zImage"
+			;;
+		riscv32|riscv64)
+			export XKARCH="riscv"
+			export IMG="vmlinux"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -157,6 +182,9 @@ package_linux-devel() {
 			;;
 		arm)
 			export KARCH="arm"
+			;;
+		riscv32|riscv64)
+			export XKARCH="riscv"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -249,8 +277,9 @@ package_linux-devel() {
 	done
 
 	case "$KARCH" in
-		i386|x86_64) _args="arm*";;
-		arm|arm64) _args="x86*";;
+		i386|x86_64) _args="arm* riscv*";;
+		arm|arm64) _args="x86* riscv*";;
+		riscv32|riscv64) _args="x86* arm*";;
 	esac
 
 	for rmarch in alpha avr32 blackfin cris frv h8300 \

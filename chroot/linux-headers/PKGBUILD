@@ -24,6 +24,9 @@ package() {
 		arm)
 			export XKARCH="arm"
 			;;
+		riscv32|riscv64)
+			export XKARCH="riscv"
+			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
