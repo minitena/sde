@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=btrfs-progs
-pkgver=4.17.1
+pkgver=4.19
 pkgrel=1
 pkgdesc="Btrfs filesystem utilities"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -14,7 +14,7 @@ options=('staticlibs')
 source=("https://www.kernel.org/pub/linux/kernel/people/kdave/$pkgname/$pkgname-v$pkgver.tar.xz"
 	'service'
 	'timer')
-md5sums=('130be469ced99b01948af64b6a6312f6'
+md5sums=('b8e43ed6aa34d4b48974f297c79d391b'
          '917b31f4eb90448d6791e17ea0f386c7'
          '502221c1b47a3bb2c06703d4fb90a0c2')
 
