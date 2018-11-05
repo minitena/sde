@@ -218,3 +218,6 @@ numactl
 dpdk
 numactl
 dpdk
+libarchive
+pacman
+pacman-contrib

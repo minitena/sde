@@ -1,21 +1,23 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=pacman-contrib
+pkgver=1.1.0
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Contributed scripts and tools for pacman systems"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="https://git.archlinux.org/pacman-contrib.git/about/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('fakeroot' 'pacman')
+source=("https://sources.archlinux.org/other/community/pacman-contrib/pacman-contrib-$pkgver.tar.gz")
+md5sums=('dde4c6c2d30bcb7273b495be1b5df4d0')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
 		--build=$CHOST
 	make
 }

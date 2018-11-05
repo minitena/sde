@@ -1,21 +1,37 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=pacman
+pkgver=5.1.1
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="http://www.archlinux.org/pacman/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('glibc' 'bash' 'curl' 'libarchive' 'gpgme')
+backup=('etc/pacman.conf'
+	'etc/makepkg.conf')
+source=("https://sources.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.gz"
+	'pacman.conf'
+	'makepkg.conf')
+md5sums=('4da799005fe4d8c6f13fd80a4f67e96f'
+         'f7f5cce42dabc71bf537ce93c96c1125'
+         '2861d5277a9b7f64e9c454542aeb642f')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
+}
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--disable-debug \
+		--disable-doc \
+		--disable-nls \
 		--build=$CHOST
 	make
 }
@@ -23,4 +39,22 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	install -dm755 $pkgdir/etc
+	install -m644 $srcdir/pacman.conf $pkgdir/etc
+	install -m644 $srcdir/makepkg.conf $pkgdir/etc
+
+	sed -i $pkgdir/etc/makepkg.conf \
+		-e "s|@CARCH[@]|$CARCH|g" \
+		-e "s|@CHOST[@]|$CHOST|g" \
+		-e "s|@CFLAGS[@]|$CFLAGS|g" \
+		-e "s|@CXXFLAGS[@]|$CXXFLAGS|g"
+
+	install -dm755 $pkgdir/usr/share/bash-completion/completions
+	mv $pkgdir/etc/bash_completion.d/pacman $pkgdir/usr/share/bash-completion/completions
+	rmdir $pkgdir/etc/bash_completion.d
+
+	for f in makepkg pacman-key; do
+		ln -sf pacman $pkgdir/usr/share/bash-completion/completions/$f
+	done
 }

@@ -1,21 +1,23 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=libarchive
+pkgver=3.3.3
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Multi-format archive and compression library"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://libarchive.org/"
+license=('BSD')
+depends=('glibc' 'zlib' 'acl' 'bzip2' 'libressl' 'xz-utils' 'expat' 'lz4' 'zstd')
+source=("http://www.libarchive.org/downloads/$pkgname-$pkgver.tar.gz")
+md5sums=('4038e366ca5b659dae3efcc744e72120')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--without-nettle \
+		--without-xml2 \
 		--build=$CHOST
 	make
 }
