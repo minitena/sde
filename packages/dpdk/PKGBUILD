@@ -24,8 +24,10 @@ prepare() {
 			;;
 	esac
 
+	export RTE_KERNELDIR=/usr/src/linux/
+
 	cd $pkgname-$pkgver
-	make T=$DPDKTGT config RTE_KERNELDIR=/usr/src/linux/
+	make T=$DPDKTGT config
 
 	sed -ri 's,(RTE_MACHINE=).*,\1default,'    build/.config
 	sed -ri 's,(RTE_APP_TEST=).*,\1n,'         build/.config
