@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=iproute2
-pkgver=4.18.0
+pkgver=4.19.0
 pkgrel=3
 pkgdesc="IP Routing Utilities"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -17,7 +17,7 @@ backup=('etc/iproute2/ematch_map'
 	'etc/iproute2/rt_tables')
 options=('staticlibs')
 source=("https://www.kernel.org/pub/linux/utils/net/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('8b8680e91390c57cab788fbf8e929479')
+md5sums=('67eeebacaac4515cab73dfd2fc796af3')
 
 prepare() {
 	cd $pkgname-$pkgver
