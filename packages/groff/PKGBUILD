@@ -3,7 +3,7 @@
 
 pkgname=groff
 pkgver=1.22.3
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU troff text-formatting system"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.gnu.org/software/groff"
@@ -24,4 +24,8 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	ln -sf eqn $pkgdir/usr/bin/geqn
+	ln -sf tbl $pkgdir/usr/bin/gtbl
+	ln -sf soelim $pkgdir/usr/bin/zsoelim
 }
