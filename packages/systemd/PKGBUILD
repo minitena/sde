@@ -5,12 +5,12 @@ pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
 pkgrel=26
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
 makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
-makedepends_ppc64le=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
-makedepends_s390x=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
+makedepends_riscv32=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
+makedepends_riscv64=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
 source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar.gz
 	fix-build-glibc2.28.patch
 	systemd-239-meson-0.48.0_fixes-1.patch
