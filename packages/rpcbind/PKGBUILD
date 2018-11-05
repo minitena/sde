@@ -1,21 +1,41 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=rpcbind
+pkgver=1.2.5
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="portmap replacement which supports RPC over various protocols"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="http://rpcbind.sourceforge.net"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('glibc' 'libtirpc' 'systemd-libs')
+install=$pkgname.install
+source=("https://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.bz2"
+	'vulnerability-fix.patch'
+	'service'
+	'socket'
+	'tmpfiles')
+md5sums=('ed46f09b9c0fa2d49015f6431bc5ea7b'
+         'dd70cbfd64bfd0df4f42ee94c92a4c36'
+         '2b302f4b396665263298865ea194a379'
+         '7f3ca72a06599681e40a7c97a701b402'
+         '1722051b0076526a783247c53d7a5e72')
+
+prepare() {
+	cd $pkgname-$pkgver
+	sed -i "/servname/s:rpcbind:sunrpc:" src/rpcbind.c
+	patch -Np1 -i $srcdir/vulnerability-fix.patch
+}
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--with-rpcuser=rpc \
+		--with-statedir=/var/lib/rpcbind \
+		--enable-rmtcalls \
+		--enable-warmstarts \
 		--build=$CHOST
 	make
 }
@@ -23,4 +43,8 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/rpcbind.service
+	install -Dm644 $srcdir/socket $pkgdir/usr/lib/systemd/system/rpcbind.socket
+	install -Dm644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/rpcbind.conf
 }

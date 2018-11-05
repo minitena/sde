@@ -1,0 +1,57 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=cyrus-sasl
+pkgver=2.1.26
+pkgrel=1
+pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="http://cyrusimap.web.cmu.edu/"
+license=('custom')
+depends=('glibc' 'gdbm' 'libressl' 'sqlite' 'krb5')
+backup=('etc/conf.d/saslauthd')
+options=('!makeflags')
+source=("ftp://ftp.cyrusimap.org/$pkgname/$pkgname-$pkgver.tar.gz"
+	'fixes.patch'
+	'service'
+	'tmpfiles')
+md5sums=('a7f4e5e559a0e37b3ffc438c9456e425'
+         'f1ca57cf6c46b2e217e86ad04d6da7e7'
+         '3499dcd610ad1ad58e0faffde2aa7a23'
+         '45bb0192d2f188066240b9a66ee6365f')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/fixes.patch
+	autoreconf -vif
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbin=/usr/bin \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--with-dblib=gdbm \
+		--with-dbpath=/var/lib/sasl/sasldb2 \
+		--with-devrandom=/dev/urandom \
+		--with-saslauthd=/var/run/saslauthd \
+		--with-sqlite3=/usr/lib \
+		--enable-auth-sasldb \
+		--enable-sql \
+		--enable-shared \
+		--build=$CHOST
+	make -j1
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -dm700 $pkgdir/var/lib/sasl
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/saslauthd.service
+	install -Dm644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/saslauthd.conf
+}

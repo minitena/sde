@@ -1,26 +1,34 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=s-nail
+pkgver=14.9.11
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Mail processing system with a command syntax reminiscent of ed"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+license=('custom:BSD')
+depends=('glibc' 'libressl' 'libidn2' 'krb5')
+backup=('etc/mail.rc')
+source=("https://www.sdaoden.eu/downloads/$pkgname-$pkgver.tar.xz")
+md5sums=('28171468f4eedde496c381ec65aaf379')
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
-	make
+	make \
+		VAL_PREFIX=/usr \
+		VAL_SYSCONFDIR=/etc \
+		VAL_LIBEXECDIR=/usr/lib \
+		VAL_MAIL=/var/spool/mail \
+		VAL_SID= VAL_MAILX=mail \
+		OPT_AUTOCC=0 \
+		config
+	make MAKEJOBS=--jobs build
 }
 
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	ln -sf mail $pkgdir/usr/bin/mailx
 }

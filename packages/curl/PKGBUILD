@@ -13,17 +13,20 @@ source=("https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz")
 md5sums=('d4613e369a8ff80f23951d259808149e')
 
 build() {
+	export CFLAGS="${CFLAGS/-O3/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
+
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
 		--with-ca-bundle=/etc/ssl/cert.pem \
 		--with-random=/dev/urandom \
-		--with-gssapi \
 		--with-libssh2 \
 		--enable-ipv6 \
 		--enable-threaded-resolver \
 		--enable-versioned-symbols \
+		--disable-ldap \
 		--disable-manual \
 		--build=$CHOST
 	make

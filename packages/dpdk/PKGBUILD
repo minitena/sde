@@ -1,26 +1,48 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=dpdk
+pkgver=18.08
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
-arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+pkgdesc="A set of libraries and drivers for fast packet processing"
+arch=('x86_64' 'aarch64')
+url="http://dpdk.org"
+license=('BSD')
+options=('staticlibs')
+depends=('numactl' 'libelf')
+makedepends=('linux-devel' 'libpcap')
+source=("http://fast.dpdk.org/rel/$pkgname-$pkgver.tar.xz")
+md5sums=('da5e7fb25ab063c47e53929fb8c58be5')
+
+prepare() {
+	case $CARCH in
+		x86_64)
+			export DPDKTGT="x86_64-native-linuxapp-gcc"
+			;;
+		aarch64)
+			export DPDKTGT="arm64-armv8a-linuxapp-gcc"
+			;;
+	esac
+
+	cd $pkgname-$pkgver
+	make T=$DPDKTGT config
+
+	sed -ri 's,(RTE_MACHINE=).*,\1default,'    build/.config
+	sed -ri 's,(RTE_APP_TEST=).*,\1n,'         build/.config
+	sed -ri 's,(RTE_BUILD_SHARED_LIB=).*,\1y,' build/.config
+	sed -ri 's,(RTE_NEXT_ABI=).*,\1n,'         build/.config
+	sed -ri 's,(LIBRTE_VHOST=).*,\1y,'         build/.config
+	sed -ri 's,(LIBRTE_PMD_PCAP=).*,\1y,'      build/.config
+	sed 's|\bpython\b|python2|' -i mk/rte.sdktest.mk
+}
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	make DESTDIR=$pkgdir prefix=/usr sbindir=bin install
+	cp -a $pkgdir/lib/ $pkgdir/usr/ && rm -rf $pkgdir/lib/
 }

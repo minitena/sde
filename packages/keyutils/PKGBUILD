@@ -1,16 +1,16 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=numactl
-pkgver=2.0.12
+pkgname=bison
+pkgver=3.2
 pkgrel=1
-pkgdesc="Simple NUMA policy support"
+pkgdesc="The GNU general-purpose parser generator"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://oss.sgi.com/projects/libnuma/"
-license=('GPL' 'LGPL')
-depends=('perl')
-source=("https://github.com/numactl/numactl/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('2ba9777d78bfd7d408a387e53bc33ebc')
+url="http://www.gnu.org/software/bison"
+license=('GPL')
+depends=('glibc' 'm4')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
 
 build() {
 	cd $pkgname-$pkgver

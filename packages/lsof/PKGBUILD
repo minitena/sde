@@ -1,26 +1,32 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=lsof
+pkgver=4.91
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Lists open files for running Unix processes"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://people.freebsd.org/~abe/"
+license=('custom')
+depends=('glibc')
+source=("ftp://ftp.fu-berlin.de/pub/unix/tools/lsof/lsof_$pkgver.tar.bz2")
+md5sums=('148ed410cb52e08c2adc0c60f480f11f')
+
+prepare() {
+	cd lsof_$pkgver
+	tar xf lsof_${pkgver}_src.tar
+	cd lsof_${pkgver}_src
+	sed -i 's|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|' dialects/linux/machine.h
+}
 
 build() {
-	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
-	make
+	cd lsof_$pkgver/lsof_${pkgver}_src
+	./Configure -n linux
+	make 
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	cd lsof_$pkgver/lsof_${pkgver}_src
+
+	install -Dm0755 lsof $pkgdir/usr/bin/lsof 
 }

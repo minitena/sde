@@ -1,0 +1,70 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=openldap
+pkgver=2.4.46
+pkgrel=1
+pkgdesc="Lightweight Directory Access Protocol (LDAP) client and server"
+arch=('x86_64' 'i586' 'aarch64' 'arm')
+url="https://www.openldap.org/"
+license=('GPL')
+depends=('glibc' 'libressl' 'cyrus-sasl')
+install=$pkgname.install
+source=("ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/$pkgname-$pkgver.tgz"
+	'consolidated.patch'
+	'service'
+	'tmpfiles')
+md5sums=('829016c5a9f45c51adc50073ac6f9fd7'
+         '04e1222766861e465ee7b50f62b7c4a3'
+         'cdc1633572d58f0e6c7e41507d524fa2'
+         '776676c6dc583854e9729222f6659812')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/consolidated.patch
+	autoconf
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--localstatedir=/var/lib/openldap \
+		--with-cyrus-sasl \
+		--with-threads \
+		--with-tls=openssl \
+		--enable-backends \
+		--enable-crypt \
+		--enable-dynamic \
+		--enable-ipv6 \
+		--enable-local \
+		--enable-modules \
+		--enable-overlays=mod \
+		--enable-spasswd \
+		--enable-syslog \
+		--disable-debug \
+		--disable-ndb \
+		--disable-sql \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	rm $pkgdir/etc/openldap/*.default
+
+	chown root:83 $pkgdir/etc/openldap/{slapd.{conf,ldif},DB_CONFIG.example}
+	chmod 640 $pkgdir/etc/openldap/{slapd.{conf,ldif},DB_CONFIG.example}
+
+	install -dm700 -o 83 -g 83 $pkgdir/var/lib/openldap
+	chown -R 83:83 $pkgdir/var/lib/openldap
+
+	install -dm700 -o 83 -g 83 $pkgdir/etc/openldap/slapd.d
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/slapd.service
+	install -Dm644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/openldap.conf
+}

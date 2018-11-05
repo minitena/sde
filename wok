@@ -698,6 +698,13 @@ build_final_system() {
 						;;
 				esac
 				;;
+			dpdk)
+				case $BARCH in
+					x86_64|aarch64)
+						pkgnativeinstall dpdk
+						;;
+				esac
+				;;
 			*)
 				pkgnativeinstall $finalpkg
 		esac

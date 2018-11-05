@@ -1,26 +1,65 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=krb5
+_pkgvermajor=1.16
+pkgver=${_pkgvermajor}.1
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="The Kerberos network authentication system"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="https://web.mit.edu/kerberos/"
+license=('custom')
+depends=('glibc' 'pam' 'e2fsprogs' 'libressl')
+makedepends=('perl')
+backup=('etc/krb5.conf'
+	'var/lib/krb5kdc/kdc.conf')
+options=('!emptydirs')
+source=("https://web.mit.edu/kerberos/dist/krb5/${_pkgvermajor}/${pkgname}-${pkgver}.tar.gz"
+	'service'
+	'serviceb'
+	'servicec'
+	'aservice'
+	'socket'
+	'libressl.patch')
+md5sums=('848e9b80d6aaaa798e3f3df24b83c407'
+         '5b3df00af04f21c12a394416558d98b1'
+         '65d334b1242e8fb103a81f48dfc3fcfe'
+         '547f644dc272b840baeec6584138efa5'
+         '50799b48f7ce1f61d3e4f0e8852de8ae'
+         '5b9cee689e4f8085d39ef4e05f1ddd9a'
+         '986b2a87378bedb0d20bb2087dd6b11d')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/libressl.patch
+}
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$pkgver/src
+	CPPFLAGS="-I/usr/include/et" \
 	./configure \
 		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc \
+		--localstatedir=/var/lib \
+		--with-system-et \
+		--with-system-ss \
+		--with-system-verto=no \
+		--without-tcl \
+		--enable-dns-for-realm \
+		--enable-shared \
+		--disable-rpath \
 		--build=$CHOST
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	cd $pkgname-$pkgver/src
+	make DESTDIR=$pkgdir EXAMPLEDIR=/usr/share/doc/${pkgname}/examples install
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/krb5-kpropd.service
+	install -Dm644 $srcdir/aservice $pkgdir/usr/lib/systemd/system/krb5-kpropd@.service
+	install -Dm644 $srcdir/socket $pkgdir/usr/lib/systemd/system/krb5-kpropd.socket
+	install -Dm644 $srcdir/serviceb $pkgdir/usr/lib/systemd/system/krb5-kadmind.service
+	install -Dm644 $srcdir/servicec $pkgdir/usr/lib/systemd/system/krb5-kdc.service
 }

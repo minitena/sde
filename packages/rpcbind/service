@@ -1,0 +1,10 @@
+[Unit]
+Description=RPC Bind Service
+Requires=rpcbind.socket
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/rpcbind -w
+
+[Install]
+Also=rpcbind.socket

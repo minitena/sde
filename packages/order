@@ -207,3 +207,14 @@ openntpd
 libevent
 tor
 haveged
+lsof
+whois
+krb5
+cyrus-sasl
+openldap
+rpcbind
+s-nail
+numactl
+dpdk
+numactl
+dpdk

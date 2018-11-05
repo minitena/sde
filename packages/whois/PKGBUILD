@@ -1,26 +1,29 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=whois
+pkgver=5.4.0
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Intelligent WHOIS client"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
+url="https://github.com/rfc1036/whois"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+depends=('glibc' 'libidn2')
+makedepends=('perl')
+backup=('etc/whois.conf')
+source=("https://github.com/rfc1036/whois/archive/v$pkgver.tar.gz")
+md5sums=('9352e03ef686ec08259309230a3a65fc')
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
-	make
+	make \
+		CONFIG_FILE=/etc/whois.conf \
+		CFLAGS="$CFLAGS" \
+		HAVE_ICONV=1
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	make prefix=/usr BASEDIR=$pkgdir install-whois
+	install -D -m644 whois.conf $pkgdir/etc/whois.conf
 }
