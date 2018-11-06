@@ -23,7 +23,6 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	0011-core-do-not-apply-presets.patch
 	0012-locale-setup-set-default-locale-to-a-unicode-one.patch
 	0013-mount-setup-mount-kernel-fs-by-default.patch
-	0014-Ship-default-services-in-system-unit-dir.patch
 	0015-bootctl-Add-force-option-to-enable-chroot-install-re.patch
 	0016-kernel-install-Support-alternate-root-usage-via-SUBD.patch
 	0018-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
@@ -76,7 +75,6 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          '4b715511524f9d18b1149d998866f697'
          'f7a40dfccc62e6d0c4337348e600d373'
          'bda88ad62050ee80aeae2b12a6131345'
-         '076bf6c8cf1e7ccc57192f2062a47e4d'
          'b3ae94ff36f12bf095a37fbf45d271e9'
          '05fa407e4fc701b3c6913ebc328843b1'
          '75c3b235d0ede26b02c70ea9747174cd'
@@ -131,7 +129,6 @@ prepare() {
 	patch -p1 -i $srcdir/0011-core-do-not-apply-presets.patch
 	patch -p1 -i $srcdir/0012-locale-setup-set-default-locale-to-a-unicode-one.patch
 	patch -p1 -i $srcdir/0013-mount-setup-mount-kernel-fs-by-default.patch
-	patch -p1 -i $srcdir/0014-Ship-default-services-in-system-unit-dir.patch
 	patch -p1 -i $srcdir/0015-bootctl-Add-force-option-to-enable-chroot-install-re.patch
 	patch -p1 -i $srcdir/0016-kernel-install-Support-alternate-root-usage-via-SUBD.patch
 	patch -p1 -i $srcdir/0018-tmpfiles-Make-var-cache-ldconfig-world-readable.patch
