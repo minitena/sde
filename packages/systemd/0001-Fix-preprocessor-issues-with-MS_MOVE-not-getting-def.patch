@@ -1,0 +1,178 @@
+From afbc9e26bd5beaebe1e38e92c0fe1c887930cf8b Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Wed, 4 Apr 2018 09:56:53 -0700
+Subject: [PATCH] Fix preprocessor issues with MS_MOVE not getting defined.
+
+---
+ src/basic/btrfs-util.c     | 1 +
+ src/basic/chattr-util.c    | 1 +
+ src/basic/missing.h        | 1 +
+ src/core/load-fragment.c   | 1 +
+ src/core/namespace.c       | 1 +
+ src/import/import-raw.c    | 1 +
+ src/import/import-tar.c    | 1 +
+ src/import/pull-raw.c      | 1 +
+ src/journal/journal-file.c | 1 +
+ src/journal/journalctl.c   | 1 +
+ src/shared/machine-image.c | 1 +
+ src/shared/sleep-config.c  | 1 +
+ src/tmpfiles/tmpfiles.c    | 1 +
+ 13 files changed, 13 insertions(+)
+
+diff --git a/src/basic/btrfs-util.c b/src/basic/btrfs-util.c
+index 6d2490f3d..8dd4e03ef 100644
+--- a/src/basic/btrfs-util.c
++++ b/src/basic/btrfs-util.c
+@@ -3,6 +3,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <inttypes.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <linux/loop.h>
+ #include <stddef.h>
+diff --git a/src/basic/chattr-util.c b/src/basic/chattr-util.c
+index 4ec14515e..69449a054 100644
+--- a/src/basic/chattr-util.c
++++ b/src/basic/chattr-util.c
+@@ -4,6 +4,7 @@
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ 
+ #include "chattr-util.h"
+diff --git a/src/basic/missing.h b/src/basic/missing.h
+index 71a07d057..16867bdd9 100644
+--- a/src/basic/missing.h
++++ b/src/basic/missing.h
+@@ -22,6 +22,7 @@
+ #include <sys/socket.h>
+ #include <sys/stat.h>
+ #include <sys/syscall.h>
++#include <sys/mount.h>
+ #include <uchar.h>
+ #include <unistd.h>
+ 
+diff --git a/src/core/load-fragment.c b/src/core/load-fragment.c
+index d9a5094aa..73cc8adc2 100644
+--- a/src/core/load-fragment.c
++++ b/src/core/load-fragment.c
+@@ -5,6 +5,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <linux/oom.h>
+ #if HAVE_SECCOMP
+diff --git a/src/core/namespace.c b/src/core/namespace.c
+index e4930db15..08c709b54 100644
+--- a/src/core/namespace.c
++++ b/src/core/namespace.c
+@@ -7,6 +7,7 @@
+ #include <sys/mount.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ 
+ #include "alloc-util.h"
+diff --git a/src/import/import-raw.c b/src/import/import-raw.c
+index f31432cd0..8118f72c1 100644
+--- a/src/import/import-raw.c
++++ b/src/import/import-raw.c
+@@ -1,5 +1,6 @@
+ /* SPDX-License-Identifier: LGPL-2.1+ */
+ 
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ 
+ #include "sd-daemon.h"
+diff --git a/src/import/import-tar.c b/src/import/import-tar.c
+index 89c95af27..f12c3d077 100644
+--- a/src/import/import-tar.c
++++ b/src/import/import-tar.c
+@@ -1,5 +1,6 @@
+ /* SPDX-License-Identifier: LGPL-2.1+ */
+ 
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ 
+ #include "sd-daemon.h"
+diff --git a/src/import/pull-raw.c b/src/import/pull-raw.c
+index e68f197c7..818145c89 100644
+--- a/src/import/pull-raw.c
++++ b/src/import/pull-raw.c
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: LGPL-2.1+ */
+ 
+ #include <curl/curl.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <sys/xattr.h>
+ 
+diff --git a/src/journal/journal-file.c b/src/journal/journal-file.c
+index 62e7f68a1..c9df6a57a 100644
+--- a/src/journal/journal-file.c
++++ b/src/journal/journal-file.c
+@@ -2,6 +2,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <pthread.h>
+ #include <stddef.h>
+diff --git a/src/journal/journalctl.c b/src/journal/journalctl.c
+index 56b1be530..c1bf36d8f 100644
+--- a/src/journal/journalctl.c
++++ b/src/journal/journalctl.c
+@@ -4,6 +4,7 @@
+ #include <fcntl.h>
+ #include <fnmatch.h>
+ #include <getopt.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <locale.h>
+ #include <poll.h>
+diff --git a/src/shared/machine-image.c b/src/shared/machine-image.c
+index 00a5eff67..87859ec4c 100644
+--- a/src/shared/machine-image.c
++++ b/src/shared/machine-image.c
+@@ -9,6 +9,7 @@
+ #include <sys/file.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ 
+ #include "alloc-util.h"
+diff --git a/src/shared/sleep-config.c b/src/shared/sleep-config.c
+index 9e4ce183d..949bf5388 100644
+--- a/src/shared/sleep-config.c
++++ b/src/shared/sleep-config.c
+@@ -4,6 +4,7 @@
+ ***/
+ 
+ #include <errno.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <stdbool.h>
+ #include <stddef.h>
+diff --git a/src/tmpfiles/tmpfiles.c b/src/tmpfiles/tmpfiles.c
+index 927de35f3..689ab15ef 100644
+--- a/src/tmpfiles/tmpfiles.c
++++ b/src/tmpfiles/tmpfiles.c
+@@ -6,6 +6,7 @@
+ #include <getopt.h>
+ #include <glob.h>
+ #include <limits.h>
++#include <sys/mount.h>
+ #include <linux/fs.h>
+ #include <stdbool.h>
+ #include <stddef.h>
+-- 
+2.19.0
+
