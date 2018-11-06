@@ -3,7 +3,7 @@
 
 pkgname=('minitena-base' 'minitena-sdk')
 pkgver=2018.10
-pkgrel=7
+pkgrel=8
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -33,7 +33,7 @@ package_minitena-base() {
 package_minitena-sdk() {
 	pkgdesc='Meta-package for development system'
 	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
-		 'binutils' 'gcc' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
+		 'binutils' 'gcc' 'pkgconf' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
 		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'which' 'fakeroot' 'sudo')
 	:
 }
