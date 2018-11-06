@@ -3,15 +3,15 @@
 
 pkgname=('util-linux' 'util-linux-libs')
 pkgbase=util-linux
-_pkgmajor=2.32
-pkgver=${_pkgmajor}.1
+_pkgmajor=2.33
+pkgver=${_pkgmajor}
 pkgrel=4
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
 options=('strip' 'debug')
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname-$pkgver.tar.xz)
-md5sums=('9e5b1b8c1dc99455bdb6b462cf9436d9')
+md5sums=('3cdf1c652007610f92076ba4212381a9')
 
 build() {
 	cd $pkgbase-$pkgver
