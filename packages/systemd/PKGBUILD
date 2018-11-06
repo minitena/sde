@@ -195,7 +195,6 @@ build() {
 		-Ddefault-hierarchy=hybrid \
 		-Ddefault-kill-user-processes=false \
 		-Ddns-servers="1.1.1.1 1.0.0.1 9.9.9.9 8.8.8.8 8.8.4.4 2606:4700:4700::1111 2620:fe::10 2001:4860:4860::8888" \
-		-Dfallback-hostname='minitena' \
 		-Dima=false \
 		-Dinstall-tests=false \
 		-Dlibidn2=true \
