@@ -21,6 +21,7 @@ pkgconf
 ncurses
 shadow
 util-linux
+libressl
 coreutils
 libtool
 libmnl
@@ -54,7 +55,6 @@ grep
 groff
 less
 gzip
-libressl
 libunistring
 libidn2
 iputils

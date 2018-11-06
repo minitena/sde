@@ -3,12 +3,12 @@
 
 pkgname=coreutils
 pkgver=8.30
-pkgrel=3
+pkgrel=4
 pkgdesc="The basic file, shell and text manipulation utilities"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://www.gnu.org/software/coreutils"
 license=('GPL')
-depends=('glibc' 'gmp' 'attr' 'acl' 'libcap')
+depends=('glibc' 'gmp' 'attr' 'acl' 'libcap' 'libressl')
 source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
 md5sums=('ab06d68949758971fe744db66b572816')
 
@@ -19,6 +19,7 @@ build() {
 	./configure \
 		--prefix=/usr \
 		--libexecdir=/usr/lib \
+		--with-openssl \
 		--enable-no-install-program=kill,uptime,hostname,groups \
 		--build=$CHOST
 	make
