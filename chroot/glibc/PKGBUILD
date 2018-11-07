@@ -17,6 +17,7 @@ source=(http://ftpmirror.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz
 	malloc_tune.patch
 	mathlto.patch
 	vzeroupper-2.27.patch
+	0001-x86-64-Remove-sysdeps-x86_64-fpu-s_sinf.S.patch
 	pause.patch
 	gcc-8-fix.patch
 	spin-smarter.patch
@@ -39,6 +40,7 @@ prepare() {
 	patch -p1 -i $srcdir/malloc_tune.patch
 	patch -p1 -i $srcdir/mathlto.patch
 	patch -p1 -i $srcdir/vzeroupper-2.27.patch
+	patch -R -p1 -i $srcdir/0001-x86-64-Remove-sysdeps-x86_64-fpu-s_sinf.S.patch
 	patch -p1 -i $srcdir/pause.patch
 	patch -p1 -i $srcdir/gcc-8-fix.patch
 	patch -p1 -i $srcdir/spin-smarter.patch

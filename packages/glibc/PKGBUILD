@@ -12,6 +12,7 @@ depends=('filesystem' 'tzdata' 'linux-headers')
 backup=(etc/gai.conf
 	etc/nscd.conf)
 options=('docs' 'staticlibs')
+install=$pkgname.install
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	0001-Set-host.conf-multi-to-on-by-default.patch
 	skip-error-msg-ld.so.conf.patch
@@ -27,6 +28,7 @@ source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz
 	malloc_tune.patch
 	mathlto.patch
 	vzeroupper-2.27.patch
+	0001-x86-64-Remove-sysdeps-x86_64-fpu-s_sinf.S.patch
 	pause.patch
 	gcc-8-fix.patch
 	spin-smarter.patch
@@ -47,12 +49,12 @@ md5sums=('c81d2388896379997bc359d4f2084239'
          '21b190f92ead0b537b0c499f3b4b58e4'
          'fe5c44c2f49d51ba043505a895c6f694'
          '96deb62b272f428406210e272d46a810'
+         '41e1e2dc829dae7ed82aa83ecb1b4693'
          'd8b7596a2f43126c28549f576ecfb1da'
          '3d02d61e0325eaf96afc3716b96ff4ef'
          '2819faa1fb184fc622f045d07235e3c8'
          '15ce96f7415600e6ae9053e72cd205f0'
          '83973dc3e41d8fd34aebcdc08f6ca667')
-install=$pkgname.install
 
 prepare() {
 	cd $pkgname-$pkgver
@@ -70,6 +72,7 @@ prepare() {
 	patch -p1 -i $srcdir/malloc_tune.patch
 	patch -p1 -i $srcdir/mathlto.patch
 	patch -p1 -i $srcdir/vzeroupper-2.27.patch
+	patch -R -p1 -i $srcdir/0001-x86-64-Remove-sysdeps-x86_64-fpu-s_sinf.S.patch
 	patch -p1 -i $srcdir/pause.patch
 	patch -p1 -i $srcdir/gcc-8-fix.patch
 	patch -p1 -i $srcdir/spin-smarter.patch
