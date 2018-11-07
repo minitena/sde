@@ -14,7 +14,7 @@ install=$pkgname.install
 source=("https://www.freedesktop.org/software/$pkgname/releases/$pkgname-$pkgver.tar.gz"
 	'polkit.pam')
 md5sums=('93ff41874e7df8c62ed9e41893817f04'
-         '13cd738c71272285d57ba44453207b89')
+         '82de0804151532174dc3b55ef169f87b')
 
 prepare() {
 	cd $pkgname-$pkgver

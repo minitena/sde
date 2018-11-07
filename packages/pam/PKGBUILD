@@ -11,10 +11,35 @@ license=('GPL')
 depends=('glibc' 'cracklib')
 makedepends=('bison' 'flex')
 options=('!emptydirs')
-backup=('etc/security/{access.conf,group.conf,limits.conf,namespace.conf,namespace.init,pam_env.conf,time.conf}'
-	'etc/environment')
-source=(https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz)
-md5sums=('558ff53b0fc0563ca97f79e911822165')
+backup=(etc/security/{access.conf,group.conf,limits.conf,namespace.conf,namespace.init,pam_env.conf,time.conf}
+	etc/environment
+	etc/pam.d/{common-account,common-auth,common-password,common-session,common-session-noninteractive,login,other,sshd,su,sudo,su-l,system-auth})
+source=("https://github.com/linux-pam/linux-pam/releases/download/v$pkgver/Linux-PAM-$pkgver.tar.xz"
+	'common-account'
+	'common-auth'
+	'common-password'
+	'common-session'
+	'common-session-noninteractive'
+	'login'
+	'other'
+	'sshd'
+	'su'
+	'su-l'
+	'sudo'
+	'system-auth')
+md5sums=('558ff53b0fc0563ca97f79e911822165'
+         'f4cc7c31e7a4e8a6b399b4d4dc04ccb7'
+         'be2518f2a1903c5c80e598ef6307399a'
+         '7e2103cd72a784640103601dc4875da4'
+         '9d93ccc13227683f23558775d25e8a1b'
+         '6f501127d2db7fe9d5615123a49fb595'
+         'de5b5124e65c3be5f6d30e57fe743d2d'
+         'dcaab4390b80b0d53ad59aa83e3b4aa1'
+         'b77df331c028555596748dd5abda3e66'
+         '15e94f9472da2681a475998047fea6c5'
+         '15e94f9472da2681a475998047fea6c5'
+         '248549b2be570ee42ab87e67e3fa66d5'
+         'f328a40249fd512e635d2080cae49e3c')
 
 build() {
 	cd Linux-PAM-$pkgver
@@ -37,4 +62,10 @@ package() {
 	ln -sf pam_unix.so $pkgdir/usr/lib/security/pam_unix_session.so
 
 	chmod 4755 $pkgdir/usr/bin/unix_chkpwd
+
+	install -d $pkgdir/etc/pam.d
+
+	for pam in common-account common-auth common-password common-session common-session-noninteractive login other sshd su su-l sudo system-auth; do
+		install -m 0644 $srcdir/$pam $pkgdir/etc/pam.d/
+	done
 }

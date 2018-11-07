@@ -4,5 +4,5 @@ ID=minitena
 ID_LIKE=minitena
 ANSI_COLOR="0;31"
 HOME_URL="https://minitena.github.io/"
-SUPPORT_URL="https://github.com/minitena/issues/issues"
-BUG_REPORT_URL="https://github.com/minitena/issues/issues"
+SUPPORT_URL="https://github.com/minitena/source/issues"
+BUG_REPORT_URL="https://github.com/minitena/source/issues"

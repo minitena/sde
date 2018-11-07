@@ -3,54 +3,43 @@
 
 pkgname=shadow
 pkgver=4.6
-pkgrel=4
-pkgdesc="Password and account management tool suite"
+pkgrel=1
+pkgdesc="Password and account management tool suite with support for shadow files and PAM"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://github.com/shadow-maint/shadow"
 license=('BSD')
 depends=('glibc' 'pam' 'acl')
-backup=(etc/default/useradd
-	etc/limits
-	etc/login.defs
-	etc/login.access
-	etc/pam.d/{chage,login,other,passwd,su,system-account,system-auth,system-password,system-session}
-	etc/pam.d/{chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,useradd,userdel,usermod})
+options=('strip' 'debug')
+backup=(etc/pam.d/{chage,chfn,chgpasswd,chpasswd,chsh,groupadd,groupdel,groupmems,groupmod,newusers,passwd,useradd,userdel,usermod}
+	etc/default/useradd
+	etc/login.defs)
 source=("https://github.com/shadow-maint/shadow/releases/download/$pkgver/$pkgname-$pkgver.tar.xz"
 	'0010-Make-glibc-give-up-memory-we-have-already-released.patch'
-	'chage'
-	'login'
-	'other'
+	'chfn'
+	'chpasswd'
+	'chsh'
+	'newusers'
 	'passwd'
-	'su'
-	'system-account'
-	'system-auth'
-	'system-password'
-	'system-session')
+	'service'
+	'timer')
 md5sums=('b491fecbf1232632c32ff8f1437fd60e'
          '4e1b71cfa7689cd41d36df7de0bd7666'
-         '34f473198e205271c100293e18367e94'
-         '350589010bcbb9cb59165ca6f2752c8b'
-         '71561ee65e9cfbb212c7df66405789af'
-         '9c784e04e81e43d7a6f9c9a202803803'
-         'e450bf7603abfaf06fdb3a551a7b7c08'
-         '54c6efd6559371c2db72c3a5deeffc4e'
-         '963b6df743077b7407ad6bcc416edacc'
-         'e61abeddf532895504686eb88850bfda'
-         '3dd163ec12f1b66818af68b3e0f24a85')
+         'b35dec039ede7171227eae9b2385e833'
+         '49f61a503d1bfaac2f39cf3bc73b02ad'
+         'f07a9370ec5815b6684cc4607d5ee55c'
+         '4836abb6f7820eac68cc854b4dfae303'
+         '4836abb6f7820eac68cc854b4dfae303'
+         'f08ebd358139e9f74e1b90f7231dc541'
+         '5bd14862ace022d6682b179c18fe30de')
 
 prepare() {
 	cd $pkgname-$pkgver
 	patch -p1 -i $srcdir/0010-Make-glibc-give-up-memory-we-have-already-released.patch
-
-	sed -i 's/groups$(EXEEXT) //' src/Makefile.in &&
-
-	find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \; &&
-	find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \; &&
-	find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \; &&
-
-	sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
-		-e 's@/var/spool/mail@/var/mail@' etc/login.defs &&
-
+	sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+	find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
+	find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
+	find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
+	sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' -e 's@/var/spool/mail@/var/mail@' etc/login.defs
 	sed -i 's/1000/100/' etc/useradd
 }
 
@@ -58,14 +47,17 @@ build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--libdir=/usr/lib \
 		--bindir=/usr/bin \
 		--sbindir=/usr/bin \
-		--sysconfdir=/etc \
+		--libdir=/usr/lib \
 		--mandir=/usr/share/man \
-		--with-libpam \
+		--sysconfdir=/etc \
 		--with-group-name-max-length=32 \
+		--with-libpam \
+		--without-audit \
+		--without-libcrack \
 		--without-selinux \
+		--disable-rpath \
 		--build=$CHOST
 	make
 }
@@ -74,45 +66,28 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	sed -i 's/yes/no/' $pkgdir/etc/default/useradd
+	rm -r $pkgdir/etc/pam.d/login $pkgdir/etc/pam.d/su
 
-	for FUNCTION in FAIL_DELAY \
-		FAILLOG_ENAB \
-		LASTLOG_ENAB \
-		MAIL_CHECK_ENAB \
-		OBSCURE_CHECKS_ENAB \
-		PORTTIME_CHECKS_ENAB \
-		QUOTAS_ENAB \
-		CONSOLE MOTD_FILE \
-		FTMP_FILE NOLOGINS_FILE \
-		ENV_HZ PASS_MIN_LEN \
-		SU_WHEEL_ONLY \
-		CRACKLIB_DICTPATH \
-		PASS_CHANGE_TRIES \
-		PASS_ALWAYS_WARN \
-		CHFN_AUTH ENCRYPT_METHOD \
-		ENVIRON_FILE
-	do
-		sed -i "s/^${FUNCTION}/# &/" $pkgdir/etc/login.defs
-	done
+	mkdir -p pam.d
+	install $srcdir/chfn pam.d/
+	install $srcdir/chpasswd pam.d/
+	install $srcdir/chsh pam.d/
+	install $srcdir/newusers pam.d/
+	install $srcdir/passwd pam.d/
 
-	mkdir -p $pkgdir/etc/pam.d/
-	for PROGRAM in chage login other passwd su system-account system-auth system-password system-session; do
-		install -m644 $srcdir/${PROGRAM} $pkgdir/etc/pam.d/${PROGRAM}
-	done
+	install -d $pkgdir/etc/pam.d/
+	install -m 0644 pam.d/* $pkgdir/etc/pam.d/
 
-	for PROGRAM in chfn chgpasswd chpasswd chsh groupadd groupdel groupmems groupmod newusers useradd userdel usermod; do
-		install -m644 $pkgdir/etc/pam.d/chage $pkgdir/etc/pam.d/${PROGRAM}
-		sed -i "s/chage/$PROGRAM/" $pkgdir/etc/pam.d/${PROGRAM}
-	done
-
-	rm -rf $pkgdir/run/nologin
-
-	[ -f $pkgdir/etc/login.access ] && mv $pkgdir/etc/login.access{,.NOUSE}
-	[ -f $pkgdir/etc/limits ] && mv $pkgdir/etc/limits{,.NOUSE}
-
-	rm $pkgdir/usr/sbin/logoutd
+	install -D -m644 $srcdir/timer $pkgdir/usr/lib/systemd/system/shadow.timer
+	install -D -m644 $srcdir/service $pkgdir/usr/lib/systemd/system/shadow.service
+	install -d -m755 $pkgdir/usr/lib/systemd/system/timers.target.wants
+	ln -sf ../shadow.timer $pkgdir/usr/lib/systemd/system/timers.target.wants/shadow.timer
 
 	mv $pkgdir/usr/sbin/* $pkgdir/usr/bin
 	rmdir $pkgdir/usr/sbin
+
+	ln -sf newgrp $pkgdir/usr/bin/sg
+
+	rm -rf $pkgdir/usr/bin/su
+	find $pkgdir -type f -name 'su.1' -exec rm {} \;
 }

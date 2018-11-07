@@ -58,7 +58,7 @@ package() {
 	mkdir -p $pkgdir/etc/pam.d/
 	echo "PasswordAuthentication no" >> $pkgdir/etc/ssh/sshd_config
 	echo "ChallengeResponseAuthentication no" >> $pkgdir/etc/ssh/sshd_config
-	sed 's@d/login@d/sshd@g' /etc/pam.d/login > $pkgdir/etc/pam.d/sshd
-	chmod 644 $pkgdir/etc/pam.d/sshd
 	echo "UsePAM yes" >> $pkgdir/etc/ssh/sshd_config
+
+	rm $pkgdir/etc/pam.d/sshd
 }

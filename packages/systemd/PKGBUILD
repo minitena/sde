@@ -17,6 +17,7 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	0003-journal-clearout-drop-kmsg.patch
 	0004-core-use-mmap-to-load-files.patch
 	0006-journal-flush-var-kmsg-after-starting.patch
+	0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 	0008-analyze-increase-precision.patch
 	0009-sd-event-return-malloc-memory-reserves-when-main-loo.patch
 	0010-efi-boot-generator-Do-not-automount-boot-partition.patch
@@ -53,7 +54,6 @@ source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar
 	clear-consoles.patch
 	cve-2018-15686.patch
 	cve-2018-15687.patch
-	systemd-user.pam
 	systemd-hook
 	systemd-binfmt.hook
 	systemd-catalog.hook
@@ -69,6 +69,7 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          'c812a3146779a3bedfb03c468041e4ad'
          '0ca15dae1016c3dab7523b3105d36a66'
          'ba5963fa9f58d90f8a7371cef4b99991'
+         'd85a7a16a33ac1b6342829ffb0ad182b'
          'b7d158f25e33e68043bd4a65ecc6d729'
          '2d3dac7b1f2e8c34e97c4b1bca27d04d'
          'e43bfbd7da19b5459000486a592761b3'
@@ -105,7 +106,6 @@ md5sums=('6137e3f50390391cf34521d071a1a078'
          '5046abaeeee8047913c7f7c94e44683d'
          '1e7042f8c0ff0c658a8f7fc3e0bbea28'
          'e180d9edc9d51062e2836dff0973f9da'
-         '9020f08c13d9e17cb780b526a9f8b6f6'
          'd58e56112a367f12ed2e4db1ed002bd2'
          '981d3730f7d14ac9459aba2753ce6a97'
          '11d703a47115c3ad4530fe78ae6036d1'
@@ -124,6 +124,7 @@ prepare() {
 	patch -p1 -i $srcdir/0004-core-use-mmap-to-load-files.patch
 	patch -p1 -i $srcdir/0006-journal-flush-var-kmsg-after-starting.patch
 	patch -p1 -i $srcdir/0008-analyze-increase-precision.patch
+	patch -p1 -i $srcdir/0007-logind-pam-fix-systemd-user-to-include-common-sessio.patch
 	patch -p1 -i $srcdir/0009-sd-event-return-malloc-memory-reserves-when-main-loo.patch
 	patch -p1 -i $srcdir/0010-efi-boot-generator-Do-not-automount-boot-partition.patch
 	patch -p1 -i $srcdir/0011-core-do-not-apply-presets.patch
@@ -248,10 +249,10 @@ package_systemd() {
 	install -d -o root -g systemd-journal -m 2755 $pkgdir/var/log/journal
 	install -d -o root -g 102 -m 0750 $pkgdir/usr/share/polkit-1/rules.d
 
-	install -D -m0644 $srcdir/systemd-user.pam $pkgdir/etc/pam.d/systemd-user
-
 	install -D -m0755 $srcdir/systemd-hook $pkgdir/usr/share/libalpm/scripts/systemd-hook
 	install -D -m0644 -t $pkgdir/usr/share/libalpm/hooks $srcdir/*.hook
+
+	rm -rf $pkgdir/etc/init.d
 }
 
 package_systemd-libs() {

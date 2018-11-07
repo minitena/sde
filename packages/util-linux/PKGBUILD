@@ -34,7 +34,6 @@ build() {
 		--disable-pylibmount \
 		--disable-runuser \
 		--disable-setpriv \
-		--disable-su \
 		--build=$CHOST
 	make
 }
