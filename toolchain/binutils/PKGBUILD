@@ -23,6 +23,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-Os}"
+
 	cd binutils-$pkgver
 	cd build
 	../configure \

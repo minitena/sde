@@ -38,6 +38,9 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-Os}"
+
 	cd $pkgname-$pkgver
 	cd build
 	../configure \
