@@ -90,6 +90,8 @@ build() {
 	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
 	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2}"
 	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CFLAGS="${CFLAGS/-Os}"
+	export CXXFLAGS="${CXXFLAGS/-Os}"
 	export CFLAGS="$CFLAGS -g2"
 	export CXXFLAGS="$CXXFLAGS -g2"
 

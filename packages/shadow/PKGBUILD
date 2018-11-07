@@ -55,9 +55,6 @@ prepare() {
 }
 
 build() {
-	export CFLAGS="${CFLAGS/-O3/-Os}"
-	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
