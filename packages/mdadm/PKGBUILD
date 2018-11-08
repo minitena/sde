@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=mdadm
-pkgver=4.0
+pkgver=4.1
 pkgrel=1
 pkgdesc="A tool for managing/monitoring Linux md device arrays, also known as Software RAID"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -12,7 +12,7 @@ depends=('glibc')
 backup=('etc/mdadm.conf')
 source=("https://www.kernel.org/pub/linux/utils/raid/$pkgname/$pkgname-$pkgver.tar.xz"
 	'mdadm.conf')
-md5sums=('2cb4feffea9167ba71b5f346a0c0a40d'
+md5sums=('51bf3651bd73a06c413a2f964f299598'
          '5a37c112aa07dccdde62f9fa5b888607')
 
 prepare() {
