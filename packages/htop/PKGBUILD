@@ -31,4 +31,6 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	ln -sf htop $pkgdir/usr/bin/top
 }
