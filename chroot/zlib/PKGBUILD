@@ -1,7 +1,7 @@
 pkgname=chroot-zlib
 pkgver=1.2.11
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
 source=(https://zlib.net/zlib-$pkgver.tar.xz)
 
 build() {

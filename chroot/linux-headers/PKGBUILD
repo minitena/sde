@@ -1,7 +1,7 @@
 pkgname=chroot-linux-headers
 pkgver=4.19.1
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz)
 
 build() {
