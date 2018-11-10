@@ -124,7 +124,6 @@ cryptsetup
 systemd
 dbus
 util-linux
-htop
 procps-ng
 e2fsprogs
 xfsprogs
@@ -193,6 +192,7 @@ wget
 dhcp
 dhcpcd
 libnl
+htop
 wireless_tools
 wpa_supplicant
 nftables
