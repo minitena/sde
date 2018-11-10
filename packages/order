@@ -221,3 +221,9 @@ dpdk
 libarchive
 pacman
 pacman-contrib
+bmake
+libuv
+jsoncpp
+rhash
+cmake
+doxygen
