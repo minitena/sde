@@ -3,7 +3,7 @@
 
 pkgname=filesystem
 pkgver=2018.11
-pkgrel=7
+pkgrel=8
 pkgdesc="Filesystem layout and essential files"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
 url="https://minitena.github.io/"
@@ -23,7 +23,8 @@ backup=('etc/fstab'
 	'etc/resolv.conf'
 	'etc/securetty'
 	'etc/shadow'
-	'etc/shells')
+	'etc/shells'
+	'etc/modprobe.d/blacklist.conf')
 source=(env-gen
 	fstab
 	group
@@ -49,7 +50,8 @@ source=(env-gen
 	tmpfiles
 	enter-chroot
 	genfstab
-	pacstrap)
+	pacstrap
+	blacklist.conf)
 md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'e33f6dfdd61978fcb3ddf1431286e05a'
          '0923359259f58038ee1515a9c84fbc14'
@@ -75,7 +77,8 @@ md5sums=('2b0344e9639f35f3c0d5637a23556089'
          '4d49ad29e0a1cd0b8e41ee4743a5f085'
          '0ee4a4339934a190b36f1bc6ea8dbaa3'
          '7add791064fdee57272ead354819b820'
-         'b51958396adece663ddf7d1aa4bb8bcb')
+         'b51958396adece663ddf7d1aa4bb8bcb'
+         'a8ff6379f3fc9437c57788f1d0e54945')
 
 package() {
 	cd $pkgdir
@@ -96,6 +99,8 @@ package() {
 
 	chmod 0600 $pkgdir/etc/gshadow
 	chmod 0600 $pkgdir/etc/shadow
+
+	install -m644 $srcdir/blacklist.conf $pkgdir/etc/modprobe.d/
 
 	ln -sf ../proc/self/mounts etc/mtab
 
