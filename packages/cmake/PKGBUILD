@@ -1,26 +1,31 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=cmake
+pkgver=3.12.4
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A cross-platform open-source make system"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://www.cmake.org/"
+license=('custom')
+depends=('glibc' 'curl' 'libarchive' 'libuv' 'jsoncpp' 'rhash')
+source=("https://www.cmake.org/files/v${pkgver%.*}/$pkgname-$pkgver.tar.gz")
+md5sums=('4970869480ee37c8f4c8e7f83c4359cd')
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
+	./bootstrap \
 		--prefix=/usr \
-		--build=$CHOST
+		--mandir=/share/man \
+		--docdir=/share/doc/cmake \
+		--system-libs \
+		--parallel=$(/usr/bin/getconf _NPROCESSORS_ONLN)
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/usr/share/cmake-${pkgver%.*}/Help
 }
