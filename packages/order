@@ -199,6 +199,7 @@ nftables
 rsync
 libpcap
 tcpdump
+bridge-utils
 libnfnetlink
 libnetfilter_conntrack
 dnsmasq
