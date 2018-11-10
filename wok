@@ -736,10 +736,10 @@ build_final_system() {
 
 	case $BARCH in
 		x86_64|i586)
-			pkgnativebuild efivar
-			pkgnativebuild efibootmgr
-			pkgnativebuild syslinux
-			pkgnativebuild grub
+			pkgnativeinstall efivar
+			pkgnativeinstall efibootmgr
+			pkgnativeinstall syslinux
+			pkgnativeinstall grub
 			;;
 	esac
 
