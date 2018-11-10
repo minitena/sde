@@ -3,7 +3,7 @@
 
 pkgname=xfsprogs
 pkgver=4.19.0
-pkgrel=1
+pkgrel=2
 pkgdesc="XFS filesystem utilities"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="http://xfs.org/"
@@ -24,7 +24,7 @@ build() {
 
 package() {
 	cd $pkgname-$pkgver
-	make DIST_ROOT=$pkgdir PKG_ROOT_SBIN_DIR=/usr/bin install install-dev
+	make -j1 DIST_ROOT=$pkgdir PKG_ROOT_SBIN_DIR=/usr/bin install install-dev
 
 	chown -R root $pkgdir
 	chgrp -R root $pkgdir
