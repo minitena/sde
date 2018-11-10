@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=xfsprogs
-pkgver=4.18.0
+pkgver=4.19.0
 pkgrel=1
 pkgdesc="XFS filesystem utilities"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,7 +10,7 @@ url="http://xfs.org/"
 license=('LGPL')
 depends=('glibc' 'util-linux-libs' 'readline')
 source=("https://www.kernel.org/pub/linux/utils/fs/xfs/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('5f80b631b68df89a8b9283307e96d2e8')
+md5sums=('90efd878b39b47a36a3771389590a667')
 
 build() {
 	cd $pkgname-$pkgver
