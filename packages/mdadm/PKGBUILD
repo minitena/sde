@@ -23,7 +23,6 @@ prepare() {
 build() {
 	cd $pkgname-$pkgver
 	make CXFLAGS="$CFLAGS" BINDIR=/usr/bin UDEVDIR=/usr/lib/udev
-	make MDASSEMBLE_AUTO=1 mdassemble
 }
 
 package() {
