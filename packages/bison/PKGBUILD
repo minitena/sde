@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=bison
-pkgver=3.2
+pkgver=3.2.1
 pkgrel=1
 pkgdesc="The GNU general-purpose parser generator"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -10,7 +10,7 @@ url="http://www.gnu.org/software/bison"
 license=('GPL')
 depends=('glibc' 'm4')
 source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+md5sums=('ce8dfaa5725245bfb8a366344a4c097f')
 
 build() {
 	cd $pkgname-$pkgver
