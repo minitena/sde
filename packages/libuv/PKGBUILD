@@ -1,19 +1,20 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=libuv
+pkgver=1.23.2
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Multi-platform support library with a focus on asynchronous I/O"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="https://github.com/libuv/libuv"
+license=('custom')
+depends=('glibc')
+source=("https://github.com/libuv/libuv/archive/v$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('a4b0434af4cfcc1c4636bea1c0f1396b')
 
 build() {
 	cd $pkgname-$pkgver
+	./autogen.sh
 	./configure \
 		--prefix=/usr \
 		--build=$CHOST
