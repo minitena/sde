@@ -30,7 +30,5 @@ package() {
 	make INSTALL=/usr/bin/install BINDIR=/usr/bin UDEVDIR=/usr/lib/udev DESTDIR=$pkgdir install
 	make SYSTEMD_DIR=$pkgdir/usr/lib/systemd/system install-systemd
 
-	install -D -m755 mdassemble $pkgdir/usr/bin/mdassemble
-
 	install -D -m644 $srcdir/mdadm.conf $pkgdir/etc/mdadm.conf
 }
