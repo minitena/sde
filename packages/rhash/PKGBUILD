@@ -1,26 +1,30 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=rhash
+pkgver=1.3.6
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Utility for verifying hash sums of files"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://rhash.anz.ru/?l=en"
+license=('custom' 'MIT')
+depends=('glibc')
+backup=('etc/rhashrc')
+source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver-src.tar.gz")
+md5sums=('9af110ade09b4a4b1b3bdf88dcae3713')
 
 build() {
-	cd $pkgname-$pkgver
+	cd RHash-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
+		--extra-cflags="$CFLAGS" \
 		--build=$CHOST
 	make
 }
 
 package() {
-	cd $pkgname-$pkgver
+	cd RHash-$pkgver
 	make DESTDIR=$pkgdir install
+	make -C librhash DESTDIR=$pkgdir install-headers install-lib-shared install-so-link
 }
