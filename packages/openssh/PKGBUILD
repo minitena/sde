@@ -59,6 +59,4 @@ package() {
 	echo "PasswordAuthentication no" >> $pkgdir/etc/ssh/sshd_config
 	echo "ChallengeResponseAuthentication no" >> $pkgdir/etc/ssh/sshd_config
 	echo "UsePAM yes" >> $pkgdir/etc/ssh/sshd_config
-
-	rm $pkgdir/etc/pam.d/sshd
 }

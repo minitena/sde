@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=harfbuzz
-pkgver=2.0.2
+pkgver=2.1.1
 pkgrel=1
 pkgdesc="OpenType text shaping engine"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
@@ -11,7 +11,7 @@ license=('MIT')
 depends=('glibc' 'icu' 'freetype' 'glib')
 makedepends=('gobject-introspection')
 source=("https://www.freedesktop.org/software/$pkgname/release/$pkgname-$pkgver.tar.bz2")
-md5sums=('e899bc8ae1acc58f8cd1c116edd4d70b')
+md5sums=('246535f1ba011235650b3da8fcca2456')
 
 build() {
 	cd $pkgname-$pkgver
