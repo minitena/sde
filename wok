@@ -279,6 +279,24 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
+		riscv32)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="riscv32-generic-linux"
+			export XKARCH="riscv"
+			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="riscv32"
+			;;
+		riscv64)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="riscv64-generic-linux"
+			export XKARCH="riscv"
+			export GCCOPTS="--with-arch=rv64imafdc --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="riscv64"
+			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
@@ -893,6 +911,10 @@ build_isoimage() {
 		-A 'Minitena' -V 'Minitena' \
 		-o $BUILD/minitena-$BARCH.iso \
 		$ISODIR/
+}
+
+build_riscv_image() {
+	:
 }
 
 install_tarball_base() {

@@ -28,13 +28,16 @@ source=(http://ftpmirror.gnu.org/gnu/bash/bash-${mainver}.tar.gz
 	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-020
 	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-021
 	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-022
-	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-023)
+	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-023
+	bash-riscv.patch)
 
 prepare() {
 	cd bash-${mainver}
 	for (( _p=1; _p<=$((10#${patchver})); _p++ )); do
 		patch -p0 -i ../bash${mainver//.}-$(printf "%03d" $_p)
 	done
+
+	patch -Np1 -i $srcdir/bash-riscv.patch
 
 cat > config.cache << "EOF"
 ac_cv_func_mmap_fixed_mapped=yes

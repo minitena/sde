@@ -36,6 +36,7 @@ source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}.tar.gz
 	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-021
 	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-022
 	https://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-${mainver}-patches/$pkgname${strippedver}-023
+	bash-riscv.patch
 	dot.bashrc
 	dot.bash_profile
 	dot.bash_logout
@@ -65,6 +66,7 @@ md5sums=('148888a7c95ac23705559b6f477dfe25'
          '282c7d9b38da8005d25b4f816328a2f4'
          '0b709c9d7f8e6cf267a8b863efb899f7'
          'fe2e0ca4cf9409ff0e9428e1236f983e'
+         '945c563730d015a8efdb001345c93418'
          '5deea0d2fb6ede2bea09a46375bebb99'
          '2902e0fee7a9168f3a4fd2ccd60ff047'
          '959a0715afb55246ca7cc4e89d1ae34e'
@@ -76,6 +78,8 @@ prepare() {
 	for (( _p=1; _p<=$((10#${patchver})); _p++ )); do
 		patch -p0 -i ../bash${mainver//.}-$(printf "%03d" $_p)
 	done
+
+	patch -Np1 -i $srcdir/bash-riscv.patch
 }
 
 build() {
