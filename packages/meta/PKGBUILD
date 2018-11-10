@@ -14,7 +14,7 @@ package_minitena-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
 	:
 }
@@ -25,7 +25,7 @@ package_minitena-base() {
 #		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
 #		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 #		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux' 'procps-ng' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+#		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 #		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'pacman')
 #	:
 #}

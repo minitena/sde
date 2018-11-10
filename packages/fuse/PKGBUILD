@@ -28,11 +28,7 @@ build() {
 
 	meson $srcdir/$pkgname-$pkgver \
 		--prefix=/usr \
-		--sbindir=/usr/bin \
-		--buildtype release \
-		--auto-features enabled \
-		--wrap-mode nofallback \
-		-D b_lto=true
+		--sbindir=/usr/bin
 	ninja
 }
 

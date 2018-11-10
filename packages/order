@@ -124,6 +124,7 @@ cryptsetup
 systemd
 dbus
 util-linux
+htop
 procps-ng
 e2fsprogs
 xfsprogs
