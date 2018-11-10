@@ -1,26 +1,25 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=bmake
+pkgver=20180919
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Portable version of the NetBSD make build tool"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="http://www.crufty.net/help/sjg/bmake.html"
+license=('BSD')
+depends=('python')
+source=("http://www.crufty.net/ftp/pub/sjg/$pkgname-$pkgver.tar.gz")
+md5sums=('d0a3c01b803d4ff51124d2ef455eeb2b')
 
 build() {
-	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
-	make
+	cd $pkgname
+	./boot-strap --prefix=/usr op=build
 }
 
 package() {
-	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	cd $pkgname
+	install -d $pkgdir/usr/bin
+
+	./boot-strap --install-destdir=$pkgdir --prefix=/usr op=install
 }
