@@ -193,7 +193,6 @@ build() {
 		-Dapparmor=false \
 		-Daudit=true \
 		-Dblkid=true \
-		-Dbuildtype=release \
 		-Ddbuspolicydir=/etc/dbus-1/system.d \
 		-Ddbussessionservicedir=/usr/share/dbus-1/services \
 		-Ddbussystemservicedir=/usr/share/dbus-1/system-services \
