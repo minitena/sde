@@ -911,6 +911,8 @@ build_isoimage() {
 		-A 'Minitena' -V 'Minitena' \
 		-o $BUILD/minitena-$BARCH.iso \
 		$ISODIR/
+
+	isohybrid $BUILD/minitena-$BARCH.iso
 }
 
 build_riscv_image() {
