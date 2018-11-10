@@ -4,7 +4,7 @@
 pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
-pkgrel=26
+pkgrel=27
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -186,6 +186,10 @@ build() {
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
+		--buildtype release \
+		--auto-features enabled \
+		--wrap-mode nofallback \
+		-D b_lto=true \
 		-Dapparmor=false \
 		-Daudit=true \
 		-Dblkid=true \

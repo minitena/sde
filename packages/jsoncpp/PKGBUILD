@@ -1,26 +1,40 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2
+pkgname=jsoncpp
+pkgver=1.8.4
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="C++ library for interacting with JSON"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('35b07c9c7108d5aba9baff05b97cee3c')
+url="https://github.com/open-source-parsers/jsoncpp"
+license=('MIT' 'custom:Public_Domain')
+depends=('gcc-libs')
+makedepends=('meson')
+source=("https://github.com/open-source-parsers/$pkgname/archive/$pkgver.tar.gz")
+md5sums=('fa47a3ab6b381869b6a5f20811198662')
+
+prepare() {
+	cd $pkgname-$pkgver
+	mkdir -p build
+}
 
 build() {
 	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
-	make
+	cd build
+	meson \
+		--prefix /usr \
+		--libdir /usr/lib \
+		--buildtype release \
+		--auto-features enabled \
+		--wrap-mode nofallback \
+		-D b_lto=true \
+		--default-library shared \
+		$srcdir/$pkgname-$pkgver
+	ninja
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	cd build
+	DESTDIR=$pkgdir ninja install
 }

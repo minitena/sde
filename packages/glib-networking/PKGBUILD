@@ -3,7 +3,7 @@
 
 pkgname=glib-networking
 pkgver=2.58.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Network extensions for GLib"
 arch=('x86_64' 'i586' 'aarch64' 'arm')
 url="https://gitlab.gnome.org/GNOME/glib-networking"
@@ -26,6 +26,10 @@ build() {
 		--prefix=/usr \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
+		--buildtype release \
+		--auto-features enabled \
+		--wrap-mode nofallback \
+		-D b_lto=true \
 		-Dlibproxy_support=false \
 		-Dpkcs11_support=true
 	ninja
