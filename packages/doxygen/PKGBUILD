@@ -21,6 +21,7 @@ prepare() {
 build() {
 	cd ${pkgname}-Release_${pkgver//./_}/build
 	cmake \
+		-G Ninja \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DDOC_INSTALL_DIR:PATH=share/doc/doxygen \
 		-DCMAKE_BUILD_TYPE=Release \
