@@ -1,5 +1,5 @@
 pkgname=host-gcc-static
-pkgver=8+20181102
+pkgver=8+20181109
 gmpver=6.1.2
 mpfrver=4.0.1
 mpcver=1.1.0

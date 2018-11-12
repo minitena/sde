@@ -3,7 +3,7 @@
 
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
-pkgver=8+20181102
+pkgver=8+20181109
 snapver=8.2.1
 pkgrel=8
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
@@ -26,7 +26,7 @@ source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/$pkgbase-${
 	hj-patch-round.patch
 	c89
 	c99)
-md5sums=('e017a6f5a6f5d5e7de323b11efc59121'
+md5sums=('a7d7fec96471ebf3b30d066e42167cee'
          '71798cd205d3401ab29ba79c8e45ef70'
          'a767abde6eadd3fe3a573e990a195588'
          'a6799d6442237da22d6e13507cc7dfb2'
