@@ -6,6 +6,7 @@ source=(http://distfiles.dereferenced.org/pkgconf/pkgconf-$pkgver.tar.xz)
 
 build() {
 	cd pkgconf-$pkgver
+	LDFLAGS="-static" \
 	./configure \
 		--prefix='' \
 		--with-sysroot=$ROOTFS \
