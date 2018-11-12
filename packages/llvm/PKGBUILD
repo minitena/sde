@@ -1,0 +1,89 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=('llvm' 'llvm-libs')
+pkgbase=llvm
+pkgver=7.0.0
+pkgrel=1
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="https://llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+makedepends=('cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 'python2')
+options=('staticlibs')
+source=("http://llvm.org/releases/$pkgver/$pkgname-$pkgver.src.tar.xz")
+md5sums=('e0140354db83cdeb8668531b431398f0')
+
+prepare() {
+	cd $pkgname-$pkgver.src
+	mkdir build
+}
+
+build() {
+	case $CARCH in
+		x86_64|i586)
+			export LLVMTARGET="X86;AMDGPU;BPF"
+			;;
+		aarch64)
+			export LLVMTARGET="AArch64;AMDGPU;BPF"
+			;;
+		arm)
+			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		riscv32|riscv64)
+			export LLVMTARGET="RISCV;AMDGPU;BPF"
+			;;
+	esac
+
+	cd $pkgname-$pkgver.src/build
+
+	CC="gcc" CXX="g++" \
+	cmake -G Ninja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DFFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi) \
+		-DLLVM_BINUTILS_INCDIR=/usr/include \
+		-DLLVM_BUILD_DOCS=OFF \
+		-DLLVM_BUILD_LLVM_DYLIB=ON \
+		-DLLVM_BUILD_TESTS=OFF \
+		-DLLVM_ENABLE_DOXYGEN=OFF \
+		-DLLVM_ENABLE_FFI=ON \
+		-DLLVM_ENABLE_RTTI=ON \
+		-DLLVM_ENABLE_SPHINX=OFF \
+		-DLLVM_INSTALL_UTILS=ON \
+		-DLLVM_LINK_LLVM_DYLIB=ON \
+		-DLLVM_TARGETS_TO_BUILD="$LLVMTARGET" \
+		-DLLVM_HOST_TRIPLE=$CHOST \
+		$srcdir/$pkgname-$pkgver.src
+	ninja
+}
+
+package_llvm() {
+	pkgdesc="Collection of modular and reusable compiler and toolchain technologies"
+	depends=('llvm-libs' 'perl')
+	optdepends=('python: for using lit (LLVM Integrated Tester)')
+
+	cd $pkgname-$pkgver.src/build
+	DESTDIR=$pkgdir ninja install
+
+	pushd ../utils/lit
+		python3 setup.py install --root=$pkgdir -O1
+	popd
+
+	mv -f $pkgdir/usr/lib/lib{LLVM,LTO}*.so* $srcdir
+	mv -f $pkgdir/usr/lib/LLVMgold.so $srcdir
+}
+
+package_llvm-libs() {
+	pkgdesc="LLVM runtime libraries"
+	depends=('gcc-libs' 'zlib' 'ncurses' 'libxml2' 'libffi' 'libedit')
+
+	# Thanks, Arch Linux
+	install -d $pkgdir/usr/lib
+	cp -P \
+		$srcdir/lib{LLVM,LTO}*.so* \
+		$srcdir/LLVMgold.so \
+		$pkgdir/usr/lib/
+
+	install -d $pkgdir/usr/lib/bfd-plugins
+	ln -sf ../LLVMgold.so $pkgdir/usr/lib/bfd-plugins/LLVMgold.so
+}

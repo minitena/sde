@@ -728,6 +728,20 @@ build_final_system() {
 						;;
 				esac
 				;;
+			rust)
+				case $BARCH in
+					x86_64|i586|aarch64|arm)
+						pkgnativeinstall rust
+						;;
+				esac
+				;;
+			go)
+				case $BARCH in
+					x86_64|i586|aarch64|arm)
+						pkgnativeinstall go
+						;;
+				esac
+				;;
 			*)
 				pkgnativeinstall $finalpkg
 		esac
