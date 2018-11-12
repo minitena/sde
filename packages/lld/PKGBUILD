@@ -58,6 +58,6 @@ build() {
 }
 
 package() {
-	cd cfe-$pkgver.src/build
+	cd $pkgname-$pkgver.src/build
 	DESTDIR=$pkgdir ninja install
 }
