@@ -1,0 +1,35 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=compiler-rt
+pkgver=7.0.0
+pkgrel=1
+pkgdesc="Compiler runtime libraries for clang"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="https://compiler-rt.llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+depends=('llvm-libs')
+makedepends=('llvm' 'cmake' 'ninja' 'python')
+source=("http://llvm.org/releases/$pkgver/$pkgname-$pkgver.src.tar.xz")
+md5sums=('3b759c47076298363f4443395e0e51c1')
+
+prepare() {
+	cd $pkgname-$pkgver.src
+	mkdir build
+}
+
+build() {
+	cd $pkgname-$pkgver.src/build
+
+	CC="gcc" CXX="g++" \
+	cmake -G Ninja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		$srcdir/$pkgname-$pkgver.src
+	ninja
+}
+
+package() {
+	cd $pkgname-$pkgver.src/build
+	DESTDIR=$pkgdir ninja install
+}
