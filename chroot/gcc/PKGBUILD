@@ -93,9 +93,11 @@ build() {
 		--enable-default-ssp \
 		--enable-gnu-indirect-function \
 		--enable-gnu-unique-object \
-		--enable-languages=c,c++ \
+		--enable-languages=c,c++,lto \
 		--enable-install-libiberty \
 		--enable-linker-build-id \
+		--enable-lto \
+		--enable-plugin \
 		--enable-shared \
 		--enable-threads=posix \
 		--disable-libmpx \
