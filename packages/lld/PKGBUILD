@@ -1,0 +1,63 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=lld
+pkgver=7.0.0
+pkgrel=1
+pkgdesc="Linker from the LLVM project"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="https://clang.llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+depends=('llvm-libs')
+makedepends=('llvm' 'cmake' 'ninja' 'python2')
+source=("https://releases.llvm.org/$pkgver/$pkgname-$pkgver.src.tar.xz"
+	"https://releases.llvm.org/$pkgver/llvm-$pkgver.src.tar.xz")
+md5sums=('5eb148c3064acff71d8e5856163c8323'
+         'e0140354db83cdeb8668531b431398f0')
+
+prepare() {
+	cd $pkgname-$pkgver.src
+	mkdir build
+}
+
+build() {
+	case $CARCH in
+		x86_64|i586)
+			export LLVMTARGET="X86;AMDGPU;BPF"
+			;;
+		aarch64)
+			export LLVMTARGET="AArch64;AMDGPU;BPF"
+			;;
+		arm)
+			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		riscv32|riscv64)
+			export LLVMTARGET="RISCV;AMDGPU;BPF"
+			;;
+	esac
+
+	cd $pkgname-$pkgver.src/build
+
+	CC="gcc" CXX="g++" \
+	cmake -G Ninja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DPYTHON_EXECUTABLE=/usr/bin/python \
+		-DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+		-DBUILD_SHARED_LIBS=ON \
+		-DLLVM_BUILD_DOCS=OFF \
+		-DLLVM_BUILD_TESTS=OFF \
+		-DLLVM_ENABLE_SPHINX=OFF \
+		-DLLVM_INCLUDE_TESTS=OFF \
+		-DLLVM_LINK_LLVM_DYLIB=ON \
+		-DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src" \
+		-DLLVM_TARGETS_TO_BUILD="$LLVMTARGET" \
+		-DLLVM_HOST_TRIPLE=$CHOST \
+		$srcdir/$pkgname-$pkgver.src
+	ninja
+}
+
+package() {
+	cd cfe-$pkgver.src/build
+	DESTDIR=$pkgdir ninja install
+}
