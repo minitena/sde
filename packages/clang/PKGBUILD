@@ -1,0 +1,78 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=clang
+pkgver=7.0.0
+pkgrel=1
+pkgdesc="C language family frontend for LLVM"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="https://clang.llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+depends=('llvm-libs' 'compiler-rt')
+makedepends=('llvm' 'cmake' 'ninja' 'python2')
+source=("https://releases.llvm.org/$pkgver/cfe-$pkgver.src.tar.xz"
+	"https://releases.llvm.org/$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
+	"https://releases.llvm.org/$pkgver/llvm-$pkgver.src.tar.xz"
+	'enable-SSP-and-PIE-by-default.patch')
+md5sums=('2ac5d8d78be681e31611c5e546e11174'
+         'e98b37a5911cd556775cba0868a56981'
+         'e0140354db83cdeb8668531b431398f0'
+         'b9531c4291b948ec14236f2317e5523f')
+
+prepare() {
+	cd cfe-$pkgver.src
+	mkdir build
+	mv $srcdir/clang-tools-extra-$pkgver.src tools/extra
+	patch -Np1 -i $srcdir/enable-SSP-and-PIE-by-default.patch
+}
+
+build() {
+	case $CARCH in
+		x86_64|i586)
+			export LLVMTARGET="X86;AMDGPU;BPF"
+			;;
+		aarch64)
+			export LLVMTARGET="AArch64;AMDGPU;BPF"
+			;;
+		arm)
+			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		riscv32|riscv64)
+			export LLVMTARGET="RISCV;AMDGPU;BPF"
+			;;
+	esac
+
+	cd cfe-$pkgver.src/build
+
+	CC="gcc" CXX="g++" \
+	cmake -G Ninja \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DPYTHON_EXECUTABLE=/usr/bin/python \
+		-DLLVM_EXTERNAL_LIT=/usr/bin/lit \
+		-DBUILD_SHARED_LIBS=ON \
+		-DLLVM_BUILD_DOCS=OFF \
+		-DLLVM_BUILD_TESTS=OFF \
+		-DLLVM_ENABLE_RTTI=ON \
+		-DLLVM_ENABLE_SPHINX=OFF \
+		-DLLVM_INCLUDE_DOCS=OFF \
+		-DLLVM_LINK_LLVM_DYLIB=ON \
+		-DLLVM_MAIN_SRC_DIR="$srcdir/llvm-$pkgver.src" \
+		-DLLVM_TARGETS_TO_BUILD="$LLVMTARGET" \
+		-DLLVM_HOST_TRIPLE=$CHOST \
+		$srcdir/cfe-$pkgver.src
+	ninja
+}
+
+package() {
+	cd cfe-$pkgver.src/build
+	DESTDIR=$pkgdir ninja install
+
+	mv $pkgdir/usr/libexec/{ccc,c++}-analyzer $pkgdir/usr/lib/clang/
+	rmdir $pkgdir/usr/libexec
+	sed -i 's|libexec|lib/clang|' $pkgdir/usr/bin/scan-build
+
+	sed -i '1s|/usr/bin/env python$|&2|' \
+		$pkgdir/usr/bin/scan-view \
+		$pkgdir/usr/share/$pkgname/*.py
+}
