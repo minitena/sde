@@ -1,5 +1,6 @@
 pkgname=chroot-gcc
 pkgver=8+20181102
+snapver=8.2.1
 gmpver=6.1.2
 mpfrver=4.0.1
 mpcver=1.1.0
@@ -76,6 +77,7 @@ build() {
 	../configure \
 		--prefix=/tools \
 		--libdir=/tools/lib \
+		--libexecdir=/tools/lib \
 		--build=$XHOST \
 		--host=$XTARGET \
 		--target=$XTARGET $GCCOPTS \
@@ -111,4 +113,9 @@ package() {
 	make -j1 DESTDIR=$pkgdir install
 
 	ln -sf gcc $pkgdir/tools/bin/cc
+
+	ln -sf ../bin/cpp $pkgdir/tools/lib
+
+	install -dm755 $pkgdir/tools/lib/bfd-plugins/
+	ln -sf /tools/lib/gcc/$XTARGET/${snapver}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 }
