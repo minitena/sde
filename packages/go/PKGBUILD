@@ -52,7 +52,7 @@ build() {
 	export GOARCH="$GARCH"
 	export GOOS="linux"
 
-	bash make.bash
+	bash make.bash -v
 }
 
 package() {
