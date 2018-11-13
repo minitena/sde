@@ -14,11 +14,15 @@ provides=('cargo' 'rustfmt' 'rust-std')
 conflicts=('cargo' 'rustfmt' 'rust-std')
 replaces=('cargo' 'rustfmt' 'rust-std')
 options=('!emptydirs')
-source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz")
-md5sums=('899d5946aa2bdd8d1632d1cc5d21775b')
+source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz"
+	'rust-libressl-2.8.2.patch')
+md5sums=('899d5946aa2bdd8d1632d1cc5d21775b'
+         '24248917522c68d57efc0e3ef7e1945d')
 
 prepare() {
 	cd rustc-$pkgver-src
+	patch -Np1 -i $srcdir/rust-libressl-2.8.2.patch
+
 	rm -rf src/llvm
 	sed -i /LD_LIBRARY_PATH/d src/bootstrap/bootstrap.py
 
@@ -48,6 +52,7 @@ link-shared = true
 
 [build]
 extended = true
+vendor = true
 sanitizers = false
 
 [install]
@@ -69,7 +74,7 @@ build() {
 	cd rustc-$pkgver-src
 	export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
 
-	python3 ./x.py build -v --jobs $(expr $(nproc) + 1)
+	python3 ./x.py build --jobs $(expr $(nproc) + 1)
 }
 
 package() {
