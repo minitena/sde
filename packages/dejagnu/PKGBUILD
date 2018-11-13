@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dejagnu
+pkgver=1.6.1
+pkgrel=1
+pkgdesc="Framework for testing other programs"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="http://www.gnu.org/software/dejagnu"
+license=('GPL')
+depends=('glibc' 'expect')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('2ac8405a4c7ca8611d004fe852966c6f')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
