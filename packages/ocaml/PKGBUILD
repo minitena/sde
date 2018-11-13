@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=ocaml
+pkgver=4.07.0
+pkgrel=1
+pkgdesc="A functional language with OO extensions"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="http://caml.inria.fr/"
+license=('GPL' 'custom: QPL')
+depends=('glibc' 'gdbm')
+makedepends=('zlib' 'ncurses' 'gdbm')
+options=('!makeflags' '!emptydirs' 'staticlibs')
+source=("http://caml.inria.fr/distrib/${pkgname}-${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('24f3cd1f9da825f8b3baabee89079de4')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		-prefix /usr
+	make -j1 world.opt
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make PREFIX=$pkgdir/usr install
+}
