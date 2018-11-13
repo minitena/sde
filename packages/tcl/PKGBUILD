@@ -1,0 +1,61 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=tcl
+pkgver=8.6.8
+pkgrel=1
+pkgdesc="The Tcl scripting language"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="http://tcl.sourceforge.net/"
+license=('custom')
+depends=('glibc' 'zlib' 'sqlite')
+options=('staticlibs')
+source=("http://downloads.sourceforge.net/sourceforge/tcl/tcl${pkgver}-src.tar.gz")
+md5sums=('81656d3367af032e0ae6157eff134f89')
+
+prepare() {
+	cd tcl${pkgver}
+	rm -rf pkgs/sqlite3*
+}
+
+build() {
+	case "$CARCH" in
+		x86_64) conf="--enable-64bit";;
+	esac
+
+	cd tcl${pkgver}/unix
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--with-system-sqlite \
+		--enable-threads \
+		--build=$CHOST $conf
+	make
+}
+
+package() {
+	cd tcl${pkgver}/unix
+	make INSTALL_ROOT=$pkgdir install install-private-headers
+
+	ln -sf tclsh${pkgver%.*} $pkgdir/usr/bin/tclsh
+	ln -sf libtcl${pkgver%.*}.so $pkgdir/usr/lib/libtcl.so
+
+	install -Dm644 tcl.m4 -t $pkgdir/usr/share/aclocal
+
+	sed -e "s#${srcdir}/tcl${pkgver}/unix#/usr/lib#" \
+		-e "s#${srcdir}/tcl${pkgver}#/usr/include#" \
+		-i $pkgdir/usr/lib/tclConfig.sh
+
+	tdbcver=tdbc1.0.6
+	sed -e "s#${srcdir}/tcl${pkgver}/unix/pkgs/$tdbcver#/usr/lib/$tdbcver#" \
+		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver/generic#/usr/include#" \
+		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver/library#/usr/lib/tcl${pkgver%.*}#" \
+		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver#/usr/include#" \
+		-i $pkgdir/usr/lib/$tdbcver/tdbcConfig.sh
+
+	itclver=itcl4.1.1
+	sed -e "s#${srcdir}/tcl${pkgver}/unix/pkgs/$itclver#/usr/lib/$itclver#" \
+		-e "s#${srcdir}/tcl${pkgver}/pkgs/$itclver/generic#/usr/include#" \
+		-e "s#${srcdir}/tcl${pkgver}/pkgs/$itclver#/usr/include#" \
+		-i $pkgdir/usr/lib/$itclver/itclConfig.sh
+}
