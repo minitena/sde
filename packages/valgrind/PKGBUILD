@@ -1,0 +1,34 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=valgrind
+pkgver=3.14.0
+pkgrel=1
+pkgdesc="Tool to help find memory-management problems in programs"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="http://valgrind.org/"
+license=('GPL')
+depends=('glibc' 'perl')
+options=('!emptydirs')
+source=("https://sourceware.org/ftp/$pkgname/$pkgname-$pkgver.tar.bz2")
+md5sums=('74175426afa280184b62591b58c671b3')
+
+build() {
+	export CFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+	export CXXFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+	export CFLAGS=${CFLAGS/-fstack-protector-strong -fno-plt/}
+	export CXXFLAGS=${CXXFLAGS/-fstack-protector-strong -fno-plt/}
+
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--enable-tls \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
