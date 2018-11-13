@@ -48,7 +48,6 @@ link-shared = true
 
 [build]
 extended = true
-vendor = true
 sanitizers = false
 
 [install]
