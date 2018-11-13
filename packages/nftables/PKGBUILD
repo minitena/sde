@@ -3,7 +3,7 @@
 
 pkgname=nftables
 pkgver=0.9.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Netfilter tables userspace tools"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
 url="https://netfilter.org/projects/nftables/"
