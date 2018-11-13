@@ -228,3 +228,10 @@ jsoncpp
 rhash
 cmake
 doxygen
+tcl
+expect
+dejagnu
+check
+gdb
+valgrind
+strace
