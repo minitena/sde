@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=iptables
-pkgver=1.8.1
+pkgver=1.8.2
 pkgrel=5
 pkgdesc="Linux kernel packet control tool"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
@@ -14,7 +14,7 @@ source=(http://www.netfilter.org/projects/$pkgname/files/$pkgname-$pkgver.tar.bz
 	'iptables.service'
 	'ip6tables.service'
 	'example')
-md5sums=('b5b0b43afc245176c36a14c4fca6e661'
+md5sums=('944558e88ddcc3b9b0d9550070fa3599'
          'ac9619d7bfa1d9157b8cd873b93a1d79'
          '831be13c245592e93a538b74a89a12bc'
          '2cce244b70ad60dae86947001ca1c84e'
