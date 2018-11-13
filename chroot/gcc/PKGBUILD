@@ -119,5 +119,8 @@ package() {
 	ln -sf ../bin/cpp $pkgdir/tools/lib
 
 	install -dm755 $pkgdir/tools/lib/bfd-plugins/
+	ln -sf /tools/lib/gcc/$XTARGET/${snapver}/liblto_plugin.so $pkgdir/tools/lib/bfd-plugins/
+
+	install -dm755 $pkgdir/usr/lib/bfd-plugins/
 	ln -sf /tools/lib/gcc/$XTARGET/${snapver}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 }
