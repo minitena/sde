@@ -65,9 +65,9 @@ Then we need to enter chroot:
 ```
 sudo BARCH=[CPU architecture] ./wok enter-chroot
 ```
-Let's build final system:
+Let's build core system:
 ```
-wok final-system
+wok core
 ```
 After that all you can build *.iso image (x86_64 and i586 only):
 ```

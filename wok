@@ -36,7 +36,7 @@ Host options:
 
 Target options:
 
-	final-system				Build repository of Minitena
+	core|core-system			Build repository of Minitena with main packages
 
 Target package options: wok [option] [package]
 
@@ -599,8 +599,8 @@ adjust_toolchain() {
 	echo "Toolchain adjust is done"
 }
 
-build_final_system() {
-	for finalpkg in $(cat /var/order); do
+build_core_system() {
+	for finalpkg in $(cat /var/core.order); do
 		case $finalpkg in
 			glibc)
 				pkgnativeinstallnodeps glibc
@@ -997,8 +997,8 @@ case "$1" in
 		install_tarball_base
 		make_archive
 		;;
-	final-system)
-		build_final_system
+	core-system|core)
+		build_core_system
 		;;
 	enter-chroot)
 		check_for_root
