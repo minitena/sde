@@ -279,15 +279,6 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
-		riscv32)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="riscv32-generic-linux"
-			export XKARCH="riscv"
-			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="riscv32"
-			;;
 		riscv64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="riscv64-generic-linux"
@@ -297,6 +288,15 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="riscv64"
 			;;
+#		riscv32) glibc doesn't support this architecture
+#			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+#			export XTARGET="riscv32-generic-linux"
+#			export XKARCH="riscv"
+#			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
+#			export BINUTILSOPTS=''
+#			export GLIBCOPTS=''
+#			export QEMUARCH="riscv32"
+#			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
@@ -731,7 +731,7 @@ build_final_system() {
 			rust)
 				case $BARCH in
 					x86_64|i586|aarch64|arm)
-						pkgnativeinstall rust
+						pkgnativeinstallnodeps rust
 						;;
 				esac
 				;;
