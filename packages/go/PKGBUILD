@@ -41,10 +41,6 @@ build() {
 			exit 1
 	esac
 
-	unset GCC CC CXX LD CFLAGS
-	unset CGO_CXXFLAGS CGO_CFLAGS CGO_ENABLED
-
-
 	export GOCACHE=off
 	export GOROOT="$(pwd)"
 	export GOROOT_FINAL="/usr/lib/go"
