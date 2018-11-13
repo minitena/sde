@@ -1,0 +1,27 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=expect
+pkgver=5.45.4
+pkgrel=1
+pkgdesc="A tool for automating interactive applications"
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+url="http://www.nist.gov/el/msid/expect.cfm"
+license=('custom')
+depends=('tcl')
+source=("https://downloads.sourceforge.net/project/expect/Expect/$pkgver/expect${pkgver}.tar.gz")
+md5sums=('00fce8de158422f5ccd2666512329bd2')
+
+build() {
+	cd $pkgname${pkgver}
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname${pkgver}
+	make DESTDIR=$pkgdir install
+}
