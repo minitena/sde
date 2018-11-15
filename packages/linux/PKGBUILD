@@ -3,10 +3,10 @@
 
 pkgname=('linux' 'linux-devel')
 pkgbase=linux
-pkgver=4.19.1
+pkgver=4.19.2
 zerover=$pkgver
 pkgrel=26
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -20,7 +20,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'riscv64-config'
 	'60-linux.hook'
 	'90-linux.hook')
-md5sums=('6de5f0c6c0eb5d27386579894fcf31ab'
+md5sums=('fe3487940018bacda66ac57f60ee36b9'
          'f5caea6773cb4ecd74673683bfb3d22a'
          'a85fb27ffa8da2a09be34fc98000327b'
          '8c624cf101e5c6a3def2f798674cb4fe'
@@ -51,6 +51,45 @@ prepare() {
 		arm)
 			export XKARCH="arm"
 			cp $srcdir/arm-config .config
+			;;
+		mips)
+			export XKARCH="mips"
+			cp -f arch/mips/configs/malta_defconfig .config
+			sed -i -e 's:CONFIG_CPU_LITTLE_ENDIAN:CONFIG_CPU_BIG_ENDIAN:' .config
+			;;
+		mipsel)
+			export XKARCH="mips"
+			cp -f arch/mips/configs/malta_defconfig .config
+			sed -i -e 's:CONFIG_CPU_BIG_ENDIAN:CONFIG_CPU_LITTLE_ENDIAN:' .config
+			;;
+		powerpc64le)
+			export XKARCH="powerpc"
+			make ARCH=$XKARCH ppc64le_defconfig
+			;;
+		powerpc64)
+			export XKARCH="powerpc"
+			make ARCH=$XKARCH g5_defconfig
+			;;
+		powerpc)
+			export XKARCH="powerpc"
+			make ARCH=$XKARCH pmac32_defconfig
+			;;
+		sparc64)
+			make ARCH=$XKARCH sparc64_defconfig
+			;;
+		sparc)
+			make ARCH=$XKARCH sparc32_defconfig
+			;;
+		s390x)
+			make ARCH=$XKARCH performance_defconfig
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			make ARCH=$XKARCH mmu_defconfig
+			;;
+		hppa)
+			export XKARCH="parisc"
+			make ARCH=$XKARCH generic-32bit_defconfig
 			;;
 		riscv32)
 			export XKARCH="riscv"
@@ -88,8 +127,23 @@ build() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		arm)
-			export XKARCH="arm"
+		mipsel|mips)
+			export XKARCH="mips"
+			;;
+		powerpc64le|powerpc64|powerpc)
+			export XKARCH="powerpc"
+			;;
+		sparc64|sparc)
+			export XKARCH="sparc"
+			;;
+		s390x)
+			export XKARCH="s390"
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			;;
+		hppa)
+			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
@@ -124,6 +178,30 @@ package_linux() {
 		arm)
 			export XKARCH="arm"
 			export IMG="arch/arm/boot/zImage"
+			;;
+		mipsel|mips)
+			export XKARCH="mips"
+			export IMG="vmlinux"
+			;;
+		powerpc64le|powerpc64|powerpc)
+			export XKARCH="powerpc"
+			export IMG="vmlinux"
+			;;
+		sparc64|sparc)
+			export XKARCH="sparc"
+			export IMG="arch/sparc/boot/image"
+			;;
+		s390x)
+			export XKARCH="s390"
+			export IMG="arch/s390/boot/image"
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			export IMG="vmlinux"
+			;;
+		hppa)
+			export XKARCH="parisc"
+			export IMG="vmlinux"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
@@ -170,18 +248,31 @@ package_linux-devel() {
 
 	case $CARCH in
 		x86_64)
-			export KARCH="x86"
-			export SUBKARCH="x86_64"
+			export XKARCH="x86_64"
 			;;
 		i586)
-			export KARCH="x86"
-			export SUBKARCH="i386"
+			export XKARCH="i386"
 			;;
 		aarch64)
-			export KARCH="arm64"
+			export XKARCH="arm64"
 			;;
-		arm)
-			export KARCH="arm"
+		mipsel|mips)
+			export XKARCH="mips"
+			;;
+		powerpc64le|powerpc64|powerpc)
+			export XKARCH="powerpc"
+			;;
+		sparc64|sparc)
+			export XKARCH="sparc"
+			;;
+		s390x)
+			export XKARCH="s390"
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			;;
+		hppa)
+			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
@@ -274,16 +365,5 @@ package_linux-devel() {
 	for i in $(find . -name "Kconfig*"); do
 		mkdir -p $pkgdir/usr/src/linux/$(echo $i | sed 's|/Kconfig.*||')
 		cp $i $pkgdir/usr/src/linux/$i
-	done
-
-	case "$KARCH" in
-		i386|x86_64) _args="arm* riscv*";;
-		arm|arm64) _args="x86* riscv*";;
-		riscv32|riscv64) _args="x86* arm*";;
-	esac
-
-	for rmarch in alpha avr32 blackfin cris frv h8300 \
-		ia64 m* p* s* um v850 xtensa ${_args}; do
-		rm -rf $pkgdir/usr/src/linux/arch/$rmarch
 	done
 }

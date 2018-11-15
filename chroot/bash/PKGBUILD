@@ -4,7 +4,7 @@ patchver=023
 pkgver=${mainver}.${patchver}
 strippedver="$(echo ${mainver} | tr -d '.')"
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 source=(http://ftpmirror.gnu.org/gnu/bash/bash-${mainver}.tar.gz
 	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-001
 	https://ftpmirror.gnu.org/gnu/bash/bash-${mainver}-patches/bash${strippedver}-002

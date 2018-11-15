@@ -1,7 +1,7 @@
 pkgname=chroot-libarchive
 pkgver=3.3.3
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 source=(http://www.libarchive.org/downloads/libarchive-$pkgver.tar.gz)
 
 build() {

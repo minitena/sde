@@ -16,8 +16,23 @@ build() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		arm)
-			export XKARCH="arm"
+		mipsel|mips)
+			export XKARCH="mips"
+			;;
+		powerpc64le|powerpc64|powerpc)
+			export XKARCH="powerpc"
+			;;
+		sparc64|sparc)
+			export XKARCH="sparc"
+			;;
+		s390x)
+			export XKARCH="s390"
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			;;
+		hppa)
+			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"

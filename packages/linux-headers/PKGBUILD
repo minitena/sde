@@ -2,15 +2,15 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux-headers
-pkgver=4.19.1
+pkgver=4.19.2
 pkgrel=1
 pkgdesc="Header files and scripts for building modules for Linux kernel"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz")
-md5sums=('6de5f0c6c0eb5d27386579894fcf31ab')
+md5sums=('fe3487940018bacda66ac57f60ee36b9')
 
 prepare() {
 	cd linux-$pkgver
@@ -29,8 +29,23 @@ package() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		arm)
-			export XKARCH="arm"
+		mipsel|mips)
+			export XKARCH="mips"
+			;;
+		powerpc64le|powerpc64|powerpc)
+			export XKARCH="powerpc"
+			;;
+		sparc64|sparc)
+			export XKARCH="sparc"
+			;;
+		s390x)
+			export XKARCH="s390"
+			;;
+		microblaze)
+			export XKARCH="microblaze"
+			;;
+		hppa)
+			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"

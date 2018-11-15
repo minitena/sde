@@ -2,18 +2,18 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=zfs
-mainver=0.7.11
-kver=4.19
+mainver=0.7.12
+kver=4.19.2
 pkgver=${mainver}.${kver}
 pkgrel=2
 pkgdesc="The Zettabyte File System"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 url="http://zfsonlinux.org/"
 license=('CDDL')
 depends=('spl' 'zlib' 'attr' 'util-linux' 'libtirpc')
 makedepends=('linux-devel')
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${mainver}/zfs-${mainver}.tar.gz")
-md5sums=('ad51229183cac5d7ec5fe7577c778a53')
+md5sums=('384c4bc1cc47c9c3f630e3232227f601')
 
 prepare() {
 	cd $pkgname-$mainver

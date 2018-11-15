@@ -2,18 +2,18 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=spl
-mainver=0.7.11
-kver=4.19
+mainver=0.7.12
+kver=4.19.2
 pkgver=${mainver}.${kver}
 pkgrel=2
 pkgdesc="Solaris Porting Layer"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 url="http://zfsonlinux.org/"
 license=('GPL')
 depends=('linux')
 makedepends=('linux-devel')
 source=("https://github.com/zfsonlinux/zfs/releases/download/zfs-${mainver}/spl-${mainver}.tar.gz")
-md5sums=('68a4426fd97f4ea00df15033a2bdc284')
+md5sums=('a4f0c6d96be206b357ff564f28d0975f')
 
 build() {
 	cd $pkgname-$mainver
@@ -31,4 +31,8 @@ build() {
 package() {
 	cd $pkgname-$mainver
 	make DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/usr/lib
+	mv $pkgdir/lib/* $pkgdir/usr/lib
+	rm -rf $pkgdir/lib
 }

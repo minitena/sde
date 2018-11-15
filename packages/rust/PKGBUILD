@@ -5,7 +5,7 @@ pkgname=rust
 pkgver=nightly
 pkgrel=1
 pkgdesc="Systems programming language focused on safety, speed and concurrency"
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'powerpc' 'powerpc64' 'powerpc64le' 'mips' 'mipsel' 's390x' 'sparc64')
 url="https://www.rust-lang.org/"
 license=('MIT' 'Apache')
 depends=('gcc-libs' 'llvm-libs' 'curl' 'libssh2')
@@ -38,6 +38,34 @@ prepare() {
 		arm)
 			export RUSTTARGET="armv7-unknown-linux-gnueabihf"
 			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		mipsel)
+			export RUSTTARGET="mipsel-unknown-linux-gnu"
+			export LLVMTARGET="Mips;AMDGPU;BPF"
+			;;
+		mips)
+			export RUSTTARGET="mips-unknown-linux-gnu"
+			export LLVMTARGET="Mips;AMDGPU;BPF"
+			;;
+		powerpc64le)
+			export RUSTTARGET="powerpc64le-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		powerpc64)
+			export RUSTTARGET="powerpc64-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		powerpc)
+			export RUSTTARGET="powerpc-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		sparc64)
+			export RUSTTARGET="sparc64-unknown-linux-gnu"
+			export LLVMTARGET="Sparc;AMDGPU;BPF"
+			;;
+		s390x)
+			export RUSTTARGET="s390x-unknown-linux-gnu"
+			export LLVMTARGET="SystemZ;AMDGPU;BPF"
 			;;
 	esac
 

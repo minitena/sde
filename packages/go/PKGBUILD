@@ -5,7 +5,7 @@ pkgname=go
 pkgver=1.11.2
 pkgrel=1
 pkgdesc="Core compiler tools for the Go programming language"
-arch=('x86_64' 'i586' 'aarch64' 'arm')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'powerpc' 'powerpc64' 'powerpc64le' 'mips' 'mipsel' 's390x')
 url="http://golang.org/"
 license=('BSD')
 depends=('binutils')
@@ -35,6 +35,25 @@ build() {
 			;;
 		arm)
 			export GARCH="arm"
+			export GOARM=7
+			;;
+		mips)
+			export GARCH="mips"
+			;;
+		mipsel)
+			export GARCH="mipsel"
+			;;
+		powerpc64le)
+			export GARCH="ppc64le"
+			;;
+		powerpc64)
+			export GARCH="ppc64"
+			;;
+		powerpc)
+			export GARCH="ppc"
+			;;
+		s390x)
+			export GARCH="s390x"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
