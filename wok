@@ -420,7 +420,7 @@ setup_environment() {
 
 	export MKOPTS="-j$MKJOBS"
 
-	export CFLAGS="-D_FORTIFY_SOURCE=2 -O3 -fstack-protector-strong -fno-plt -Wl,-z,relro,-z,now -Wl,-z,max-page-size=0x1000 -pipe"
+	export CFLAGS="-O3 -pipe"
 	export CXXFLAGS="$CFLAGS"
 }
 
