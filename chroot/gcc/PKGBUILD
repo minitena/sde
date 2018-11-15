@@ -42,11 +42,21 @@ prepare() {
 
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
+	sed -i '/m64=/s/lib64/lib/' gcc/config/rs6000/t-linux64
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
+	sed -i 's,../lib$(call if_multiarch,:sparc64-linux-gnu),../lib$(call if_multiarch,:sparc64-linux-gnu),g' gcc/config/sparc/t-linux64
+	sed -i 's,../lib64$(call if_multiarch,:s390x-linux-gnu),../lib$(call if_multiarch,:s390x-linux-gnu),g' gcc/config/s390/t-linux64
 
 	for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h \
 			gcc/config/aarch64/aarch64-linux.h \
-			gcc/config/arm/linux-eabi.h gcc/config/arm/linux-elf.h; do
+			gcc/config/arm/linux-eabi.h gcc/config/arm/linux-elf.h \
+			gcc/config/mips/linux.h \
+			gcc/config/microblaze/linux.h \
+			gcc/config/rs6000/linux64.h gcc/config/rs6000/sysv4.h \
+			gcc/config/sparc/linux.h gcc/config/sparc/linux64.h \
+			gcc/config/s390/linux.h \
+			gcc/config/pa/pa-linux.h \
+			gcc/config/riscv/linux.h; do
 		cp -u $file{,.orig}
 		sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
 			-e 's@/usr@/tools@g' $file.orig > $file
