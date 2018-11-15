@@ -301,7 +301,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc64le-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-cpu=power8 --with-tune=power8 --with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="ppc64le"
@@ -310,7 +310,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc64-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="ppc64"
@@ -319,7 +319,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="ppc"
@@ -328,7 +328,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="sparc64-generic-linux"
 			export XKARCH="sparc"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-long-double-128 --disable-linux-futex --with-cpu=ultrasparc --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="sparc64"
@@ -337,7 +337,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="sparc-generic-linux"
 			export XKARCH="sparc"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-long-double-128 --disable-linux-futex --with-cpu=v7 --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="sparc"
@@ -346,7 +346,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="s390x-generic-linux"
 			export XKARCH="s390"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-long-double-128 --with-arch=zEC12 --with-tune=z13 --enable-decimal-float --with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="s390x"
@@ -355,7 +355,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="microblaze-generic-linux"
 			export XKARCH="microblaze"
-			export GCCOPTS="--with-arch=armv8-a --with-abi=lp64 --with-linker-hash-style=gnu"
+			export GCCOPTS="--with-linker-hash-style=gnu"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="microblaze"
