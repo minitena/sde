@@ -5,12 +5,14 @@ pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
 pkgver=239
 pkgrel=27
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'riscv32' 'riscv64')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
-makedepends=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
-makedepends_riscv32=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
-makedepends_riscv64=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
+makedepends_x86_64=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
+makedepends_i586=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
+makedepends_aarch64=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
+makedepends_arm=('ninja' 'meson' 'gperf' 'intltool' 'gnu-efi' 'docbook-xsl' 'kexec-tools')
+makedepends=('ninja' 'meson' 'gperf' 'intltool' 'docbook-xsl' 'kexec-tools')
 source=(https://github.com/systemd/systemd/archive/v$pkgver/$pkgbase-$pkgver.tar.gz
 	0001-Fix-preprocessor-issues-with-MS_MOVE-not-getting-def.patch
 	0002-journal-raise-compression-threshold.patch
