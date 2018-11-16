@@ -121,7 +121,7 @@ package() {
 
 	ln -sf usr/lib lib
 	case $CARCH in
-		x86_64|aarch64|powerpc64le|powerpc64|sparc64)
+		x86_64|aarch64|mips64|powerpc64le|powerpc64|sparc64)
 			ln -sf usr/lib lib64
 			ln -sf lib usr/lib64
 			;;
