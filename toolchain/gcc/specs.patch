@@ -1,0 +1,2225 @@
+diff -ruN gcc-8.2.0/gcc/config/aarch64/aarch64-linux.h agcc/gcc/config/aarch64/aarch64-linux.h
+--- gcc-8.2.0/gcc/config/aarch64/aarch64-linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/aarch64/aarch64-linux.h	2018-11-16 19:43:54.296033282 +0300
+@@ -21,7 +21,7 @@
+ #ifndef GCC_AARCH64_LINUX_H
+ #define GCC_AARCH64_LINUX_H
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1"
+ 
+ #undef MUSL_DYNAMIC_LINKER
+ #define MUSL_DYNAMIC_LINKER "/lib/ld-musl-aarch64%{mbig-endian:_be}%{mabi=ilp32:_ilp32}.so.1"
+diff -ruN gcc-8.2.0/gcc/config/alpha/linux-elf.h agcc/gcc/config/alpha/linux-elf.h
+--- gcc-8.2.0/gcc/config/alpha/linux-elf.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/alpha/linux-elf.h	2018-11-16 19:43:54.296033282 +0300
+@@ -23,8 +23,8 @@
+ #define EXTRA_SPECS \
+ { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
+ 
+-#define GLIBC_DYNAMIC_LINKER	"/lib/ld-linux.so.2"
+-#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define GLIBC_DYNAMIC_LINKER	"/tools/lib/ld-linux.so.2"
++#define UCLIBC_DYNAMIC_LINKER "/tools/lib/ld-uClibc.so.0"
+ #if DEFAULT_LIBC == LIBC_UCLIBC
+ #define CHOOSE_DYNAMIC_LINKER(G, U) "%{mglibc:" G ";:" U "}"
+ #elif DEFAULT_LIBC == LIBC_GLIBC
+diff -ruN gcc-8.2.0/gcc/config/arm/linux-eabi.h agcc/gcc/config/arm/linux-eabi.h
+--- gcc-8.2.0/gcc/config/arm/linux-eabi.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/arm/linux-eabi.h	2018-11-16 19:43:54.297033259 +0300
+@@ -62,8 +62,8 @@
+    GLIBC_DYNAMIC_LINKER_DEFAULT and TARGET_DEFAULT_FLOAT_ABI.  */
+ 
+ #undef  GLIBC_DYNAMIC_LINKER
+-#define GLIBC_DYNAMIC_LINKER_SOFT_FLOAT "/lib/ld-linux.so.3"
+-#define GLIBC_DYNAMIC_LINKER_HARD_FLOAT "/lib/ld-linux-armhf.so.3"
++#define GLIBC_DYNAMIC_LINKER_SOFT_FLOAT "/tools/lib/ld-linux.so.3"
++#define GLIBC_DYNAMIC_LINKER_HARD_FLOAT "/tools/lib/ld-linux-armhf.so.3"
+ #define GLIBC_DYNAMIC_LINKER_DEFAULT GLIBC_DYNAMIC_LINKER_SOFT_FLOAT
+ 
+ #define GLIBC_DYNAMIC_LINKER \
+diff -ruN gcc-8.2.0/gcc/config/arm/linux-elf.h agcc/gcc/config/arm/linux-elf.h
+--- gcc-8.2.0/gcc/config/arm/linux-elf.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/arm/linux-elf.h	2018-11-16 19:43:54.297033259 +0300
+@@ -60,7 +60,7 @@
+ 
+ #define LIBGCC_SPEC "%{mfloat-abi=soft*:-lfloat} -lgcc"
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux.so.2"
+ 
+ #define LINUX_TARGET_LINK_SPEC  "%{h*} \
+    %{static:-Bstatic} \
+diff -ruN gcc-8.2.0/gcc/config/bfin/linux.h agcc/gcc/config/bfin/linux.h
+--- gcc-8.2.0/gcc/config/bfin/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/bfin/linux.h	2018-11-16 19:43:54.298033235 +0300
+@@ -49,7 +49,7 @@
+   %{shared:-G -Bdynamic} \
+   %{!shared: %{!static: \
+    %{rdynamic:-export-dynamic} \
+-   -dynamic-linker /lib/ld-uClibc.so.0} \
++   -dynamic-linker /tools/lib/ld-uClibc.so.0} \
+    %{static}} -init __init -fini __fini"
+ 
+ #undef TARGET_SUPPORTS_SYNC_CALLS
+diff -ruN gcc-8.2.0/gcc/config/bfin/linux.h.orig agcc/gcc/config/bfin/linux.h.orig
+--- gcc-8.2.0/gcc/config/bfin/linux.h.orig	1970-01-01 03:00:00.000000000 +0300
++++ agcc/gcc/config/bfin/linux.h.orig	2018-01-03 13:03:58.000000000 +0300
+@@ -0,0 +1,56 @@
++/* Copyright (C) 2007-2018 Free Software Foundation, Inc.
++
++This file is part of GCC.
++
++GCC is free software; you can redistribute it and/or modify it under
++the terms of the GNU General Public License as published by the Free
++Software Foundation; either version 3, or (at your option) any later
++version.
++
++GCC is distributed in the hope that it will be useful, but WITHOUT ANY
++WARRANTY; without even the implied warranty of MERCHANTABILITY or
++FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++for more details.
++
++Under Section 7 of GPL version 3, you are granted additional
++permissions described in the GCC Runtime Library Exception, version
++3.1, as published by the Free Software Foundation.
++
++You should have received a copy of the GNU General Public License and
++a copy of the GCC Runtime Library Exception along with this program;
++see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
++<http://www.gnu.org/licenses/>.  */
++
++#undef SUBTARGET_DRIVER_SELF_SPECS
++#define SUBTARGET_DRIVER_SELF_SPECS \
++  "%{!mno-fdpic:-mfdpic} -micplb",
++
++#undef TARGET_OS_CPP_BUILTINS
++#define TARGET_OS_CPP_BUILTINS() GNU_USER_TARGET_OS_CPP_BUILTINS()
++
++#undef STARTFILE_SPEC
++#define STARTFILE_SPEC \
++  "%{!shared: %{pg|p|profile:gcrt1.o%s;pie:Scrt1.o%s;:crt1.o%s}} crtreloc.o%s \
++   crti.o%s %{shared|pie:crtbeginS.o%s;:crtbegin.o%s}"
++
++#undef LINK_GCC_C_SEQUENCE_SPEC
++#define LINK_GCC_C_SEQUENCE_SPEC \
++  "%{static|static-pie:--start-group} %{mfast-fp:-lbffastfp} %G %L \
++   %{static|static-pie:--end-group} \
++   %{!static:%{!static-pie:%{mfast-fp:-lbffastfp} %G}}"
++
++#undef CPP_SPEC
++#define CPP_SPEC "%{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT}"
++
++#undef LINK_SPEC
++#define LINK_SPEC "\
++  %{mfdpic: -m elf32bfinfd -z text} %{shared} %{pie} \
++  %{static:-dn -Bstatic} \
++  %{shared:-G -Bdynamic} \
++  %{!shared: %{!static: \
++   %{rdynamic:-export-dynamic} \
++   -dynamic-linker /lib/ld-uClibc.so.0} \
++   %{static}} -init __init -fini __fini"
++
++#undef TARGET_SUPPORTS_SYNC_CALLS
++#define TARGET_SUPPORTS_SYNC_CALLS 1
+diff -ruN gcc-8.2.0/gcc/config/c6x/uclinux-elf.h agcc/gcc/config/c6x/uclinux-elf.h
+--- gcc-8.2.0/gcc/config/c6x/uclinux-elf.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/c6x/uclinux-elf.h	2018-11-16 19:43:54.298033235 +0300
+@@ -36,7 +36,7 @@
+ #define STARTFILE_SPEC \
+   "%{!shared:crt1%O%s} crti%O%s %{shared|pie:crtbeginS.o%s;:crtbegin.o%s}"
+ 
+-#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER "/tools/lib/ld-uClibc.so.0"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC ENDIAN_LINK_SPEC \
+diff -ruN gcc-8.2.0/gcc/config/cris/linux.h agcc/gcc/config/cris/linux.h
+--- gcc-8.2.0/gcc/config/cris/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/cris/linux.h	2018-11-16 19:43:54.299033213 +0300
+@@ -102,7 +102,7 @@
+ #undef CRIS_DEFAULT_CPU_VERSION
+ #define CRIS_DEFAULT_CPU_VERSION CRIS_CPU_NG
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef CRIS_LINK_SUBTARGET_SPEC
+ #define CRIS_LINK_SUBTARGET_SPEC \
+diff -ruN gcc-8.2.0/gcc/config/freebsd-spec.h agcc/gcc/config/freebsd-spec.h
+--- gcc-8.2.0/gcc/config/freebsd-spec.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/freebsd-spec.h	2018-11-16 19:43:54.299033213 +0300
+@@ -131,7 +131,7 @@
+ #if FBSD_MAJOR < 6
+ #define FBSD_DYNAMIC_LINKER "/usr/libexec/ld-elf.so.1"
+ #else
+-#define FBSD_DYNAMIC_LINKER "/libexec/ld-elf.so.1"
++#define FBSD_DYNAMIC_LINKER "/tools/libexec/ld-elf.so.1"
+ #endif
+ 
+ /* NOTE: The freebsd-spec.h header is included also for various
+diff -ruN gcc-8.2.0/gcc/config/frv/linux.h agcc/gcc/config/frv/linux.h
+--- gcc-8.2.0/gcc/config/frv/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/frv/linux.h	2018-11-16 19:43:54.300033190 +0300
+@@ -34,7 +34,7 @@
+ #define ENDFILE_SPEC \
+   "%{shared|pie:crtendS.o%s;:crtend.o%s} crtn.o%s"
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+diff -ruN gcc-8.2.0/gcc/config/i386/gnu.h agcc/gcc/config/i386/gnu.h
+--- gcc-8.2.0/gcc/config/i386/gnu.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/gnu.h	2018-11-16 19:43:54.300033190 +0300
+@@ -22,7 +22,7 @@
+ #define GNU_USER_LINK_EMULATION "elf_i386"
+ 
+ #undef GNU_USER_DYNAMIC_LINKER
+-#define GNU_USER_DYNAMIC_LINKER "/lib/ld.so"
++#define GNU_USER_DYNAMIC_LINKER "/tools/lib/ld.so"
+ 
+ #undef	STARTFILE_SPEC
+ #if defined HAVE_LD_PIE
+diff -ruN gcc-8.2.0/gcc/config/i386/kfreebsd-gnu64.h agcc/gcc/config/i386/kfreebsd-gnu64.h
+--- gcc-8.2.0/gcc/config/i386/kfreebsd-gnu64.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/kfreebsd-gnu64.h	2018-11-16 19:43:54.301033166 +0300
+@@ -22,6 +22,6 @@
+ #define GNU_USER_LINK_EMULATION64 "elf_x86_64_fbsd"
+ #define GNU_USER_LINK_EMULATIONX32 "elf32_x86_64_fbsd"
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld.so.1"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib/ld-kfreebsd-x86-64.so.1"
+-#define GLIBC_DYNAMIC_LINKERX32 "/lib/ld-kfreebsd-x32.so.1"
++#define GLIBC_DYNAMIC_LINKER32 "/tools/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER64 "/tools/lib/ld-kfreebsd-x86-64.so.1"
++#define GLIBC_DYNAMIC_LINKERX32 "/tools/lib/ld-kfreebsd-x32.so.1"
+diff -ruN gcc-8.2.0/gcc/config/i386/kfreebsd-gnu.h agcc/gcc/config/i386/kfreebsd-gnu.h
+--- gcc-8.2.0/gcc/config/i386/kfreebsd-gnu.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/kfreebsd-gnu.h	2018-11-16 19:43:54.300033190 +0300
+@@ -19,4 +19,4 @@
+ <http://www.gnu.org/licenses/>.  */
+ 
+ #define GNU_USER_LINK_EMULATION "elf_i386_fbsd"
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+diff -ruN gcc-8.2.0/gcc/config/i386/linux64.h agcc/gcc/config/i386/linux64.h
+--- gcc-8.2.0/gcc/config/i386/linux64.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/linux64.h	2018-11-16 19:43:54.302033143 +0300
+@@ -27,9 +27,9 @@
+ #define GNU_USER_LINK_EMULATION64 "elf_x86_64"
+ #define GNU_USER_LINK_EMULATIONX32 "elf32_x86_64"
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld-linux.so.2"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib64/ld-linux-x86-64.so.2"
+-#define GLIBC_DYNAMIC_LINKERX32 "/libx32/ld-linux-x32.so.2"
++#define GLIBC_DYNAMIC_LINKER32 "/tools/lib32/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER64 "/tools/lib/ld-linux-x86-64.so.2"
++#define GLIBC_DYNAMIC_LINKERX32 "/tools/libx32/ld-linux-x32.so.2"
+ 
+ #undef MUSL_DYNAMIC_LINKER32
+ #define MUSL_DYNAMIC_LINKER32 "/lib/ld-musl-i386.so.1"
+diff -ruN gcc-8.2.0/gcc/config/i386/linux.h agcc/gcc/config/i386/linux.h
+--- gcc-8.2.0/gcc/config/i386/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/linux.h	2018-11-16 19:43:54.301033166 +0300
+@@ -20,7 +20,7 @@
+ <http://www.gnu.org/licenses/>.  */
+ 
+ #define GNU_USER_LINK_EMULATION "elf_i386"
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux.so.2"
+ 
+ #undef MUSL_DYNAMIC_LINKER
+ #define MUSL_DYNAMIC_LINKER "/lib/ld-musl-i386.so.1"
+diff -ruN gcc-8.2.0/gcc/config/i386/t-linux64 agcc/gcc/config/i386/t-linux64
+--- gcc-8.2.0/gcc/config/i386/t-linux64	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/i386/t-linux64	2018-11-16 19:43:54.302033143 +0300
+@@ -33,6 +33,6 @@
+ comma=,
+ MULTILIB_OPTIONS    = $(subst $(comma),/,$(TM_MULTILIB_CONFIG))
+ MULTILIB_DIRNAMES   = $(patsubst m%, %, $(subst /, ,$(MULTILIB_OPTIONS)))
+-MULTILIB_OSDIRNAMES = m64=../lib64$(call if_multiarch,:x86_64-linux-gnu)
+-MULTILIB_OSDIRNAMES+= m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:i386-linux-gnu)
++MULTILIB_OSDIRNAMES = m64=../lib$(call if_multiarch,:x86_64-linux-gnu)
++MULTILIB_OSDIRNAMES+= m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib32)$(call if_multiarch,:i386-linux-gnu)
+ MULTILIB_OSDIRNAMES+= mx32=../libx32$(call if_multiarch,:x86_64-linux-gnux32)
+diff -ruN gcc-8.2.0/gcc/config/ia64/linux.h agcc/gcc/config/ia64/linux.h
+--- gcc-8.2.0/gcc/config/ia64/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/ia64/linux.h	2018-11-16 19:43:54.302033143 +0300
+@@ -55,7 +55,7 @@
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux-ia64.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux-ia64.so.2"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+diff -ruN gcc-8.2.0/gcc/config/kopensolaris-gnu.h agcc/gcc/config/kopensolaris-gnu.h
+--- gcc-8.2.0/gcc/config/kopensolaris-gnu.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/kopensolaris-gnu.h	2018-11-16 19:43:54.303033121 +0300
+@@ -31,4 +31,4 @@
+   while (0)
+ 
+ #undef GNU_USER_DYNAMIC_LINKER
+-#define GNU_USER_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GNU_USER_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+diff -ruN gcc-8.2.0/gcc/config/linux.h agcc/gcc/config/linux.h
+--- gcc-8.2.0/gcc/config/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/linux.h	2018-11-16 19:43:54.303033121 +0300
+@@ -81,10 +81,10 @@
+    GLIBC_DYNAMIC_LINKER must be defined for each target using them, or
+    GLIBC_DYNAMIC_LINKER32 and GLIBC_DYNAMIC_LINKER64 for targets
+    supporting both 32-bit and 64-bit compilation.  */
+-#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
+-#define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
+-#define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
+-#define UCLIBC_DYNAMIC_LINKERX32 "/lib/ldx32-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER "/tools/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER32 "/tools/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER64 "/tools/lib/ld64-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKERX32 "/tools/lib/ldx32-uClibc.so.0"
+ #define BIONIC_DYNAMIC_LINKER "/system/bin/linker"
+ #define BIONIC_DYNAMIC_LINKER32 "/system/bin/linker"
+ #define BIONIC_DYNAMIC_LINKER64 "/system/bin/linker64"
+diff -ruN gcc-8.2.0/gcc/config/lm32/uclinux-elf.h agcc/gcc/config/lm32/uclinux-elf.h
+--- gcc-8.2.0/gcc/config/lm32/uclinux-elf.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/lm32/uclinux-elf.h	2018-11-16 19:43:54.304033097 +0300
+@@ -67,7 +67,7 @@
+    %{shared:-shared} \
+    %{symbolic:-Bsymbolic} \
+    %{rdynamic:-export-dynamic} \
+-   -dynamic-linker /lib/ld-linux.so.2"
++   -dynamic-linker /tools/lib/ld-linux.so.2"
+ 
+ #define TARGET_OS_CPP_BUILTINS() GNU_USER_TARGET_OS_CPP_BUILTINS()
+ 
+diff -ruN gcc-8.2.0/gcc/config/m32r/linux.h agcc/gcc/config/m32r/linux.h
+--- gcc-8.2.0/gcc/config/m32r/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/m32r/linux.h	2018-11-16 19:43:54.304033097 +0300
+@@ -37,7 +37,7 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux.so.2"
+ 
+ #undef	LINK_SPEC
+ #if TARGET_LITTLE_ENDIAN
+diff -ruN gcc-8.2.0/gcc/config/m68k/linux.h agcc/gcc/config/m68k/linux.h
+--- gcc-8.2.0/gcc/config/m68k/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/m68k/linux.h	2018-11-16 19:43:54.304033097 +0300
+@@ -71,7 +71,7 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC "-m m68kelf %{shared} \
+diff -ruN gcc-8.2.0/gcc/config/microblaze/linux.h agcc/gcc/config/microblaze/linux.h
+--- gcc-8.2.0/gcc/config/microblaze/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/microblaze/linux.h	2018-11-16 19:43:54.305033074 +0300
+@@ -28,7 +28,7 @@
+ #undef TLS_NEEDS_GOT
+ #define TLS_NEEDS_GOT 1
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ #define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
+ 
+ #if TARGET_BIG_ENDIAN_DEFAULT == 0 /* LE */
+diff -ruN gcc-8.2.0/gcc/config/mn10300/linux.h agcc/gcc/config/mn10300/linux.h
+--- gcc-8.2.0/gcc/config/mn10300/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/mn10300/linux.h	2018-11-16 19:43:54.305033074 +0300
+@@ -32,7 +32,7 @@
+ #undef  ASM_SPEC
+ #define ASM_SPEC ""
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef  LINK_SPEC
+ #define LINK_SPEC "%{mrelax:--relax} %{shared:-shared} \
+diff -ruN gcc-8.2.0/gcc/config/nios2/linux.h agcc/gcc/config/nios2/linux.h
+--- gcc-8.2.0/gcc/config/nios2/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/nios2/linux.h	2018-11-16 19:43:54.305033074 +0300
+@@ -29,7 +29,7 @@
+ #undef CPP_SPEC
+ #define CPP_SPEC "%{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT}"
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux-nios2.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux-nios2.so.1"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC LINK_SPEC_ENDIAN \
+diff -ruN gcc-8.2.0/gcc/config/pa/pa-linux.h agcc/gcc/config/pa/pa-linux.h
+--- gcc-8.2.0/gcc/config/pa/pa-linux.h	2018-05-28 00:54:27.000000000 +0300
++++ agcc/gcc/config/pa/pa-linux.h	2018-11-16 19:43:54.306033051 +0300
+@@ -37,7 +37,7 @@
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+diff -ruN gcc-8.2.0/gcc/config/riscv/linux.h agcc/gcc/config/riscv/linux.h
+--- gcc-8.2.0/gcc/config/riscv/linux.h	2018-04-21 04:03:30.000000000 +0300
++++ agcc/gcc/config/riscv/linux.h	2018-11-16 19:44:49.386763840 +0300
+@@ -22,7 +22,7 @@
+     GNU_USER_TARGET_OS_CPP_BUILTINS();				\
+   } while (0)
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux-riscv" XLEN_SPEC "-" ABI_SPEC ".so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux-riscv" XLEN_SPEC "-" ABI_SPEC ".so.1"
+ 
+ #define MUSL_ABI_SUFFIX \
+   "%{mabi=ilp32:-sf}" \
+@@ -33,7 +33,7 @@
+   "%{mabi=lp64d:}" \
+ 
+ #undef MUSL_DYNAMIC_LINKER
+-#define MUSL_DYNAMIC_LINKER "/lib/ld-musl-riscv" XLEN_SPEC MUSL_ABI_SUFFIX ".so.1"
++#define MUSL_DYNAMIC_LINKER "/tools/lib/ld-musl-riscv" XLEN_SPEC MUSL_ABI_SUFFIX ".so.1"
+ 
+ /* Because RISC-V only has word-sized atomics, it requries libatomic where
+    others do not.  So link libatomic by default, as needed.  */
+diff -ruN gcc-8.2.0/gcc/config/rs6000/linux64.h agcc/gcc/config/rs6000/linux64.h
+--- gcc-8.2.0/gcc/config/rs6000/linux64.h	2018-06-25 22:34:01.000000000 +0300
++++ agcc/gcc/config/rs6000/linux64.h	2018-11-16 19:43:54.306033051 +0300
+@@ -413,16 +413,16 @@
+ #undef	LINK_OS_DEFAULT_SPEC
+ #define LINK_OS_DEFAULT_SPEC "%(link_os_linux)"
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "%(dynamic_linker_prefix)/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER32 "/tools/lib/ld.so.1"
+ 
+ #ifdef LINUX64_DEFAULT_ABI_ELFv2
+ #define GLIBC_DYNAMIC_LINKER64 \
+-"%{mabi=elfv1:%(dynamic_linker_prefix)/lib64/ld64.so.1;" \
+-":%(dynamic_linker_prefix)/lib64/ld64.so.2}"
++"%{mabi=elfv1:/tools/lib64/ld64.so.1;" \
++":/tools/lib64/ld64.so.2}"
+ #else
+ #define GLIBC_DYNAMIC_LINKER64 \
+-"%{mabi=elfv2:%(dynamic_linker_prefix)/lib64/ld64.so.2;" \
+-":%(dynamic_linker_prefix)/lib64/ld64.so.1}"
++"%{mabi=elfv2:/tools/lib64/ld64.so.2;" \
++":/tools/lib64/ld64.so.1}"
+ #endif
+ 
+ #define MUSL_DYNAMIC_LINKER32 \
+@@ -430,8 +430,8 @@
+ #define MUSL_DYNAMIC_LINKER64 \
+   "/lib/ld-musl-powerpc64" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
+ 
+-#define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
+-#define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER32 "/tools/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER64 "/tools/lib/ld64-uClibc.so.0"
+ #if DEFAULT_LIBC == LIBC_UCLIBC
+ #define CHOOSE_DYNAMIC_LINKER(G, U, M) \
+   "%{mglibc:" G ";:%{mmusl:" M ";:" U "}}"
+diff -ruN gcc-8.2.0/gcc/config/rs6000/linux64.h.orig agcc/gcc/config/rs6000/linux64.h.orig
+--- gcc-8.2.0/gcc/config/rs6000/linux64.h.orig	1970-01-01 03:00:00.000000000 +0300
++++ agcc/gcc/config/rs6000/linux64.h.orig	2018-06-25 22:34:01.000000000 +0300
+@@ -0,0 +1,645 @@
++/* Definitions of target machine for GNU compiler,
++   for 64 bit PowerPC linux.
++   Copyright (C) 2000-2018 Free Software Foundation, Inc.
++
++   This file is part of GCC.
++
++   GCC is free software; you can redistribute it and/or modify it
++   under the terms of the GNU General Public License as published
++   by the Free Software Foundation; either version 3, or (at your
++   option) any later version.
++
++   GCC is distributed in the hope that it will be useful, but WITHOUT
++   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
++   License for more details.
++
++   Under Section 7 of GPL version 3, you are granted additional
++   permissions described in the GCC Runtime Library Exception, version
++   3.1, as published by the Free Software Foundation.
++
++   You should have received a copy of the GNU General Public License and
++   a copy of the GCC Runtime Library Exception along with this program;
++   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
++   <http://www.gnu.org/licenses/>.  */
++
++#ifndef RS6000_BI_ARCH
++
++#undef	TARGET_64BIT
++#define	TARGET_64BIT 1
++
++#define	DEFAULT_ARCH64_P 1
++#define	RS6000_BI_ARCH_P 0
++
++#else
++
++#define	DEFAULT_ARCH64_P (TARGET_DEFAULT & MASK_64BIT)
++#define	RS6000_BI_ARCH_P 1
++
++#endif
++
++#ifdef IN_LIBGCC2
++#undef TARGET_64BIT
++#ifdef __powerpc64__
++#define TARGET_64BIT 1
++#else
++#define TARGET_64BIT 0
++#endif
++#endif
++
++#undef	TARGET_AIX
++#define	TARGET_AIX TARGET_64BIT
++
++#ifdef HAVE_LD_NO_DOT_SYMS
++/* New ABI uses a local sym for the function entry point.  */
++extern int dot_symbols;
++#undef DOT_SYMBOLS
++#define DOT_SYMBOLS dot_symbols
++#endif
++
++#define TARGET_PROFILE_KERNEL profile_kernel
++
++#undef TARGET_KEEP_LEAF_WHEN_PROFILED
++#define TARGET_KEEP_LEAF_WHEN_PROFILED rs6000_keep_leaf_when_profiled
++
++#define TARGET_USES_LINUX64_OPT 1
++#ifdef HAVE_LD_LARGE_TOC
++#undef TARGET_CMODEL
++#define TARGET_CMODEL rs6000_current_cmodel
++#define SET_CMODEL(opt) rs6000_current_cmodel = opt
++#else
++#define SET_CMODEL(opt) do {} while (0)
++#endif
++
++#undef  PROCESSOR_DEFAULT
++#define PROCESSOR_DEFAULT PROCESSOR_POWER7
++#undef  PROCESSOR_DEFAULT64
++#define PROCESSOR_DEFAULT64 PROCESSOR_POWER8
++
++/* We don't need to generate entries in .fixup, except when
++   -mrelocatable or -mrelocatable-lib is given.  */
++#undef RELOCATABLE_NEEDS_FIXUP
++#define RELOCATABLE_NEEDS_FIXUP \
++  (rs6000_isa_flags & rs6000_isa_flags_explicit & OPTION_MASK_RELOCATABLE)
++
++#undef	RS6000_ABI_NAME
++#define	RS6000_ABI_NAME "linux"
++
++#define INVALID_64BIT "%<-m%s%> not supported in this configuration"
++#define INVALID_32BIT INVALID_64BIT
++
++#ifdef LINUX64_DEFAULT_ABI_ELFv2
++#define ELFv2_ABI_CHECK (rs6000_elf_abi != 1)
++#else
++#define ELFv2_ABI_CHECK (rs6000_elf_abi == 2)
++#endif
++
++#undef	SUBSUBTARGET_OVERRIDE_OPTIONS
++#define	SUBSUBTARGET_OVERRIDE_OPTIONS				\
++  do								\
++    {								\
++      if (!global_options_set.x_rs6000_alignment_flags)		\
++	rs6000_alignment_flags = MASK_ALIGN_NATURAL;		\
++      if (rs6000_isa_flags & OPTION_MASK_64BIT)			\
++	{							\
++	  if (DEFAULT_ABI != ABI_AIX)				\
++	    {							\
++	      rs6000_current_abi = ABI_AIX;			\
++	      error (INVALID_64BIT, "call");			\
++	    }							\
++	  dot_symbols = !strcmp (rs6000_abi_name, "aixdesc");	\
++	  if (ELFv2_ABI_CHECK)					\
++	    {							\
++	      rs6000_current_abi = ABI_ELFv2;			\
++	      if (dot_symbols)					\
++		error ("-mcall-aixdesc incompatible with -mabi=elfv2"); \
++	    }							\
++	  if (rs6000_isa_flags & OPTION_MASK_RELOCATABLE)	\
++	    {							\
++	      rs6000_isa_flags &= ~OPTION_MASK_RELOCATABLE;	\
++	      error (INVALID_64BIT, "relocatable");		\
++	    }							\
++	  if (rs6000_isa_flags & OPTION_MASK_EABI)		\
++	    {							\
++	      rs6000_isa_flags &= ~OPTION_MASK_EABI;		\
++	      error (INVALID_64BIT, "eabi");			\
++	    }							\
++	  if (TARGET_PROTOTYPE)					\
++	    {							\
++	      target_prototype = 0;				\
++	      error (INVALID_64BIT, "prototype");		\
++	    }							\
++	  if ((rs6000_isa_flags & OPTION_MASK_POWERPC64) == 0)	\
++	    {							\
++	      rs6000_isa_flags |= OPTION_MASK_POWERPC64;	\
++	      error ("-m64 requires a PowerPC64 cpu");		\
++	    }							\
++	  if ((rs6000_isa_flags_explicit			\
++	       & OPTION_MASK_MINIMAL_TOC) != 0)			\
++	    {							\
++	      if (global_options_set.x_rs6000_current_cmodel	\
++		  && rs6000_current_cmodel != CMODEL_SMALL)	\
++		error ("-mcmodel incompatible with other toc options"); \
++	      SET_CMODEL (CMODEL_SMALL);			\
++	    }							\
++	  else							\
++	    {							\
++	      if (!global_options_set.x_rs6000_current_cmodel)	\
++		SET_CMODEL (CMODEL_MEDIUM);			\
++	      if (rs6000_current_cmodel != CMODEL_SMALL)	\
++		{						\
++		  if (!global_options_set.x_TARGET_NO_FP_IN_TOC) \
++		    TARGET_NO_FP_IN_TOC				\
++		      = rs6000_current_cmodel == CMODEL_MEDIUM;	\
++		  if (!global_options_set.x_TARGET_NO_SUM_IN_TOC) \
++		    TARGET_NO_SUM_IN_TOC = 0;			\
++		}						\
++	    }							\
++	}							\
++      else							\
++	{							\
++	  if (!RS6000_BI_ARCH_P)				\
++	    error (INVALID_32BIT, "32");			\
++	  if (TARGET_PROFILE_KERNEL)				\
++	    {							\
++	      TARGET_PROFILE_KERNEL = 0;			\
++	      error (INVALID_32BIT, "profile-kernel");		\
++	    }							\
++	  if (global_options_set.x_rs6000_current_cmodel)	\
++	    {							\
++	      SET_CMODEL (CMODEL_SMALL);			\
++	      error (INVALID_32BIT, "cmodel");			\
++	    }							\
++	}							\
++    }								\
++  while (0)
++
++#undef	ASM_DEFAULT_SPEC
++#undef	ASM_SPEC
++#undef	LINK_OS_LINUX_SPEC
++#undef	LINK_SECURE_PLT_SPEC
++
++#ifndef	RS6000_BI_ARCH
++#define	ASM_DEFAULT_SPEC "-mppc64"
++#define	ASM_SPEC	 "%(asm_spec64) %(asm_spec_common)"
++#define	LINK_OS_LINUX_SPEC "%(link_os_linux_spec64)"
++#define	LINK_SECURE_PLT_SPEC ""
++#else
++#if DEFAULT_ARCH64_P
++#define	ASM_DEFAULT_SPEC "-mppc%{!m32:64}"
++#define	ASM_SPEC	 "%{m32:%(asm_spec32)}%{!m32:%(asm_spec64)} %(asm_spec_common)"
++#define	LINK_OS_LINUX_SPEC "%{m32:%(link_os_linux_spec32)}%{!m32:%(link_os_linux_spec64)}"
++#define	LINK_SECURE_PLT_SPEC "%{m32: " LINK_SECURE_PLT_DEFAULT_SPEC "}"
++#else
++#define	ASM_DEFAULT_SPEC "-mppc%{m64:64}"
++#define	ASM_SPEC	 "%{!m64:%(asm_spec32)}%{m64:%(asm_spec64)} %(asm_spec_common)"
++#define	LINK_OS_LINUX_SPEC "%{!m64:%(link_os_linux_spec32)}%{m64:%(link_os_linux_spec64)}"
++#define	LINK_SECURE_PLT_SPEC "%{!m64: " LINK_SECURE_PLT_DEFAULT_SPEC "}"
++#endif
++#endif
++
++#define ASM_SPEC32 "-a32 \
++%{mrelocatable} %{mrelocatable-lib} %{" FPIE_OR_FPIC_SPEC ":-K PIC} \
++%{memb|msdata=eabi: -memb}"
++
++#define ASM_SPEC64 "-a64"
++
++#define ASM_SPEC_COMMON "%(asm_cpu) \
++%{,assembler|,assembler-with-cpp: %{mregnames} %{mno-regnames}}" \
++  ENDIAN_SELECT(" -mbig", " -mlittle", DEFAULT_ASM_ENDIAN)
++
++#undef	SUBSUBTARGET_EXTRA_SPECS
++#define SUBSUBTARGET_EXTRA_SPECS \
++  { "asm_spec_common",		ASM_SPEC_COMMON },			\
++  { "asm_spec32",		ASM_SPEC32 },				\
++  { "asm_spec64",		ASM_SPEC64 },				\
++  { "link_os_linux_spec32",	LINK_OS_LINUX_SPEC32 },			\
++  { "link_os_linux_spec64",	LINK_OS_LINUX_SPEC64 },			\
++  { "link_os_extra_spec32",	LINK_OS_EXTRA_SPEC32 },			\
++  { "link_os_extra_spec64",	LINK_OS_EXTRA_SPEC64 },			\
++  { "link_os_new_dtags",	LINK_OS_NEW_DTAGS_SPEC },		\
++  { "include_extra",		INCLUDE_EXTRA_SPEC },			\
++  { "dynamic_linker_prefix",	DYNAMIC_LINKER_PREFIX },
++
++/* Optional specs used for overriding the system include directory, default
++   -rpath links, and prefix for the dynamic linker.  Normally, there are not
++   defined, but if the user configure with the --with-advance-toolchain=<xxx>
++   option, the advance-toolchain.h file will override these.  */
++#ifndef INCLUDE_EXTRA_SPEC
++#define INCLUDE_EXTRA_SPEC	""
++#endif
++
++#ifndef LINK_OS_EXTRA_SPEC32
++#define LINK_OS_EXTRA_SPEC32	""
++#endif
++
++#ifndef LINK_OS_EXTRA_SPEC64
++#define LINK_OS_EXTRA_SPEC64	""
++#endif
++
++#ifndef LINK_OS_NEW_DTAGS_SPEC
++#define LINK_OS_NEW_DTAGS_SPEC	""
++#endif
++
++#ifndef DYNAMIC_LINKER_PREFIX
++#define DYNAMIC_LINKER_PREFIX	""
++#endif
++
++#undef	MULTILIB_DEFAULTS
++#if DEFAULT_ARCH64_P
++#define MULTILIB_DEFAULTS { "m64" }
++#else
++#define MULTILIB_DEFAULTS { "m32" }
++#endif
++
++/* Split stack is only supported for 64 bit, and requires glibc >= 2.18.  */
++#if TARGET_GLIBC_MAJOR * 1000 + TARGET_GLIBC_MINOR >= 2018
++# ifndef RS6000_BI_ARCH
++#  define TARGET_CAN_SPLIT_STACK
++# else
++#  if DEFAULT_ARCH64_P
++/* Supported, and the default is -m64  */
++#   define TARGET_CAN_SPLIT_STACK_64BIT 1
++#  else
++/* Supported, and the default is -m32  */
++#   define TARGET_CAN_SPLIT_STACK_64BIT 0
++#  endif
++# endif
++#endif
++
++#ifndef RS6000_BI_ARCH
++
++/* 64-bit PowerPC Linux always has a TOC.  */
++#undef  TARGET_TOC
++#define	TARGET_TOC		1
++
++/* Some things from sysv4.h we don't do when 64 bit.  */
++#undef	OPTION_RELOCATABLE
++#define	OPTION_RELOCATABLE	0
++#undef	OPTION_EABI
++#define	OPTION_EABI		0
++#undef	OPTION_PROTOTYPE
++#define	OPTION_PROTOTYPE	0
++#undef RELOCATABLE_NEEDS_FIXUP
++#define RELOCATABLE_NEEDS_FIXUP 0
++
++#endif
++
++/* We use glibc _mcount for profiling.  */
++#define NO_PROFILE_COUNTERS 1
++#define PROFILE_HOOK(LABEL) \
++  do { if (TARGET_64BIT) output_profile_hook (LABEL); } while (0)
++
++/* PowerPC64 Linux word-aligns FP doubles when -malign-power is given.  */
++#undef  ADJUST_FIELD_ALIGN
++#define ADJUST_FIELD_ALIGN(FIELD, TYPE, COMPUTED) \
++  (rs6000_special_adjust_field_align_p ((TYPE), (COMPUTED))		\
++   ? 128								\
++   : (TARGET_64BIT							\
++      && TARGET_ALIGN_NATURAL == 0					\
++      && TYPE_MODE (strip_array_types (TYPE)) == DFmode)		\
++   ? MIN ((COMPUTED), 32)						\
++   : (COMPUTED))
++
++/* PowerPC64 Linux increases natural record alignment to doubleword if
++   the first field is an FP double, only if in power alignment mode.  */
++#undef  ROUND_TYPE_ALIGN
++#define ROUND_TYPE_ALIGN(STRUCT, COMPUTED, SPECIFIED)			\
++  ((TARGET_64BIT							\
++    && (TREE_CODE (STRUCT) == RECORD_TYPE				\
++	|| TREE_CODE (STRUCT) == UNION_TYPE				\
++	|| TREE_CODE (STRUCT) == QUAL_UNION_TYPE)			\
++    && TARGET_ALIGN_NATURAL == 0)					\
++   ? rs6000_special_round_type_align (STRUCT, COMPUTED, SPECIFIED)	\
++   : MAX ((COMPUTED), (SPECIFIED)))
++
++/* Use the default for compiling target libs.  */
++#ifdef IN_TARGET_LIBS
++#undef TARGET_ALIGN_NATURAL
++#define TARGET_ALIGN_NATURAL 1
++#endif
++
++/* Indicate that jump tables go in the text section.  */
++#undef  JUMP_TABLES_IN_TEXT_SECTION
++#define JUMP_TABLES_IN_TEXT_SECTION TARGET_64BIT
++
++/* The linux ppc64 ABI isn't explicit on whether aggregates smaller
++   than a doubleword should be padded upward or downward.  You could
++   reasonably assume that they follow the normal rules for structure
++   layout treating the parameter area as any other block of memory,
++   then map the reg param area to registers.  i.e. pad upward.
++   Setting both of the following defines results in this behavior.
++   Setting just the first one will result in aggregates that fit in a
++   doubleword being padded downward, and others being padded upward.
++   Not a bad idea as this results in struct { int x; } being passed
++   the same way as an int.  */
++#define AGGREGATE_PADDING_FIXED TARGET_64BIT
++#define AGGREGATES_PAD_UPWARD_ALWAYS 0
++
++/* Specify padding for the last element of a block move between
++   registers and memory.  FIRST is nonzero if this is the only
++   element.  */
++#define BLOCK_REG_PADDING(MODE, TYPE, FIRST) \
++  (!(FIRST) ? PAD_UPWARD : targetm.calls.function_arg_padding (MODE, TYPE))
++
++/* Linux doesn't support saving and restoring 64-bit regs in a 32-bit
++   process.  */
++#define OS_MISSING_POWERPC64 !TARGET_64BIT
++
++#ifdef SINGLE_LIBC
++#define OPTION_GLIBC  (DEFAULT_LIBC == LIBC_GLIBC)
++#define OPTION_UCLIBC (DEFAULT_LIBC == LIBC_UCLIBC)
++#define OPTION_BIONIC (DEFAULT_LIBC == LIBC_BIONIC)
++#undef OPTION_MUSL
++#define OPTION_MUSL   (DEFAULT_LIBC == LIBC_MUSL)
++#else
++#define OPTION_GLIBC  (linux_libc == LIBC_GLIBC)
++#define OPTION_UCLIBC (linux_libc == LIBC_UCLIBC)
++#define OPTION_BIONIC (linux_libc == LIBC_BIONIC)
++#undef OPTION_MUSL
++#define OPTION_MUSL   (linux_libc == LIBC_MUSL)
++#endif
++
++/* Determine what functions are present at the runtime;
++   this includes full c99 runtime and sincos.  */
++#undef TARGET_LIBC_HAS_FUNCTION
++#define TARGET_LIBC_HAS_FUNCTION linux_libc_has_function
++
++#undef  TARGET_OS_CPP_BUILTINS
++#define TARGET_OS_CPP_BUILTINS()			\
++  do							\
++    {							\
++      if (TARGET_64BIT)					\
++	{						\
++	  builtin_define ("__PPC__");			\
++	  builtin_define ("__PPC64__");			\
++	  builtin_define ("__powerpc__");		\
++	  builtin_define ("__powerpc64__");		\
++	  if (!DOT_SYMBOLS)				\
++	    builtin_define ("_CALL_LINUX");		\
++	  builtin_assert ("cpu=powerpc64");		\
++	  builtin_assert ("machine=powerpc64");		\
++	}						\
++      else						\
++	{						\
++	  builtin_define_std ("PPC");			\
++	  builtin_define_std ("powerpc");		\
++	  builtin_assert ("cpu=powerpc");		\
++	  builtin_assert ("machine=powerpc");		\
++	  TARGET_OS_SYSV_CPP_BUILTINS ();		\
++	}						\
++    }							\
++  while (0)
++
++#undef  CPP_OS_DEFAULT_SPEC
++#define CPP_OS_DEFAULT_SPEC "%(cpp_os_linux) %(include_extra)"
++
++#undef  LINK_SHLIB_SPEC
++#define LINK_SHLIB_SPEC "%{shared:-shared} %{!shared: %{static:-static}} \
++  %{static-pie:-static -pie --no-dynamic-linker -z text}"
++
++#undef  LIB_DEFAULT_SPEC
++#define LIB_DEFAULT_SPEC "%(lib_linux)"
++
++#undef  STARTFILE_DEFAULT_SPEC
++#define STARTFILE_DEFAULT_SPEC "%(startfile_linux)"
++
++#undef	ENDFILE_DEFAULT_SPEC
++#define ENDFILE_DEFAULT_SPEC "%(endfile_linux)"
++
++#undef	LINK_START_DEFAULT_SPEC
++#define LINK_START_DEFAULT_SPEC "%(link_start_linux)"
++
++#undef	LINK_OS_DEFAULT_SPEC
++#define LINK_OS_DEFAULT_SPEC "%(link_os_linux)"
++
++#define GLIBC_DYNAMIC_LINKER32 "%(dynamic_linker_prefix)/lib/ld.so.1"
++
++#ifdef LINUX64_DEFAULT_ABI_ELFv2
++#define GLIBC_DYNAMIC_LINKER64 \
++"%{mabi=elfv1:%(dynamic_linker_prefix)/lib64/ld64.so.1;" \
++":%(dynamic_linker_prefix)/lib64/ld64.so.2}"
++#else
++#define GLIBC_DYNAMIC_LINKER64 \
++"%{mabi=elfv2:%(dynamic_linker_prefix)/lib64/ld64.so.2;" \
++":%(dynamic_linker_prefix)/lib64/ld64.so.1}"
++#endif
++
++#define MUSL_DYNAMIC_LINKER32 \
++  "/lib/ld-musl-powerpc" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
++#define MUSL_DYNAMIC_LINKER64 \
++  "/lib/ld-musl-powerpc64" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
++
++#define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
++#if DEFAULT_LIBC == LIBC_UCLIBC
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{mglibc:" G ";:%{mmusl:" M ";:" U "}}"
++#elif DEFAULT_LIBC == LIBC_GLIBC
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{muclibc:" U ";:%{mmusl:" M ";:" G "}}"
++#elif DEFAULT_LIBC == LIBC_MUSL
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{mglibc:" G ";:%{muclibc:" U ";:" M "}}"
++#else
++#error "Unsupported DEFAULT_LIBC"
++#endif
++#define GNU_USER_DYNAMIC_LINKER32 \
++  CHOOSE_DYNAMIC_LINKER (GLIBC_DYNAMIC_LINKER32, UCLIBC_DYNAMIC_LINKER32, \
++			 MUSL_DYNAMIC_LINKER32)
++#define GNU_USER_DYNAMIC_LINKER64 \
++  CHOOSE_DYNAMIC_LINKER (GLIBC_DYNAMIC_LINKER64, UCLIBC_DYNAMIC_LINKER64, \
++			 MUSL_DYNAMIC_LINKER64)
++
++#undef  DEFAULT_ASM_ENDIAN
++#if (TARGET_DEFAULT & MASK_LITTLE_ENDIAN)
++#define DEFAULT_ASM_ENDIAN " -mlittle"
++#define LINK_OS_LINUX_EMUL32 ENDIAN_SELECT(" -m elf32ppclinux",		\
++					   " -m elf32lppclinux",	\
++					   " -m elf32lppclinux")
++#define LINK_OS_LINUX_EMUL64 ENDIAN_SELECT(" -m elf64ppc",		\
++					   " -m elf64lppc",		\
++					   " -m elf64lppc")
++#else
++#define DEFAULT_ASM_ENDIAN " -mbig"
++#define LINK_OS_LINUX_EMUL32 ENDIAN_SELECT(" -m elf32ppclinux",		\
++					   " -m elf32lppclinux",	\
++					   " -m elf32ppclinux")
++#define LINK_OS_LINUX_EMUL64 ENDIAN_SELECT(" -m elf64ppc",		\
++					   " -m elf64lppc",		\
++					   " -m elf64ppc")
++#endif
++
++#define LINK_OS_LINUX_SPEC32 LINK_OS_LINUX_EMUL32 " %{!shared: %{!static: \
++  %{!static-pie: \
++    %{rdynamic:-export-dynamic} \
++    -dynamic-linker " GNU_USER_DYNAMIC_LINKER32 "}}} \
++  %(link_os_extra_spec32)"
++
++#define LINK_OS_LINUX_SPEC64 LINK_OS_LINUX_EMUL64 " %{!shared: %{!static: \
++  %{!static-pie: \
++    %{rdynamic:-export-dynamic} \
++    -dynamic-linker " GNU_USER_DYNAMIC_LINKER64 "}}} \
++  %(link_os_extra_spec64)"
++
++#undef  TOC_SECTION_ASM_OP
++#define TOC_SECTION_ASM_OP \
++  (TARGET_64BIT						\
++   ? "\t.section\t\".toc\",\"aw\""			\
++   : "\t.section\t\".got\",\"aw\"")
++
++#undef  MINIMAL_TOC_SECTION_ASM_OP
++#define MINIMAL_TOC_SECTION_ASM_OP \
++  (TARGET_64BIT						\
++   ? "\t.section\t\".toc1\",\"aw\""			\
++   : (flag_pic						\
++      ? "\t.section\t\".got2\",\"aw\""			\
++      : "\t.section\t\".got1\",\"aw\""))
++
++/* Must be at least as big as our pointer type.  */
++#undef	SIZE_TYPE
++#define	SIZE_TYPE (TARGET_64BIT ? "long unsigned int" : "unsigned int")
++
++#undef	PTRDIFF_TYPE
++#define	PTRDIFF_TYPE (TARGET_64BIT ? "long int" : "int")
++
++#undef	WCHAR_TYPE
++#define	WCHAR_TYPE (TARGET_64BIT ? "int" : "long int")
++#undef  WCHAR_TYPE_SIZE
++#define WCHAR_TYPE_SIZE 32
++
++#undef  RS6000_MCOUNT
++#define RS6000_MCOUNT "_mcount"
++
++#ifdef __powerpc64__
++/* _init and _fini functions are built from bits spread across many
++   object files, each potentially with a different TOC pointer.  For
++   that reason, place a nop after the call so that the linker can
++   restore the TOC pointer if a TOC adjusting call stub is needed.  */
++#if DOT_SYMBOLS
++#define CRT_CALL_STATIC_FUNCTION(SECTION_OP, FUNC)	\
++  asm (SECTION_OP "\n"					\
++"	bl ." #FUNC "\n"				\
++"	nop\n"						\
++"	.previous");
++#else
++#define CRT_CALL_STATIC_FUNCTION(SECTION_OP, FUNC)	\
++  asm (SECTION_OP "\n"					\
++"	bl " #FUNC "\n"					\
++"	nop\n"						\
++"	.previous");
++#endif
++#endif
++
++/* FP save and restore routines.  */
++#undef  SAVE_FP_PREFIX
++#define SAVE_FP_PREFIX (TARGET_64BIT ? "._savef" : "_savefpr_")
++#undef  SAVE_FP_SUFFIX
++#define SAVE_FP_SUFFIX ""
++#undef  RESTORE_FP_PREFIX
++#define RESTORE_FP_PREFIX (TARGET_64BIT ? "._restf" : "_restfpr_")
++#undef  RESTORE_FP_SUFFIX
++#define RESTORE_FP_SUFFIX ""
++
++/* Dwarf2 debugging.  */
++#undef  PREFERRED_DEBUGGING_TYPE
++#define PREFERRED_DEBUGGING_TYPE DWARF2_DEBUG
++
++/* This is how to declare the size of a function.  */
++#undef	ASM_DECLARE_FUNCTION_SIZE
++#define	ASM_DECLARE_FUNCTION_SIZE(FILE, FNAME, DECL)			\
++  do									\
++    {									\
++      if (!flag_inhibit_size_directive)					\
++	{								\
++	  fputs ("\t.size\t", (FILE));					\
++	  if (TARGET_64BIT && DOT_SYMBOLS)				\
++	    putc ('.', (FILE));						\
++	  assemble_name ((FILE), (FNAME));				\
++	  fputs (",.-", (FILE));					\
++	  rs6000_output_function_entry (FILE, FNAME);			\
++	  putc ('\n', (FILE));						\
++	}								\
++    }									\
++  while (0)
++
++/* Return nonzero if this entry is to be written into the constant
++   pool in a special way.  We do so if this is a SYMBOL_REF, LABEL_REF
++   or a CONST containing one of them.  If -mfp-in-toc (the default),
++   we also do this for floating-point constants.  We actually can only
++   do this if the FP formats of the target and host machines are the
++   same, but we can't check that since not every file that uses
++   the macros includes real.h.  We also do this when we can write the
++   entry into the TOC and the entry is not larger than a TOC entry.  */
++
++#undef  ASM_OUTPUT_SPECIAL_POOL_ENTRY_P
++#define ASM_OUTPUT_SPECIAL_POOL_ENTRY_P(X, MODE)			\
++  (TARGET_TOC								\
++   && (GET_CODE (X) == SYMBOL_REF					\
++       || (GET_CODE (X) == CONST && GET_CODE (XEXP (X, 0)) == PLUS	\
++	   && GET_CODE (XEXP (XEXP (X, 0), 0)) == SYMBOL_REF)		\
++       || GET_CODE (X) == LABEL_REF					\
++       || (GET_CODE (X) == CONST_INT 					\
++	   && GET_MODE_BITSIZE (MODE) <= GET_MODE_BITSIZE (Pmode))	\
++       || (GET_CODE (X) == CONST_DOUBLE					\
++	   && ((TARGET_64BIT						\
++		&& (TARGET_MINIMAL_TOC					\
++		    || (SCALAR_FLOAT_MODE_P (GET_MODE (X))		\
++			&& ! TARGET_NO_FP_IN_TOC)))			\
++	       || (!TARGET_64BIT					\
++		   && !TARGET_NO_FP_IN_TOC				\
++		   && SCALAR_FLOAT_MODE_P (GET_MODE (X))		\
++		   && BITS_PER_WORD == HOST_BITS_PER_INT)))))
++
++/* Select a format to encode pointers in exception handling data.  CODE
++   is 0 for data, 1 for code labels, 2 for function pointers.  GLOBAL is
++   true if the symbol may be affected by dynamic relocations.  */
++#undef	ASM_PREFERRED_EH_DATA_FORMAT
++#define	ASM_PREFERRED_EH_DATA_FORMAT(CODE, GLOBAL) \
++  (TARGET_64BIT || flag_pic						\
++   ? (((GLOBAL) ? DW_EH_PE_indirect : 0) | DW_EH_PE_pcrel		\
++      | (TARGET_64BIT ? DW_EH_PE_udata8 : DW_EH_PE_sdata4))		\
++   : DW_EH_PE_absptr)
++
++/* For backward compatibility, we must continue to use the AIX
++   structure return convention.  */
++#undef DRAFT_V4_STRUCT_RET
++#define DRAFT_V4_STRUCT_RET (!TARGET_64BIT)
++
++#ifdef TARGET_LIBC_PROVIDES_SSP
++/* ppc32 glibc provides __stack_chk_guard in -0x7008(2),
++   ppc64 glibc provides it at -0x7010(13).  */
++#define TARGET_THREAD_SSP_OFFSET	(TARGET_64BIT ? -0x7010 : -0x7008)
++#endif
++
++#define POWERPC_LINUX
++
++/* ppc{32,64} linux has 128-bit long double support in glibc 2.4 and later.  */
++#ifdef TARGET_DEFAULT_LONG_DOUBLE_128
++#define RS6000_DEFAULT_LONG_DOUBLE_SIZE 128
++#endif
++
++/* Static stack checking is supported by means of probes.  */
++#define STACK_CHECK_STATIC_BUILTIN 1
++
++/* The default value isn't sufficient in 64-bit mode.  */
++#define STACK_CHECK_PROTECT (TARGET_64BIT ? 16 * 1024 : 12 * 1024)
++
++/* Software floating point support for exceptions and rounding modes
++   depends on the C library in use.  */
++#undef TARGET_FLOAT_EXCEPTIONS_ROUNDING_SUPPORTED_P
++#define TARGET_FLOAT_EXCEPTIONS_ROUNDING_SUPPORTED_P \
++  rs6000_linux_float_exceptions_rounding_supported_p
++
++/* Support for TARGET_ATOMIC_ASSIGN_EXPAND_FENV without FPRs depends
++   on glibc 2.19 or greater.  */
++#if TARGET_GLIBC_MAJOR > 2 \
++  || (TARGET_GLIBC_MAJOR == 2 && TARGET_GLIBC_MINOR >= 19)
++#define RS6000_GLIBC_ATOMIC_FENV 1
++#endif
++
++/* The IEEE 128-bit emulator is only built on Linux systems.  Flag that we
++   should enable the type handling for KFmode on VSX systems even if we are not
++   enabling the __float128 keyword.  */
++#undef	TARGET_FLOAT128_ENABLE_TYPE
++#define TARGET_FLOAT128_ENABLE_TYPE 1
+diff -ruN gcc-8.2.0/gcc/config/rs6000/sysv4.h agcc/gcc/config/rs6000/sysv4.h
+--- gcc-8.2.0/gcc/config/rs6000/sysv4.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/rs6000/sysv4.h	2018-11-16 19:43:54.307033028 +0300
+@@ -791,8 +791,8 @@
+ 
+ #define MUSL_DYNAMIC_LINKER_E ENDIAN_SELECT("","le","")
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
+-#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
++#define UCLIBC_DYNAMIC_LINKER "/tools/lib/ld-uClibc.so.0"
+ #define MUSL_DYNAMIC_LINKER \
+   "/lib/ld-musl-powerpc" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
+ #if DEFAULT_LIBC == LIBC_UCLIBC
+diff -ruN gcc-8.2.0/gcc/config/rs6000/sysv4.h.orig agcc/gcc/config/rs6000/sysv4.h.orig
+--- gcc-8.2.0/gcc/config/rs6000/sysv4.h.orig	1970-01-01 03:00:00.000000000 +0300
++++ agcc/gcc/config/rs6000/sysv4.h.orig	2018-01-03 13:03:58.000000000 +0300
+@@ -0,0 +1,1059 @@
++/* Target definitions for GNU compiler for PowerPC running System V.4
++   Copyright (C) 1995-2018 Free Software Foundation, Inc.
++   Contributed by Cygnus Support.
++
++   This file is part of GCC.
++
++   GCC is free software; you can redistribute it and/or modify it
++   under the terms of the GNU General Public License as published
++   by the Free Software Foundation; either version 3, or (at your
++   option) any later version.
++
++   GCC is distributed in the hope that it will be useful, but WITHOUT
++   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
++   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
++   License for more details.
++
++   Under Section 7 of GPL version 3, you are granted additional
++   permissions described in the GCC Runtime Library Exception, version
++   3.1, as published by the Free Software Foundation.
++
++   You should have received a copy of the GNU General Public License and
++   a copy of the GCC Runtime Library Exception along with this program;
++   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
++   <http://www.gnu.org/licenses/>.  */
++
++/* Header files should be C++ aware in general.  */
++#undef  NO_IMPLICIT_EXTERN_C
++#define NO_IMPLICIT_EXTERN_C
++
++/* Yes!  We are ELF.  */
++#define	TARGET_OBJECT_FORMAT OBJECT_ELF
++
++/* Default ABI to compile code for.  */
++#define DEFAULT_ABI rs6000_current_abi
++
++/* Default ABI to use.  */
++#define RS6000_ABI_NAME "sysv"
++
++/* Override rs6000.h definition.  */
++#undef	ASM_DEFAULT_SPEC
++#define	ASM_DEFAULT_SPEC "-mppc"
++
++#define	TARGET_TOC		(TARGET_64BIT				\
++				 || (TARGET_MINIMAL_TOC			\
++				     && flag_pic > 1)			\
++				 || DEFAULT_ABI != ABI_V4)
++
++#define	TARGET_BITFIELD_TYPE	(! TARGET_NO_BITFIELD_TYPE)
++#define	TARGET_BIG_ENDIAN	(! TARGET_LITTLE_ENDIAN)
++#define	TARGET_PROTOTYPE	target_prototype
++#define	TARGET_NO_PROTOTYPE	(! TARGET_PROTOTYPE)
++#define	TARGET_NO_TOC		(! TARGET_TOC)
++#define	TARGET_NO_EABI		(! TARGET_EABI)
++#define	TARGET_REGNAMES		rs6000_regnames
++
++#ifdef HAVE_AS_REL16
++#undef TARGET_SECURE_PLT
++#define TARGET_SECURE_PLT	secure_plt
++#endif
++
++#define SDATA_DEFAULT_SIZE 8
++
++/* The macro SUBTARGET_OVERRIDE_OPTIONS is provided for subtargets, to
++   get control in TARGET_OPTION_OVERRIDE.  */
++
++#define SUBTARGET_OVERRIDE_OPTIONS					\
++do {									\
++  if (!global_options_set.x_g_switch_value)				\
++    g_switch_value = SDATA_DEFAULT_SIZE;				\
++									\
++  if (rs6000_abi_name == NULL)						\
++    rs6000_abi_name = RS6000_ABI_NAME;					\
++									\
++  if (!strcmp (rs6000_abi_name, "sysv"))				\
++    rs6000_current_abi = ABI_V4;					\
++  else if (!strcmp (rs6000_abi_name, "sysv-noeabi"))			\
++    {									\
++      rs6000_current_abi = ABI_V4;					\
++      rs6000_isa_flags &= ~ OPTION_MASK_EABI;				\
++    }									\
++  else if (!strcmp (rs6000_abi_name, "sysv-eabi")			\
++	   || !strcmp (rs6000_abi_name, "eabi"))			\
++    {									\
++      rs6000_current_abi = ABI_V4;					\
++      rs6000_isa_flags |= OPTION_MASK_EABI;				\
++    }									\
++  else if (!strcmp (rs6000_abi_name, "aixdesc"))			\
++    rs6000_current_abi = ABI_AIX;					\
++  else if (!strcmp (rs6000_abi_name, "freebsd")				\
++	   || !strcmp (rs6000_abi_name, "linux"))			\
++    {									\
++      if (TARGET_64BIT)							\
++	rs6000_current_abi = ABI_AIX;					\
++      else								\
++	rs6000_current_abi = ABI_V4;					\
++    }									\
++  else if (!strcmp (rs6000_abi_name, "netbsd"))				\
++    rs6000_current_abi = ABI_V4;					\
++  else if (!strcmp (rs6000_abi_name, "openbsd"))			\
++    rs6000_current_abi = ABI_V4;					\
++  else if (!strcmp (rs6000_abi_name, "i960-old"))			\
++    {									\
++      rs6000_current_abi = ABI_V4;					\
++      rs6000_isa_flags |= (OPTION_MASK_LITTLE_ENDIAN | OPTION_MASK_EABI); \
++      rs6000_isa_flags &= ~OPTION_MASK_STRICT_ALIGN;			\
++      TARGET_NO_BITFIELD_WORD = 1;					\
++    }									\
++  else									\
++    {									\
++      rs6000_current_abi = ABI_V4;					\
++      error ("bad value for %<%s-%s%>", "-mcall", rs6000_abi_name);	\
++    }									\
++									\
++  if (rs6000_sdata_name)						\
++    {									\
++      if (!strcmp (rs6000_sdata_name, "none"))				\
++	rs6000_sdata = SDATA_NONE;					\
++      else if (!strcmp (rs6000_sdata_name, "data"))			\
++	rs6000_sdata = SDATA_DATA;					\
++      else if (!strcmp (rs6000_sdata_name, "default"))			\
++	rs6000_sdata = (TARGET_EABI) ? SDATA_EABI : SDATA_SYSV;		\
++      else if (!strcmp (rs6000_sdata_name, "sysv"))			\
++	rs6000_sdata = SDATA_SYSV;					\
++      else if (!strcmp (rs6000_sdata_name, "eabi"))			\
++	rs6000_sdata = SDATA_EABI;					\
++      else								\
++	error ("bad value for %<%s=%s%>", "-msdata", rs6000_sdata_name);\
++    }									\
++  else if (DEFAULT_ABI == ABI_V4)					\
++    {									\
++      rs6000_sdata = SDATA_DATA;					\
++      rs6000_sdata_name = "data";					\
++    }									\
++  else									\
++    {									\
++      rs6000_sdata = SDATA_NONE;					\
++      rs6000_sdata_name = "none";					\
++    }									\
++									\
++  if (TARGET_RELOCATABLE &&						\
++      (rs6000_sdata == SDATA_EABI || rs6000_sdata == SDATA_SYSV))	\
++    {									\
++      rs6000_sdata = SDATA_DATA;					\
++      error ("%qs and %<%s=%s%> are incompatible", rs6000_sdata_name,	\
++	     "-mrelocatable", "-msdata");				\
++    }									\
++									\
++  else if (flag_pic && DEFAULT_ABI == ABI_V4				\
++	   && (rs6000_sdata == SDATA_EABI				\
++	       || rs6000_sdata == SDATA_SYSV))				\
++    {									\
++      rs6000_sdata = SDATA_DATA;					\
++      error ("%<-f%s%> and %<%s=%s%> are incompatible",			\
++	     (flag_pic > 1) ? "PIC" : "pic",				\
++	     "-msdata", rs6000_sdata_name);				\
++    }									\
++									\
++  if ((rs6000_sdata != SDATA_NONE && DEFAULT_ABI != ABI_V4)		\
++      || (rs6000_sdata == SDATA_EABI && !TARGET_EABI))			\
++    {									\
++      rs6000_sdata = SDATA_NONE;					\
++      error ("%<%s=%s%> and %<%s-%s%> are incompatible",		\
++	     "-msdata", rs6000_sdata_name, "-mcall", rs6000_abi_name);	\
++    }									\
++									\
++  targetm.have_srodata_section = rs6000_sdata == SDATA_EABI;		\
++									\
++  if (TARGET_RELOCATABLE && !TARGET_MINIMAL_TOC)			\
++    {									\
++      rs6000_isa_flags |= OPTION_MASK_MINIMAL_TOC;			\
++      error ("%qs and %qs are incompatible", "-mrelocatable",		\
++	     "-mno-minimal-toc");					\
++    }									\
++									\
++  if (TARGET_RELOCATABLE && rs6000_current_abi != ABI_V4)		\
++    {									\
++      rs6000_isa_flags &= ~OPTION_MASK_RELOCATABLE;			\
++      error ("%qs and %<%s-%s%> are incompatible",			\
++	     "-mrelocatable", "-mcall", rs6000_abi_name);		\
++    }									\
++									\
++  if (!TARGET_64BIT && flag_pic > 1 && rs6000_current_abi != ABI_V4)	\
++    {									\
++      flag_pic = 0;							\
++      error ("%qs and %<%s-%s%> are incompatible",			\
++	     "-fPIC", "-mcall", rs6000_abi_name);			\
++    }									\
++									\
++  if (TARGET_SECURE_PLT != secure_plt)					\
++    {									\
++      error ("%qs not supported by your assembler", "-msecure-plt");	\
++    }									\
++									\
++  if (flag_pic > 1 && DEFAULT_ABI == ABI_V4)				\
++    {									\
++      /* Note: flag_pic should not change any option flags that would	\
++	 be invalid with or pessimise -fno-PIC code.  LTO turns off	\
++	 flag_pic when linking/recompiling a fixed position executable. \
++	 However, if the objects were originally compiled with -fPIC,	\
++	 then other target options forced on here by -fPIC are restored \
++	 when recompiling those objects without -fPIC.  In particular	\
++	 TARGET_RELOCATABLE must not be enabled here by flag_pic.  */	\
++      rs6000_isa_flags |= OPTION_MASK_MINIMAL_TOC;			\
++      TARGET_NO_FP_IN_TOC = 1;						\
++    }									\
++									\
++  if (TARGET_RELOCATABLE)						\
++    {									\
++      if (!flag_pic)							\
++	flag_pic = 2;							\
++      TARGET_NO_FP_IN_TOC = 1;						\
++    }									\
++} while (0)
++
++#ifndef RS6000_BI_ARCH
++# define SUBSUBTARGET_OVERRIDE_OPTIONS					\
++do {									\
++  if ((TARGET_DEFAULT ^ rs6000_isa_flags) & OPTION_MASK_64BIT)		\
++    error ("%<-m%s%> not supported in this configuration",		\
++	   (rs6000_isa_flags & OPTION_MASK_64BIT) ? "64" : "32");	\
++} while (0)
++#endif
++
++/* Override rs6000.h definition.  */
++#undef	TARGET_DEFAULT
++#define	TARGET_DEFAULT 0
++
++/* Override rs6000.h definition.  */
++#undef	PROCESSOR_DEFAULT
++#define	PROCESSOR_DEFAULT PROCESSOR_PPC750
++
++#define FIXED_R2 1
++/* System V.4 uses register 13 as a pointer to the small data area,
++   so it is not available to the normal user.  */
++#define FIXED_R13 1
++
++/* Override default big endianism definitions in rs6000.h.  */
++#undef	BYTES_BIG_ENDIAN
++#undef	WORDS_BIG_ENDIAN
++#define	BYTES_BIG_ENDIAN (TARGET_BIG_ENDIAN)
++#define	WORDS_BIG_ENDIAN (TARGET_BIG_ENDIAN)
++
++/* Put jump tables in read-only memory, rather than in .text.  */
++#define JUMP_TABLES_IN_TEXT_SECTION 0
++
++/* Prefix and suffix to use to saving floating point.  */
++#define	SAVE_FP_PREFIX "_savefpr_"
++#define SAVE_FP_SUFFIX ""
++
++/* Prefix and suffix to use to restoring floating point.  */
++#define	RESTORE_FP_PREFIX "_restfpr_"
++#define RESTORE_FP_SUFFIX ""
++
++/* Type used for size_t, as a string used in a declaration.  */
++#undef  SIZE_TYPE
++#define SIZE_TYPE "unsigned int"
++
++/* Type used for ptrdiff_t, as a string used in a declaration.  */
++#define PTRDIFF_TYPE "int"
++
++#undef	WCHAR_TYPE
++#define WCHAR_TYPE "long int"
++
++#undef	WCHAR_TYPE_SIZE
++#define WCHAR_TYPE_SIZE 32
++
++/* Make int foo : 8 not cause structures to be aligned to an int boundary.  */
++/* Override elfos.h definition.  */
++#undef	PCC_BITFIELD_TYPE_MATTERS
++#define	PCC_BITFIELD_TYPE_MATTERS (TARGET_BITFIELD_TYPE)
++
++#undef	BITFIELD_NBYTES_LIMITED
++#define	BITFIELD_NBYTES_LIMITED (TARGET_NO_BITFIELD_WORD)
++
++/* Define this macro to be the value 1 if instructions will fail to
++   work if given data not on the nominal alignment.  If instructions
++   will merely go slower in that case, define this macro as 0.  */
++#undef	STRICT_ALIGNMENT
++#define	STRICT_ALIGNMENT (TARGET_STRICT_ALIGN)
++
++/* Define this macro if you wish to preserve a certain alignment for
++   the stack pointer, greater than what the hardware enforces.  The
++   definition is a C expression for the desired alignment (measured
++   in bits).  This macro must evaluate to a value equal to or larger
++   than STACK_BOUNDARY.
++   For the SYSV ABI and variants the alignment of the stack pointer
++   is usually controlled manually in rs6000.c. However, to maintain
++   alignment across alloca () in all circumstances,
++   PREFERRED_STACK_BOUNDARY needs to be set as well.
++   This has the additional advantage of allowing a bigger maximum
++   alignment of user objects on the stack.  */
++
++#undef PREFERRED_STACK_BOUNDARY
++#define PREFERRED_STACK_BOUNDARY 128
++
++/* Real stack boundary as mandated by the appropriate ABI.  */
++#define ABI_STACK_BOUNDARY \
++  ((TARGET_EABI && !TARGET_ALTIVEC && !TARGET_ALTIVEC_ABI) ? 64 : 128)
++
++/* An expression for the alignment of a structure field FIELD if the
++   alignment computed in the usual way is COMPUTED.  */
++#define ADJUST_FIELD_ALIGN(FIELD, TYPE, COMPUTED)			      \
++	(rs6000_special_adjust_field_align_p ((TYPE), (COMPUTED))	      \
++	 ? 128 : COMPUTED)
++
++#undef  BIGGEST_FIELD_ALIGNMENT
++
++/* Use ELF style section commands.  */
++
++#define	TEXT_SECTION_ASM_OP	"\t.section\t\".text\""
++
++#define	DATA_SECTION_ASM_OP	"\t.section\t\".data\""
++
++#define	BSS_SECTION_ASM_OP	"\t.section\t\".bss\""
++
++/* Override elfos.h definition.  */
++#undef	INIT_SECTION_ASM_OP
++#define	INIT_SECTION_ASM_OP "\t.section\t\".init\",\"ax\""
++
++/* Override elfos.h definition.  */
++#undef	FINI_SECTION_ASM_OP
++#define	FINI_SECTION_ASM_OP "\t.section\t\".fini\",\"ax\""
++
++#define	TOC_SECTION_ASM_OP "\t.section\t\".got\",\"aw\""
++
++/* Put PC relative got entries in .got2.  */
++#define	MINIMAL_TOC_SECTION_ASM_OP \
++  (flag_pic ? "\t.section\t\".got2\",\"aw\"" : "\t.section\t\".got1\",\"aw\"")
++
++#define	SDATA_SECTION_ASM_OP "\t.section\t\".sdata\",\"aw\""
++#define	SDATA2_SECTION_ASM_OP "\t.section\t\".sdata2\",\"a\""
++#define	SBSS_SECTION_ASM_OP "\t.section\t\".sbss\",\"aw\",@nobits"
++
++/* Override default elf definitions.  */
++#define TARGET_ASM_INIT_SECTIONS rs6000_elf_asm_init_sections
++#undef  TARGET_ASM_RELOC_RW_MASK
++#define TARGET_ASM_RELOC_RW_MASK rs6000_elf_reloc_rw_mask
++#undef	TARGET_ASM_SELECT_RTX_SECTION
++#define	TARGET_ASM_SELECT_RTX_SECTION rs6000_elf_select_rtx_section
++
++/* Return nonzero if this entry is to be written into the constant pool
++   in a special way.  We do so if this is a SYMBOL_REF, LABEL_REF or a CONST
++   containing one of them.  If -mfp-in-toc (the default), we also do
++   this for floating-point constants.  We actually can only do this
++   if the FP formats of the target and host machines are the same, but
++   we can't check that since not every file that uses these target macros
++   includes real.h.
++
++   Unlike AIX, we don't key off of -mminimal-toc, but instead do not
++   allow floating point constants in the TOC if -mrelocatable.  */
++
++#undef	ASM_OUTPUT_SPECIAL_POOL_ENTRY_P
++#define	ASM_OUTPUT_SPECIAL_POOL_ENTRY_P(X, MODE)			\
++  (TARGET_TOC								\
++   && (GET_CODE (X) == SYMBOL_REF					\
++       || (GET_CODE (X) == CONST && GET_CODE (XEXP (X, 0)) == PLUS	\
++	   && GET_CODE (XEXP (XEXP (X, 0), 0)) == SYMBOL_REF)		\
++       || GET_CODE (X) == LABEL_REF					\
++       || (GET_CODE (X) == CONST_INT 					\
++	   && GET_MODE_BITSIZE (MODE) <= GET_MODE_BITSIZE (Pmode))	\
++       || (!TARGET_NO_FP_IN_TOC						\
++	   && GET_CODE (X) == CONST_DOUBLE				\
++	   && SCALAR_FLOAT_MODE_P (GET_MODE (X))			\
++	   && BITS_PER_WORD == HOST_BITS_PER_INT)))
++
++/* These macros generate the special .type and .size directives which
++   are used to set the corresponding fields of the linker symbol table
++   entries in an ELF object file under SVR4.  These macros also output
++   the starting labels for the relevant functions/objects.  */
++
++/* Write the extra assembler code needed to declare a function properly.
++   Some svr4 assemblers need to also have something extra said about the
++   function's return value.  We allow for that here.  */
++
++/* Override elfos.h definition.  */
++#undef	ASM_DECLARE_FUNCTION_NAME
++#define ASM_DECLARE_FUNCTION_NAME(FILE, NAME, DECL)			\
++  rs6000_elf_declare_function_name ((FILE), (NAME), (DECL))
++
++/* The USER_LABEL_PREFIX stuff is affected by the -fleading-underscore
++   flag.  The LOCAL_LABEL_PREFIX variable is used by dbxelf.h.  */
++
++#define	LOCAL_LABEL_PREFIX "."
++#define	USER_LABEL_PREFIX ""
++
++#define	ASM_OUTPUT_INTERNAL_LABEL_PREFIX(FILE,PREFIX)	\
++  asm_fprintf (FILE, "%L%s", PREFIX)
++
++/* Globalizing directive for a label.  */
++#define GLOBAL_ASM_OP "\t.globl "
++
++/* This says how to output assembler code to declare an
++   uninitialized internal linkage data object.  Under SVR4,
++   the linker seems to want the alignment of data objects
++   to depend on their types.  We do exactly that here.  */
++
++#define	LOCAL_ASM_OP	"\t.local\t"
++
++#define	LCOMM_ASM_OP	"\t.lcomm\t"
++
++/* Describe how to emit uninitialized local items.  */
++#define	ASM_OUTPUT_ALIGNED_DECL_LOCAL(FILE, DECL, NAME, SIZE, ALIGN)	\
++do {									\
++  if ((DECL) && rs6000_elf_in_small_data_p (DECL))			\
++    {									\
++      switch_to_section (sbss_section);					\
++      ASM_OUTPUT_ALIGN (FILE, exact_log2 (ALIGN / BITS_PER_UNIT));	\
++      ASM_OUTPUT_LABEL (FILE, NAME);					\
++      ASM_OUTPUT_SKIP (FILE, SIZE);					\
++      if (!flag_inhibit_size_directive && (SIZE) > 0)			\
++	ASM_OUTPUT_SIZE_DIRECTIVE (FILE, NAME, SIZE);			\
++    }									\
++  else									\
++    {									\
++      fprintf (FILE, "%s", LCOMM_ASM_OP);				\
++      assemble_name ((FILE), (NAME));					\
++      fprintf ((FILE), "," HOST_WIDE_INT_PRINT_UNSIGNED",%u\n",		\
++	       (SIZE), (ALIGN) / BITS_PER_UNIT);			\
++    }									\
++  ASM_OUTPUT_TYPE_DIRECTIVE (FILE, NAME, "object");			\
++} while (0)
++
++/* Describe how to emit uninitialized external linkage items.  */
++#define	ASM_OUTPUT_ALIGNED_BSS(FILE, DECL, NAME, SIZE, ALIGN)		\
++do {									\
++  ASM_OUTPUT_ALIGNED_DECL_LOCAL (FILE, DECL, NAME, SIZE, ALIGN);	\
++} while (0)
++
++#ifdef HAVE_GAS_MAX_SKIP_P2ALIGN
++/* To support -falign-* switches we need to use .p2align so
++   that alignment directives in code sections will be padded
++   with no-op instructions, rather than zeroes.  */
++#define ASM_OUTPUT_MAX_SKIP_ALIGN(FILE,LOG,MAX_SKIP)			\
++  if ((LOG) != 0)							\
++    {									\
++      if ((MAX_SKIP) == 0)						\
++	fprintf ((FILE), "\t.p2align %d\n", (LOG));			\
++      else								\
++	fprintf ((FILE), "\t.p2align %d,,%d\n",	(LOG), (MAX_SKIP));	\
++    }
++#endif
++
++/* This is how to output code to push a register on the stack.
++   It need not be very fast code.
++
++   On the rs6000, we must keep the backchain up to date.  In order
++   to simplify things, always allocate 16 bytes for a push (System V
++   wants to keep stack aligned to a 16 byte boundary).  */
++
++#define	ASM_OUTPUT_REG_PUSH(FILE, REGNO)				\
++do {									\
++  if (DEFAULT_ABI == ABI_V4)						\
++    asm_fprintf (FILE,							\
++		 "\tstwu %s,-16(%s)\n\tstw %s,12(%s)\n",	\
++		 reg_names[1], reg_names[1], reg_names[REGNO],		\
++		 reg_names[1]);						\
++} while (0)
++
++/* This is how to output an insn to pop a register from the stack.
++   It need not be very fast code.  */
++
++#define	ASM_OUTPUT_REG_POP(FILE, REGNO)					\
++do {									\
++  if (DEFAULT_ABI == ABI_V4)						\
++    asm_fprintf (FILE,							\
++		 "\tlwz %s,12(%s)\n\taddi %s,%s,16\n",	\
++		 reg_names[REGNO], reg_names[1], reg_names[1],		\
++		 reg_names[1]);						\
++} while (0)
++
++extern int fixuplabelno;
++
++/* Handle constructors specially for -mrelocatable.  */
++#define TARGET_ASM_CONSTRUCTOR  rs6000_elf_asm_out_constructor
++#define TARGET_ASM_DESTRUCTOR   rs6000_elf_asm_out_destructor
++
++/* This is the end of what might become sysv4.h.  */
++
++/* Use DWARF 2 debugging information by default.  */
++#undef  PREFERRED_DEBUGGING_TYPE
++#define PREFERRED_DEBUGGING_TYPE DWARF2_DEBUG
++
++/* Historically we have also supported stabs debugging.  */
++#define DBX_DEBUGGING_INFO 1
++
++#define TARGET_ENCODE_SECTION_INFO  rs6000_elf_encode_section_info
++#define TARGET_IN_SMALL_DATA_P  rs6000_elf_in_small_data_p
++
++/* The ELF version doesn't encode [DS] or whatever at the end of symbols.  */
++
++#define	RS6000_OUTPUT_BASENAME(FILE, NAME)	\
++    assemble_name (FILE, NAME)
++
++/* We have to output the stabs for the function name *first*, before
++   outputting its label.  */
++
++#define	DBX_FUNCTION_FIRST
++
++/* This is the end of what might become sysv4dbx.h.  */
++
++#define TARGET_OS_SYSV_CPP_BUILTINS()		\
++  do						\
++    {						\
++      if (rs6000_isa_flags_explicit		\
++	  & OPTION_MASK_RELOCATABLE)		\
++	builtin_define ("_RELOCATABLE");	\
++    }						\
++  while (0)
++
++#ifndef	TARGET_OS_CPP_BUILTINS
++#define TARGET_OS_CPP_BUILTINS()		\
++  do						\
++    {						\
++      builtin_define_std ("PPC");		\
++      builtin_define_std ("unix");		\
++      builtin_define ("__svr4__");		\
++      builtin_assert ("system=unix");		\
++      builtin_assert ("system=svr4");		\
++      builtin_assert ("cpu=powerpc");		\
++      builtin_assert ("machine=powerpc");	\
++      TARGET_OS_SYSV_CPP_BUILTINS ();		\
++    }						\
++  while (0)
++#endif
++
++/* Select one of BIG_OPT, LITTLE_OPT or DEFAULT_OPT depending
++   on various -mbig, -mlittle and -mcall- options.  */
++#define ENDIAN_SELECT(BIG_OPT, LITTLE_OPT, DEFAULT_OPT)	\
++"%{mlittle|mlittle-endian:"	LITTLE_OPT ";"	\
++  "mbig|mbig-endian:"		BIG_OPT    ";"	\
++  "mcall-i960-old:"		LITTLE_OPT ";"	\
++  ":"				DEFAULT_OPT "}"
++
++#define DEFAULT_ASM_ENDIAN " -mbig"
++
++#undef	ASM_SPEC
++#define	ASM_SPEC "%(asm_cpu) \
++%{,assembler|,assembler-with-cpp: %{mregnames} %{mno-regnames}} \
++%{mrelocatable} %{mrelocatable-lib} %{" FPIE_OR_FPIC_SPEC ":-K PIC} \
++%{memb|msdata=eabi: -memb}" \
++ENDIAN_SELECT(" -mbig", " -mlittle", DEFAULT_ASM_ENDIAN)
++
++#ifndef CC1_SECURE_PLT_DEFAULT_SPEC
++#define CC1_SECURE_PLT_DEFAULT_SPEC ""
++#endif
++#ifndef LINK_SECURE_PLT_DEFAULT_SPEC
++#define LINK_SECURE_PLT_DEFAULT_SPEC ""
++#endif
++
++/* Pass -G xxx to the compiler.  */
++#undef CC1_SPEC
++#define	CC1_SPEC "%{G*} %(cc1_cpu)" \
++"%{meabi: %{!mcall-*: -mcall-sysv }} \
++%{!meabi: %{!mno-eabi: \
++    %{mrelocatable: -meabi } \
++    %{mcall-freebsd: -mno-eabi } \
++    %{mcall-i960-old: -meabi } \
++    %{mcall-linux: -mno-eabi } \
++    %{mcall-netbsd: -mno-eabi } \
++    %{mcall-openbsd: -mno-eabi }}} \
++%{msdata: -msdata=default} \
++%{mno-sdata: -msdata=none} \
++%{!mbss-plt: %{!msecure-plt: %(cc1_secure_plt_default)}} \
++%{profile: -p}"
++
++/* Default starting address if specified.  */
++#define LINK_START_SPEC "\
++%{mads         : %(link_start_ads)         ; \
++  myellowknife : %(link_start_yellowknife) ; \
++  mmvme        : %(link_start_mvme)        ; \
++  msim         : %(link_start_sim)         ; \
++  mcall-freebsd: %(link_start_freebsd)     ; \
++  mcall-linux  : %(link_start_linux)       ; \
++  mcall-netbsd : %(link_start_netbsd)      ; \
++  mcall-openbsd: %(link_start_openbsd)     ; \
++               : %(link_start_default)     }"
++
++#define LINK_START_DEFAULT_SPEC ""
++#define LINK_SECURE_PLT_SPEC LINK_SECURE_PLT_DEFAULT_SPEC
++
++#undef	LINK_SPEC
++#define	LINK_SPEC "\
++%{h*} %{v:-V} %{!msdata=none:%{G*}} %{msdata=none:-G0} \
++%{R*} \
++%(link_shlib) \
++%{!T*: %(link_start) } \
++%{!static: %{!mbss-plt: %(link_secure_plt)}} \
++%(link_os)"
++
++/* Shared libraries are not default.  */
++#define LINK_SHLIB_SPEC "\
++%{!mshlib: %{!shared: %{!symbolic: -dn -Bstatic}}} \
++%{static: } \
++%{shared:-G -dy -z text } \
++%{symbolic:-Bsymbolic -G -dy -z text }"
++
++/* Any specific OS flags.  */
++#define LINK_OS_SPEC "\
++%{mads         : %(link_os_ads)         ; \
++  myellowknife : %(link_os_yellowknife) ; \
++  mmvme        : %(link_os_mvme)        ; \
++  msim         : %(link_os_sim)         ; \
++  mcall-freebsd: %(link_os_freebsd)     ; \
++  mcall-linux  : %(link_os_linux)       ; \
++  mcall-netbsd : %(link_os_netbsd)      ; \
++  mcall-openbsd: %(link_os_openbsd)     ; \
++               : %(link_os_default)     }"
++
++#define LINK_OS_DEFAULT_SPEC ""
++
++#define DRIVER_SELF_SPECS "%{mfpu=none: %<mfpu=* \
++ 	%<msingle-float %<mdouble-float}"
++
++/* Override rs6000.h definition.  */
++#undef	CPP_SPEC
++#define	CPP_SPEC "%{posix: -D_POSIX_SOURCE} \
++%{mads         : %(cpp_os_ads)         ; \
++  myellowknife : %(cpp_os_yellowknife) ; \
++  mmvme        : %(cpp_os_mvme)        ; \
++  msim         : %(cpp_os_sim)         ; \
++  mcall-freebsd: %(cpp_os_freebsd)     ; \
++  mcall-linux  : %(cpp_os_linux)       ; \
++  mcall-netbsd : %(cpp_os_netbsd)      ; \
++  mcall-openbsd: %(cpp_os_openbsd)     ; \
++               : %(cpp_os_default)     }"
++
++#define	CPP_OS_DEFAULT_SPEC ""
++
++#undef	STARTFILE_SPEC
++#define	STARTFILE_SPEC "\
++%{mads         : %(startfile_ads)         ; \
++  myellowknife : %(startfile_yellowknife) ; \
++  mmvme        : %(startfile_mvme)        ; \
++  msim         : %(startfile_sim)         ; \
++  mcall-freebsd: %(startfile_freebsd)     ; \
++  mcall-linux  : %(startfile_linux)       ; \
++  mcall-netbsd : %(startfile_netbsd)      ; \
++  mcall-openbsd: %(startfile_openbsd)     ; \
++               : %(startfile_default)     }"
++
++#define	STARTFILE_DEFAULT_SPEC "ecrti.o%s crtbegin.o%s"
++
++#undef	LIB_SPEC
++#define	LIB_SPEC "\
++%{mads         : %(lib_ads)         ; \
++  myellowknife : %(lib_yellowknife) ; \
++  mmvme        : %(lib_mvme)        ; \
++  msim         : %(lib_sim)         ; \
++  mcall-freebsd: %(lib_freebsd)     ; \
++  mcall-linux  : %(lib_linux)       ; \
++  mcall-netbsd : %(lib_netbsd)      ; \
++  mcall-openbsd: %(lib_openbsd)     ; \
++               : %(lib_default)     }"
++
++#define LIB_DEFAULT_SPEC "-lc"
++
++#undef	ENDFILE_SPEC
++#define	ENDFILE_SPEC "\
++%{mads         : %(endfile_ads)         ; \
++  myellowknife : %(endfile_yellowknife) ; \
++  mmvme        : %(endfile_mvme)        ; \
++  msim         : %(endfile_sim)         ; \
++  mcall-freebsd: %(endfile_freebsd)     ; \
++  mcall-linux  : %(endfile_linux)       ; \
++  mcall-netbsd : %(endfile_netbsd)      ; \
++  mcall-openbsd: %(endfile_openbsd)     ; \
++               : %(crtsavres_default) %(endfile_default)     }"
++
++#define CRTSAVRES_DEFAULT_SPEC ""
++
++#define	ENDFILE_DEFAULT_SPEC "crtend.o%s ecrtn.o%s"
++
++/* Motorola ADS support.  */
++#define LIB_ADS_SPEC "--start-group -lads -lc --end-group"
++
++#define	STARTFILE_ADS_SPEC "ecrti.o%s crt0.o%s crtbegin.o%s"
++
++#define	ENDFILE_ADS_SPEC "crtend.o%s ecrtn.o%s"
++
++#define LINK_START_ADS_SPEC "-T ads.ld%s"
++
++#define LINK_OS_ADS_SPEC ""
++
++#define CPP_OS_ADS_SPEC ""
++
++/* Motorola Yellowknife support.  */
++#define LIB_YELLOWKNIFE_SPEC "--start-group -lyk -lc --end-group"
++
++#define	STARTFILE_YELLOWKNIFE_SPEC "ecrti.o%s crt0.o%s crtbegin.o%s"
++
++#define	ENDFILE_YELLOWKNIFE_SPEC "crtend.o%s ecrtn.o%s"
++
++#define LINK_START_YELLOWKNIFE_SPEC "-T yellowknife.ld%s"
++
++#define LINK_OS_YELLOWKNIFE_SPEC ""
++
++#define CPP_OS_YELLOWKNIFE_SPEC ""
++
++/* Motorola MVME support.  */
++#define LIB_MVME_SPEC "--start-group -lmvme -lc --end-group"
++
++#define	STARTFILE_MVME_SPEC "ecrti.o%s crt0.o%s crtbegin.o%s"
++
++#define	ENDFILE_MVME_SPEC "crtend.o%s ecrtn.o%s"
++
++#define LINK_START_MVME_SPEC "-Ttext 0x40000"
++
++#define LINK_OS_MVME_SPEC ""
++
++#define CPP_OS_MVME_SPEC ""
++
++/* PowerPC simulator based on netbsd system calls support.  */
++#define LIB_SIM_SPEC "--start-group -lsim -lc --end-group"
++
++#define	STARTFILE_SIM_SPEC "ecrti.o%s sim-crt0.o%s crtbegin.o%s"
++
++#define	ENDFILE_SIM_SPEC "crtend.o%s ecrtn.o%s"
++
++#define LINK_START_SIM_SPEC ""
++
++#define LINK_OS_SIM_SPEC "-m elf32ppcsim"
++
++#define CPP_OS_SIM_SPEC ""
++
++/* FreeBSD support.  */
++
++#define CPP_OS_FREEBSD_SPEC	"\
++  -D__PPC__ -D__ppc__ -D__PowerPC__ -D__powerpc__ \
++  -Acpu=powerpc -Amachine=powerpc"
++
++#define	STARTFILE_FREEBSD_SPEC	FBSD_STARTFILE_SPEC
++#define ENDFILE_FREEBSD_SPEC	FBSD_ENDFILE_SPEC
++#define LIB_FREEBSD_SPEC	FBSD_LIB_SPEC
++#define LINK_START_FREEBSD_SPEC	""
++
++#define LINK_OS_FREEBSD_SPEC "\
++  %{p:%nconsider using '-pg' instead of '-p' with gprof(1)} \
++  %{v:-V} \
++  %{assert*} %{R*} %{rpath*} %{defsym*} \
++  %{shared:-Bshareable %{h*} %{soname*}} \
++  %{!shared: \
++    %{!static: \
++      %{rdynamic: -export-dynamic} \
++      -dynamic-linker %(fbsd_dynamic_linker) } \
++    %{static:-Bstatic}} \
++  %{symbolic:-Bsymbolic}"
++
++/* GNU/Linux support.  */
++#define LIB_LINUX_SPEC "%{mnewlib: --start-group -llinux -lc --end-group } \
++%{!mnewlib: %{pthread:-lpthread} %{shared:-lc} \
++%{!shared: %{profile:-lc_p} %{!profile:-lc}}}"
++
++#if ENABLE_OFFLOADING == 1
++#define CRTOFFLOADBEGIN "%{fopenacc|fopenmp:crtoffloadbegin%O%s}"
++#define CRTOFFLOADEND "%{fopenacc|fopenmp:crtoffloadend%O%s}"
++#else
++#define CRTOFFLOADBEGIN ""
++#define CRTOFFLOADEND ""
++#endif
++
++/* STARTFILE_LINUX_SPEC should be the same as GNU_USER_TARGET_STARTFILE_SPEC
++   but with the mnewlib ecrti.o%s selection substituted for crti.o%s.  */
++#define	STARTFILE_LINUX_SPEC \
++  "%{shared:; \
++     pg|p|profile:gcrt1.o%s; \
++     static:crt1.o%s; \
++     static-pie|" PIE_SPEC ":Scrt1.o%s; \
++     :crt1.o%s} \
++   %{mnewlib:ecrti.o%s;:crti.o%s} \
++   %{static:crtbeginT.o%s; \
++     shared|static-pie|" PIE_SPEC ":crtbeginS.o%s; \
++     :crtbegin.o%s} \
++   %{fvtable-verify=none:%s; \
++     fvtable-verify=preinit:vtv_start_preinit.o%s; \
++     fvtable-verify=std:vtv_start.o%s} \
++   " CRTOFFLOADBEGIN
++
++/* ENDFILE_LINUX_SPEC should be the same as GNU_USER_TARGET_ENDFILE_SPEC
++   but with the mnewlib ecrtn.o%s selection substituted for crtn.o%s.  */
++#define ENDFILE_LINUX_SPEC \
++  "%{fvtable-verify=none:%s; \
++     fvtable-verify=preinit:vtv_end_preinit.o%s; \
++     fvtable-verify=std:vtv_end.o%s} \
++   %{static:crtend.o%s; \
++     shared|static-pie|" PIE_SPEC ":crtendS.o%s; \
++     :crtend.o%s} \
++   %{mnewlib:ecrtn.o%s;:crtn.o%s} \
++   " CRTOFFLOADEND
++
++#define LINK_START_LINUX_SPEC ""
++
++#define MUSL_DYNAMIC_LINKER_E ENDIAN_SELECT("","le","")
++
++#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define MUSL_DYNAMIC_LINKER \
++  "/lib/ld-musl-powerpc" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
++#if DEFAULT_LIBC == LIBC_UCLIBC
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{mglibc:" G ";:%{mmusl:" M ";:" U "}}"
++#elif DEFAULT_LIBC == LIBC_MUSL
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{mglibc:" G ";:%{muclibc:" U ";:" M "}}"
++#elif !defined (DEFAULT_LIBC) || DEFAULT_LIBC == LIBC_GLIBC
++#define CHOOSE_DYNAMIC_LINKER(G, U, M) \
++  "%{muclibc:" U ";:%{mmusl:" M ";:" G "}}"
++#else
++#error "Unsupported DEFAULT_LIBC"
++#endif
++#define GNU_USER_DYNAMIC_LINKER \
++  CHOOSE_DYNAMIC_LINKER (GLIBC_DYNAMIC_LINKER, UCLIBC_DYNAMIC_LINKER, \
++			 MUSL_DYNAMIC_LINKER)
++
++#define LINK_OS_LINUX_SPEC "-m elf32ppclinux %{!shared: %{!static: \
++  %{rdynamic:-export-dynamic} \
++  -dynamic-linker " GNU_USER_DYNAMIC_LINKER "}}"
++
++#if defined(HAVE_LD_EH_FRAME_HDR)
++# define LINK_EH_SPEC "%{!static|static-pie:--eh-frame-hdr} "
++#endif
++
++#define CPP_OS_LINUX_SPEC "-D__unix__ -D__gnu_linux__ -D__linux__ \
++%{!undef:							  \
++  %{!ansi:							  \
++    %{!std=*:-Dunix -D__unix -Dlinux -D__linux}			  \
++    %{std=gnu*:-Dunix -D__unix -Dlinux -D__linux}}}		  \
++-Asystem=linux -Asystem=unix -Asystem=posix %{pthread:-D_REENTRANT}"
++
++/* NetBSD support.  */
++#define LIB_NETBSD_SPEC "\
++-lc"
++
++#define	STARTFILE_NETBSD_SPEC "\
++ncrti.o%s crt0.o%s \
++%{!shared:crtbegin.o%s} %{shared:crtbeginS.o%s}"
++
++#define ENDFILE_NETBSD_SPEC "\
++%{!shared:crtend.o%s} %{shared:crtendS.o%s} \
++ncrtn.o%s"
++
++#define LINK_START_NETBSD_SPEC "\
++"
++
++#define LINK_OS_NETBSD_SPEC "\
++%{!shared: %{!static: \
++  %{rdynamic:-export-dynamic} \
++  -dynamic-linker /usr/libexec/ld.elf_so}}"
++
++#define CPP_OS_NETBSD_SPEC "\
++-D__powerpc__ -D__NetBSD__ -D__KPRINTF_ATTRIBUTE__"
++
++/* OpenBSD support.  */
++#ifndef	LIB_OPENBSD_SPEC
++#define LIB_OPENBSD_SPEC "%{!shared:%{pthread:-lpthread%{p:_p}%{!p:%{pg:_p}}}} %{!shared:-lc%{p:_p}%{!p:%{pg:_p}}}"
++#endif
++
++#ifndef	STARTFILE_OPENBSD_SPEC
++#define	STARTFILE_OPENBSD_SPEC "\
++%{!shared: %{pg:gcrt0.o%s} %{!pg:%{p:gcrt0.o%s} %{!p:crt0.o%s}}} \
++%{!shared:crtbegin.o%s} %{shared:crtbeginS.o%s}"
++#endif
++
++#ifndef	ENDFILE_OPENBSD_SPEC
++#define	ENDFILE_OPENBSD_SPEC "\
++%{!shared:crtend.o%s} %{shared:crtendS.o%s}"
++#endif
++
++#ifndef LINK_START_OPENBSD_SPEC
++#define LINK_START_OPENBSD_SPEC "-Ttext 0x400074"
++#endif
++
++#ifndef LINK_OS_OPENBSD_SPEC
++#define LINK_OS_OPENBSD_SPEC ""
++#endif
++
++#ifndef CPP_OS_OPENBSD_SPEC
++#define CPP_OS_OPENBSD_SPEC "%{posix:-D_POSIX_SOURCE} %{pthread:-D_POSIX_THREADS}"
++#endif
++
++/* Define any extra SPECS that the compiler needs to generate.  */
++/* Override rs6000.h definition.  */
++#undef	SUBTARGET_EXTRA_SPECS
++#define	SUBTARGET_EXTRA_SPECS						\
++  { "crtsavres_default",	CRTSAVRES_DEFAULT_SPEC },		\
++  { "lib_ads",			LIB_ADS_SPEC },				\
++  { "lib_yellowknife",		LIB_YELLOWKNIFE_SPEC },			\
++  { "lib_mvme",			LIB_MVME_SPEC },			\
++  { "lib_sim",			LIB_SIM_SPEC },				\
++  { "lib_freebsd",		LIB_FREEBSD_SPEC },			\
++  { "lib_linux",		LIB_LINUX_SPEC },			\
++  { "lib_netbsd",		LIB_NETBSD_SPEC },			\
++  { "lib_openbsd",		LIB_OPENBSD_SPEC },			\
++  { "lib_default",		LIB_DEFAULT_SPEC },			\
++  { "startfile_ads",		STARTFILE_ADS_SPEC },			\
++  { "startfile_yellowknife",	STARTFILE_YELLOWKNIFE_SPEC },		\
++  { "startfile_mvme",		STARTFILE_MVME_SPEC },			\
++  { "startfile_sim",		STARTFILE_SIM_SPEC },			\
++  { "startfile_freebsd",	STARTFILE_FREEBSD_SPEC },		\
++  { "startfile_linux",		STARTFILE_LINUX_SPEC },			\
++  { "startfile_netbsd",		STARTFILE_NETBSD_SPEC },		\
++  { "startfile_openbsd",	STARTFILE_OPENBSD_SPEC },		\
++  { "startfile_default",	STARTFILE_DEFAULT_SPEC },		\
++  { "endfile_ads",		ENDFILE_ADS_SPEC },			\
++  { "endfile_yellowknife",	ENDFILE_YELLOWKNIFE_SPEC },		\
++  { "endfile_mvme",		ENDFILE_MVME_SPEC },			\
++  { "endfile_sim",		ENDFILE_SIM_SPEC },			\
++  { "endfile_freebsd",		ENDFILE_FREEBSD_SPEC },			\
++  { "endfile_linux",		ENDFILE_LINUX_SPEC },			\
++  { "endfile_netbsd",		ENDFILE_NETBSD_SPEC },			\
++  { "endfile_openbsd",		ENDFILE_OPENBSD_SPEC },			\
++  { "endfile_default",		ENDFILE_DEFAULT_SPEC },			\
++  { "link_shlib",		LINK_SHLIB_SPEC },			\
++  { "link_start",		LINK_START_SPEC },			\
++  { "link_start_ads",		LINK_START_ADS_SPEC },			\
++  { "link_start_yellowknife",	LINK_START_YELLOWKNIFE_SPEC },		\
++  { "link_start_mvme",		LINK_START_MVME_SPEC },			\
++  { "link_start_sim",		LINK_START_SIM_SPEC },			\
++  { "link_start_freebsd",	LINK_START_FREEBSD_SPEC },		\
++  { "link_start_linux",		LINK_START_LINUX_SPEC },		\
++  { "link_start_netbsd",	LINK_START_NETBSD_SPEC },		\
++  { "link_start_openbsd",	LINK_START_OPENBSD_SPEC },		\
++  { "link_start_default",	LINK_START_DEFAULT_SPEC },		\
++  { "link_os",			LINK_OS_SPEC },				\
++  { "link_os_ads",		LINK_OS_ADS_SPEC },			\
++  { "link_os_yellowknife",	LINK_OS_YELLOWKNIFE_SPEC },		\
++  { "link_os_mvme",		LINK_OS_MVME_SPEC },			\
++  { "link_os_sim",		LINK_OS_SIM_SPEC },			\
++  { "link_os_freebsd",		LINK_OS_FREEBSD_SPEC },			\
++  { "link_os_linux",		LINK_OS_LINUX_SPEC },			\
++  { "link_os_netbsd",		LINK_OS_NETBSD_SPEC },			\
++  { "link_os_openbsd",		LINK_OS_OPENBSD_SPEC },			\
++  { "link_os_default",		LINK_OS_DEFAULT_SPEC },			\
++  { "cc1_secure_plt_default",	CC1_SECURE_PLT_DEFAULT_SPEC },		\
++  { "link_secure_plt",		LINK_SECURE_PLT_SPEC },			\
++  { "cpp_os_ads",		CPP_OS_ADS_SPEC },			\
++  { "cpp_os_yellowknife",	CPP_OS_YELLOWKNIFE_SPEC },		\
++  { "cpp_os_mvme",		CPP_OS_MVME_SPEC },			\
++  { "cpp_os_sim",		CPP_OS_SIM_SPEC },			\
++  { "cpp_os_freebsd",		CPP_OS_FREEBSD_SPEC },			\
++  { "cpp_os_linux",		CPP_OS_LINUX_SPEC },			\
++  { "cpp_os_netbsd",		CPP_OS_NETBSD_SPEC },			\
++  { "cpp_os_openbsd",		CPP_OS_OPENBSD_SPEC },			\
++  { "cpp_os_default",		CPP_OS_DEFAULT_SPEC },			\
++  { "fbsd_dynamic_linker",	FBSD_DYNAMIC_LINKER },			\
++  SUBSUBTARGET_EXTRA_SPECS
++
++#define	SUBSUBTARGET_EXTRA_SPECS
++
++/* Define this macro as a C expression for the initializer of an
++   array of string to tell the driver program which options are
++   defaults for this target and thus do not need to be handled
++   specially when using `MULTILIB_OPTIONS'.
++
++   Do not define this macro if `MULTILIB_OPTIONS' is not defined in
++   the target makefile fragment or if none of the options listed in
++   `MULTILIB_OPTIONS' are set by default.  *Note Target Fragment::.  */
++
++#define	MULTILIB_DEFAULTS { "mbig", "mcall-sysv" }
++
++/* Define this macro if the code for function profiling should come
++   before the function prologue.  Normally, the profiling code comes
++   after.  */
++#define PROFILE_BEFORE_PROLOGUE 1
++
++/* Function name to call to do profiling.  */
++#define RS6000_MCOUNT "_mcount"
++
++/* Select a format to encode pointers in exception handling data.  CODE
++   is 0 for data, 1 for code labels, 2 for function pointers.  GLOBAL is
++   true if the symbol may be affected by dynamic relocations.  */
++#define ASM_PREFERRED_EH_DATA_FORMAT(CODE, GLOBAL)			\
++  (flag_pic								\
++   ? (((GLOBAL) ? DW_EH_PE_indirect : 0) | DW_EH_PE_pcrel		\
++      | DW_EH_PE_sdata4)						\
++   : DW_EH_PE_absptr)
++
++#define DOUBLE_INT_ASM_OP "\t.quad\t"
++
++/* Generate entries in .fixup for relocatable addresses.  */
++#define RELOCATABLE_NEEDS_FIXUP 1
++
++#define TARGET_ASM_FILE_END rs6000_elf_file_end
++
++#undef TARGET_ASAN_SHADOW_OFFSET
++#define TARGET_ASAN_SHADOW_OFFSET rs6000_asan_shadow_offset
++
++/* This target uses the sysv4.opt file.  */
++#define TARGET_USES_SYSV4_OPT 1
++
++/* Include order changes for musl, same as in generic linux.h.  */
++#if DEFAULT_LIBC == LIBC_MUSL
++#define INCLUDE_DEFAULTS_MUSL_GPP			\
++    { GPLUSPLUS_INCLUDE_DIR, "G++", 1, 1,		\
++      GPLUSPLUS_INCLUDE_DIR_ADD_SYSROOT, 0 },		\
++    { GPLUSPLUS_TOOL_INCLUDE_DIR, "G++", 1, 1,		\
++      GPLUSPLUS_INCLUDE_DIR_ADD_SYSROOT, 1 },		\
++    { GPLUSPLUS_BACKWARD_INCLUDE_DIR, "G++", 1, 1,	\
++      GPLUSPLUS_INCLUDE_DIR_ADD_SYSROOT, 0 },
++
++#ifdef LOCAL_INCLUDE_DIR
++#define INCLUDE_DEFAULTS_MUSL_LOCAL			\
++    { LOCAL_INCLUDE_DIR, 0, 0, 1, 1, 2 },		\
++    { LOCAL_INCLUDE_DIR, 0, 0, 1, 1, 0 },
++#else
++#define INCLUDE_DEFAULTS_MUSL_LOCAL
++#endif
++
++#ifdef PREFIX_INCLUDE_DIR
++#define INCLUDE_DEFAULTS_MUSL_PREFIX			\
++    { PREFIX_INCLUDE_DIR, 0, 0, 1, 0, 0},
++#else
++#define INCLUDE_DEFAULTS_MUSL_PREFIX
++#endif
++
++#ifdef CROSS_INCLUDE_DIR
++#define INCLUDE_DEFAULTS_MUSL_CROSS			\
++    { CROSS_INCLUDE_DIR, "GCC", 0, 0, 0, 0},
++#else
++#define INCLUDE_DEFAULTS_MUSL_CROSS
++#endif
++
++#ifdef TOOL_INCLUDE_DIR
++#define INCLUDE_DEFAULTS_MUSL_TOOL			\
++    { TOOL_INCLUDE_DIR, "BINUTILS", 0, 1, 0, 0},
++#else
++#define INCLUDE_DEFAULTS_MUSL_TOOL
++#endif
++
++#ifdef NATIVE_SYSTEM_HEADER_DIR
++#define INCLUDE_DEFAULTS_MUSL_NATIVE			\
++    { NATIVE_SYSTEM_HEADER_DIR, 0, 0, 0, 1, 2 },	\
++    { NATIVE_SYSTEM_HEADER_DIR, 0, 0, 0, 1, 0 },
++#else
++#define INCLUDE_DEFAULTS_MUSL_NATIVE
++#endif
++
++#if defined (CROSS_DIRECTORY_STRUCTURE) && !defined (TARGET_SYSTEM_ROOT)
++# undef INCLUDE_DEFAULTS_MUSL_LOCAL
++# define INCLUDE_DEFAULTS_MUSL_LOCAL
++# undef INCLUDE_DEFAULTS_MUSL_NATIVE
++# define INCLUDE_DEFAULTS_MUSL_NATIVE
++#else
++# undef INCLUDE_DEFAULTS_MUSL_CROSS
++# define INCLUDE_DEFAULTS_MUSL_CROSS
++#endif
++
++#undef INCLUDE_DEFAULTS
++#define INCLUDE_DEFAULTS				\
++  {							\
++    INCLUDE_DEFAULTS_MUSL_GPP				\
++    INCLUDE_DEFAULTS_MUSL_LOCAL				\
++    INCLUDE_DEFAULTS_MUSL_PREFIX			\
++    INCLUDE_DEFAULTS_MUSL_CROSS				\
++    INCLUDE_DEFAULTS_MUSL_TOOL				\
++    INCLUDE_DEFAULTS_MUSL_NATIVE			\
++    { GCC_INCLUDE_DIR, "GCC", 0, 1, 0, 0 },		\
++    { 0, 0, 0, 0, 0, 0 }				\
++  }
++#endif
+diff -ruN gcc-8.2.0/gcc/config/s390/linux.h agcc/gcc/config/s390/linux.h
+--- gcc-8.2.0/gcc/config/s390/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/s390/linux.h	2018-11-16 19:43:54.307033028 +0300
+@@ -73,8 +73,8 @@
+ #define MULTILIB_DEFAULTS { "m31" }
+ #endif
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld.so.1"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib/ld64.so.1"
++#define GLIBC_DYNAMIC_LINKER32 "/tools/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER64 "/tools/lib/ld64.so.1"
+ 
+ #undef  LINK_SPEC
+ #define LINK_SPEC \
+diff -ruN gcc-8.2.0/gcc/config/sh/linux.h agcc/gcc/config/sh/linux.h
+--- gcc-8.2.0/gcc/config/sh/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/sh/linux.h	2018-11-16 19:43:54.307033028 +0300
+@@ -64,7 +64,7 @@
+   "/lib/ld-musl-sh" MUSL_DYNAMIC_LINKER_E MUSL_DYNAMIC_LINKER_FP \
+   "%{mfdpic:-fdpic}.so.1"
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux.so.2"
+ 
+ #undef SUBTARGET_LINK_EMUL_SUFFIX
+ #define SUBTARGET_LINK_EMUL_SUFFIX "%{mfdpic:_fd;:_linux}"
+diff -ruN gcc-8.2.0/gcc/config/sparc/linux64.h agcc/gcc/config/sparc/linux64.h
+--- gcc-8.2.0/gcc/config/sparc/linux64.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/sparc/linux64.h	2018-11-16 19:43:54.308033005 +0300
+@@ -84,8 +84,8 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld-linux.so.2"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib64/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER32 "/tools/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER64 "/tools/lib64/ld-linux.so.2"
+ 
+ #ifdef SPARC_BI_ARCH
+ 
+@@ -213,7 +213,7 @@
+ #else /* !SPARC_BI_ARCH */
+ 
+ #undef LINK_SPEC
+-#define LINK_SPEC "-m elf64_sparc -Y P,%R/usr/lib64 %{shared:-shared} \
++#define LINK_SPEC "-m elf64_sparc -Y P,%R/tools/lib64 %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+diff -ruN gcc-8.2.0/gcc/config/sparc/linux.h agcc/gcc/config/sparc/linux.h
+--- gcc-8.2.0/gcc/config/sparc/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/sparc/linux.h	2018-11-16 19:43:54.308033005 +0300
+@@ -83,7 +83,7 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld-linux.so.2"
+ 
+ #undef  LINK_SPEC
+ #define LINK_SPEC "-m elf32_sparc %{shared:-shared} \
+diff -ruN gcc-8.2.0/gcc/config/xtensa/linux.h agcc/gcc/config/xtensa/linux.h
+--- gcc-8.2.0/gcc/config/xtensa/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ agcc/gcc/config/xtensa/linux.h	2018-11-16 19:43:54.308033005 +0300
+@@ -46,7 +46,7 @@
+   %{mauto-litpools:--auto-litpools} \
+   %{mno-auto-litpools:--no-auto-litpools}"
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER "/tools/lib/ld.so.1"
+ 
+ #undef LINK_SPEC
+ #define LINK_SPEC \

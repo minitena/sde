@@ -23,7 +23,8 @@ source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/gcc-${pkgve
 	hj.patch
 	pow-optimization.patch
 	zero-regs-gcc8.patch
-	hj-patch-round.patch)
+	hj-patch-round.patch
+	specs.patch)
 
 prepare() {
 	cd gcc-${pkgver/+/-}
@@ -41,33 +42,11 @@ prepare() {
 	patch -p1 -i $srcdir/hj-patch-round.patch
 
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
-	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
-	sed -i '/m64=/s/lib64/lib/' gcc/config/rs6000/t-linux64
-	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
-	sed -i 's,lib64,lib,g' gcc/config/sparc/t-linux64
-	sed -i 's,lib64,lib,g' gcc/config/s390/t-linux64
-	sed -i 's,lib64,lib,g' gcc/config/mips/t-linux64
 
-	for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h \
-			gcc/config/aarch64/aarch64-linux.h \
-			gcc/config/arm/linux-eabi.h gcc/config/arm/linux-elf.h \
-			gcc/config/mips/linux.h \
-			gcc/config/microblaze/linux.h \
-			gcc/config/rs6000/linux64.h gcc/config/rs6000/sysv4.h \
-			gcc/config/sparc/linux.h gcc/config/sparc/linux64.h \
-			gcc/config/s390/linux.h \
-			gcc/config/pa/pa-linux.h \
-			gcc/config/riscv/linux.h; do
-		cp -u $file{,.orig}
-		sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
-			-e 's@/usr@/tools@g' $file.orig > $file
-		echo '
-	#undef STANDARD_STARTFILE_PREFIX_1
-	#undef STANDARD_STARTFILE_PREFIX_2
-	#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
-	#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
-		touch $file.orig
-	done
+	patch -Np1 -i $srcdir/specs.patch
+
+	echo -en '\n#undef STANDARD_STARTFILE_PREFIX_1\n#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"\n' >> gcc/config/linux.h
+	echo -en '\n#undef STANDARD_STARTFILE_PREFIX_2\n#define STANDARD_STARTFILE_PREFIX_2 ""\n' >> gcc/config/linux.h
 
 	mv ../gmp-$gmpver gmp
 	mv ../mpfr-$mpfrver mpfr

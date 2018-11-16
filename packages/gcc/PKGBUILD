@@ -24,6 +24,7 @@ source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/$pkgbase-${
 	pow-optimization.patch
 	zero-regs-gcc8.patch
 	hj-patch-round.patch
+	pure.patch
 	c89
 	c99)
 md5sums=('a7d7fec96471ebf3b30d066e42167cee'
@@ -39,6 +40,7 @@ md5sums=('a7d7fec96471ebf3b30d066e42167cee'
          '68ce9f34f638ba0a55dc2e67935f1306'
          '865817b81a3766d6640a4b68e0698860'
          '19f27d672b8be161d1c46e3137d0362e'
+         '658070c703f48fe436189335058bee7f'
          '99691641ab044836a25fbcb73a1943cf'
          'ee387395de79f09b491857f8fbb5551d')
 
@@ -58,11 +60,8 @@ prepare() {
 	patch -p1 -i $srcdir/hj-patch-round.patch
 
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
-	sed -i '/m64=/s/lib64/lib/' gcc/config/i386/t-linux64
-	sed -i '/m64=/s/lib64/lib/' gcc/config/rs6000/t-linux64
-	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
-	sed -i 's,lib64,lib,g' gcc/config/sparc/t-linux64
-	sed -i 's,lib64,lib,g' gcc/config/s390/t-linux64
+
+	patch -Np1 -i $srcdir/pure.patch
 
 	mkdir build
 }

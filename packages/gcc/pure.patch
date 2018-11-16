@@ -1,0 +1,186 @@
+diff -ruN gcc-8.2.0/gcc/config/aarch64/t-aarch64-linux bgcc/gcc/config/aarch64/t-aarch64-linux
+--- gcc-8.2.0/gcc/config/aarch64/t-aarch64-linux	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/aarch64/t-aarch64-linux	2018-11-16 19:57:57.979234284 +0300
+@@ -22,7 +22,7 @@
+ LIB1ASMFUNCS = _aarch64_sync_cache_range
+ 
+ AARCH_BE = $(if $(findstring TARGET_BIG_ENDIAN_DEFAULT=1, $(tm_defines)),_be)
+-MULTILIB_OSDIRNAMES = mabi.lp64=../lib64$(call if_multiarch,:aarch64$(AARCH_BE)-linux-gnu)
++MULTILIB_OSDIRNAMES = mabi.lp64=../lib$(call if_multiarch,:aarch64$(AARCH_BE)-linux-gnu)
+ MULTIARCH_DIRNAME = $(call if_multiarch,aarch64$(AARCH_BE)-linux-gnu)
+ 
+ MULTILIB_OSDIRNAMES += mabi.ilp32=../libilp32$(call if_multiarch,:aarch64$(AARCH_BE)-linux-gnu_ilp32)
+diff -ruN gcc-8.2.0/gcc/config/i386/linux64.h bgcc/gcc/config/i386/linux64.h
+--- gcc-8.2.0/gcc/config/i386/linux64.h	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/i386/linux64.h	2018-11-16 19:46:19.496687474 +0300
+@@ -27,8 +27,8 @@
+ #define GNU_USER_LINK_EMULATION64 "elf_x86_64"
+ #define GNU_USER_LINK_EMULATIONX32 "elf32_x86_64"
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld-linux.so.2"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib64/ld-linux-x86-64.so.2"
++#define GLIBC_DYNAMIC_LINKER32 "/lib32/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER64 "/lib/ld-linux-x86-64.so.2"
+ #define GLIBC_DYNAMIC_LINKERX32 "/libx32/ld-linux-x32.so.2"
+ 
+ #undef MUSL_DYNAMIC_LINKER32
+diff -ruN gcc-8.2.0/gcc/config/i386/t-linux64 bgcc/gcc/config/i386/t-linux64
+--- gcc-8.2.0/gcc/config/i386/t-linux64	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/i386/t-linux64	2018-11-16 19:46:19.496687474 +0300
+@@ -33,6 +33,6 @@
+ comma=,
+ MULTILIB_OPTIONS    = $(subst $(comma),/,$(TM_MULTILIB_CONFIG))
+ MULTILIB_DIRNAMES   = $(patsubst m%, %, $(subst /, ,$(MULTILIB_OPTIONS)))
+-MULTILIB_OSDIRNAMES = m64=../lib64$(call if_multiarch,:x86_64-linux-gnu)
+-MULTILIB_OSDIRNAMES+= m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:i386-linux-gnu)
++MULTILIB_OSDIRNAMES = m64=../lib$(call if_multiarch,:x86_64-linux-gnu)
++MULTILIB_OSDIRNAMES+= m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib32)$(call if_multiarch,:i386-linux-gnu)
+ MULTILIB_OSDIRNAMES+= mx32=../libx32$(call if_multiarch,:x86_64-linux-gnux32)
+diff -ruN gcc-8.2.0/gcc/config/linux.h bgcc/gcc/config/linux.h
+--- gcc-8.2.0/gcc/config/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/linux.h	2018-11-16 19:46:19.497687451 +0300
+@@ -82,7 +82,7 @@
+    GLIBC_DYNAMIC_LINKER32 and GLIBC_DYNAMIC_LINKER64 for targets
+    supporting both 32-bit and 64-bit compilation.  */
+ #define UCLIBC_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
+-#define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER32 "/lib32/ld-uClibc.so.0"
+ #define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
+ #define UCLIBC_DYNAMIC_LINKERX32 "/lib/ldx32-uClibc.so.0"
+ #define BIONIC_DYNAMIC_LINKER "/system/bin/linker"
+diff -ruN gcc-8.2.0/gcc/config/mips/t-linux64 bgcc/gcc/config/mips/t-linux64
+--- gcc-8.2.0/gcc/config/mips/t-linux64	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/mips/t-linux64	2018-11-16 19:46:19.497687451 +0300
+@@ -22,5 +22,5 @@
+ MIPS_SOFT = $(if $(strip $(filter MASK_SOFT_FLOAT_ABI, $(target_cpu_default)) $(filter soft, $(with_float))),soft)
+ MULTILIB_OSDIRNAMES = \
+ 	../lib32$(call if_multiarch,:mips64$(MIPS_EL)-linux-gnuabin32$(MIPS_SOFT)) \
+-	../lib$(call if_multiarch,:mips$(MIPS_EL)-linux-gnu$(MIPS_SOFT)) \
+-	../lib64$(call if_multiarch,:mips64$(MIPS_EL)-linux-gnuabi64$(MIPS_SOFT))
++	../lib32$(call if_multiarch,:mips$(MIPS_EL)-linux-gnu$(MIPS_SOFT)) \
++	../lib$(call if_multiarch,:mips64$(MIPS_EL)-linux-gnuabi64$(MIPS_SOFT))
+diff -ruN gcc-8.2.0/gcc/config/riscv/t-linux bgcc/gcc/config/riscv/t-linux
+--- gcc-8.2.0/gcc/config/riscv/t-linux	2017-02-07 00:38:37.000000000 +0300
++++ bgcc/gcc/config/riscv/t-linux	2018-11-16 19:47:28.022106891 +0300
+@@ -1,3 +1,3 @@
+ # Only XLEN and ABI affect Linux multilib dir names, e.g. /lib32/ilp32d/
+-MULTILIB_DIRNAMES := $(patsubst rv32%,lib32,$(patsubst rv64%,lib64,$(MULTILIB_DIRNAMES)))
++MULTILIB_DIRNAMES := $(patsubst rv32%,lib32,$(patsubst rv64%,lib,$(MULTILIB_DIRNAMES)))
+ MULTILIB_OSDIRNAMES := $(patsubst lib%,../lib%,$(MULTILIB_DIRNAMES))
+diff -ruN gcc-8.2.0/gcc/config/rs6000/linux64.h bgcc/gcc/config/rs6000/linux64.h
+--- gcc-8.2.0/gcc/config/rs6000/linux64.h	2018-06-25 22:34:01.000000000 +0300
++++ bgcc/gcc/config/rs6000/linux64.h	2018-11-16 19:46:19.498687428 +0300
+@@ -413,16 +413,16 @@
+ #undef	LINK_OS_DEFAULT_SPEC
+ #define LINK_OS_DEFAULT_SPEC "%(link_os_linux)"
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "%(dynamic_linker_prefix)/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER32 "/lib32/ld.so.1"
+ 
+ #ifdef LINUX64_DEFAULT_ABI_ELFv2
+ #define GLIBC_DYNAMIC_LINKER64 \
+-"%{mabi=elfv1:%(dynamic_linker_prefix)/lib64/ld64.so.1;" \
+-":%(dynamic_linker_prefix)/lib64/ld64.so.2}"
++"%{mabi=elfv1:/lib/ld64.so.1;" \
++":/lib/ld64.so.2}"
+ #else
+ #define GLIBC_DYNAMIC_LINKER64 \
+-"%{mabi=elfv2:%(dynamic_linker_prefix)/lib64/ld64.so.2;" \
+-":%(dynamic_linker_prefix)/lib64/ld64.so.1}"
++"%{mabi=elfv2:/lib/ld64.so.2;" \
++":/lib/ld64.so.1}"
+ #endif
+ 
+ #define MUSL_DYNAMIC_LINKER32 \
+@@ -430,7 +430,7 @@
+ #define MUSL_DYNAMIC_LINKER64 \
+   "/lib/ld-musl-powerpc64" MUSL_DYNAMIC_LINKER_E "%{msoft-float:-sf}.so.1"
+ 
+-#define UCLIBC_DYNAMIC_LINKER32 "/lib/ld-uClibc.so.0"
++#define UCLIBC_DYNAMIC_LINKER32 "/lib32/ld-uClibc.so.0"
+ #define UCLIBC_DYNAMIC_LINKER64 "/lib/ld64-uClibc.so.0"
+ #if DEFAULT_LIBC == LIBC_UCLIBC
+ #define CHOOSE_DYNAMIC_LINKER(G, U, M) \
+diff -ruN gcc-8.2.0/gcc/config/rs6000/t-linux64 bgcc/gcc/config/rs6000/t-linux64
+--- gcc-8.2.0/gcc/config/rs6000/t-linux64	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/rs6000/t-linux64	2018-11-16 19:46:19.498687428 +0300
+@@ -28,8 +28,8 @@
+ MULTILIB_OPTIONS    := m64/m32
+ MULTILIB_DIRNAMES   := 64 32
+ MULTILIB_EXTRA_OPTS := 
+-MULTILIB_OSDIRNAMES := m64=../lib64$(call if_multiarch,:powerpc64-linux-gnu)
+-MULTILIB_OSDIRNAMES += m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:powerpc-linux-gnu)
++MULTILIB_OSDIRNAMES := m64=../lib$(call if_multiarch,:powerpc64-linux-gnu)
++MULTILIB_OSDIRNAMES += m32=$(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib32)$(call if_multiarch,:powerpc-linux-gnu)
+ 
+ rs6000-linux.o: $(srcdir)/config/rs6000/rs6000-linux.c
+ 	$(COMPILE) $<
+diff -ruN gcc-8.2.0/gcc/config/s390/linux.h bgcc/gcc/config/s390/linux.h
+--- gcc-8.2.0/gcc/config/s390/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/s390/linux.h	2018-11-16 19:46:19.499687405 +0300
+@@ -73,7 +73,7 @@
+ #define MULTILIB_DEFAULTS { "m31" }
+ #endif
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld.so.1"
++#define GLIBC_DYNAMIC_LINKER32 "/lib32/ld.so.1"
+ #define GLIBC_DYNAMIC_LINKER64 "/lib/ld64.so.1"
+ 
+ #undef  LINK_SPEC
+diff -ruN gcc-8.2.0/gcc/config/s390/t-linux64 bgcc/gcc/config/s390/t-linux64
+--- gcc-8.2.0/gcc/config/s390/t-linux64	2012-11-21 20:13:28.000000000 +0400
++++ bgcc/gcc/config/s390/t-linux64	2018-11-16 19:46:19.499687405 +0300
+@@ -7,5 +7,5 @@
+ 
+ MULTILIB_OPTIONS = m64/m31
+ MULTILIB_DIRNAMES = 64 32
+-MULTILIB_OSDIRNAMES = ../lib64$(call if_multiarch,:s390x-linux-gnu)
+-MULTILIB_OSDIRNAMES += $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:s390-linux-gnu)
++MULTILIB_OSDIRNAMES = ../lib$(call if_multiarch,:s390x-linux-gnu)
++MULTILIB_OSDIRNAMES += $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib32)$(call if_multiarch,:s390-linux-gnu)
+diff -ruN gcc-8.2.0/gcc/config/sparc/linux64.h bgcc/gcc/config/sparc/linux64.h
+--- gcc-8.2.0/gcc/config/sparc/linux64.h	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/sparc/linux64.h	2018-11-16 19:46:19.500687381 +0300
+@@ -84,8 +84,8 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER32 "/lib/ld-linux.so.2"
+-#define GLIBC_DYNAMIC_LINKER64 "/lib64/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER32 "/lib32/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER64 "/lib/ld-linux.so.2"
+ 
+ #ifdef SPARC_BI_ARCH
+ 
+@@ -213,7 +213,7 @@
+ #else /* !SPARC_BI_ARCH */
+ 
+ #undef LINK_SPEC
+-#define LINK_SPEC "-m elf64_sparc -Y P,%R/usr/lib64 %{shared:-shared} \
++#define LINK_SPEC "-m elf64_sparc -Y P,%R/lib %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+diff -ruN gcc-8.2.0/gcc/config/sparc/linux.h bgcc/gcc/config/sparc/linux.h
+--- gcc-8.2.0/gcc/config/sparc/linux.h	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/sparc/linux.h	2018-11-16 19:46:19.499687405 +0300
+@@ -83,7 +83,7 @@
+    When the -shared link option is used a final link is not being
+    done.  */
+ 
+-#define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define GLIBC_DYNAMIC_LINKER "/lib32/ld-linux.so.2"
+ 
+ #undef  LINK_SPEC
+ #define LINK_SPEC "-m elf32_sparc %{shared:-shared} \
+diff -ruN gcc-8.2.0/gcc/config/sparc/t-linux64 bgcc/gcc/config/sparc/t-linux64
+--- gcc-8.2.0/gcc/config/sparc/t-linux64	2018-01-03 13:03:58.000000000 +0300
++++ bgcc/gcc/config/sparc/t-linux64	2018-11-16 19:46:19.500687381 +0300
+@@ -25,5 +25,5 @@
+ 
+ MULTILIB_OPTIONS = m64/m32
+ MULTILIB_DIRNAMES = 64 32
+-MULTILIB_OSDIRNAMES = ../lib64$(call if_multiarch,:sparc64-linux-gnu)
+-MULTILIB_OSDIRNAMES += $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib)$(call if_multiarch,:sparc-linux-gnu)
++MULTILIB_OSDIRNAMES = ../lib$(call if_multiarch,:sparc64-linux-gnu)
++MULTILIB_OSDIRNAMES += $(if $(wildcard $(shell echo $(SYSTEM_HEADER_DIR))/../../usr/lib32),../lib32,../lib32)$(call if_multiarch,:sparc-linux-gnu)
