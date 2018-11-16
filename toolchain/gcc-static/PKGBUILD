@@ -99,7 +99,6 @@ build() {
 		--without-headers \
 		--enable-languages=c \
 		--enable-linker-build-id \
-		--disable-decimal-float \
 		--disable-libatomic \
 		--disable-libcilkrts \
 		--disable-libgomp \
