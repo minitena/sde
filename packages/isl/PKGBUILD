@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=isl
-pkgver=0.20
+pkgver=0.19
 pkgrel=1
 pkgdesc="An integer set library for the polyhedral model"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
@@ -10,7 +10,7 @@ url="http://isl.gforge.inria.fr/"
 license=('MIT')
 depends=('glibc' 'gmp')
 source=("http://isl.gforge.inria.fr/$pkgname-$pkgver.tar.xz")
-md5sums=('2ee25141b7d1688afb63e5bf3ac12999')
+md5sums=('1ae893020fa078531e6158cb243880a5')
 
 build() {
 	cd $pkgname-$pkgver

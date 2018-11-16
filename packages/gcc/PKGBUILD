@@ -3,15 +3,14 @@
 
 pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
-pkgver=8+20181109
-snapver=8.2.1
+pkgver=8.2.0
 pkgrel=8
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 options=('staticlibs' '!emptydirs')
-source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/$pkgbase-${pkgver/+/-}.tar.xz
+source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz
 	0001-Fix-stack-protection-issues.patch
 	openmp-vectorize-v2.patch
 	fortran-vector-v2.patch
@@ -27,7 +26,7 @@ source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/$pkgbase-${
 	pure.patch
 	c89
 	c99)
-md5sums=('a7d7fec96471ebf3b30d066e42167cee'
+md5sums=('4ab282f414676496483b3e1793d07862'
          '71798cd205d3401ab29ba79c8e45ef70'
          'a767abde6eadd3fe3a573e990a195588'
          'a6799d6442237da22d6e13507cc7dfb2'
@@ -45,7 +44,7 @@ md5sums=('a7d7fec96471ebf3b30d066e42167cee'
          'ee387395de79f09b491857f8fbb5551d')
 
 prepare() {
-	cd $pkgbase-${pkgver/+/-}
+	cd $pkgname-$pkgver
 	patch -p1 -i $srcdir/0001-Fix-stack-protection-issues.patch
 	patch -p1 -i $srcdir/openmp-vectorize-v2.patch
 	patch -p1 -i $srcdir/fortran-vector-v2.patch
@@ -82,7 +81,7 @@ build() {
 			export LANGS="c,c++,lto,fortran"
 	esac
 
-	cd $pkgbase-${pkgver/+/-}
+	cd $pkgname-$pkgver
 	cd build
 	../configure \
 		--prefix=/usr \
@@ -120,7 +119,7 @@ package_gcc-libs() {
 	pkgdesc='Runtime libraries shipped by GCC'
 	depends=('glibc')
 
-	cd $pkgbase-${pkgver/+/-}
+	cd $pkgname-$pkgver
 	cd build
 	make -j1 DESTDIR=$pkgdir install
 
@@ -137,7 +136,7 @@ package_gcc() {
 	pkgdesc="The GNU Compiler Collection"
 	depends=('linux-headers' 'glibc' 'gcc-libs' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 
-	cd $pkgbase-${pkgver/+/-}
+	cd $pkgname-$pkgver
 	cd build
 	make -j1 DESTDIR=$pkgdir install
 
@@ -151,7 +150,7 @@ package_gcc() {
 	ln -sf ../bin/cpp $pkgdir/usr/lib
 
 	install -dm755 $pkgdir/usr/lib/bfd-plugins/
-	ln -sf /usr/lib/gcc/$CHOST/${snapver}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
+	ln -sf /usr/lib/gcc/$CHOST/$pkgver/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 
 	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
 	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib

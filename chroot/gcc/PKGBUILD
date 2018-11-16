@@ -1,13 +1,12 @@
 pkgname=chroot-gcc
-pkgver=8+20181109
-snapver=8.2.1
+pkgver=8.2.0
 gmpver=6.1.2
 mpfrver=4.0.1
 mpcver=1.1.0
-islver=0.20
+islver=0.19
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
-source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/gcc-${pkgver/+/-}.tar.xz
+arch=('any')
+source=(http://ftpmirror.gnu.org/gnu/gcc/gcc-$pkgver/gcc-$pkgver.tar.xz
 	http://ftpmirror.gnu.org/gnu/gmp/gmp-$gmpver.tar.xz
 	http://www.mpfr.org/mpfr-$mpfrver/mpfr-$mpfrver.tar.xz
 	http://ftpmirror.gnu.org/gnu/mpc/mpc-$mpcver.tar.gz
@@ -27,7 +26,7 @@ source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/gcc-${pkgve
 	specs.patch)
 
 prepare() {
-	cd gcc-${pkgver/+/-}
+	cd gcc-$pkgver
 	patch -p1 -i $srcdir/0001-Fix-stack-protection-issues.patch
 	patch -p1 -i $srcdir/openmp-vectorize-v2.patch
 	patch -p1 -i $srcdir/fortran-vector-v2.patch
@@ -62,7 +61,7 @@ build() {
 	export CFLAGS_FOR_TARGET="$CFLAGS"
 	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
 
-	cd gcc-${pkgver/+/-}
+	cd gcc-$pkgver
 	cd build
 	../configure \
 		--prefix=/tools \
@@ -100,7 +99,7 @@ build() {
 }
 
 package() {
-	cd gcc-${pkgver/+/-}
+	cd gcc-$pkgver
 	cd build
 	make -j1 DESTDIR=$pkgdir install
 
@@ -109,8 +108,8 @@ package() {
 	ln -sf ../bin/cpp $pkgdir/tools/lib
 
 	install -dm755 $pkgdir/tools/lib/bfd-plugins/
-	ln -sf /tools/lib/gcc/$XTARGET/${snapver}/liblto_plugin.so $pkgdir/tools/lib/bfd-plugins/
+	ln -sf /tools/lib/gcc/$XTARGET/$pkgver/liblto_plugin.so $pkgdir/tools/lib/bfd-plugins/
 
 	install -dm755 $pkgdir/usr/lib/bfd-plugins/
-	ln -sf /tools/lib/gcc/$XTARGET/${snapver}/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
+	ln -sf /tools/lib/gcc/$XTARGET/$pkgver/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 }
