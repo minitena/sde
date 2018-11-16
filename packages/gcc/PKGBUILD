@@ -118,11 +118,14 @@ package_gcc() {
 	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
 	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
 
-	mkdir -p $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
-	mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
-	mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/go/${snapver}/$CHOST/bin
-
-	ln -sf /usr/lib/go/${snapver}/$CHOST $pkgdir/usr/lib/gccgo
+	case $BARCH in
+		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
+			mkdir -p $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
+			mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
+			mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
+			ln -sf /usr/lib/go/$pkgver/$CHOST $pkgdir/usr/lib/gccgo
+			;;
+	esac
 
 	# Provided by gcc-libs
 	rm -rf $pkgdir/usr/lib/*.so{,.*}
