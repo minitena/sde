@@ -99,7 +99,6 @@ build() {
 		--enable-clocale=gnu \
 		--enable-default-pie \
 		--enable-default-ssp \
-		--enable-gnu-indirect-function \
 		--enable-gnu-unique-object \
 		--enable-languages=$LANGS \
 		--enable-install-libiberty \
