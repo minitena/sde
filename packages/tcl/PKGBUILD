@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=tcl
-pkgver=8.6.8
+pkgver=8.6.9
 pkgrel=1
 pkgdesc="The Tcl scripting language"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
@@ -11,7 +11,7 @@ license=('custom')
 depends=('glibc' 'zlib' 'sqlite')
 options=('staticlibs')
 source=("http://downloads.sourceforge.net/sourceforge/tcl/tcl${pkgver}-src.tar.gz")
-md5sums=('81656d3367af032e0ae6157eff134f89')
+md5sums=('95f11aa853a4557dd98c7a0c29032cd1')
 
 prepare() {
 	cd tcl${pkgver}
