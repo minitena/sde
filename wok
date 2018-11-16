@@ -328,7 +328,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="sparc64-generic-linux"
 			export XKARCH="sparc"
-			export GCCOPTS=''
+			export GCCOPTS="--with-cpu=ultrasparc"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="sparc64"
@@ -337,7 +337,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="sparc-generic-linux"
 			export XKARCH="sparc"
-			export GCCOPTS=''
+			export GCCOPTS="--disable-linux-futex"
 			export BINUTILSOPTS=''
 			export GLIBCOPTS=''
 			export QEMUARCH="sparc"
