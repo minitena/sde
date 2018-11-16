@@ -75,6 +75,14 @@ build() {
 	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
 	export FFLAGS_FOR_TARGET="$FFLAGS"
 
+	case $BARCH in
+		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
+			export LANGS="c,c++,lto,fortran,go"
+			;;
+		*)
+			export LANGS="c,c++,lto,fortran"
+	esac
+
 	cd $pkgbase-${pkgver/+/-}
 	cd build
 	../configure \
@@ -93,7 +101,7 @@ build() {
 		--enable-default-ssp \
 		--enable-gnu-indirect-function \
 		--enable-gnu-unique-object \
-		--enable-languages=c,c++,lto,fortran,go \
+		--enable-languages=$LANGS \
 		--enable-install-libiberty \
 		--enable-linker-build-id \
 		--enable-lto \
