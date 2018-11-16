@@ -11,53 +11,16 @@ license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 options=('staticlibs' '!emptydirs')
 source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz
-	0001-Fix-stack-protection-issues.patch
-	openmp-vectorize-v2.patch
-	fortran-vector-v2.patch
-	optimize.patch
-	ipa-cp.patch
-	optimize-at-least-some.patch
-	gomp-relax.patch
-	avx512-when-we-ask-for-it.patch
-	hj.patch
-	pow-optimization.patch
-	zero-regs-gcc8.patch
-	hj-patch-round.patch
 	pure.patch
 	c89
 	c99)
 md5sums=('4ab282f414676496483b3e1793d07862'
-         '71798cd205d3401ab29ba79c8e45ef70'
-         'a767abde6eadd3fe3a573e990a195588'
-         'a6799d6442237da22d6e13507cc7dfb2'
-         '522c1cfbbb099cfc7287978d673a2f26'
-         '4c9bf1aebd3f809ddeebb24137829238'
-         'f1c4a280552cf963d88692c988daa74f'
-         '3e9ce4d3a022245451566e93804f40c0'
-         '1c97a9d030e35fb0147568e56c58bd8f'
-         'b2089d68ddcd7e4708851be77ad436c6'
-         '68ce9f34f638ba0a55dc2e67935f1306'
-         '865817b81a3766d6640a4b68e0698860'
-         '19f27d672b8be161d1c46e3137d0362e'
          '658070c703f48fe436189335058bee7f'
          '99691641ab044836a25fbcb73a1943cf'
          'ee387395de79f09b491857f8fbb5551d')
 
 prepare() {
 	cd $pkgname-$pkgver
-	patch -p1 -i $srcdir/0001-Fix-stack-protection-issues.patch
-	patch -p1 -i $srcdir/openmp-vectorize-v2.patch
-	patch -p1 -i $srcdir/fortran-vector-v2.patch
-	patch -p1 -i $srcdir/optimize.patch
-	patch -p1 -i $srcdir/ipa-cp.patch
-	patch -p1 -i $srcdir/optimize-at-least-some.patch
-	patch -p1 -i $srcdir/gomp-relax.patch
-	patch -p1 -i $srcdir/avx512-when-we-ask-for-it.patch
-	patch -p1 -i $srcdir/hj.patch
-	patch -p1 -i $srcdir/pow-optimization.patch
-	patch -p1 -i $srcdir/zero-regs-gcc8.patch
-	patch -p1 -i $srcdir/hj-patch-round.patch
-
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 
 	patch -Np1 -i $srcdir/pure.patch
