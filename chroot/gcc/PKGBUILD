@@ -6,7 +6,7 @@ mpfrver=4.0.1
 mpcver=1.1.0
 islver=0.20
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
 source=(http://mirror.linux-ia64.org/gnu/gcc/snapshots/${pkgver/+/-}/gcc-${pkgver/+/-}.tar.xz
 	http://ftpmirror.gnu.org/gnu/gmp/gmp-$gmpver.tar.xz
 	http://www.mpfr.org/mpfr-$mpfrver/mpfr-$mpfrver.tar.xz
@@ -46,6 +46,7 @@ prepare() {
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
 	sed -i 's,lib64,lib,g' gcc/config/sparc/t-linux64
 	sed -i 's,lib64,lib,g' gcc/config/s390/t-linux64
+	sed -i 's,lib64,lib,g' gcc/config/mips/t-linux64
 
 	for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h \
 			gcc/config/aarch64/aarch64-linux.h \

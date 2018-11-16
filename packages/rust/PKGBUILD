@@ -5,7 +5,7 @@ pkgname=rust
 pkgver=nightly
 pkgrel=1
 pkgdesc="Systems programming language focused on safety, speed and concurrency"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'powerpc' 'powerpc64' 'powerpc64le' 'mips' 'mipsel' 's390x' 'sparc64')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'powerpc' 'powerpc64' 'powerpc64le' 'mips64' 'mips' 's390x' 'sparc64')
 url="https://www.rust-lang.org/"
 license=('MIT' 'Apache')
 depends=('gcc-libs' 'llvm-libs' 'curl' 'libssh2')
@@ -39,8 +39,8 @@ prepare() {
 			export RUSTTARGET="armv7-unknown-linux-gnueabihf"
 			export LLVMTARGET="ARM;AMDGPU;BPF"
 			;;
-		mipsel)
-			export RUSTTARGET="mipsel-unknown-linux-gnu"
+		mips64)
+			export RUSTTARGET="mips64-unknown-linux-gnu"
 			export LLVMTARGET="Mips;AMDGPU;BPF"
 			;;
 		mips)

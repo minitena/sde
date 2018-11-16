@@ -45,6 +45,7 @@ prepare() {
 	sed -i '/lp64=/s/lib64/lib/' gcc/config/aarch64/t-aarch64-linux
 	sed -i 's,lib64,lib,g' gcc/config/sparc/t-linux64
 	sed -i 's,lib64,lib,g' gcc/config/s390/t-linux64
+	sed -i 's,lib64,lib,g' gcc/config/mips/t-linux64
 
 	for file in gcc/config/linux.h gcc/config/i386/linux.h gcc/config/i386/linux64.h \
 			gcc/config/aarch64/aarch64-linux.h \

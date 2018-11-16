@@ -1,7 +1,7 @@
 pkgname=chroot-linux-headers
 pkgver=4.19.2
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
 source=(https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz)
 
 build() {
@@ -21,7 +21,7 @@ package() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		mipsel|mips)
+		mips|mips64)
 			export XKARCH="mips"
 			;;
 		powerpc64le|powerpc64|powerpc)
@@ -35,9 +35,6 @@ package() {
 			;;
 		microblaze)
 			export XKARCH="microblaze"
-			;;
-		hppa)
-			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"

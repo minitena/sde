@@ -279,96 +279,6 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
-		mips)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="mips-generic-linux"
-			export XKARCH="mips"
-			export GCCOPTS="--with-arch=mips32 --with-mips-plt --with-float=soft --with-abi=32 --with-linker-hash-style=sysv"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="mips"
-			;;
-		mipsel)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="mipsel-generic-linux"
-			export XKARCH="mips"
-			export GCCOPTS="--with-arch=mips32 --with-mips-plt --with-float=soft --with-abi=32 --with-linker-hash-style=sysv"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="mipsel"
-			;;
-		powerpc64le)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="powerpc64le-generic-linux"
-			export XKARCH="powerpc"
-			export GCCOPTS="--with-cpu=power8 --with-tune=power8 --with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="ppc64le"
-			;;
-		powerpc64)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="powerpc64-generic-linux"
-			export XKARCH="powerpc"
-			export GCCOPTS="--with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="ppc64"
-			;;
-		powerpc)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="powerpc-generic-linux"
-			export XKARCH="powerpc"
-			export GCCOPTS="--with-long-double-128 --enable-secureplt --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="ppc"
-			;;
-		sparc64)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="sparc64-generic-linux"
-			export XKARCH="sparc"
-			export GCCOPTS="--with-long-double-128 --disable-linux-futex --with-cpu=ultrasparc --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="sparc64"
-			;;
-		sparc)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="sparc-generic-linux"
-			export XKARCH="sparc"
-			export GCCOPTS="--with-long-double-128 --disable-linux-futex --with-cpu=v7 --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="sparc"
-			;;
-		s390x)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="s390x-generic-linux"
-			export XKARCH="s390"
-			export GCCOPTS="--with-long-double-128 --with-arch=zEC12 --with-tune=z13 --enable-decimal-float --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="s390x"
-			;;
-		microblaze)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="microblaze-generic-linux"
-			export XKARCH="microblaze"
-			export GCCOPTS="--with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="microblaze"
-			;;
-		hppa)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="hppa-generic-linux"
-			export XKARCH="parisc"
-			export GCCOPTS="--enable-sjlj-exceptions --with-linker-hash-style=gnu"
-			export BINUTILSOPTS=''
-			export GLIBCOPTS=''
-			export QEMUARCH="hppa"
-			;;
 		riscv64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="riscv64-generic-linux"
@@ -820,42 +730,42 @@ build_core_system() {
 				;;
 			rust)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|sparc64|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
 						pkgnativeinstallnodeps rust
 						;;
 				esac
 				;;
 			go)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
 						pkgnativeinstall go
 						;;
 				esac
 				;;
 			llvm)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
 						pkgnativeinstall llvm
 						;;
 				esac
 				;;
 			compiler-rt)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
 						pkgnativeinstall compiler-rt
 						;;
 				esac
 				;;
 			clang)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
 						pkgnativeinstall clang
 						;;
 				esac
 				;;
 			lld)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mipsel|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
 						pkgnativeinstall lld
 						;;
 				esac

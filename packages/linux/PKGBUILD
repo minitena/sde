@@ -6,7 +6,7 @@ pkgbase=linux
 pkgver=4.19.2
 zerover=$pkgver
 pkgrel=26
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'or1k' 'hppa' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -57,10 +57,9 @@ prepare() {
 			cp -f arch/mips/configs/malta_defconfig .config
 			sed -i -e 's:CONFIG_CPU_LITTLE_ENDIAN:CONFIG_CPU_BIG_ENDIAN:' .config
 			;;
-		mipsel)
+		mips64)
 			export XKARCH="mips"
-			cp -f arch/mips/configs/malta_defconfig .config
-			sed -i -e 's:CONFIG_CPU_BIG_ENDIAN:CONFIG_CPU_LITTLE_ENDIAN:' .config
+			make ARCH=$XKARCH ip32_defconfig
 			;;
 		powerpc64le)
 			export XKARCH="powerpc"
@@ -86,10 +85,6 @@ prepare() {
 		microblaze)
 			export XKARCH="microblaze"
 			make ARCH=$XKARCH mmu_defconfig
-			;;
-		hppa)
-			export XKARCH="parisc"
-			make ARCH=$XKARCH generic-32bit_defconfig
 			;;
 		riscv32)
 			export XKARCH="riscv"
@@ -127,7 +122,7 @@ build() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		mipsel|mips)
+		mips|mips64)
 			export XKARCH="mips"
 			;;
 		powerpc64le|powerpc64|powerpc)
@@ -141,9 +136,6 @@ build() {
 			;;
 		microblaze)
 			export XKARCH="microblaze"
-			;;
-		hppa)
-			export XKARCH="parisc"
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
@@ -179,7 +171,7 @@ package_linux() {
 			export XKARCH="arm"
 			export IMG="arch/arm/boot/zImage"
 			;;
-		mipsel|mips)
+		mips|mips64)
 			export XKARCH="mips"
 			export IMG="vmlinux"
 			;;
@@ -197,10 +189,6 @@ package_linux() {
 			;;
 		microblaze)
 			export XKARCH="microblaze"
-			export IMG="vmlinux"
-			;;
-		hppa)
-			export XKARCH="parisc"
 			export IMG="vmlinux"
 			;;
 		riscv32|riscv64)
@@ -256,7 +244,7 @@ package_linux-devel() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		mipsel|mips)
+		mips|mips64)
 			export XKARCH="mips"
 			;;
 		powerpc64le|powerpc64|powerpc)

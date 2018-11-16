@@ -5,7 +5,7 @@ pkgname=clang
 pkgver=7.0.0
 pkgrel=1
 pkgdesc="C language family frontend for LLVM"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips' 'mipsel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'riscv64' 'riscv32')
 url="https://clang.llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 depends=('llvm-libs' 'compiler-rt')
@@ -37,7 +37,7 @@ build() {
 		arm)
 			export LLVMTARGET="ARM;AMDGPU;BPF"
 			;;
-		mips|mipsel)
+		mips|mipsel|mips64|mips64el)
 			export LLVMTARGET="Mips;AMDGPU;BPF"
 			;;
 		powerpc|powerpc64|powerpc64le)
