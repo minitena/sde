@@ -36,7 +36,7 @@ build() {
 	export CXXFLAGS_FOR_TARGET="$CXXFLAGS"
 	export FFLAGS_FOR_TARGET="$FFLAGS"
 
-	case $BARCH in
+	case $CARCH in
 		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
 			export LANGS="c,c++,lto,fortran,go"
 			;;
@@ -118,7 +118,7 @@ package_gcc() {
 	mkdir -p $pkgdir/usr/share/gdb/auto-load/usr/lib
 	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
 
-	case $BARCH in
+	case $CARCH in
 		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
 			mkdir -p $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
 			mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
