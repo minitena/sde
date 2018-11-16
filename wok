@@ -279,6 +279,87 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
+		mips64)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="mips64-generic-linux"
+			export XKARCH="mips"
+			export GCCOPTS="--with-arch=mips3 --with-tune=mips64 --with-mips-plt --with-float=soft --with-abi=64 --with-linker-hash-style=sysv"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="mips64"
+			;;
+		mips)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="mips-generic-linux"
+			export XKARCH="mips"
+			export GCCOPTS="--with-arch=mips32 --with-mips-plt --with-float=soft --with-abi=32 --with-linker-hash-style=sysv"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="mips"
+			;;
+		powerpc64le)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="powerpc64le-generic-linux"
+			export XKARCH="powerpc"
+			export GCCOPTS="--with-long-double-128 --with-linker-hash-style=gnu --enable-secureplt --enable-decimal-float=no --enable-targets=powerpcle-linux"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="ppc64le"
+			;;
+		powerpc64)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="powerpc64-generic-linux"
+			export XKARCH="powerpc"
+			export GCCOPTS="--with-long-double-128 --with-linker-hash-style=gnu --enable-secureplt --enable-decimal-float=no"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="ppc64"
+			;;
+		powerpc)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="powerpc-generic-linux"
+			export XKARCH="powerpc"
+			export GCCOPTS="--with-long-double-128 --with-linker-hash-style=gnu --enable-secureplt --enable-decimal-float=no"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="ppc"
+			;;
+		sparc64)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="sparc64-generic-linux"
+			export XKARCH="sparc"
+			export GCCOPTS="--with-cpu=ultrasparc --with-long-double-128 --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="sparc64"
+			;;
+		sparc)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="sparc-generic-linux"
+			export XKARCH="sparc"
+			export GCCOPTS="--with-long-double-128 --with-linker-hash-style=gnu --disable-linux-futex"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="sparc"
+			;;
+		s390x)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="s390x-generic-linux"
+			export XKARCH="s390"
+			export GCCOPTS="--with-arch=z196 --with-tune=zEC12 --with-zarch --with-long-double-128 --with-linker-hash-style=gnu --enable-decimal-float"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="s390x"
+			;;
+		microblaze)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="microblaze-generic-linux"
+			export XKARCH="microblaze"
+			export GCCOPTS="--with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="microblaze"
+			;;
 		riscv64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="riscv64-generic-linux"
@@ -288,15 +369,15 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="riscv64"
 			;;
-#		riscv32) glibc doesn't support this architecture
-#			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-#			export XTARGET="riscv32-generic-linux"
-#			export XKARCH="riscv"
-#			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
-#			export BINUTILSOPTS=''
-#			export GLIBCOPTS=''
-#			export QEMUARCH="riscv32"
-#			;;
+		riscv32)
+			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
+			export XTARGET="riscv32-generic-linux"
+			export XKARCH="riscv"
+			export GCCOPTS="--with-arch=rv32imafdc --with-linker-hash-style=gnu"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="riscv32"
+			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
 			exit 1
