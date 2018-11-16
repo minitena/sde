@@ -97,6 +97,7 @@ build() {
 		--enable-__cxa_atexit \
 		--enable-checking=release \
 		--enable-clocale=gnu \
+		--enable-gnu-indirect-function \
 		--enable-gnu-unique-object \
 		--enable-languages=c,c++ \
 		--enable-linker-build-id \
