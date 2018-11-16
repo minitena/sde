@@ -6,7 +6,7 @@ pkgbase=linux
 pkgver=4.19.2
 zerover=$pkgver
 pkgrel=26
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32' 'sh4')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
@@ -94,10 +94,6 @@ prepare() {
 			export XKARCH="riscv"
 			cp $srcdir/riscv64-config config
 			;;
-		sh4)
-			export XKARCH="sh"
-			make ARCH=$XKARCH j2_defconfig
-			;;
 		*)
 			echo "Architecture is not set or is not supported"
 			exit 1
@@ -143,9 +139,6 @@ build() {
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
-			;;
-		sh4)
-			export XKARCH="sh"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -201,10 +194,6 @@ package_linux() {
 		riscv32|riscv64)
 			export XKARCH="riscv"
 			export IMG="vmlinux"
-			;;
-		sh4)
-			export XKARCH="sh"
-			export IMG="arch/sh/boot/zImage"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
@@ -272,9 +261,6 @@ package_linux-devel() {
 			;;
 		riscv32|riscv64)
 			export XKARCH="riscv"
-			;;
-		sh4)
-			export XKARCH="sh"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
