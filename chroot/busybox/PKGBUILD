@@ -1,7 +1,7 @@
 pkgname=chroot-busybox
 pkgver=1.29.3
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
 source=(https://busybox.net/downloads/busybox-$pkgver.tar.bz2)
 
 build() {
@@ -22,7 +22,7 @@ build() {
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
 			;;
-		sparc64|sparc)
+		sparc64)
 			export XKARCH="sparc"
 			;;
 		s390x)

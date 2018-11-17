@@ -333,15 +333,6 @@ setup_architecture() {
 			export GLIBCOPTS=""
 			export QEMUARCH="sparc64"
 			;;
-		sparc)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="sparc-generic-linux"
-			export XKARCH="sparc"
-			export GCCOPTS="--with-cpu=v8"
-			export BINUTILSOPTS=""
-			export GLIBCOPTS=""
-			export QEMUARCH="sparc"
-			;;
 		s390x)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="s390x-generic-linux"
@@ -823,28 +814,28 @@ build_core_system() {
 				;;
 			llvm)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
 						pkgnativeinstall llvm
 						;;
 				esac
 				;;
 			compiler-rt)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
 						pkgnativeinstall compiler-rt
 						;;
 				esac
 				;;
 			clang)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
 						pkgnativeinstall clang
 						;;
 				esac
 				;;
 			lld)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|sparc|s390x)
+					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
 						pkgnativeinstall lld
 						;;
 				esac

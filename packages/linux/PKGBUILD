@@ -5,28 +5,42 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19.2
 zerover=$pkgver
-pkgrel=26
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
+pkgrel=27
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'lz4' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
-	'x86_64-config'
-	'i586-config'
 	'arm64-config'
 	'arm-config'
+	'i586-config'
+	'mips64-config'
+	'mips-config'
+	'powerpc64le-config'
+	'powerpc64-config'
+	'powerpc-config'
 	'riscv32-config'
 	'riscv64-config'
+	's390x-config'
+	'sparc64-config'
+	'x86_64-config'
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('fe3487940018bacda66ac57f60ee36b9'
-         'f5caea6773cb4ecd74673683bfb3d22a'
-         'a85fb27ffa8da2a09be34fc98000327b'
-         '8c624cf101e5c6a3def2f798674cb4fe'
-         '070e4c1a8cae7d277379e82bb971a21f'
+         '7c323140386a50267061340d6c88f2b3'
+         'da64b1c064beac0af5482713c122ea4b'
+         '211a27c463bea9b2adb6550a317aad74'
+         '47bb7551e2e2a82247a6ef45ee56c169'
+         '6e9c4b483e845bab94181b00a1fe47ca'
+         'a9813b20f2acfd9232b5e2542746f3c2'
+         '7bef99083876b6c179ba6a0237e5bdbe'
+         '75bb68875040aafa333cdd217234e15d'
          '3c7ee7c9689008b373b9600771a0f281'
          'edc507e53d2d00069aebdac98d35def1'
+         '4cc4d75346c0bc15b1342b076a91f50e'
+         'b864b23fbd549c3e7bd6a632897ed1d7'
+         '750a1ecaeeeac97a077b1dc884594c31'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '183cfae4e585c53261679ac9b72070ad')
 
@@ -54,33 +68,29 @@ prepare() {
 			;;
 		mips)
 			export XKARCH="mips"
-			cp -f arch/mips/configs/malta_defconfig .config
-			sed -i -e 's:CONFIG_CPU_LITTLE_ENDIAN:CONFIG_CPU_BIG_ENDIAN:' .config
+			cp $srcdir/mips-config .config
 			;;
 		mips64)
 			export XKARCH="mips"
-			make ARCH=$XKARCH ip32_defconfig
+			cp $srcdir/mips64-config .config
 			;;
 		powerpc64le)
 			export XKARCH="powerpc"
-			make ARCH=$XKARCH ppc64le_defconfig
+			cp $srcdir/powerpc64le-config .config
 			;;
 		powerpc64)
 			export XKARCH="powerpc"
-			make ARCH=$XKARCH g5_defconfig
+			cp $srcdir/powerpc64-config .config
 			;;
 		powerpc)
 			export XKARCH="powerpc"
-			make ARCH=$XKARCH pmac32_defconfig
+			cp $srcdir/powerpc-config .config
 			;;
 		sparc64)
-			make ARCH=$XKARCH sparc64_defconfig
-			;;
-		sparc)
-			make ARCH=$XKARCH sparc32_defconfig
+			cp $srcdir/sparc64-config .config
 			;;
 		s390x)
-			make ARCH=$XKARCH performance_defconfig
+			cp $srcdir/s390x-config .config
 			;;
 		microblaze)
 			export XKARCH="microblaze"
@@ -128,7 +138,7 @@ build() {
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
 			;;
-		sparc64|sparc)
+		sparc64)
 			export XKARCH="sparc"
 			;;
 		s390x)
@@ -179,7 +189,7 @@ package_linux() {
 			export XKARCH="powerpc"
 			export IMG="vmlinux"
 			;;
-		sparc64|sparc)
+		sparc64)
 			export XKARCH="sparc"
 			export IMG="arch/sparc/boot/image"
 			;;
@@ -250,7 +260,7 @@ package_linux-devel() {
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
 			;;
-		sparc64|sparc)
+		sparc64)
 			export XKARCH="sparc"
 			;;
 		s390x)

@@ -5,7 +5,7 @@ pkgname=('llvm' 'llvm-libs')
 pkgbase=llvm
 pkgver=7.0.0
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64' 'riscv32')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('cmake' 'ninja' 'libffi' 'libedit' 'ncurses' 'libxml2' 'python2')
@@ -29,13 +29,13 @@ build() {
 		arm)
 			export LLVMTARGET="ARM;AMDGPU;BPF"
 			;;
-		mips|mipsel|mips64|mips64el)
+		mips|mips64)
 			export LLVMTARGET="Mips;AMDGPU;BPF"
 			;;
 		powerpc|powerpc64|powerpc64le)
 			export LLVMTARGET="PowerPC;AMDGPU;BPF"
 			;;
-		sparc64|sparc)
+		sparc64)
 			export LLVMTARGET="Sparc;AMDGPU;BPF"
 			;;
 		s390x)
