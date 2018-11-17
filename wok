@@ -502,7 +502,7 @@ build_symlinks() {
 	ln -sf /tools/lib/libssp_nonshared.a  $ROOTFS/usr/lib
 
 	case $BARCH in
-		x86_64|aarch64)
+		x86_64|aarch64|mips64|powerpc64le|powerpc64|sparc64|s390x|riscv64)
 			ln -sf lib $ROOTFS/tools/lib64
 			;;
 	esac
