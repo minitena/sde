@@ -71,11 +71,9 @@ build() {
 		--enable-default-ssp \
 		--enable-gnu-indirect-function \
 		--enable-gnu-unique-object \
-		--enable-languages=c,c++,lto \
+		--enable-languages=c,c++ \
 		--enable-install-libiberty \
 		--enable-linker-build-id \
-		--enable-lto \
-		--enable-plugin \
 		--enable-shared \
 		--enable-threads=posix \
 		--disable-libmpx \
@@ -93,12 +91,4 @@ package() {
 	make -j1 DESTDIR=$pkgdir install
 
 	ln -sf gcc $pkgdir/tools/bin/cc
-
-	ln -sf ../bin/cpp $pkgdir/tools/lib
-
-	install -dm755 $pkgdir/tools/lib/bfd-plugins/
-	ln -sf /tools/lib/gcc/$XTARGET/$pkgver/liblto_plugin.so $pkgdir/tools/lib/bfd-plugins/
-
-	install -dm755 $pkgdir/usr/lib/bfd-plugins/
-	ln -sf /tools/lib/gcc/$XTARGET/$pkgver/liblto_plugin.so $pkgdir/usr/lib/bfd-plugins/
 }
