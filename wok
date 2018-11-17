@@ -283,7 +283,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="mips64-generic-linux"
 			export XKARCH="mips"
-			export GCCOPTS=""
+			export GCCOPTS="--with-abi=64 --with-arch-64=mips64 --with-tune-64=mips64"
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="mips64"
