@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libelf
-pkgver=0.174
+pkgver=0.175
 pkgrel=1
 pkgdesc="Libraries to handle ELF object files and DWARF debugging information"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
@@ -11,7 +11,7 @@ license=('GPL' 'LGPL')
 depends=('glibc' 'gcc-libs' 'zlib' 'xz-utils')
 options=('staticlibs')
 source=("https://sourceware.org/ftp/elfutils/$pkgver/elfutils-$pkgver.tar.bz2")
-md5sums=('48bec24c0c8b2c16820326956dff9378')
+md5sums=('9a02b0382b78cc2d515fb950275d4c02')
 
 build() {
 	export CFLAGS="${CFLAGS/-fno-plt}"
