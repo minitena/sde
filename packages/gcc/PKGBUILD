@@ -15,7 +15,7 @@ source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.
 	c89
 	c99)
 md5sums=('4ab282f414676496483b3e1793d07862'
-         '658070c703f48fe436189335058bee7f'
+         '506057a6372707d7bb925a7284c43977'
          '99691641ab044836a25fbcb73a1943cf'
          'ee387395de79f09b491857f8fbb5551d')
 
