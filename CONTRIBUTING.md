@@ -11,7 +11,7 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 Debian or Ubuntu (and derivatives):
 ```
-apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils squashfs-tools pkg-config
+apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils squashfs-tools pkg-config libssl-dev libcurl4-openssl-dev
 ```
 Fedora (and derivatives):
 ```
@@ -33,7 +33,6 @@ tar -xvf pacman-5.1.1.tar.gz
 cd pacman-5.1.1
 sed -i -e '/x-cpio/s@)@|*application/x-empty*)@' scripts/makepkg.sh.in
 sed -i -e 's/EUID == 0/EUID == -1/' scripts/makepkg.sh.in
-autoreconf -vif
 ./configure \
 --prefix=/dedicated/dir \
 --localstatedir=/var \
