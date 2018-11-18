@@ -660,7 +660,7 @@ adjust_toolchain() {
 	rm -rf /tools/bin/ld-old
 	rm -rf /tools/$(cc -dumpmachine)/bin/ld-old
 
-	gcc -dumpspecs | sed -e 's@/tools@/usr@g' \
+	gcc -dumpspecs | sed -e 's@/tools@@g' \
 		-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
 		-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' > \
 		`dirname $(gcc --print-libgcc-file-name)`/specs
