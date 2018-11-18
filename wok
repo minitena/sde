@@ -30,7 +30,8 @@ Host options:
 	tarball					Make *.tar.xz archive with minimal system
 	update-wok				Update 'wok' for chroot system
 	enter-chroot				Enter the chroot system
-	enter-chroot-binfmt			Enter the chroot system if host and target architectures are different
+	enter-chroot-binfmt			Enter the chroot system if host and target architectures are different (using proot)
+	enter-chroot-binfmt-qemu		Enter the chroot system if host and target architectures are different (using qemu user static)
 
 Target options:
 
@@ -568,6 +569,46 @@ enter_chroot_binfmt() {
 	set -e
 }
 
+build_final_system_binfmt_qemu() {
+	set +e
+
+	if [ -f $(which qemu-$QEMUARCH-static) ]; then
+		cp $(which qemu-$QEMUARCH-static) $ROOTFS/usr/bin
+	else
+		set -e
+		echo "Couldn't setup binfmt!"
+		exit 1
+	fi
+
+	mkdir -p $ROOTFS/output/{stage,initrd,sources,packages}
+	mkdir -p $ROOTFS/var/repo
+
+	mount --bind /proc $ROOTFS/proc
+	mount --bind /sys $ROOTFS/sys
+	mount --bind /dev $ROOTFS/dev
+	mount --bind /tmp $ROOTFS/tmp
+	mount --bind $REPO $ROOTFS/var/repo
+	mount --bind $PACKAGES $ROOTFS/output/packages
+	mount --bind $SOURCES $ROOTFS/output/sources
+
+	chroot $ROOTFS /usr/bin/env -i \
+		TERM="$TERM" \
+		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
+		PATH="/usr/bin:/tools/bin" \
+		BARCH="$BARCH" \
+		/usr/bin/wok final-system
+
+	umount -l $ROOTFS/var/repo
+	umount -l $ROOTFS/proc
+	umount -l $ROOTFS/sys
+	umount -l $ROOTFS/dev
+	umount -l $ROOTFS/tmp
+	umount -l $ROOTFS/output/sources
+	umount -l $ROOTFS/output/packages
+
+	set -e
+}
+
 adjust_toolchain() {
 	echo "Please, wait..."
 	sleep 1
@@ -1028,6 +1069,12 @@ case "$1" in
 		setup_architecture
 		setup_environment
 		enter_chroot_binfmt
+		;;
+	enter-chroot-binfmt-qemu)
+		check_for_root
+		setup_architecture
+		setup_environment
+		enter_chroot_binfmt_qemu
 		;;
 	host-package|host-pkg)
 		check_for_root
