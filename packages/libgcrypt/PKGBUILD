@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libgcrypt
-pkgver=1.8.3
+pkgver=1.8.4
 pkgrel=1
 pkgdesc="General purpose cryptographic library based on the code from GnuPG"
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
@@ -11,7 +11,7 @@ license=('LGPL')
 depends=('glibc' 'libgpg-error')
 options=('!emptydirs')
 source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('3139c2402e844985a67fb288a930534d')
+md5sums=('fbfdaebbbc6d7e5fbbf6ffdb3e139573')
 
 build() {
 	cd $pkgname-$pkgver
