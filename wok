@@ -569,7 +569,7 @@ enter_chroot_binfmt() {
 	set -e
 }
 
-build_final_system_binfmt_qemu() {
+enter_chroot_binfmt_qemu() {
 	set +e
 
 	if [ -f $(which qemu-$QEMUARCH-static) ]; then
@@ -591,12 +591,14 @@ build_final_system_binfmt_qemu() {
 	mount --bind $PACKAGES $ROOTFS/output/packages
 	mount --bind $SOURCES $ROOTFS/output/sources
 
-	chroot $ROOTFS /usr/bin/env -i \
+	chroot $ROOTFS \
+		/usr/bin/env -i \
 		TERM="$TERM" \
 		LD_LIBRARY_PATH="/usr/lib:/tools/lib" \
 		PATH="/usr/bin:/tools/bin" \
+		PS1='(chroot) \u:\w\$ ' \
 		BARCH="$BARCH" \
-		/usr/bin/wok final-system
+		/usr/bin/sh
 
 	umount -l $ROOTFS/var/repo
 	umount -l $ROOTFS/proc
