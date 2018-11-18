@@ -465,7 +465,6 @@ build_bootstrap() {
 	pkgchinstall xz-utils
 	pkgchinstall patch
 	pkgchinstall busybox
-	pkgchinstall texinfo
 	pkgchinstall libressl
 	pkgchinstall curl
 	pkgchinstall libarchive
