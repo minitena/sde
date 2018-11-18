@@ -6,7 +6,6 @@ source=(http://ftpmirror.gnu.org/gnu/texinfo/texinfo-$pkgver.tar.xz)
 
 build() {
 	cd texinfo-$pkgver
-	PERL=/tools/bin/perl \
 	./configure \
 		--prefix=/tools \
 		--build=$XHOST \
