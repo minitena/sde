@@ -872,7 +872,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='minitena-base dhcp wpa_supplicant open-iscsi openssh'
+	export LIVEPACKAGES='minitena-base dhcp wireless_tools wpa_supplicant open-iscsi openssh zfs parted gptfdisk'
 	mkdir -p $LIVEOS/var/lib/pacman
 	mkdir -p $LIVEOS/var/cache/pacman/pkg
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --cachedir $LIVEOS/var/cache/pacman/pkg --root $LIVEOS --arch $BARCH --noconfirm
