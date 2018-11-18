@@ -1,7 +1,7 @@
 pkgname=chroot-libcap
 pkgver=2.25
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 'sparc' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
 source=(https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-$pkgver.tar.xz)
 
 prepare() {
