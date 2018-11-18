@@ -1,7 +1,7 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=('minitena-base' 'minitena-sdk')
+pkgname=('minitena-base' 'minitena-base-zfs' 'minitena-sdk')
 pkgver=2018.10
 pkgrel=8
 arch=('any')
@@ -19,16 +19,16 @@ package_minitena-base() {
 	:
 }
 
-#package_minitena-base-zfs() {
-#	pkgdesc='Meta-package for basic system'
-#	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
-#		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
-#		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
-#		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-#		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
-#		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'pacman')
-#	:
-#}
+package_minitena-base-zfs() {
+	pkgdesc='Meta-package for basic system'
+	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
+		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
+		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
+		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'pacman')
+	:
+}
 
 package_minitena-sdk() {
 	pkgdesc='Meta-package for development system'
