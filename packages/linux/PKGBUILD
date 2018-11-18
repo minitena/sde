@@ -5,7 +5,7 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19.2
 zerover=$pkgver
-pkgrel=27
+pkgrel=28
 arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
 url="https://www.kernel.org/"
 license=('GPL')
@@ -28,19 +28,19 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('fe3487940018bacda66ac57f60ee36b9'
-         '7c323140386a50267061340d6c88f2b3'
-         'da64b1c064beac0af5482713c122ea4b'
-         '211a27c463bea9b2adb6550a317aad74'
-         '47bb7551e2e2a82247a6ef45ee56c169'
-         '6e9c4b483e845bab94181b00a1fe47ca'
-         'a9813b20f2acfd9232b5e2542746f3c2'
-         '7bef99083876b6c179ba6a0237e5bdbe'
-         '75bb68875040aafa333cdd217234e15d'
+         '8c270a2a0b227c028d3d81e2dc915334'
+         'c156d481c00e56128abf8cc058443b26'
+         'a2691bf97901e8474416f593d2845374'
+         '16c5c1f6b1121c1dafc1da25b4d02b01'
+         'bcb744dfa18c9778dd9989840fa9a3f3'
+         '2fc4d2afcc0aeb3591fc49788c5cfba0'
+         'e44848b35826d1e371e607ca00c1c95a'
+         '43b3b8b1532fdf3c33a6a4cf4c5fb0f3'
          '3c7ee7c9689008b373b9600771a0f281'
          'edc507e53d2d00069aebdac98d35def1'
-         '4cc4d75346c0bc15b1342b076a91f50e'
-         'b864b23fbd549c3e7bd6a632897ed1d7'
-         '750a1ecaeeeac97a077b1dc884594c31'
+         'bd72c422c8161ed5eb9dc324a1e9c480'
+         'bce6606bf6f6a770580ee3e4609f2893'
+         '66d6c366a7f6db52766de1a78537e9d0'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '183cfae4e585c53261679ac9b72070ad')
 
