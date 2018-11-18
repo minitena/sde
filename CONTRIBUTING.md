@@ -11,7 +11,7 @@ Welcome to this page, Minitena's contributors! I'm [protonesso](https://github.c
 
 Debian or Ubuntu (and derivatives):
 ```
-apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils squashfs-tools
+apt-get install build-essential m4 wget gawk bc bison flex texinfo python3 python perl libtool autoconf automake autopoint gperf bsdtar libarchive-dev fakeroot xorriso curl syslinux-utils squashfs-tools pkg-config
 ```
 Fedora (and derivatives):
 ```
