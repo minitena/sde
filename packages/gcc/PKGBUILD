@@ -20,7 +20,7 @@ md5sums=('4ab282f414676496483b3e1793d07862'
          'ee387395de79f09b491857f8fbb5551d')
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 
 	patch -Np1 -i $srcdir/pure.patch
@@ -44,7 +44,7 @@ build() {
 			export LANGS="c,c++,lto,fortran"
 	esac
 
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	cd build
 	../configure \
 		--prefix=/usr \
@@ -82,7 +82,7 @@ package_gcc-libs() {
 	pkgdesc='Runtime libraries shipped by GCC'
 	depends=('glibc')
 
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	cd build
 	make -j1 DESTDIR=$pkgdir install
 
@@ -99,7 +99,7 @@ package_gcc() {
 	pkgdesc="The GNU Compiler Collection"
 	depends=('linux-headers' 'glibc' 'gcc-libs' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 
-	cd $pkgname-$pkgver
+	cd $pkgbase-$pkgver
 	cd build
 	make -j1 DESTDIR=$pkgdir install
 
