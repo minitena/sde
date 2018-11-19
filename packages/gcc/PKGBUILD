@@ -10,7 +10,7 @@ url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
 options=('staticlibs' '!emptydirs')
-source=(http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz
+source=(http://ftpmirror.gnu.org/gnu/$pkgbase/$pkgbase-$pkgver/$pkgbase-$pkgver.tar.xz
 	pure.patch
 	c89
 	c99)
