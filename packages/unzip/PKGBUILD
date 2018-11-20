@@ -4,23 +4,54 @@
 pkgname=unzip
 pkgver=6.0
 apkgver=${pkgver/./}
-pkgrel=2
+pkgrel=3
 pkgdesc="For extracting and viewing files in .zip archives"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url='http://www.info-zip.org/UnZip.html'
 license=('custom')
 depends=('glibc' 'bzip2')
-source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz")
-md5sums=('62b490407489521db863b523a7f86375')
+source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz"
+	'overflow-fsize.patch'
+	'cve20149636.patch'
+	'test_compr_eb.patch'
+	'getZip64Data.patch'
+	'crc32.patch'
+	'empty-input.patch'
+	'csiz-underflow.patch'
+	'nextbyte-overflow.patch')
+md5sums=('62b490407489521db863b523a7f86375'
+         '0e9e554ff80396f391709cf98ff26b7c'
+         '3f234156053fd43589e6da1d0a348048'
+         '1740b29094f12bc144f714ec2f8876b4'
+         '7d1b0a092bc8d586a56d0df9fc73f510'
+         'a26a1ee4e561ed25358c0250c7ed31a7'
+         '79ade7298b3e67d995f26d8c1bd92b5d'
+         'f6c2c1c025c0b3f75c98db5a7c972ca7'
+         'eb52a058a72703cdbe0edb95b453eac2')
 
 prepare() {
 	cd $pkgname$apkgver
 	sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
+	patch -p1 -i $srcdir/overflow-fsize.patch
+	patch -p1 -i $srcdir/cve20149636.patch
+	patch -i $srcdir/test_compr_eb.patch
+	patch -i $srcdir/getZip64Data.patch
+	patch -i $srcdir/crc32.patch # FS#43300
+	patch -p1 -i $srcdir/empty-input.patch
+	patch -p1 -i $srcdir/csiz-underflow.patch
+	patch -p1 -i $srcdir/nextbyte-overflow.patch
 }
 
 build() {
 	cd $pkgname$apkgver
-	make -f unix/Makefile generic
+	DEFINES='-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT \
+		-DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_LCHMOD \
+		-DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DNOMEMCPY -DNO_WORKING_ISPRINT'
+
+	make -f unix/Makefile prefix=/usr \
+		D_USE_BZ2=-DUSE_BZIP2 L_BZ2=-lbz2 \
+		CF="$CFLAGS -I. $DEFINES" \
+		unzips
 }
 
 package() {

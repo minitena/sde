@@ -4,19 +4,22 @@
 pkgname=zip
 pkgver=3.0
 apkgver=${pkgver/./}
-pkgrel=2
+pkgrel=3
 pkgdesc="Compressor/archiver for creating and modifying zipfiles"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url='http://www.info-zip.org/Zip.html'
 license=('custom')
 depends=('glibc' 'bzip2')
-source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz")
-md5sums=('7b74551e63f8ee6aab6fbc86676c0d37')
+source=("https://downloads.sourceforge.net/infozip/$pkgname$apkgver.tar.gz"
+	'zipnote.patch')
+md5sums=('7b74551e63f8ee6aab6fbc86676c0d37'
+         '8d60750c2f922cebbefd9de596518403')
 
 prepare() {
 	cd $pkgname$apkgver
 	sed -e "/^CFLAGS_NOOPT =/s/\$/ $CFLAGS/" -i unix/Makefile
 	sed -e "s/^LFLAGS1=''/LFLAGS1=$LDFLAGS/" -i unix/configure
+	patch -p1 -i $srcdir/zipnote.patch
 }
 
 build() {
