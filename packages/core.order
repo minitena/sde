@@ -42,7 +42,6 @@ dash
 bash
 bash-completion
 which
-debianutils
 bc
 diffutils
 file
@@ -50,6 +49,7 @@ mawk
 gawk
 mlocate
 findutils
+debianutils
 gettext
 gperf
 pcre
