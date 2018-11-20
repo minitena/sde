@@ -44,4 +44,8 @@ build() {
 package() {
 	cd $pkgname-$mainver
 	make DESTDIR=$pkgdir install
+
+	mkdir -p $pkgdir/usr/lib
+	mv $pkgdir/lib/* $pkgdir/usr/lib/
+	rm -rf $pkgdir/lib
 }
