@@ -874,7 +874,7 @@ build_liveos() {
 	cp -a $LIVEOS/* $ISOBUILD/tmp-rootfs/
 	umount -f $ISOBUILD/tmp-rootfs
 	mkdir -p $ISODIR/LiveOS
-	mksquashfs $ISOBUILD/tmp $ISODIR/LiveOS/squashfs.img -comp xz -b 128K -Xdict-size 100% || exit 1
+	mksquashfs $ISOBUILD/tmp $ISODIR/LiveOS/squashfs.img -comp lz4 -b 128K -Xdict-size 100% || exit 1
 	chmod 444 $ISODIR/LiveOS/squashfs.img
 }
 
