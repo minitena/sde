@@ -5,7 +5,6 @@
 #  1) User has partitioned, formatted, and mounted partitions on /mnt
 #  2) Network is functional
 #  3) Arguments passed to the script are valid pacman targets
-#  4) A valid mirror appears in /etc/pacman.d/mirrorlist
 #
 
 shopt -s extglob
@@ -58,6 +57,7 @@ declare -A fsck_types=([cramfs]=1
 
 out() { printf "$1 $2\n" "${@:3}"; }
 error() { out "==> ERROR:" "$@"; } >&2
+warning() { out "==> WARNING:" "$@"; } >&2
 msg() { out "==>" "$@"; }
 msg2() { out "  ->" "$@";}
 die() { error "$@"; exit 1; }
@@ -103,7 +103,9 @@ chroot_setup() {
 }
 
 chroot_teardown() {
-  umount "${CHROOT_ACTIVE_MOUNTS[@]}"
+  if (( ${#CHROOT_ACTIVE_MOUNTS[@]} )); then
+    umount "${CHROOT_ACTIVE_MOUNTS[@]}"
+  fi
   unset CHROOT_ACTIVE_MOUNTS
 }
 
@@ -276,7 +278,7 @@ usage: ${0##*/} [options] root [packages...]
     -C config      Use an alternate config file for pacman
     -c             Use the package cache on the host, rather than the target
     -G             Avoid copying the host's pacman keyring to the target
-    -i             Avoid auto-confirmation of package selections
+    -i             Prompt for package confirmation when needed
     -M             Avoid copying the host's mirrorlist to the target
 
     -h             Print this help message
@@ -361,11 +363,6 @@ if (( copykeyring )); then
   if [[ -d /etc/pacman.d/gnupg && ! -d $newroot/etc/pacman.d/gnupg ]]; then
     cp -a /etc/pacman.d/gnupg "$newroot/etc/pacman.d/"
   fi
-fi
-
-if (( copymirrorlist )); then
-  # install the host's mirrorlist onto the new root
-  cp -a /etc/pacman.d/mirrorlist "$newroot/etc/pacman.d/"
 fi
 
 # vim: et ts=2 sw=2 ft=sh:

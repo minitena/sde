@@ -3,9 +3,9 @@
 
 pkgname=gawk
 pkgver=4.2.1
-pkgrel=2
+pkgrel=3
 pkgdesc="The GNU version of awk"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.gnu.org/software/gawk"
 license=('GPL')
 depends=('glibc' 'mpfr')
@@ -25,4 +25,6 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	rm -rf $pkgdir/usr/bin/awk
 }

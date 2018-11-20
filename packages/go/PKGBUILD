@@ -5,7 +5,7 @@ pkgname=go
 pkgver=1.11.2
 pkgrel=1
 pkgdesc="Core compiler tools for the Go programming language"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 's390x' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 's390x')
 url="http://golang.org/"
 license=('BSD')
 depends=('binutils')
@@ -34,15 +34,17 @@ build() {
 		aarch64)
 			export GARCH="arm64"
 			;;
-		arm)
+		armv7h)
 			export GARCH="arm"
 			export GOARM=7
 			;;
-		mips64)
-			export GARCH="mips64"
+		armv6h)
+			export GARCH="arm"
+			export GOARM=6
 			;;
-		mips)
-			export GARCH="mips"
+		armv5tel)
+			export GARCH="arm"
+			export GOARM=5
 			;;
 		powerpc64le)
 			export GARCH="ppc64le"

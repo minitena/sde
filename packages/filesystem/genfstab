@@ -50,6 +50,7 @@ declare -A fsck_types=([cramfs]=1
 
 out() { printf "$1 $2\n" "${@:3}"; }
 error() { out "==> ERROR:" "$@"; } >&2
+warning() { out "==> WARNING:" "$@"; } >&2
 msg() { out "==>" "$@"; }
 msg2() { out "  ->" "$@";}
 die() { error "$@"; exit 1; }
@@ -95,7 +96,9 @@ chroot_setup() {
 }
 
 chroot_teardown() {
-  umount "${CHROOT_ACTIVE_MOUNTS[@]}"
+  if (( ${#CHROOT_ACTIVE_MOUNTS[@]} )); then
+    umount "${CHROOT_ACTIVE_MOUNTS[@]}"
+  fi
   unset CHROOT_ACTIVE_MOUNTS
 }
 
@@ -335,7 +338,8 @@ usage: ${0##*/} [options] root
     -L             Use labels for source identifiers (shortcut for -t LABEL)
     -p             Exclude pseudofs mounts (default behavior)
     -P             Include pseudofs mounts
-    -t TAG         Use TAG for source identifiers
+    -t TAG         Use TAG for source identifiers (TAG should be one of: LABEL,
+                      UUID, PARTLABEL, PARTUUID)
     -U             Use UUIDs for source identifiers (shortcut for -t UUID)
 
     -h             Print this help message

@@ -3,7 +3,7 @@
 
 pkgname=('minitena-base' 'minitena-base-zfs' 'minitena-sdk')
 pkgver=2018.10
-pkgrel=8
+pkgrel=9
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -11,8 +11,8 @@ license=('GPL')
 package_minitena-base() {
 	pkgdesc='Meta-package for basic system'
 	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
-		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
-		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'dash' 'bash' 'iproute2' 'bzip2'
+		 'debianutils' 'diffutils' 'file' 'mawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
@@ -22,8 +22,8 @@ package_minitena-base() {
 package_minitena-base-zfs() {
 	pkgdesc='Meta-package for basic system'
 	depends=('filesystem' 'linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'zlib' 'cracklib'
-		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'bash' 'iproute2' 'bzip2'
-		 'diffutils' 'file' 'gawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
+		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'dash' 'bash' 'iproute2' 'bzip2'
+		 'debianutils' 'diffutils' 'file' 'mawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
 		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'pacman')
@@ -33,7 +33,7 @@ package_minitena-base-zfs() {
 package_minitena-sdk() {
 	pkgdesc='Meta-package for development system'
 	depends=('linux-headers' 'tzdata' 'glibc' 'gcc-libs' 'm4' 'bison' 'flex'
-		 'binutils' 'gcc' 'pkgconf' 'libelf' 'libtool' 'autoconf' 'automake' 'bc' 'gettext'
-		 'gperf' 'groff' 'make' 'patch' 'texinfo' 'which' 'fakeroot' 'sudo')
+		 'binutils' 'gcc' 'pkgconf' 'libelf' 'libtool' 'autoconf' 'automake' 'bash' 'bc' 'gettext'
+		 'gawk' 'gperf' 'groff' 'make' 'patch' 'texinfo' 'which' 'fakeroot' 'sudo')
 	:
 }

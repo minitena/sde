@@ -269,7 +269,7 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="aarch64"
 			;;
-		arm)
+		armv7h)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="armv7l-generic-linux-gnueabihf"
 			export XKARCH="arm"
@@ -278,29 +278,29 @@ setup_architecture() {
 			export GLIBCOPTS=''
 			export QEMUARCH="arm"
 			;;
-		mips64)
+		armv6h)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="mips64-generic-linux-gnuabi64"
-			export XKARCH="mips"
-			export GCCOPTS="--with-arch=mips64r2 --with-abi=64 --with-mips-plt"
-			export BINUTILSOPTS=""
-			export GLIBCOPTS=""
-			export QEMUARCH="mips64"
+			export XTARGET="armv6l-generic-linux-gnueabihf"
+			export XKARCH="arm"
+			export GCCOPTS="--with-arch=armv6 --with-float=hard --with-fpu=vfp"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="arm"
 			;;
-		mips)
+		armv5tel)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="mips-generic-linux"
-			export XKARCH="mips"
-			export GCCOPTS="--with-arch=mips32r2"
-			export BINUTILSOPTS=""
-			export GLIBCOPTS=""
-			export QEMUARCH="mips"
+			export XTARGET="armv5tel-generic-linux-gnueabi"
+			export XKARCH="arm"
+			export GCCOPTS="--with-arch=armv5te --with-float=soft"
+			export BINUTILSOPTS=''
+			export GLIBCOPTS=''
+			export QEMUARCH="arm"
 			;;
 		powerpc64le)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc64le-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="--with-cpu=power8 --with-tune=power9 --with-long-double-128 --enable-secureplt --enable-targets=powerpcle-linux"
+			export GCCOPTS="--with-cpu=power8 --with-tune=power9 --enable-secureplt --enable-targets=powerpcle-linux"
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="ppc64le"
@@ -309,7 +309,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc64-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="--with-long-double-128 --enable-secureplt"
+			export GCCOPTS="--enable-secureplt"
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="ppc64"
@@ -318,7 +318,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="powerpc-generic-linux"
 			export XKARCH="powerpc"
-			export GCCOPTS="---with-long-double-128 -enable-secureplt"
+			export GCCOPTS="--enable-secureplt"
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="ppc"
@@ -327,7 +327,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="sparc64-generic-linux"
 			export XKARCH="sparc"
-			export GCCOPTS="--with-long-double-128 --with-cpu=ultrasparc"
+			export GCCOPTS="--with-cpu=ultrasparc"
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="sparc64"
@@ -341,15 +341,6 @@ setup_architecture() {
 			export GLIBCOPTS=""
 			export QEMUARCH="s390x"
 			;;
-		microblaze)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="microblaze-generic-linux"
-			export XKARCH="microblaze"
-			export GCCOPTS=""
-			export BINUTILSOPTS=""
-			export GLIBCOPTS=""
-			export QEMUARCH="microblaze"
-			;;
 		riscv64)
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="riscv64-generic-linux"
@@ -358,15 +349,6 @@ setup_architecture() {
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="riscv64"
-			;;
-		riscv32)
-			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
-			export XTARGET="riscv32-generic-linux"
-			export XKARCH="riscv"
-			export GCCOPTS="--with-arch=rv32imafdc"
-			export BINUTILSOPTS=""
-			export GLIBCOPTS=""
-			export QEMUARCH="riscv32"
 			;;
 		*)
 			echo "Architecture is not set or is not supported by 'wok'"
@@ -401,7 +383,7 @@ setup_environment() {
 
 	export MKOPTS="-j$MKJOBS"
 
-	export CFLAGS="-O3 -pipe"
+	export CFLAGS="-D_FORTIFY_SOURCE=2 -Os -fstack-protector-strong -fno-plt -Wl,-z,relro,-z,now -pipe"
 	export CXXFLAGS="$CFLAGS"
 }
 
@@ -714,6 +696,9 @@ build_core_system() {
 			gawk)
 				pkgnativeinstallforce gawk
 				;;
+			mawk)
+				pkgnativeinstallforce mawk
+				;;
 			grep)
 				pkgnativeinstallforce grep
 				;;
@@ -725,6 +710,9 @@ build_core_system() {
 				;;
 			file)
 				pkgnativeinstallforce file
+				;;
+			dash)
+				pkgnativebuild dash
 				;;
 			bash)
 				pkgnativebuild bash
@@ -748,7 +736,7 @@ build_core_system() {
 				;;
 			gnu-efi)
 				case $BARCH in
-					x86_64|i586|aarch64|arm)
+					x86_64|i586|aarch64|armv7h)
 						pkgnativeinstall gnu-efi
 						;;
 				esac
@@ -762,43 +750,15 @@ build_core_system() {
 				;;
 			rust)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
+					x86_64|i586|aarch64|armv7h|armv6h|powerpc64le|powerpc64|powerpc|sparc64|s390x)
 						pkgnativeinstallnodeps rust
 						;;
 				esac
 				;;
 			go)
 				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
+					x86_64|i586|aarch64|armv7h|armv6h|armv5tel|powerpc64le|powerpc64|powerpc|s390x)
 						pkgnativeinstall go
-						;;
-				esac
-				;;
-			llvm)
-				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
-						pkgnativeinstall llvm
-						;;
-				esac
-				;;
-			compiler-rt)
-				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
-						pkgnativeinstall compiler-rt
-						;;
-				esac
-				;;
-			clang)
-				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
-						pkgnativeinstall clang
-						;;
-				esac
-				;;
-			lld)
-				case $BARCH in
-					x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|sparc64|s390x)
-						pkgnativeinstall lld
 						;;
 				esac
 				;;

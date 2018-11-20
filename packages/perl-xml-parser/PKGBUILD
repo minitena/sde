@@ -5,7 +5,7 @@ pkgname=perl-xml-parser
 pkgver=2.44
 pkgrel=1
 pkgdesc="Expat-based XML parser module for perl"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://search.cpan.org/dist/XML-Parser/"
 license=('GPL' 'PerlArtistic')
 depends=('glibc' 'perl' 'expat')
@@ -14,9 +14,6 @@ source=("http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${pkgver}.
 md5sums=('af4813fe3952362451201ced6fbce379')
 
 build() {
-	export CFLAGS="${CFLAGS/-O3/-Os}"
-	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
-
 	cd XML-Parser-${pkgver}
 	perl Makefile.PL
 	make

@@ -1,7 +1,7 @@
 pkgname=chroot-glibc
 pkgver=2.28
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 source=(http://ftpmirror.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz)
 
 prepare() {
@@ -16,6 +16,13 @@ prepare() {
 }
 
 build() {
+	export CFLAGS="${CFLAGS/-fno-plt}"
+	export CXXFLAGS="${CXXFLAGS/-fno-plt}"
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2}"
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	cd glibc-$pkgver
 	cd build
 

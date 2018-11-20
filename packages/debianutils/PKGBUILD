@@ -1,0 +1,29 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=debianutils
+pkgver=4.8.6
+pkgrel=1
+pkgdesc="Miscellaneous utilities specific to Debian"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://packages.qa.debian.org/d/debianutils.html"
+license=('GPL')
+depends=('which')
+source=("http://http.debian.net/debian/pool/main/d/${pkgname}/${pkgname}_${pkgver}.tar.xz")
+md5sums=('f0f1fa39383815fb7950dcee52be4361')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	find $pkgdir -name which* -delete
+}

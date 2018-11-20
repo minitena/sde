@@ -5,7 +5,7 @@ pkgname=perl
 pkgver=5.28.0
 pkgrel=1
 pkgdesc="A highly capable, feature-rich programming language"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.perl.org/"
 license=('GPL' 'PerlArtistic')
 depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'db')
@@ -13,9 +13,6 @@ source=("https://www.cpan.org/src/5.0/$pkgname-$pkgver.tar.xz")
 md5sums=('f3245183c0a08f65e94a3333995af08e')
 
 build() {
-	export CFLAGS="${CFLAGS/-O3/-Os}"
-	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
-
 	cd $pkgname-$pkgver
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0
@@ -35,9 +32,6 @@ build() {
 }
 
 package() {
-	export CFLAGS="${CFLAGS/-O3/-Os}"
-	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
-
 	cd $pkgname-$pkgver
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0

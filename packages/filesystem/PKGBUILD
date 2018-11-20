@@ -3,9 +3,9 @@
 
 pkgname=filesystem
 pkgver=2018.11
-pkgrel=8
+pkgrel=9
 pkgdesc="Filesystem layout and essential files"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://minitena.github.io/"
 license=('MIT')
 backup=('etc/fstab'
@@ -65,20 +65,21 @@ md5sums=('2b0344e9639f35f3c0d5637a23556089'
          'd41d8cd98f00b204e9800998ecf8427e'
          '12dcf2806cae99033e093387eb255a15'
          '20485dc1677b63663048544f774ce23f'
-         'c1fbd4d60d9ff66d1f8fe2951dda9973'
+         '852977989d3635737800da56a784292e'
          '4500b3a486055cd302dd0e87d8af348f'
          'd46c8af3927f3c5f748e359871bdf236'
          'fe0b9046ae1a0ee676446c08ef4f2af7'
          '49c1d411ff33b6df4d55a6a6f9a9bf92'
          '9d39e51e6bd5a30168c26c57b66d2e37'
          '3821106936dfd350037ca08d97a37217'
-         'bdc193807f1f76f8aacd492f5a5b575e'
+         'e679115c2e0f2ea929a006fb27e7ca8d'
          '3678409d55c834d709ffe356a6b3cfc5'
          '4d49ad29e0a1cd0b8e41ee4743a5f085'
-         '0ee4a4339934a190b36f1bc6ea8dbaa3'
-         '7add791064fdee57272ead354819b820'
-         'b51958396adece663ddf7d1aa4bb8bcb'
+         '9b7720d94d6e396a68076da60f34a438'
+         '2dde31048862f75aff6cffff91d5470f'
+         '7f87ab9fb1bf8665218ed7817e43462f'
          'a8ff6379f3fc9437c57788f1d0e54945')
+
 
 package() {
 	cd $pkgdir
@@ -121,7 +122,7 @@ package() {
 
 	ln -sf usr/lib lib
 	case $CARCH in
-		x86_64|aarch64|mips64|powerpc64le|powerpc64|sparc64|s390x|riscv64)
+		x86_64|aarch64|powerpc64le|powerpc64|sparc64|s390x|riscv64)
 			ln -sf usr/lib lib64
 			ln -sf lib usr/lib64
 			;;

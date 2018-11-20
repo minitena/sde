@@ -5,26 +5,20 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+[[ $DISPLAY ]] && shopt -s checkwinsize
+
+PS1='\u@\h:\w\$ '
+
+case ${TERM} in
+  xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
+    PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+
+    ;;
+  screen*)
+    PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'printf "\033_%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/\~}"'
+    ;;
+esac
+
+[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+
 alias ls='ls --color=auto'
-
-endchar="\$"
-if [ "$UID" = "0" ]; then
-    endchar="#"
-fi
-
-# Blue
-BG="\[\e[38;5;39m\]"
-# RGBA index:
-#BG="\[\e[38;2;255;142;58m\]"
-
-# Orange
-FG="\[\e[38;5;208m\]"
-# RGBA index:
-#FG="\[\e[38;2;0;174;255m\]"
-
-export PS1="$BG\u\[\e[0m\]@$FG\H ${BG}\w ${BG}$endchar \[\e[0;0m\]"
-if [ "${TERM:0:5}" = "xterm" ]; then
-  export PS1="\[\e]2;\u@\H :: \w\a\]$PS1"
-fi
-
-shopt -s checkwinsize

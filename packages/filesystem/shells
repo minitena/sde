@@ -1,2 +1,3 @@
-/usr/bin/sh
-/usr/bin/bash
+/bin/sh
+/bin/dash
+/bin/bash

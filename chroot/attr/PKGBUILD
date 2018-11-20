@@ -1,7 +1,7 @@
 pkgname=chroot-attr
 pkgver=2.4.48
 pkgrel=1
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 source=(http://download.savannah.gnu.org/releases/attr/attr-$pkgver.tar.gz)
 
 build() {

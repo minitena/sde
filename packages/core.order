@@ -38,12 +38,15 @@ autoconf
 automake
 autoconf2.13
 autoconf-archive
+dash
 bash
 bash-completion
 which
+debianutils
 bc
 diffutils
 file
+mawk
 gawk
 mlocate
 findutils

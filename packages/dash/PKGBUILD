@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=dash
+pkgver=0.5.10.2
+pkgrel=1
+pkgdesc="POSIX compliant shell that aims to be as small as possible"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://gondor.apana.org.au/~herbert/dash/"
+license=('BSD')
+depends=('glibc')
+source=("http://gondor.apana.org.au/~herbert/dash/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('8f485f126c05d0ab800e85abfe1987aa')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--bindir=/usr/bin \
+		--mandir=/usr/share/man \
+		--exec-prefix="" \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	ln -sf dash $pkgdir/usr/bin/sh
+}

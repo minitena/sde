@@ -5,7 +5,7 @@ pkgname=kmod
 pkgver=25
 pkgrel=1
 pkgdesc="Linux kernel module management tools and library"
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://git.kernel.org/?p=utils/kernel/kmod/kmod.git;a=summary"
 license=('GPL')
 depends=('glibc' 'zlib' 'xz-utils')

@@ -1,0 +1,35 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=mawk
+pkgver=1.3.4_20171017
+pkgrel=1
+pkgdesc="An interpreter for the AWK Programming Language"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://invisible-island.net/mawk/"
+license=('GPL')
+depends=('glibc')
+source=("http://invisible-island.net/datafiles/release/$pkgname.tar.gz")
+md5sums=('6de7560406cd9836335a7297bb910e08')
+
+prepare() {
+	cd $pkgname-${pkgver/_/-}
+	sed -ie 's|log()|log(1.0)|g' configure
+	sed -ie "s|trap  *0|trap 'exit 0' 0|g" test/*
+}
+
+build() {
+	cd $pkgname-${pkgver/_/-}
+	./configure \
+		--build=$CHOST
+	make -j1
+}
+
+package() {
+	cd $pkgname-${pkgver/_/-}
+	install -d $pkgdir/usr/bin
+	install -d $pkgdir/usr/share/man/man1
+	make BINDIR=$pkgdir/usr/bin MANDIR=$pkgdir/usr/share/man/man1 install 
+
+	ln -sf mawk $pkgdir/usr/bin/awk
+}

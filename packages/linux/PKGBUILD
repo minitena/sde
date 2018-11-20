@@ -6,21 +6,20 @@ pkgbase=linux
 pkgver=4.19.2
 zerover=$pkgver
 pkgrel=28
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'lz4' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'arm64-config'
-	'arm-config'
+	'armv7h-config'
+	'armv6h-config'
+	'armv5tel-config'
 	'i586-config'
-	'mips64-config'
-	'mips-config'
 	'powerpc64le-config'
 	'powerpc64-config'
 	'powerpc-config'
-	'riscv32-config'
 	'riscv64-config'
 	's390x-config'
 	'sparc64-config'
@@ -28,15 +27,14 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('fe3487940018bacda66ac57f60ee36b9'
-         '8c270a2a0b227c028d3d81e2dc915334'
-         'c156d481c00e56128abf8cc058443b26'
+         '68c0a8e36d0a59f0f8f11aaa40c406f1'
+         '1148784a48bd0758b57f874bb12c212d'
+         '10d40ae0ed358754beeae3d712fb226f'
+         '5ab86ac2afd5c99505687d68ea85b2d0'
          'a2691bf97901e8474416f593d2845374'
-         '16c5c1f6b1121c1dafc1da25b4d02b01'
-         'bcb744dfa18c9778dd9989840fa9a3f3'
          '2fc4d2afcc0aeb3591fc49788c5cfba0'
          'e44848b35826d1e371e607ca00c1c95a'
          '43b3b8b1532fdf3c33a6a4cf4c5fb0f3'
-         '3c7ee7c9689008b373b9600771a0f281'
          'edc507e53d2d00069aebdac98d35def1'
          'bd72c422c8161ed5eb9dc324a1e9c480'
          'bce6606bf6f6a770580ee3e4609f2893'
@@ -62,17 +60,17 @@ prepare() {
 			export XKARCH="arm64"
 			cp $srcdir/arm64-config .config
 			;;
-		arm)
+		armv7h)
 			export XKARCH="arm"
-			cp $srcdir/arm-config .config
+			cp $srcdir/armv7h-config .config
 			;;
-		mips)
-			export XKARCH="mips"
-			cp $srcdir/mips-config .config
+		armv6h)
+			export XKARCH="arm"
+			cp $srcdir/armv6h-config .config
 			;;
-		mips64)
-			export XKARCH="mips"
-			cp $srcdir/mips64-config .config
+		armv5tel)
+			export XKARCH="arm"
+			cp $srcdir/armv5tel-config .config
 			;;
 		powerpc64le)
 			export XKARCH="powerpc"
@@ -92,14 +90,6 @@ prepare() {
 		s390x)
 			cp $srcdir/s390x-config .config
 			;;
-		microblaze)
-			export XKARCH="microblaze"
-			make ARCH=$XKARCH mmu_defconfig
-			;;
-		riscv32)
-			export XKARCH="riscv"
-			cp $srcdir/riscv32-config config
-			;;
 		riscv64)
 			export XKARCH="riscv"
 			cp $srcdir/riscv64-config config
@@ -110,7 +100,7 @@ prepare() {
 	esac
 
 	case $CARCH in
-		riscv32|riscv64)
+		riscv64)
 			make ARCH=$XKARCH allnoconfig KCONFIG_ALLCONFIG=config
 			;;
 		*)
@@ -132,8 +122,8 @@ build() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		mips|mips64)
-			export XKARCH="mips"
+		armv7h|armv6h|armv5tel)
+			export XKARCH="arm"
 			;;
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
@@ -144,10 +134,7 @@ build() {
 		s390x)
 			export XKARCH="s390"
 			;;
-		microblaze)
-			export XKARCH="microblaze"
-			;;
-		riscv32|riscv64)
+		riscv64)
 			export XKARCH="riscv"
 			;;
 		*)
@@ -177,13 +164,9 @@ package_linux() {
 			export XKARCH="arm64"
 			export IMG="arch/arm64/boot/Image"
 			;;
-		arm)
+		armv7h|armv6h|armv5tel)
 			export XKARCH="arm"
 			export IMG="arch/arm/boot/zImage"
-			;;
-		mips|mips64)
-			export XKARCH="mips"
-			export IMG="vmlinux"
 			;;
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
@@ -197,11 +180,7 @@ package_linux() {
 			export XKARCH="s390"
 			export IMG="arch/s390/boot/bzImage"
 			;;
-		microblaze)
-			export XKARCH="microblaze"
-			export IMG="vmlinux"
-			;;
-		riscv32|riscv64)
+		riscv64)
 			export XKARCH="riscv"
 			export IMG="vmlinux"
 			;;
@@ -221,7 +200,7 @@ package_linux() {
 	cp -i .config $pkgdir/boot/config-linux
 
 	case $CARCH in
-		aarch64|arm)
+		aarch64|armv7h|armv6h|armv5tel)
 			make ARCH=$XKARCH INSTALL_DTBS_PATH=$PKG/boot/dtbs dtbs_install
 			;;
 	esac
@@ -254,8 +233,8 @@ package_linux-devel() {
 		aarch64)
 			export XKARCH="arm64"
 			;;
-		mips|mips64)
-			export XKARCH="mips"
+		armv7h|armv6h|armv5tel)
+			export XKARCH="arm"
 			;;
 		powerpc64le|powerpc64|powerpc)
 			export XKARCH="powerpc"
@@ -266,10 +245,7 @@ package_linux-devel() {
 		s390x)
 			export XKARCH="s390"
 			;;
-		microblaze)
-			export XKARCH="microblaze"
-			;;
-		riscv32|riscv64)
+		riscv64)
 			export XKARCH="riscv"
 			;;
 		*)

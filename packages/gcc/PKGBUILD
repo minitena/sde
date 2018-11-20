@@ -5,7 +5,7 @@ pkgname=('gcc' 'gcc-libs')
 pkgbase=gcc
 pkgver=8.2.0
 pkgrel=8
-arch=('x86_64' 'i586' 'aarch64' 'arm' 'mips64' 'mips' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'microblaze' 'riscv64' 'riscv32')
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.gnu.org/software/bison"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 makedepends=('linux-headers' 'glibc' 'zlib' 'binutils' 'gmp' 'mpfr' 'mpc' 'isl')
@@ -37,7 +37,7 @@ build() {
 	export FFLAGS_FOR_TARGET="$FFLAGS"
 
 	case $CARCH in
-		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
+		x86_64|i586|aarch64|armv7h|armv6h|armv5tel|powerpc64le|powerpc64|powerpc|s390x)
 			export LANGS="c,c++,lto,fortran,go"
 			;;
 		*)
@@ -119,7 +119,7 @@ package_gcc() {
 	mv $pkgdir/usr/lib/*gdb.py $pkgdir/usr/share/gdb/auto-load/usr/lib
 
 	case $CARCH in
-		x86_64|i586|aarch64|arm|powerpc|powerpc64|powerpc64le|mips|mips64|s390x)
+		x86_64|i586|aarch64|armv7h|armv6h|armv5tel|powerpc64le|powerpc64|powerpc|s390x)
 			mkdir -p $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
 			mv $pkgdir/usr/bin/go $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
 			mv $pkgdir/usr/bin/gofmt $pkgdir/usr/lib/go/$pkgver/$CHOST/bin
