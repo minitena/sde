@@ -145,7 +145,6 @@ pkgnativeinstallnodeps() {
 pkgnativeinstallonly() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
-		cd /var/repo/$mergepkg
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --noconfirm --needed --arch $BARCH
 	done
 }
@@ -153,7 +152,6 @@ pkgnativeinstallonly() {
 pkgnativeinstallonlyforce() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
-		cd /var/repo/$mergepkg
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force --noconfirm --needed --arch $BARCH
 	done
 }
@@ -161,7 +159,6 @@ pkgnativeinstallonlyforce() {
 pkgnativeinstallonlyforcenodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
-		cd /var/repo/$mergepkg
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz --force -dd --noconfirm --needed --arch $BARCH
 	done
 }
@@ -169,7 +166,6 @@ pkgnativeinstallonlyforcenodeps() {
 pkgnativeinstallonlynodeps() {
 	local pkg="$@"
 	for mergepkg in $pkg; do
-		cd /var/repo/$mergepkg
 		pacman -U /output/packages/$mergepkg-*.pkg.tar.xz -dd --noconfirm --needed --arch $BARCH
 	done
 }
@@ -618,8 +614,8 @@ build_core_system() {
 		case $finalpkg in
 			linux)
 				pkgnativebuild linux
-				pkgnativeinstallonlyforce linux
-				pkgnativeinstallonlyforce linux-devel
+				pkgnativeinstallonly linux
+				pkgnativeinstallonly linux-devel
 				;;
 			glibc)
 				pkgnativeinstallnodeps glibc
