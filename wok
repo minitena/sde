@@ -616,6 +616,11 @@ adjust_toolchain() {
 build_core_system() {
 	for finalpkg in $(cat /var/repo/core.order); do
 		case $finalpkg in
+			linux)
+				pkgnativebuild linux
+				pkgnativeinstallonlyforce linux
+				pkgnativeinstallonlyforce linux-devel
+				;;
 			glibc)
 				pkgnativeinstallnodeps glibc
 				wok adjust-toolchain
