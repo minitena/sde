@@ -25,5 +25,5 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	find $pkgdir -name which* -delete
+	rm -rf $pkgdir/usr/bin/which
 }
