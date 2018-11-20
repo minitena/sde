@@ -183,11 +183,11 @@ usb_modeswitch
 open-isns
 open-iscsi
 libpng
-freetype
-harfbuzz
 freetype-pass1
+harfbuzz
+freetype-pass2
 fontconfig
-fakeroot-pass2
+fakeroot
 sudo
 libedit
 openssh

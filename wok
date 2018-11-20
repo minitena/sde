@@ -705,8 +705,8 @@ build_core_system() {
 				fi
 				;;
 			harfbuzz)
-				pkgnativerebuild harfbuzz
-				pkgnativereinstallforcenodeps harfbuzz
+				pkgnativebuild harfbuzz
+				pkgnativeinstallonlyforcenodeps harfbuzz
 				;;
 			dbus)
 				pkgnativebuild dbus
