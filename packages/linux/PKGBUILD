@@ -225,28 +225,28 @@ package_linux-devel() {
 
 	case $CARCH in
 		x86_64)
-			export XKARCH="x86_64"
+			export KARCH="x86_64"
 			;;
 		i586)
-			export XKARCH="i386"
+			export KARCH="i386"
 			;;
 		aarch64)
-			export XKARCH="arm64"
+			export KARCH="arm64"
 			;;
 		armv7h|armv6h|armv5tel)
-			export XKARCH="arm"
+			export KARCH="arm"
 			;;
 		powerpc64le|powerpc64|powerpc)
-			export XKARCH="powerpc"
+			export KARCH="powerpc"
 			;;
 		sparc64)
-			export XKARCH="sparc"
+			export KARCH="sparc"
 			;;
 		s390x)
-			export XKARCH="s390"
+			export KARCH="s390"
 			;;
 		riscv64)
-			export XKARCH="riscv"
+			export KARCH="riscv"
 			;;
 		*)
 			echo "Architecture is not set or is not supported"
