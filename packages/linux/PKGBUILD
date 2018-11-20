@@ -225,10 +225,12 @@ package_linux-devel() {
 
 	case $CARCH in
 		x86_64)
-			export KARCH="x86_64"
+			export KARCH="x86"
+			export SUBKARCH="x86_64"
 			;;
 		i586)
-			export KARCH="i386"
+			export KARCH="x86"
+			export SUBKARCH="i386"
 			;;
 		aarch64)
 			export KARCH="arm64"
