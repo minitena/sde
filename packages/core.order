@@ -23,6 +23,7 @@ shadow
 util-linux
 libressl
 coreutils
+debianutils
 libtool
 libmnl
 libnftnl
@@ -49,7 +50,6 @@ mawk
 gawk
 mlocate
 findutils
-debianutils
 gettext
 gperf
 pcre
