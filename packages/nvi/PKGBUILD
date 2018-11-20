@@ -1,0 +1,45 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nvi
+pkgver=1.79
+pkgrel=1
+pkgdesc="The Berkeley Vi Editor"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="https://sites.google.com/a/bostic.com/keithbostic/vi"
+license=('BSD')
+depends=('glibc' 'ncurses')
+source=("https://sites.google.com/a/bostic.com/keithbostic/files/$pkgname-$pkgver.tar.gz"
+	'fix.patch'
+	'config.patch')
+md5sums=('765e2153f5fc4f21793f2edc2647305a'
+         '30965080d4bad0a70f28f0234c43bf37'
+         '23c3737e5e0e26c82bf6cd3d88c84ba1')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/fix.patch
+	patch -Np1 -i $srcdir/config.patch
+}
+
+build() {
+	cd $pkgname-$pkgver/build
+
+	export CFLAGS="${CFLAGS} -U_FORTIFY_SOURCE"
+	./configure \
+		--prefix=$pkgdir/usr \
+		--program-prefix=n \
+		--disable-curses \
+		--disable-re \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver/build
+	make install
+
+	rm -rf $pkgdir/usr/share/man/cat1
+	rm -rf $pkgdir/usr/lib/libvi.a
+	rm -rf $pkgdir/usr/share/vi/perl $pkgdir/usr/share/vi/tcl
+}

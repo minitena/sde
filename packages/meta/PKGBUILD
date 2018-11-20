@@ -3,7 +3,7 @@
 
 pkgname=('minitena-base' 'minitena-base-zfs' 'minitena-sdk')
 pkgver=2018.10
-pkgrel=9
+pkgrel=10
 arch=('any')
 url="http://minitena.github.io/"
 license=('GPL')
@@ -14,7 +14,7 @@ package_minitena-base() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'dash' 'bash' 'iproute2' 'bzip2'
 		 'debianutils' 'diffutils' 'file' 'mawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nvi' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'btrfs-progs' 'pciutils' 'usbutils' 'pacman')
 	:
 }
@@ -25,7 +25,7 @@ package_minitena-base-zfs() {
 		 'pam' 'acl' 'attr' 'libcap' 'sed' 'ncurses' 'coreutils' 'dash' 'bash' 'iproute2' 'bzip2'
 		 'debianutils' 'diffutils' 'file' 'mawk' 'findutils' 'grep' 'less' 'gzip' 'iputils' 'net-tools'
 		 'inetutils' 'kbd' 'xz-utils' 'psmisc' 'lvm2' 'cryptsetup' 'mdadm' 'systemd'
-		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nano' 'dracut' 'linux'
+		 'shadow' 'util-linux' 'procps-ng' 'htop' 'psmisc' 'tar' 'nvi' 'dracut' 'linux'
 		 'sysfsutils' 'dosfstools' 'zfs' 'pciutils' 'usbutils' 'pacman')
 	:
 }

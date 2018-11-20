@@ -731,6 +731,9 @@ build_core_system() {
 			vim)
 				pkgnativebuild vim
 				;;
+			nvi)
+				pkgnativebuild nvi
+				;;
 			openntpd)
 				pkgnativebuild openntpd
 				;;
