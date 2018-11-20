@@ -652,28 +652,59 @@ build_core_system() {
 				rm -rf /output/packages/*debug*.pkg*
 				pkgnativeinstallonlyforcenodeps shadow
 				;;
-			util-linux)
-				rm -rf /output/packages/util-linux*.pkg*
-				pkgnativerebuild util-linux
-				rm -rf /output/packages/*debug*.pkg*
-				pkgnativereinstallforcenodeps util-linux
-				;;
 			procps-ng)
 				pkgnativebuild procps-ng
 				pkgnativeinstallonlyforcenodeps procps-ng
 				;;
-			systemd)
-				rm -rf /output/packages/systemd*.pkg*
-				pkgnativerebuild systemd
-				pkgnativereinstallforcenodeps systemd
+			util-linux-pass1)
+				if [ ! -f /var/.util-linux-pass1 ]; then
+					pkgnativerebuild util-linux
+					rm -rf /output/packages/*debug*.pkg*
+					pkgnativereinstallforcenodeps util-linux
+					touch /var/.util-linux-pass1
+				fi
 				;;
-			freetype)
-				rm -rf /output/packages/freetype*.pkg*
-				pkgnativerebuild freetype
-				pkgnativereinstallforcenodeps freetype
+			util-linux-pass2)
+				if [ ! -f /var/.util-linux-pass2 ]; then
+					pkgnativerebuild util-linux
+					rm -rf /output/packages/*debug*.pkg*
+					pkgnativereinstallforcenodeps util-linux
+					touch /var/.util-linux-pass2
+				fi
+				;;
+			systemd-pass1)
+				if [ ! -f /var/.systemd-pass1 ]; then
+					rm -rf /output/packages/systemd*.pkg*
+					pkgnativerebuild systemd
+					pkgnativereinstallforcenodeps systemd
+					touch /var/.systemd-pass1
+				fi
+				;;
+			systemd-pass2)
+				if [ ! -f /var/.systemd-pass2 ]; then
+					rm -rf /output/packages/systemd*.pkg*
+					pkgnativerebuild systemd
+					pkgnativereinstallforcenodeps systemd
+					touch /var/.systemd-pass2
+				fi
+				;;
+			freetype-pass1)
+				if [ ! -f /var/.freetype-pass1 ]; then
+					rm -rf /output/packages/freetype*.pkg*
+					pkgnativerebuild freetype
+					pkgnativereinstallforcenodeps freetype
+					touch /var/.freetype-pass1
+				fi
+				;;
+			freetype-pass2)
+				if [ ! -f /var/.freetype-pass2 ]; then
+					rm -rf /output/packages/freetype*.pkg*
+					pkgnativerebuild freetype
+					pkgnativereinstallforcenodeps freetype
+					touch /var/.freeype-pass2
+				fi
 				;;
 			harfbuzz)
-				rm -rf /output/packages/harfbuzz*.pkg*
 				pkgnativerebuild harfbuzz
 				pkgnativereinstallforcenodeps harfbuzz
 				;;

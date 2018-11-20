@@ -20,7 +20,7 @@ sed
 pkgconf
 ncurses
 shadow
-util-linux
+util-linux-pass1
 libressl
 coreutils
 debianutils
@@ -121,12 +121,12 @@ libcap-ng
 audit
 apparmor
 kexec-tools
-systemd
+systemd-pass1
 lvm2
 cryptsetup
-systemd
+systemd-pass2
 dbus
-util-linux
+util-linux-pass2
 procps-ng
 e2fsprogs
 xfsprogs
@@ -185,9 +185,9 @@ open-iscsi
 libpng
 freetype
 harfbuzz
-freetype
+freetype-pass1
 fontconfig
-fakeroot
+fakeroot-pass2
 sudo
 libedit
 openssh
