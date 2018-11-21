@@ -5,7 +5,7 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19.3
 zerover=$pkgver
-pkgrel=28
+pkgrel=29
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.kernel.org/"
 license=('GPL')
@@ -147,6 +147,7 @@ build() {
 
 package_linux() {
 	pkgdesc="The Linux kernel"
+	install=linux.install
 
 	msg "Installing kernel contents to the $pkgdir directory..."
 
@@ -211,6 +212,9 @@ package_linux() {
 	local subst="
 		s|%KVER%|$zerover|g
 	"
+
+	ed "$subst" "$startdir/$install" > "$startdir/$install.pkg"
+	true && install=$install.pkg
 
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/60-linux.hook
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/90-linux.hook

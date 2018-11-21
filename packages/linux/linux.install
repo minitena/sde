@@ -1,0 +1,11 @@
+post_install() {
+	depmod %KVER%
+}
+
+post_upgrade() {
+	post_install
+}
+
+post_remove() {
+	rm -rf boot/initramfs-linux.img
+}
