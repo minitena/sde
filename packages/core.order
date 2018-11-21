@@ -223,8 +223,6 @@ rpcbind
 s-nail
 numactl
 dpdk
-numactl
-dpdk
 libarchive
 pacman
 pacman-contrib
