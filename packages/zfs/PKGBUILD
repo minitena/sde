@@ -3,7 +3,7 @@
 
 pkgname=zfs
 mainver=0.7.12
-kver=4.19.2
+kver=4.19.3
 pkgver=${mainver}.${kver}
 pkgrel=2
 pkgdesc="The Zettabyte File System"
