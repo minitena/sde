@@ -753,10 +753,6 @@ build_core_system() {
 				pkgnativebuild pacman
 				rm -rf /output/packages/*debug*.pkg*
 				;;
-			pacman-contrib)
-				pkgnativebuild pacman-contrib
-				rm -rf /output/packages/*debug*.pkg*
-				;;
 			fakeroot)
 				pkgnativebuild fakeroot
 				;;

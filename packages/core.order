@@ -225,7 +225,6 @@ numactl
 dpdk
 libarchive
 pacman
-pacman-contrib
 bmake
 libuv
 jsoncpp
