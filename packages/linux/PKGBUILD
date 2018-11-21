@@ -213,7 +213,7 @@ package_linux() {
 		s|%KVER%|$zerover|g
 	"
 
-	ed "$subst" "$startdir/$install" > "$startdir/$install.pkg"
+	sed "$subst" $startdir/linux.install > "$startdir/$install.pkg"
 	true && install=$install.pkg
 
 	sed -i "$subst" $pkgdir/usr/share/libalpm/hooks/60-linux.hook
