@@ -16,6 +16,9 @@ source=("https://ftp.mozilla.org/pub/security/nss/releases/NSS_${pkgver//./_}_RT
 md5sums=('f7aec858d192ae03d0e9a35a730c70fa')
 
 build() {
+	export CFLAGS="${CFLAGS/-Os/-O3}"
+	export CXXFLAGS="${CXXFLAGS/-Os/-O3}"
+
 	case $CARCH in
 		x86_64)
 			export NSSTGT="x64"
