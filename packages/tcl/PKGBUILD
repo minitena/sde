@@ -46,14 +46,14 @@ package() {
 		-e "s#${srcdir}/tcl${pkgver}#/usr/include#" \
 		-i $pkgdir/usr/lib/tclConfig.sh
 
-	tdbcver=tdbc1.0.6
+	tdbcver=tdbc1.1.0
 	sed -e "s#${srcdir}/tcl${pkgver}/unix/pkgs/$tdbcver#/usr/lib/$tdbcver#" \
 		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver/generic#/usr/include#" \
 		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver/library#/usr/lib/tcl${pkgver%.*}#" \
 		-e "s#${srcdir}/tcl${pkgver}/pkgs/$tdbcver#/usr/include#" \
 		-i $pkgdir/usr/lib/$tdbcver/tdbcConfig.sh
 
-	itclver=itcl4.1.1
+	itclver=itcl4.1.2
 	sed -e "s#${srcdir}/tcl${pkgver}/unix/pkgs/$itclver#/usr/lib/$itclver#" \
 		-e "s#${srcdir}/tcl${pkgver}/pkgs/$itclver/generic#/usr/include#" \
 		-e "s#${srcdir}/tcl${pkgver}/pkgs/$itclver#/usr/include#" \
