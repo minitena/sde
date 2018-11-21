@@ -3,7 +3,7 @@
 
 pkgname=gdb
 pkgver=8.2
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU Debugger"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.gnu.org/software/gdb"
@@ -31,7 +31,7 @@ package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
 
-	rm $pkgdir/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
+	rm $pkgdir/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat,diagnostics,plugin-api}.h
 	rm -r $pkgdir/usr/share/info
 	rm $pkgdir/usr/lib/{libbfd,libopcodes}.a
 
