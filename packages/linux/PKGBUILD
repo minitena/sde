@@ -5,13 +5,14 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19.3
 zerover=$pkgver
-pkgrel=29
-arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+pkgrel=30
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'alpha' 'riscv64')
 url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 makedepends=('kmod' 'bc' 'libelf' 'xz-utils' 'lz4' 'libressl')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
+	'alpha-config'
 	'arm64-config'
 	'armv7h-config'
 	'armv6h-config'
@@ -27,18 +28,19 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'60-linux.hook'
 	'90-linux.hook')
 md5sums=('e866e88303fcb12a614e1c0fce2c1d41'
-         '68c0a8e36d0a59f0f8f11aaa40c406f1'
-         '1148784a48bd0758b57f874bb12c212d'
-         '10d40ae0ed358754beeae3d712fb226f'
-         '5ab86ac2afd5c99505687d68ea85b2d0'
-         'a2691bf97901e8474416f593d2845374'
-         '2fc4d2afcc0aeb3591fc49788c5cfba0'
-         'e44848b35826d1e371e607ca00c1c95a'
-         '43b3b8b1532fdf3c33a6a4cf4c5fb0f3'
-         'edc507e53d2d00069aebdac98d35def1'
-         'bd72c422c8161ed5eb9dc324a1e9c480'
-         'bce6606bf6f6a770580ee3e4609f2893'
-         '66d6c366a7f6db52766de1a78537e9d0'
+         '7b3ab85a63dc66092a3fff9c8a335520'
+         'c7f667c2225f4294826f347d5d9582b5'
+         'c534d53425f2fe39f2b50749fb1d8449'
+         '0f212e623825557d308d9b061f61070d'
+         'cc47ffdd526b6681ab4a3fa3f696bd33'
+         '50d18a695e0e3c9df198c36c5bc179ac'
+         '0bf7c9ba6d0d93ae13b100e1ac145c5f'
+         '5763eda415af7d96afe16a34a6435bf2'
+         'cf6ec1e6bfb306a01a2952d3b86cf168'
+         '501a0e5733653b0a6f9e7b992f612cda'
+         'c39a00d60ac3aa5e98745571f921f9bd'
+         '6667dc75147c04a074c6e03f6e47d309'
+         '772362a6631b34d082fe654c50db4cae'
          '8e58bafc66f67c38f306d0f854f92a8b'
          '183cfae4e585c53261679ac9b72070ad')
 
@@ -90,6 +92,9 @@ prepare() {
 		s390x)
 			cp $srcdir/s390x-config .config
 			;;
+		alpha)
+			cp $srcdir/alpha-config .config
+			;;
 		riscv64)
 			export XKARCH="riscv"
 			cp $srcdir/riscv64-config config
@@ -134,6 +139,9 @@ build() {
 		s390x)
 			export XKARCH="s390"
 			;;
+		alpha)
+			export XKARCH="alpha"
+			;;
 		riscv64)
 			export XKARCH="riscv"
 			;;
@@ -143,6 +151,13 @@ build() {
 	esac
 
 	make ARCH=$XKARCH
+
+	case $CARCH in
+		alpha)
+			export XKARCH="alpha"
+			make ARCH=$XKARCH boot
+			;;
+	esac
 }
 
 package_linux() {
@@ -180,6 +195,10 @@ package_linux() {
 		s390x)
 			export XKARCH="s390"
 			export IMG="arch/s390/boot/bzImage"
+			;;
+		alpha)
+			export XKARCH="alpha"
+			export IMG="arch/alpha/boot/vmlinux.gz"
 			;;
 		riscv64)
 			export XKARCH="riscv"
@@ -250,6 +269,9 @@ package_linux-devel() {
 			;;
 		s390x)
 			export KARCH="s390"
+			;;
+		alpha)
+			export KARCH="alpha"
 			;;
 		riscv64)
 			export KARCH="riscv"
