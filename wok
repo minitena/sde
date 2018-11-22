@@ -856,7 +856,7 @@ build_initramfs() {
 	mv $LIVEOS/boot/vmlinuz-linux $ISODIR/kernel
 	rm -rf $LIVEOS/boot/initramfs-linux.img
 
-	chroot $LIVEOS /usr/bin/dracut --omit systemd --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live" --force --lz4 -q boot/initramfs-linux.img $zerover
+	chroot $LIVEOS /usr/bin/dracut --omit systemd --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live zfs" --force --lz4 -q boot/initramfs-linux.img $zerover
 	mv $LIVEOS/boot/initramfs-linux.img $ISODIR/initrd
 }
 

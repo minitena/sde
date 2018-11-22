@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=f2fs-tools
-pkgver=1.11.0
+pkgver=1.12.0
 pkgrel=1
 pkgdesc="Tools for Flash-Friendly File System (F2FS)"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,11 +10,10 @@ url="http://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/about/"
 license=('GPL')
 depends=('glibc' 'util-linux')
 source=("https://git.kernel.org/cgit/linux/kernel/git/jaegeuk/f2fs-tools.git/snapshot/$pkgname-$pkgver.tar.gz")
-md5sums=('2bdd535186858c96e139b1f16d357c5f')
+md5sums=('a4a0c01591f16b48ea8e9f75a7e64b77')
 
 prepare() {
 	cd $pkgname-$pkgver
-	sed -i '/sg_write_buffer/d' tools/Makefile.am
 	autoreconf -fi
 }
 
