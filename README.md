@@ -28,3 +28,7 @@ To communicate with each other person who uses Minitena, we made IRC channel. Be
 
 ## Development
 Minitena uses `git` as control version system. Main repository with source code hosts at GitHub. To enter to the repository with source code just [click here](https://github.com/minitena/source).
+
+## Financial support
+Minitena team are humans too! We'll glad for your financial support. We use Ethereum cryptocurrency to recieve your donations.
+Ethereum wallet: 0xE72931051e4aDB1c79bbAcad1E1427B2D4eD0D01
