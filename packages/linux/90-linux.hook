@@ -4,6 +4,7 @@ Operation = Install
 Operation = Upgrade
 Target = boot/vmlinuz-linux
 Target = usr/lib/modules/%KVER%/*
+Target = usr/lib/modules/%KVER%/extra/*
 
 [Action]
 Description = Updating initramfs image for Linux...

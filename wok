@@ -829,7 +829,7 @@ download_loader() {
 }
 
 install_base() {
-	export LIVEPACKAGES='minitena-base dhcp wireless_tools wpa_supplicant open-iscsi openssh zfs parted gptfdisk'
+	export LIVEPACKAGES='minitena-base dhcp wireless_tools wpa_supplicant open-iscsi openssh zfs-utils parted gptfdisk'
 	mkdir -p $LIVEOS/var/lib/pacman
 	mkdir -p $LIVEOS/var/cache/pacman/pkg
 	pacman --config $ROOTFS/etc/pacman.conf -Syy $LIVEPACKAGES --cachedir $LIVEOS/var/cache/pacman/pkg --root $LIVEOS --arch $BARCH --noconfirm
@@ -853,10 +853,12 @@ EOF
 build_initramfs() {
 	. $REPO/linux/PKGBUILD
 
+	chroot $LIVEOS /usr/bin/depmod $zerover
+
 	mv $LIVEOS/boot/vmlinuz-linux $ISODIR/kernel
 	rm -rf $LIVEOS/boot/initramfs-linux.img
 
-	chroot $LIVEOS /usr/bin/dracut --omit systemd --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live" --force --lz4 -q boot/initramfs-linux.img $zerover
+	chroot $LIVEOS /usr/bin/dracut --omit systemd --no-hostonly --add-drivers "ahci" --force-add "dmsquash-live zfs" --force --lz4 -q boot/initramfs-linux.img $zerover
 	mv $LIVEOS/boot/initramfs-linux.img $ISODIR/initrd
 }
 

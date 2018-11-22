@@ -5,7 +5,7 @@ pkgname=spl
 mainver=0.7.12
 kver=4.19.3
 pkgver=${mainver}.${kver}
-pkgrel=2
+pkgrel=3
 pkgdesc="Solaris Porting Layer"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://zfsonlinux.org/"
@@ -23,7 +23,6 @@ build() {
 		--sbindir=/usr/bin \
 		--with-linux=/usr/src/linux \
 		--with-linux-obj=/usr/src/linux \
-		--with-config=kernel \
 		--build=$CHOST
 	make
 }

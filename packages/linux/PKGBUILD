@@ -5,7 +5,7 @@ pkgname=('linux' 'linux-devel')
 pkgbase=linux
 pkgver=4.19.3
 zerover=$pkgver
-pkgrel=30
+pkgrel=31
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'alpha' 'riscv64')
 url="https://www.kernel.org/"
 license=('GPL')
@@ -41,8 +41,8 @@ md5sums=('e866e88303fcb12a614e1c0fce2c1d41'
          'c39a00d60ac3aa5e98745571f921f9bd'
          '6667dc75147c04a074c6e03f6e47d309'
          '772362a6631b34d082fe654c50db4cae'
-         '8e58bafc66f67c38f306d0f854f92a8b'
-         '183cfae4e585c53261679ac9b72070ad')
+         'add14545fc8904d76a9becdc89b24a55'
+         '290b6529bb3e5edec1454acc27023193')
 
 prepare() {
 	cd $pkgbase-$pkgver
