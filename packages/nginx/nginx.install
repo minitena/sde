@@ -1,0 +1,9 @@
+post_install() {
+	adduser -q --system --shell /usr/bin/nologin --disabled-password --home /usr/share/nginx nginx
+	install -o nginx -g nogroup -d /var/log/nginx /var/tmp/nginx
+	ln -sf ../sites-available/99-default etc/nginx/sites-enabled/99-default 2>/dev/null || true
+}
+
+post_remove() {
+	deluser nginx
+}

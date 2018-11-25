@@ -1,0 +1,69 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=nginx
+pkgver=1.15.6
+pkgrel=1
+pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="https://nginx.org"
+license=('custom')
+install=$pkgname.install
+backup=(etc/nginx/fastcgi.conf
+	etc/nginx/fastcgi_params
+	etc/nginx/koi-win
+	etc/nginx/koi-utf
+	etc/nginx/nginx.conf
+	etc/nginx/scgi_params
+	etc/nginx/uwsgi_params
+	etc/nginx/win-utf
+	etc/logrotate.d/nginx)
+depends=('glibc' 'zlib' 'libressl' 'pcre')
+source=("http://nginx.org/download/$pkgname-$pkgver.tar.gz"
+	'logrotate'
+	'service'
+	'99-default')
+md5sums=('e15e07baa3117f15dfc4303603ebac74'
+         '6a01fb17af86f03707c8ae60f98a2dc2'
+         'c312676ebb05958fae5b7303e9f612ca'
+         '4c5cb68ed637948125b9eb504913e1af')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--conf-path=/etc/nginx/nginx.conf \
+		--sbin-path=/usr/bin/nginx \
+		--pid-path=/run/nginx.pid \
+		--lock-path=/run/lock/nginx.lock \
+		--http-log-path=/var/log/nginx/access.log \
+		--error-log-path=stderr \
+		--http-client-body-temp-path=/var/lib/nginx/client-body \
+		--http-proxy-temp-path=/var/lib/nginx/proxy \
+		--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+		--http-scgi-temp-path=/var/lib/nginx/scgi \
+		--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+		--with-cc-opt="$CFLAGS" \
+		--user=nginx \
+		--group=nogroup \
+		--with-threads
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -d $pkgdir/usr/share/nginx
+	mv $pkgdir/usr/html $pkgdir/usr/share/nginx/
+	rm -rf $pkgdir/usr/html
+
+	install -d $pkgdir/etc/nginx/conf.d
+	install -d $pkgdir/etc/nginx/sites-available
+	install -d $pkgdir/etc/nginx/sites-enabled
+	install -m 0644 $srcdir/99-default $pkgdir/etc/nginx/sites-available/
+
+	find $pkgdir/etc -name *.default -delete
+	rm -rf $pkgdir/var
+	rm -rf $pkgdir/proc
+}
