@@ -3,7 +3,7 @@
 
 pkgname=pacman
 pkgver=5.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A library-based package manager with dependency support"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.archlinux.org/pacman/"
@@ -15,7 +15,7 @@ source=("https://sources.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.gz"
 	'pacman.conf'
 	'makepkg.conf')
 md5sums=('4da799005fe4d8c6f13fd80a4f67e96f'
-         'f7f5cce42dabc71bf537ce93c96c1125'
+         'c4678ed66589a1b1b727dcffc27d31e2'
          '2861d5277a9b7f64e9c454542aeb642f')
 
 prepare() {
