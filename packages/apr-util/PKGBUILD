@@ -1,0 +1,38 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=apr-util
+pkgver=1.6.1
+pkgrel=1
+pkgdesc="The Apache Portable Runtime"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://apr.apache.org/"
+license=('Apache')
+depends=('glibc' 'gdbm' 'libressl' 'expat' 'apr')
+source=("https://archive.apache.org/dist/apr/$pkgname-$pkgver.tar.bz2"
+	'buildconf_config.guess_sub_location.patch')
+md5sums=('8ff5dc36fa39a2a3db1df196d3ed6086'
+         '9573af0dc4d424a3a94126c1b826f4cf')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/buildconf_config.guess_sub_location.patch
+	./buildconf --with-apr=`apr-1-config --srcdir`
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--with-apr=/usr \
+		--with-gdbm=/usr \
+		--with-openssl=/usr \
+		--with-crypto \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
