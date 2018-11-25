@@ -3,7 +3,7 @@
 
 pkgname=spl
 mainver=0.7.12
-kver=4.19.3
+kver=4.19.4
 pkgver=${mainver}.${kver}
 pkgrel=3
 pkgdesc="Solaris Porting Layer"
