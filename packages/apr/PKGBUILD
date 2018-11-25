@@ -1,0 +1,53 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=apr
+pkgver=1.6.5
+pkgrel=1
+pkgdesc="The Apache Portable Runtime"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://apr.apache.org/"
+license=('Apache')
+depends=('glibc' 'util-linux')
+makedepends=('python2')
+source=("http://www-us.apache.org/dist/$pkgname/$pkgname-$pkgver.tar.bz2"
+	'fix_apr-config.patch'
+	'ship_find_apr.m4.patch'
+	'fix-apr.pc.patch'
+	'omit_extra_libs.patch'
+	'dont_override_external_buildflags')
+md5sums=('ad4add8efdfe87330b88e5e788241775'
+         '401b022aabfd9bd591bddb3b565177c0'
+         '2d15340804eb9b28988a860ca4e6299d'
+         '8bd9cc0831f11176213758d3a8da1b15'
+         '89d541cff24c980960f22cb0906dfacc'
+         'c11e419816ca54042597839030b22a2d')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/fix_apr-config.patch
+	patch -Np1 -i $srcdir/ship_find_apr.m4.patch
+	patch -Np1 -i $srcdir/fix-apr.pc.patch
+	patch -Np1 -i $srcdir/omit_extra_libs.patch
+	patch -Np1 -i $srcdir/dont_override_external_buildflags
+	sed -e 's/env python/env python2/' -i build/gen-build.py
+	sed -e 's/python/python2/g' -i build/buildcheck.sh
+	./buildconf
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--includedir=/usr/include/apr-1 \
+		--with-installbuilddir=/usr/share/apr-1/build \
+		--with-devrandom=/dev/urandom \
+		--enable-nonportable-atomics \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}
