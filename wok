@@ -726,6 +726,10 @@ build_core_system() {
 				pkgnativebuild debianutils
 				pkgnativeinstallonlyforcenodeps debianutils
 				;;
+			adduser)
+				pkgnativebuild adduser
+				pkgnativeinstallonlyforcenodeps adduser
+				;;
 			coreutils)
 				pkgnativeinstallforce coreutils
 				;;

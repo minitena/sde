@@ -3,7 +3,7 @@
 
 pkgname=texinfo
 pkgver=6.5
-pkgrel=1
+pkgrel=2
 pkgdesc="GNU documentation system for on-line information and printed output"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.gnu.org/software/texinfo"

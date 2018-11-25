@@ -20,6 +20,7 @@ sed
 pkgconf
 ncurses
 shadow
+adduser
 util-linux-pass1
 libressl
 coreutils

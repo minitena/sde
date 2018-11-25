@@ -1,0 +1,26 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=adduser
+pkgver=3.113+nmu3
+pkgrel=1
+pkgdesc="Add and remove users and groups"
+arch=('any')
+url="http://alioth.debian.org/projects/adduser/"
+license=('GPL')
+depends=('mawk')
+source=("https://launchpad.net/debian/+archive/primary/+files/${pkgname}_${pkgver}.tar.gz")
+md5sums=('ccb5864bde56683182c89c44474e7182')
+
+package() {
+	cd $pkgname-$pkgver
+	install -D -m755 adduser $pkgdir/usr/bin/adduser
+	install -D -m755 deluser $pkgdir/usr/bin/deluser
+	ln -sf adduser $pkgdir/usr/bin/addgroup
+	ln -sf deluser $pkgdir/usr/bin/delgroup
+	install -D -m755 adduser.conf $pkgdir/etc/adduser.conf
+	install -D -m755 deluser.conf $pkgdir/etc/deluser.conf
+	install -D -m755 AdduserCommon.pm $pkgdir/usr/share/perl5/vendor_perl/Debian/AdduserCommon.pm
+	sed -i "s/'-w',$gecos_work/'-p',$gecos_work/" $pkgdir/usr/bin/adduser
+	sed -i "s/'-r', $gecos_room/'-o', $gecos_room/" $pkgdir/usr/bin/adduser
+}
