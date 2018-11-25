@@ -1,0 +1,89 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=apache
+pkgver=2.4.37
+pkgrel=1
+pkgdesc="A high performance Unix-based HTTP server"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://www.apache.org/dist/httpd"
+license=('Apache')
+depends=('glibc' 'zlib' 'libressl' 'pcre' 'apr-util')
+provides=('mod_proxy_uwsgi' 'httpd')
+conflicts=('mod_proxy_uwsgi')
+replaces=('mod_proxy_uwsgi')
+backup=(etc/httpd/conf/httpd.conf
+	etc/httpd/conf/extra/httpd-{autoindex,dav,default,info,languages}.conf
+	etc/httpd/conf/extra/httpd-{manual,mpm,multilang-errordoc}.conf
+	etc/httpd/conf/extra/httpd-{ssl,userdir,vhosts}.conf
+	etc/httpd/conf/extra/proxy-html.conf
+	etc/httpd/conf/{mime.types,magic}
+	etc/logrotate.d/httpd)
+source=("https://www.apache.org/dist/httpd/httpd-$pkgver.tar.bz2"
+	'logrotate'
+	'service'
+	'tmpfiles'
+	'layout')
+md5sums=('6a36e742180ee74bff97b28eee90c3f7'
+         'f8a14ade532c4dc47db56590f10794b5'
+         'f861c22020e675189c0eef612f8dfc30'
+         '82068753dab92fe86312b1010a2904d7'
+         '97802e9f961eb2f6664895250baecf25')
+
+prepare() {
+	cd httpd-$pkgver
+	cat $srcdir/layout >> config.layout
+}
+
+build() {
+	cd httpd-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--with-apr=/usr/bin/apr-1-config \
+		--with-apr-util=/usr/bin/apu-1-config \
+		--with-pcre=/usr \
+		--with-suexec-bin=/usr/bin/suexec \
+		--with-suexec-caller=http \
+		--with-suexec-docroot=/srv/http \
+		--with-suexec-gidmin=99 \
+		--with-suexec-logfile=/var/log/httpd/suexec.log \
+		--with-suexec-uidmin=99 \
+		--enable-layout=Minitena \
+		--enable-mods-shared=all \
+		--enable-modules=all \
+		--enable-mpms-shared=all \
+		--enable-so \
+		--enable-suexec \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd httpd-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -D -m644 $srcdir/logrotate $pkgdir/etc/logrotate.d/httpd
+	install -D -m644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/apache.conf
+	install -D -m644 $srcdir/service $pkgdir/usr/lib/systemd/system/httpd.service
+
+	ln -sf /usr/lib/httpd/modules $pkgdir/etc/httpd/modules
+
+	sed -e 's#/usr/lib/httpd/modules/#modules/#' \
+		-e 's|#\(LoadModule negotiation_module \)|\1|' \
+		-e 's|#\(LoadModule include_module \)|\1|' \
+		-e 's|#\(LoadModule userdir_module \)|\1|' \
+		-e 's|#\(LoadModule slotmem_shm_module \)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-multilang-errordoc.conf\)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-autoindex.conf\)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-languages.conf\)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-userdir.conf\)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-default.conf\)|\1|' \
+		-e 's|#\(Include conf/extra/httpd-mpm.conf\)|\1|' \
+		-i $pkgdir/etc/httpd/conf/httpd.conf
+
+	rm -r $pkgdir/usr/share/httpd/manual
+	rm -r $pkgdir/etc/httpd/conf/original
+	rm -r $pkgdir/srv/
+	rm -r $pkgdir/run
+}
