@@ -10,7 +10,7 @@ url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz")
-md5sums=('29c910b1e6cee4413dd0639050489881')
+md5sums=('989531c8194d70430a1497f1540e432a')
 
 prepare() {
 	cd linux-$pkgver
