@@ -1,8 +1,8 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=('llvm' 'llvm-libs')
 pkgbase=llvm
+pkgname=('llvm' 'llvm-libs')
 pkgver=7.0.0
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')

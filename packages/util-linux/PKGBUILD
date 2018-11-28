@@ -1,8 +1,8 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=('util-linux' 'util-linux-libs')
 pkgbase=util-linux
+pkgname=('util-linux' 'util-linux-libs')
 _pkgmajor=2.33
 pkgver=${_pkgmajor}
 pkgrel=4

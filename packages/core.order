@@ -236,6 +236,8 @@ nginx
 lighttpd
 bind
 nsd
+jemalloc
+boost
 mariadb
 libarchive
 pacman

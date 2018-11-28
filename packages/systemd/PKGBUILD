@@ -1,8 +1,8 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=('systemd' 'systemd-libs')
 pkgbase=systemd
+pkgname=('systemd' 'systemd-libs')
 pkgver=239
 pkgrel=27
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')

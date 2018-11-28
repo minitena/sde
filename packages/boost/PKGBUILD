@@ -1,0 +1,74 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgbase=boost
+pkgname=('boost' 'boost-libs')
+pkgver=1.68.0
+boostver=${pkgver//./_}
+pkgrel=1
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://www.boost.org/"
+license=('custom')
+makedepends=('bzip2' 'icu' 'python2' 'zlib')
+source=("https://downloads.sourceforge.net/project/${pkgbase}/${pkgbase}/${pkgver}/${pkgbase}_${boostver}.tar.bz2")
+md5sums=('7fbd1890f571051f2a209681d57d486a')
+
+build() {
+	local JOBS="$(sed -e 's/.*\(-j *[0-9]\+\).*/\1/' <<< ${MAKEFLAGS})"
+
+	cd ${pkgbase}_${boostver}
+	./bootstrap.sh \
+		--prefix=$srcdir/usr \
+		--with-toolset=gcc \
+		--with-icu
+	./b2 stage \
+		variant=release \
+		threading=multi \
+		debug-symbols=off \
+		runtime-link=shared \
+		link=shared,static \
+		toolset=gcc \
+		cflags="${CFLAGS} -fPIC -O3" \
+		cxxflags="${CXXFLAGS} -std=c++14 -fPIC -O3" \
+		${JOBS} \
+		\
+		--layout=system
+	./b2 install \
+		variant=release \
+		threading=multi \
+		debug-symbols=off \
+		runtime-link=shared \
+		link=shared,static \
+		toolset=gcc \
+		cflags="${CFLAGS} -fPIC -O3" \
+		cxxflags="${CXXFLAGS} -std=c++14 -fPIC -O3" \
+		${JOBS} \
+		\
+		--layout=system
+}
+
+package_boost() {
+	pkgdesc='Free peer-reviewed portable C++ source libraries - development headers'
+	depends=("boost-libs=${pkgver}")
+	optdepends=('python: for python bindings'
+		'python2: for python2 bindings')
+	options=('staticlibs')
+
+	mkdir -p $pkgdir/usr
+	cp -a $srcdir/usr/* $pkgdir/usr/
+	rm -rf $pkgdir/usr/lib/*.so{,.*}
+}
+
+package_boost-libs() {
+	pkgdesc='Free peer-reviewed portable C++ source libraries - runtime libraries'
+	depends=('bzip2' 'zlib' 'icu' 'xz-utils')
+
+	mkdir -p $pkgdir/usr
+	cp -a $srcdir/usr/* $pkgdir/usr/
+
+	mkdir $srcdir/libs
+	mv $pkgdir/usr/lib/*.so{,.*} $srcdir/libs
+	rm -rf $pkgdir
+	mkdir -p $pkgdir/usr/lib
+	mv $srcdir/libs/* $pkgdir/usr/lib/
+}

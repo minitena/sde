@@ -1,26 +1,138 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgbase=mariadb
+pkgname=('mariadb-libs' 'mariadb')
+pkgver=10.3.10
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
+url="https://mariadb.org/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+makedepends=('boost' 'bzip2' 'cmake' 'jemalloc' 'libaio' 'libxml2' 'lz4' 'lzo' 'libressl' 'systemd' 'zlib')
+source=("https://downloads.mariadb.org/interstitial/$pkgbase-$pkgver/source/$pkgbase-$pkgver.tar.gz"
+	'my.cnf')
+md5sums=('a63e00179d5e09b63bf71860a19a5507'
+         '270b4b1b192249210d34dd8c999a0e56')
+
+prepare() {
+	cd $pkgbase-$pkgver
+	sed -i -e '/^Alias/d' \
+		-e '/^PrivateTmp/c PrivateTmp=true' \
+		support-files/mariadb{,@}.service.in
+
+	echo 'd @MYSQL_DATADIR@ 0700 @MYSQLD_USER@ @MYSQLD_USER@ -' >> support-files/tmpfiles.conf.in
+
+	mkdir build
+}
 
 build() {
-	cd $pkgname-$pkgver
-	./configure \
-		--prefix=/usr \
-		--build=$CHOST
+	cd $pkgbase-$pkgver
+	cd build
+
+	cmake \
+		-DBUILD_CONFIG=mysql_release \
+		-DCMAKE_AR=/usr/bin/gcc-ar \
+		-DCMAKE_C_FLAGS="-fPIC $CFLAGS -fno-strict-aliasing -DBIG_JOINS=1 -fomit-frame-pointer -fno-delete-null-pointer-checks -O3" \
+		-DCMAKE_CXX_FLAGS="-fPIC $CXXFLAGS -fno-strict-aliasing -DBIG_JOINS=1 -felide-constructors -fno-rtti -fno-delete-null-pointer-checks -O3" \
+		-DCMAKE_EXE_LINKER_FLAGS='-ljemalloc' \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_RANLIB=/usr/bin/gcc-ranlib \
+		-DDEFAULT_CHARSET=utf8mb4 \
+		-DDEFAULT_COLLATION=utf8mb4_unicode_ci \
+		-DENABLED_LOCAL_INFILE=ON \
+		-DINSTALL_DOCDIR=share/doc/mariadb \
+		-DINSTALL_DOCREADMEDIR=share/doc/mariadb \
+		-DINSTALL_INCLUDEDIR=include/mysql \
+		-DINSTALL_MANDIR=share/man \
+		-DINSTALL_MYSQLSHAREDIR=share/mysql \
+		-DINSTALL_PLUGINDIR=lib/mysql/plugin \
+		-DINSTALL_SCRIPTDIR=bin \
+		-DINSTALL_SHAREDIR=share/mysql \
+		-DINSTALL_SUPPORTFILESDIR=share/mysql \
+		-DINSTALL_SYSCONF2DIR=/etc/mysql \
+		-DINSTALL_SYSCONFDIR=/etc/mysql \
+		-DINSTALL_SYSTEMD_TMPFILESDIR=/usr/lib/tmpfiles.d/ \
+		-DINSTALL_SYSTEMD_UNITDIR=/usr/lib/systemd/system/ \
+		-DMYSQL_DATADIR=/var/lib/mysql \
+		-DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
+		-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+		-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+		-DWITH_EMBEDDED_SERVER=ON \
+		-DWITH_EXTRA_CHARSETS=complex \
+		-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+		-DWITH_JEMALLOC=ON \
+		-DWITH_LIBWRAP=OFF \
+		-DWITH_PARTITION_STORAGE_ENGINE=1 \
+		-DWITH_PCRE=bundled \
+		-DWITH_READLINE=ON \
+		-DWITH_SSL=system \
+		-DWITH_SYSTEMD=yes \
+		-DWITH_TOKUDB_STORAGE_ENGINE=1 \
+		-DWITH_ZLIB=system \
+		-DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
+		-DWITHOUT_FEDERATED_STORAGE_ENGINE=1 \
+		-DWITHOUT_PBXT_STORAGE_ENGINE=1 \
+		$srcdir/$pkgbase-$pkgver
 	make
 }
 
-package() {
-	cd $pkgname-$pkgver
+package_mariadb-libs() {
+	pkgdesc='MariaDB libraries'
+	depends=('bzip2' 'libaio' 'lz4' 'lzo' 'libressl' 'xz-utils' 'zlib')
+
+	cd $pkgbase-$pkgver
+	cd build
+
+	for dir in libmysqld libservices include; do
+		make -C $dir DESTDIR=$pkgdir install
+	done
+
+	install -D -m0755 scripts/mysql_config $pkgdir/usr/bin/mysql_config
+	install -D -m0644 $srcdir/$pkgbase-$pkgver/man/mysql_config.1 $pkgdir/usr/share/man/man1/mysql_config.1
+
+	install -D -m0644 support-files/mariadb.pc $pkgdir/usr/share/pkgconfig/mariadb.pc
+	install -D -m0644 $srcdir/$pkgbase-$pkgver/support-files/mysql.m4 $pkgdir/usr/share/aclocal/mysql.m4
+
+	rm $pkgdir/usr/lib/*.a
+}
+
+package_mariadb() {
+	pkgdesc='Fast SQL database server, drop-in replacement for MySQL'
+	backup=('etc/mysql/my.cnf'
+		'etc/mysql/wsrep.cnf')
+	depends=("mariadb-libs=${pkgver}" 'inetutils' 'perl' 'systemd-libs' 'libxml2')
+	options=('emptydirs')
+
+	cd $pkgbase-$pkgver
+	cd build
+
 	make DESTDIR=$pkgdir install
+
+	install -Dm0755 scripts/mytop $pkgdir/usr/bin/mytop
+
+	cd $pkgdir
+
+	rm -r etc/
+	install -Dm0644 $srcdir/my.cnf etc/mysql/my.cnf
+	install -Dm0644 usr/share/mysql/wsrep.cnf etc/mysql/wsrep.cnf
+
+	mv usr/lib/tmpfiles.d/{tmpfiles,mariadb}.conf
+
+	ln -sf mariadb.service usr/lib/systemd/system/mysqld.service
+	ln -sf mariadb@.service usr/lib/systemd/system/mysqld@.service
+
+	rm usr/bin/mysql_config
+	rm usr/lib/libmysql*
+	rm usr/share/man/man1/mysql_config.1
+	rm -r usr/include/
+	rm -r usr/share/mysql/{aclocal,pkgconfig}
+
+	rm -rf usr/lib/libmariadbd.so*
+
+	rm -r usr/share/mysql/systemd/
+
+	rm usr/bin/rcmysql
+
+	rm -r usr/{data,mysql-test,sql-bench}
+	rm usr/share/man/man1/mysql-test-run.pl.1
 }
