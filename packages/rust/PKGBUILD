@@ -1,0 +1,120 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=rust
+pkgver=nightly
+pkgrel=1
+pkgdesc="Systems programming language focused on safety, speed and concurrency"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x')
+url="https://www.rust-lang.org/"
+license=('MIT' 'Apache')
+depends=('gcc-libs' 'llvm-libs' 'curl' 'libssh2')
+makedepends=('rust' 'llvm' 'libffi' 'perl' 'python' 'curl' 'cmake')
+provides=('cargo' 'rustfmt' 'rust-std')
+conflicts=('cargo' 'rustfmt' 'rust-std')
+replaces=('cargo' 'rustfmt' 'rust-std')
+options=('!emptydirs')
+source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz")
+md5sums=('SKIP')
+
+prepare() {
+	cd rustc-$pkgver-src
+	rm -rf src/llvm
+	sed -i /LD_LIBRARY_PATH/d src/bootstrap/bootstrap.py
+
+	case $CARCH in
+		x86_64)
+			export RUSTTARGET="x86_64-unknown-linux-gnu"
+			export LLVMTARGET="X86;AMDGPU;BPF"
+			;;
+		i586)
+			export RUSTTARGET="i586-unknown-linux-gnu"
+			export LLVMTARGET="X86;AMDGPU;BPF"
+			;;
+		aarch64)
+			export RUSTTARGET="aarch64-unknown-linux-gnu"
+			export LLVMTARGET="AArch64;AMDGPU;BPF"
+			;;
+		armv7h)
+			export RUSTTARGET="armv7-unknown-linux-gnueabihf"
+			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		armv6h)
+			export RUSTTARGET="arm-unknown-linux-gnueabihf"
+			export LLVMTARGET="ARM;AMDGPU;BPF"
+			;;
+		powerpc64le)
+			export RUSTTARGET="powerpc64le-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		powerpc64)
+			export RUSTTARGET="powerpc64-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		powerpc)
+			export RUSTTARGET="powerpc-unknown-linux-gnu"
+			export LLVMTARGET="PowerPC;AMDGPU;BPF"
+			;;
+		sparc64)
+			export RUSTTARGET="sparc64-unknown-linux-gnu"
+			export LLVMTARGET="Sparc;AMDGPU;BPF"
+			;;
+		s390x)
+			export RUSTTARGET="s390x-unknown-linux-gnu"
+			export LLVMTARGET="SystemZ;AMDGPU;BPF"
+			;;
+	esac
+
+cat << EOF > config.toml
+[llvm]
+targets = "$LLVMTARGET"
+link-shared = true
+[build]
+extended = true
+sanitizers = false
+[install]
+prefix = "/usr"
+docdir = "share/doc/rustc"
+[rust]
+channel = "nightly"
+rpath = false
+codegen-tests = false
+codegen-units = 1
+[target.${RUSTTARGET}]
+llvm-config = "/usr/bin/llvm-config"
+EOF
+}
+
+build() {
+	cd rustc-$pkgver-src
+	export RUSTFLAGS="$RUSTFLAGS -C link-args=-lffi"
+
+	python3 ./x.py build --jobs $(expr $(nproc) + 1)
+}
+
+package() {
+	case $CARCH in
+		x86_64)
+			export RUSTTARGET="x86_64-unknown-linux-gnu"
+			;;
+		i586)
+			export RUSTTARGET="i586-unknown-linux-gnu"
+			;;
+		aarch64)
+			export RUSTTARGET="aarch64-unknown-linux-gnu"
+			;;
+		arm)
+			export RUSTTARGET="armv7-unknown-linux-gnueabihf"
+			;;
+	esac
+
+	cd rustc-$pkgver-src
+	DESTDIR=$pkgdir python3 ./x.py install
+
+	cd $pkgdir/usr/lib
+	rm rustlib/{components,manifest-rustc,rust-installer-version}
+	ln -sf rustlib/$RUSTTARGET/lib/*.so .
+
+	install -d $pkgdir/usr/share/bash-completion
+	mv $pkgdir/etc/bash_completion.d/ $pkgdir/usr/share/bash-completion/completions/
+}

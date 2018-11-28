@@ -10,7 +10,7 @@ url="http://apr.apache.org/"
 license=('Apache')
 depends=('glibc' 'util-linux')
 makedepends=('python2')
-source=("http://www-us.apache.org/dist/$pkgname/$pkgname-$pkgver.tar.bz2"
+source=("https://archive.apache.org/dist/apr/$pkgname-$pkgver.tar.bz2"
 	'fix_apr-config.patch'
 	'ship_find_apr.m4.patch'
 	'fix-apr.pc.patch'

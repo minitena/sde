@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux-headers
-pkgver=4.19.4
+pkgver=4.19.5
 pkgrel=1
 pkgdesc="Header files and scripts for building modules for Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
