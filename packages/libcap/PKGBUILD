@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libcap
-pkgver=2.25
+pkgver=2.26
 pkgrel=2
 pkgdesc="POSIX 1003.1e capabilities"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -11,12 +11,13 @@ license=('GPL')
 depends=('glibc' 'pam' 'attr')
 backup=('etc/security/capability.conf')
 source=("https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/$pkgname-$pkgver.tar.xz")
-md5sums=('6666b839e5d46c2ad33fc8aa2ceb5f77')
+md5sums=('968ac4d42a1a71754313527be2ab5df3')
 
 prepare() {
 	cd $pkgname-$pkgver
 	sed -i 's,BUILD_GPERF := ,BUILD_GPERF := no #,' Make.Rules
 	sed -i "/SBINDIR/s#sbin#bin#" Make.Rules
+	sed -i "s/CFLAGS :=/CFLAGS += \$(CPPFLAGS) /" Make.Rules
 }
 
 build() {
