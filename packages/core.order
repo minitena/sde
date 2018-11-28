@@ -112,6 +112,7 @@ docbook-xml
 docbook-xsl
 xmlto
 asciidoc
+asciidoctor
 libseccomp
 popt
 libaio
