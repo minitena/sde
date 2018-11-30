@@ -1,21 +1,22 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgname=libatomic_ops
+pkgver=7.6.6
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Provides semi-portable access to hardware provided atomic memory operations"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+url="https://github.com/ivmai/libatomic_ops"
+license=('GPL' 'MIT')
+depends=('glibc')
+source=("https://github.com/ivmai/libatomic_ops/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('4514d85d14e21af05d59877c9ded5abc')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--enable-shared \
 		--build=$CHOST
 	make
 }

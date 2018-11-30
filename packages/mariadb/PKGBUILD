@@ -4,7 +4,7 @@
 pkgbase=mariadb
 pkgname=('mariadb-libs' 'mariadb')
 pkgver=10.3.10
-pkgrel=2
+pkgrel=3
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://mariadb.org/"
 license=('GPL')
@@ -104,6 +104,7 @@ package_mariadb() {
 		'etc/mysql/wsrep.cnf')
 	depends=("mariadb-libs=${pkgver}" 'inetutils' 'perl' 'systemd-libs' 'libxml2')
 	options=('emptydirs')
+	install=$pkgname.install
 
 	cd $pkgbase-$pkgver
 	cd build

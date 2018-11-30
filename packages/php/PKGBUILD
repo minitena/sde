@@ -1,26 +1,78 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgname=php
+pkgver=7.2.12
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A general-purpose scripting language that is especially suited to web development"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+url="http://www.php.net"
+license=('PHP')
+backup=('etc/php/php.ini'
+	'etc/php/php-fpm.conf'
+	'etc/php/php-fpm.d/www.conf'
+	'etc/httpd/conf/extra/php7_module.conf')
+depends=('glibc' 'zlib' 'gmp' 'libressl' 'bzip2' 'gdbm' 'db' 'readline' 'pcre' 'libxml2' 'curl' 'argon2' 'systemd-libs')
+makedepends=('systemd' 'apache' 'gettext')
+source=("https://php.net/distributions/${pkgname}-${pkgver}.tar.xz")
+md5sums=('6be4a00ca29dd9a63a26f79a2e8752c8')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
+		--config-cache \
 		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--sysconfdir=/etc/php \
+		--localstatedir=/var \
+		--with-layout=GNU \
+		--with-config-file-path=/etc/php \
+		--with-config-file-scan-dir=/etc/php/conf.d \
+		--disable-rpath \
+		--mandir=/usr/share/man \
+		--with-bz2 \
+		--with-config-file-path=/etc \
+		--with-curl=shared \
+		--with-db4 \
+		--with-fpm-group=nobody \
+		--with-fpm-user=nobody \
+		--with-fpm-systemd \
+		--with-gdbm \
+		--with-gettext \
+		--with-gmp \
+		--with-mysql-sock=/run/mysqld/mysqld.sock \
+		--with-openssl=shared \
+		--with-password-argon2 \
+		--with-readline \
+		--with-zlib \
+		--without-pear \
+		--enable-bcmath \
+		--enable-calendar \
+		--enable-dba=shared \
+		--enable-dba=shared \
+		--enable-fpm \
+		--enable-ftp \
+		--enable-mbstring \
+		--enable-zip=shared \
 		--build=$CHOST
 	make
 }
 
 package() {
 	cd $pkgname-$pkgver
-	make DESTDIR=$pkgdir install
+	make -j1 INSTALL_ROOT=$pkgdir install
+
+	install -D -m644 ${srcdir}/${pkgbase}-${pkgver}/php.ini-production ${pkgdir}/etc/php/php.ini
+	install -d -m755 ${pkgdir}/etc/php/conf.d/
+
+	ln -sf phar.phar $pkgdir/usr/bin/phar
+
+	sed -i '/^extension_dir/s|=.*$|= "/usr/lib/php/extensions"|' php.ini-*
+	install -d $pkgdir/etc/php/conf.d
+	install -m 644 php.ini-* $pkgdir/etc/php
+
+	printf 'extension=%s\n' {zip,bz2,curl,openssl,dba,mbstring}.so \
+		> $pkgdir/etc/php/conf.d/extensions.ini
+
+	rm -rf $pkgdir/var/run
 }

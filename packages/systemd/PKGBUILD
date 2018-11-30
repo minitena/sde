@@ -4,7 +4,7 @@
 pkgbase=systemd
 pkgname=('systemd' 'systemd-libs')
 pkgver=239
-pkgrel=28
+pkgrel=29
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.github.com/systemd/systemd"
 license=('GPL' 'LGPL')
@@ -210,7 +210,7 @@ build() {
 		-Dpam=true \
 		-Drpmmacrosdir=no \
 		-Dselinux=false \
-		-Dsysusers=false $GNUEFI
+		-Dsysusers=true $GNUEFI
 	ninja
 }
 

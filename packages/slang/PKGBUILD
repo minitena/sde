@@ -1,21 +1,24 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgname=slang
+pkgver=2.3.2
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="S-Lang is a powerful interpreted language"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
+url="http://www.jedsoft.org/slang/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+depends=('glibc' 'pcre')
+backup=('etc/slsh.rc')
+options=('!makeflags')
+source=("http://www.jedsoft.org/releases/slang/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('c2d5a7aa0246627da490be4e399c87cb')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--sysconfdir=/etc \
 		--build=$CHOST
 	make
 }

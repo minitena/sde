@@ -1,0 +1,54 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=redis
+pkgver=5.0.2
+pkgrel=1
+pkgdesc="Advanced key-value store"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="https://redis.io/"
+license=('BSD')
+install=$pkgname.install
+backup=('etc/redis.conf'
+	'etc/logrotate.d/redis')
+depends=('glibc' 'shadow' 'grep' 'jemalloc')
+source=("http://download.redis.io/releases/redis-$pkgver.tar.gz"
+	'sane-defaults.patch'
+	'jemalloc.patch'
+	'service'
+	'sysusers'
+	'tmpfiles'
+	'logrotate')
+md5sums=('6161fbcbd6f7ee889f8057235de7371d'
+         '2b7fb3250645fe3d49eff74486bebec2'
+         '8a85518a90544d082c39dfb1f5d714ba'
+         'afa0f4a9000c26c3323e83fe34883e23'
+         '0c1b9be1dc7cbc1318de4d37c5970fca'
+         '3c5dd65ed383d22e748fab9afb55ec7d'
+         'd6bde05750943f02b7397d3579b57f57')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -p1 -i $srcdir/sane-defaults.patch
+	patch -p1 -i $srcdir/jemalloc.patch
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make PREFIX=$pkgdir/usr install
+
+	ln -sf redis-server $pkgdir/usr/bin/redis-sentinel
+
+	install -Dm644 redis.conf $pkgdir/etc/redis.conf
+
+	install -Dm644 $srcdir/logrotate $pkgdir/etc/logrotate.d/redis
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/redis.service
+	install -Dm644 $srcdir/sysusers $pkgdir/usr/lib/sysusers.d/redis.conf
+	install -Dm644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/redis.conf
+}

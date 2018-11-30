@@ -1,21 +1,22 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgname=gc
+pkgver=7.6.8
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="A garbage collector for C and C++"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
+url="http://www.hboehm.info/gc/"
 license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+depends=('gcc-libs' 'libatomic_ops')
+source=("https://github.com/ivmai/bdwgc/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('9ae6251493ead5d0d13b044954cec7d7')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--enable-cplusplus \
 		--build=$CHOST
 	make
 }

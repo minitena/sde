@@ -795,6 +795,13 @@ build_core_system() {
 						;;
 				esac
 				;;
+			cbindgen)
+				case $BARCH in
+					x86_64|i586|aarch64|armv7h|armv6h|powerpc64le|powerpc64|powerpc|sparc64|s390x)
+						pkgnativeinstallnodeps cbindgen
+						;;
+				esac
+				;;
 			go)
 				case $BARCH in
 					x86_64|i586|aarch64|armv7h|armv6h|armv5tel|powerpc64le|powerpc64|powerpc|s390x)

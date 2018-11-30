@@ -23,6 +23,8 @@ post_install() {
 
 	mkdir -m2755 var/log/journal/remote
 	chgrp systemd-journal-remote var/log/journal/remote
+
+	systemd-sysusers
 }
 
 post_upgrade() {

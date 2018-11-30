@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=rust
-pkgver=nightly
+pkgver=1.30.1
 pkgrel=1
 pkgdesc="Systems programming language focused on safety, speed and concurrency"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x')
@@ -15,7 +15,7 @@ conflicts=('cargo' 'rustfmt' 'rust-std')
 replaces=('cargo' 'rustfmt' 'rust-std')
 options=('!emptydirs')
 source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz")
-md5sums=('SKIP')
+md5sums=('899d5946aa2bdd8d1632d1cc5d21775b')
 
 prepare() {
 	cd rustc-$pkgver-src
@@ -76,7 +76,7 @@ sanitizers = false
 prefix = "/usr"
 docdir = "share/doc/rustc"
 [rust]
-channel = "nightly"
+channel = "stable"
 rpath = false
 codegen-tests = false
 codegen-units = 1
