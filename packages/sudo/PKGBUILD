@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=sudo
-pkgver=1.8.25p1
+pkgver=1.8.26
 pkgrel=1
 pkgdesc="Give certain users the ability to run some commands as root"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -11,7 +11,7 @@ license=('custom')
 backup=('etc/sudoers')
 depends=('glibc' 'zlib' 'pam' 'libgcrypt')
 source=("http://www.sudo.ws/dist/$pkgname-$pkgver.tar.gz")
-md5sums=('d4e0b99809d905d8dcbfbe9ae42aba2b')
+md5sums=('833084947d98e7745b94845f4b7a8a9a')
 
 build() {
 	cd $pkgname-$pkgver
