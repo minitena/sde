@@ -3,24 +3,31 @@
 
 pkgname=make
 pkgver=4.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU make utility to maintain groups of programs"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="http://www.gnu.org/software/make"
 license=('GPL')
-depends=('glibc')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('15b012617e7c44c0ed482721629577ac')
+depends=('glibc' 'guile')
+source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.bz2"
+	'guile-2.2.patch')
+md5sums=('15b012617e7c44c0ed482721629577ac'
+         '585332fd8b98bc2cd8777a6faca8fa04')
 
 prepare() {
 	cd $pkgname-$pkgver
+	patch -p1 -i $srcdir/guile-2.2.patch
+
 	sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
+
+	autoreconf -fi
 }
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--with-guile \
 		--build=$CHOST
 	make
 }

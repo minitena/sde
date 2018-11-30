@@ -5,7 +5,7 @@ pkgbase=util-linux
 pkgname=('util-linux' 'util-linux-libs')
 _pkgmajor=2.33
 pkgver=${_pkgmajor}
-pkgrel=4
+pkgrel=5
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
@@ -23,7 +23,6 @@ build() {
 		--localstatedir=/var \
 		--enable-fs-paths-extra=/usr/bin \
 		--with-btrfs \
-		--without-python \
 		--enable-kill \
 		--enable-partx \
 		--enable-raw \
@@ -31,7 +30,6 @@ build() {
 		--disable-chfn-chsh \
 		--disable-login \
 		--disable-nologin \
-		--disable-pylibmount \
 		--disable-runuser \
 		--disable-setpriv \
 		--build=$CHOST

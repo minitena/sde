@@ -65,6 +65,10 @@ iputils
 net-tools
 inetutils
 kbd
+libffi
+libatomic_ops
+gc
+guile
 make
 xz-utils
 cpio
@@ -82,7 +86,6 @@ intltool
 kmod
 patch
 psmisc
-libffi
 sqlite
 python
 python2
@@ -254,8 +257,6 @@ gdb
 valgrind
 strace
 libsigsegv
-libatomic_ops
-gc
 lua
 luajit
 php
@@ -266,6 +267,5 @@ clang
 ldd
 rust
 cbindgen
-guile
 slang
 go
