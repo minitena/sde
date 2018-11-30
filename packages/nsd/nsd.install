@@ -1,0 +1,9 @@
+pre_install() {
+	groupadd -g 47 nsd
+	useradd -g nsd -u 47 -d /var/lib/nsd -s /usr/bin/false nsd
+}
+
+post_remove() {
+	userdel nsd
+	groupdel nsd
+}

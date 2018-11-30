@@ -1,0 +1,9 @@
+pre_install() {
+	groupadd -g 40 proxy
+	useradd -g proxy -u 40 -d /var/empty -s /bin/false proxy
+}
+
+post_remove() {
+	userdel proxy
+	groupdel proxy
+}

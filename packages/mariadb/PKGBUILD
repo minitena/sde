@@ -4,7 +4,7 @@
 pkgbase=mariadb
 pkgname=('mariadb-libs' 'mariadb')
 pkgver=10.3.10
-pkgrel=1
+pkgrel=2
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://mariadb.org/"
 license=('GPL')
@@ -16,6 +16,8 @@ md5sums=('a63e00179d5e09b63bf71860a19a5507'
 
 prepare() {
 	cd $pkgbase-$pkgver
+	sed -i "s@data/test@\${INSTALL_MYSQLTESTDIR}@g" sql/CMakeLists.txt
+
 	sed -i -e '/^Alias/d' \
 		-e '/^PrivateTmp/c PrivateTmp=true' \
 		support-files/mariadb{,@}.service.in

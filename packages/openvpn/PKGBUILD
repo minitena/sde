@@ -1,0 +1,44 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=openvpn
+pkgver=2.4.6
+pkgrel=1
+pkgdesc="An easy-to-use, robust and highly configurable VPN (Virtual Private Network)"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://openvpn.net/index.php/open-source.html"
+license=('custom')
+depends=('glibc' 'iproute2' 'libressl' 'lzo' 'systemd-libs')
+makedepends=('systemd')
+source=("https://swupdate.openvpn.net/community/releases/openvpn-${pkgver}.tar.gz")
+md5sums=('971d57e29b78b4b902eb2f4aae2f05a7')
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--sbindir=/usr/bin \
+		--enable-iproute2 \
+		--enable-plugins \
+		--enable-systemd \
+		--enable-x509-alt-username \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+
+	install -d -m0750 -g 90 $pkgdir/etc/openvpn/{client,server}
+
+	install -d -m0755 $pkgdir/usr/share/openvpn
+	cp -r sample/sample-config-files $pkgdir/usr/share/openvpn/examples
+
+	for FILE in $(find contrib -type f); do
+		case "$(file --brief --mime-type "${FILE}")" in
+			"text/x-shellscript") install -D -m0755 "${FILE}" $pkgdir/usr/share/openvpn/${FILE} ;;
+			*) install -D -m0644 "${FILE}" $pkgdir/usr/share/openvpn/${FILE} ;;
+		esac
+	done
+}

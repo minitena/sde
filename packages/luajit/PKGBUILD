@@ -1,0 +1,23 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=luajit
+pkgver=2.0.5
+pkgrel=1
+pkgdesc="Just-in-time compiler and drop-in replacement for Lua 5.1"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://luajit.org/"
+license=('MIT')
+depends=('gcc-libs')
+source=("https://luajit.org/download/LuaJIT-$pkgver.tar.gz")
+md5sums=('48353202cbcacab84ee41a5a70ea0a2c')
+
+build() {
+	cd LuaJIT-$pkgver
+	make amalg PREFIX=/usr
+}
+
+package() {
+	cd LuaJIT-$pkgver
+	make install DESTDIR=$pkgdir PREFIX=/usr
+}

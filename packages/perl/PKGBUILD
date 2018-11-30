@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=perl
-pkgver=5.28.0
+pkgver=5.28.1
 baseversion="${pkgver%.*}"
 pkgrel=2
 pkgdesc="A highly capable, feature-rich programming language"
@@ -11,7 +11,7 @@ url="http://www.perl.org/"
 license=('GPL' 'PerlArtistic')
 depends=('glibc' 'zlib' 'bzip2' 'gdbm' 'db')
 source=("https://www.cpan.org/src/5.0/$pkgname-$pkgver.tar.xz")
-md5sums=('f3245183c0a08f65e94a3333995af08e')
+md5sums=('fbb590c305f2f88578f448581b8cf9c4')
 
 build() {
 	cd $pkgname-$pkgver

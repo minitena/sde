@@ -1,21 +1,34 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=bison
-pkgver=3.2.2
+pkgname=nsd
+pkgver=4.1.25
 pkgrel=1
-pkgdesc="The GNU general-purpose parser generator"
+pkgdesc="Authoritative only, high performance and simple DNS server"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/bison"
-license=('GPL')
-depends=('glibc' 'm4')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('9595087bdcb4c508de993a8a3c7a3993')
+url="https://www.nlnetlabs.nl/nsd/"
+license=('BSD')
+install=$pkgname.install
+depends=('glibc' 'libressl' 'libevent')
+makedepends=('flex')
+source=("https://www.nlnetlabs.nl/downloads/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+	'service'
+	'tmpfiles')
+md5sums=('31288aa15254f9fd267ad14698c77b39'
+         '8426ee85afb59870cf153dc6d78c6dc7'
+         'bc1472fef4800969dbf174ee8ec515ae')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
+		--prefix=/ \
+		--sbindir=/usr/bin \
+		--datarootdir=/usr/share \
+		--with-pidfile=/run/nsd/nsd.pid \
+		--enable-pie \
+		--enable-ratelimit \
+		--enable-relro-now \
 		--build=$CHOST
 	make
 }
@@ -23,4 +36,9 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
+
+	rmdir $pkgdir/{tmp,run/{nsd,}}
+
+	install -Dm644 $srcdir/service $pkgdir/usr/lib/systemd/system/nsd.service
+	install -Dm644 $srcdir/tmpfiles $pkgdir/usr/lib/tmpfiles.d/nsd.conf
 }

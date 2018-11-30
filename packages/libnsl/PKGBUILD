@@ -1,0 +1,31 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=libnsl
+pkgver=1.2.0
+pkgrel=1
+pkgdesc="Public client interface library for NIS(YP) and NIS+"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="https://github.com/thkukuk/libnsl"
+license=('LGPL')
+depends=('glibc' 'libtirpc')
+source=("https://github.com/thkukuk/libnsl/archive/v$pkgver.tar.gz")
+md5sums=('05222024777e12e2f6d48f2e7d067ac7')
+
+prepare() {
+	cd $pkgname-$pkgver
+	./autogen.sh
+}
+
+build() {
+	cd $pkgname-$pkgver
+	./configure \
+		--prefix=/usr \
+		--build=$CHOST
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR=$pkgdir install
+}

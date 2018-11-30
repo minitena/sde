@@ -1,24 +1,23 @@
 # Maintainer: protonesso <nagakamira@gmail.com>
 # Contributor: protonesso <nagakamira@gmail.com>
 
-pkgname=wget
-pkgver=1.20
+pkgname=torsocks
+pkgver=2.3.0
 pkgrel=1
-pkgdesc="Network utility to retrieve files from the Web"
+pkgdesc="Wrapper to safely torify applications"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
-url="http://www.gnu.org/software/wget"
+url="https://gitweb.torproject.org/torsocks.git/"
 license=('GPL')
-depends=('glibc' 'util-linux-libs' 'libressl' 'pcre')
-source=("http://ftpmirror.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.lz")
-md5sums=('659508fdb82d64dfbeb57b2513b06c3a')
+depends=('tor')
+backup=("etc/tor/${pkgname}.conf")
+source=("https://people.torproject.org/~dgoulet/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('146ed4f2d6a1a110d8ce8a5f7937d87a')
 
 build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-		--with-ssl=openssl \
-		--disable-rpath \
 		--build=$CHOST
 	make
 }
@@ -26,6 +25,4 @@ build() {
 package() {
 	cd $pkgname-$pkgver
 	make DESTDIR=$pkgdir install
-
-	echo "ca-certificate = /etc/ssl/cert.pem" >>$pkgdir/etc/wgetrc
 }

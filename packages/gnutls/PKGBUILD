@@ -3,12 +3,13 @@
 
 pkgname=gnutls
 pkgver=3.5.19
-pkgrel=1
+pkgrel=2
 pkgdesc="A library which provides a secure layer over a reliable transport layer"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.gnutls.org/"
 license=('GPL' 'LGPL')
 depends=('gcc-libs' 'zlib' 'readline' 'libunistring' 'libidn2' 'nettle' 'libtasn1' 'p11-kit')
+options=('!zipman')
 source=("https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/$pkgname-$pkgver.tar.xz")
 md5sums=('1002f4099ce11d785e9811099aaa59a6')
 
@@ -16,7 +17,7 @@ build() {
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \
-		--with-default-trust-store-pkcs11="pkcs11:" \
+		--with-default-trust-store-pkcs11="pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit" \
 		--with-idn \
 		--with-zlib \
 		--build=$CHOST

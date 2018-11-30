@@ -1,0 +1,48 @@
+# Maintainer: protonesso <nagakamira@gmail.com>
+# Contributor: protonesso <nagakamira@gmail.com>
+
+pkgname=lua
+pkgver=5.3.5
+majorver=${pkgver%.*}
+pkgrel=1
+pkgdesc="Powerful lightweight programming language designed for extending applications"
+arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
+url="http://www.lua.org/"
+license=('MIT')
+depends=('glibc' 'readline')
+options=('!emptydirs')
+source=("https://www.lua.org/ftp/lua-$pkgver.tar.gz"
+	'shared.patch'
+	'pc')
+md5sums=('4f4b4f323fd3514a68e0ab3da8ce3455'
+         '63ecacd3ff6552537a73f8c30c396caf'
+         'e7ba6c2b695b0b84a5ea0cbff5fc9067')
+
+prepare() {
+	cd $pkgname-$pkgver
+	patch -Np1 -i $srcdir/shared.patch
+
+	sed "s/%VER%/$majorver/g;s/%REL%/$pkgver/g" $srcdir/pc > lua.pc
+	sed "s/^R= \$V.4/R= \$V.5/" -i Makefile
+}
+
+build() {
+	cd $pkgname-$pkgver
+	make MYCFLAGS="$CFLAGS -fPIC -DLUA_COMPAT_5_2 -DLUA_COMPAT_5_1" linux
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make \
+		TO_LIB="liblua.a liblua.so liblua.so.$majorver liblua.so.$pkgver" \
+		INSTALL_DATA='cp -d' \
+		INSTALL_TOP=$pkgdir/usr \
+		INSTALL_MAN=$pkgdir/usr/share/man/man1 \
+		install
+	ln -sf /usr/bin/lua $pkgdir/usr/bin/lua$majorver
+	ln -sf /usr/bin/luac $pkgdir/usr/bin/luac$majorver
+	ln -sf /usr/lib/liblua.so.$pkgver $pkgdir/usr/lib/liblua$_majorver.so
+
+	install -Dm644 lua.pc $pkgdir/usr/lib/pkgconfig/${pkgname}53.pc
+	ln -sf /usr/lib/pkgconfig/${pkgname}53.pc $pkgdir/usr/lib/pkgconfig/$pkgname.pc
+}

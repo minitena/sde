@@ -2,6 +2,7 @@
 #
 
 export WOKVERSION="2.0"
+export MINITENAVER="$(git rev-parse --short HEAD)"
 
 set -e
 
@@ -984,10 +985,10 @@ build_isoimage() {
 		-no-emul-boot \
 		-isohybrid-gpt-basdat \
 		-A 'Minitena' -V 'Minitena' \
-		-o $BUILD/minitena-$BARCH.iso \
+		-o $BUILD/minitena-$MINITENAVER-$BARCH.iso \
 		$ISODIR/
 
-	isohybrid $BUILD/minitena-$BARCH.iso
+	isohybrid $BUILD/minitena-$MINITENAVER-$BARCH.iso
 }
 
 build_riscv_image() {
@@ -1008,7 +1009,7 @@ EOF
 
 make_archive() {
 	cd $TARBALLDIR
-	tar -cJf $BUILD/minitena-$BARCH.tar.xz .
+	tar -cJf $BUILD/minitena-$MINITENAVER-$BARCH.tar.xz .
 }
 
 case "$1" in
