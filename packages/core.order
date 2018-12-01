@@ -124,7 +124,6 @@ argon2
 swig
 libcap-ng
 audit
-apparmor
 kexec-tools
 systemd-pass1
 lvm2
