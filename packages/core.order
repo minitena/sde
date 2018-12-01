@@ -193,6 +193,9 @@ freetype-pass2
 fontconfig
 fakeroot
 sudo
+libssh2
+curl
+wget
 bmake
 libuv
 jsoncpp
@@ -201,9 +204,6 @@ cmake
 libedit
 openssh
 dropbear
-libssh2
-curl
-wget
 dhcp
 dhcpcd
 libnl
