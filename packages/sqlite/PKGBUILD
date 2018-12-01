@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=sqlite
-pkgver=3.25.3
+pkgver=3.26.0
 _a=${pkgver%%.*}
 _b=${pkgver#${_a}.}
 _b=${_b%%.*}
@@ -24,7 +24,7 @@ license=('Public Domain')
 depends=('glibc' 'zlib' 'readline')
 options=('!emptydirs')
 source=("http://www.sqlite.org/2018/$pkgname-autoconf-$ver.tar.gz")
-md5sums=('06db8206bc8febf07141b78ad58595ea')
+md5sums=('ac2b3b8cd3a97600e36fb8e756e8dda1')
 
 amalgamation="-DSQLITE_ENABLE_FTS4 \
 	-DSQLITE_ENABLE_FTS3_PARENTHESIS \
