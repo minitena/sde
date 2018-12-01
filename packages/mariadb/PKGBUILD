@@ -104,7 +104,7 @@ package_mariadb() {
 		'etc/mysql/wsrep.cnf')
 	depends=("mariadb-libs=${pkgver}" 'inetutils' 'perl' 'systemd-libs' 'libxml2')
 	options=('emptydirs')
-	install=$pkgname.install
+	install=mariadb.install
 
 	cd $pkgbase-$pkgver
 	cd build
