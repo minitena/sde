@@ -263,7 +263,7 @@ ocaml
 llvm
 compiler-rt
 clang
-ldd
+lld
 rust
 cbindgen
 slang
