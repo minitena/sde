@@ -196,6 +196,7 @@ sudo
 libssh2
 curl
 wget
+libarchive
 bmake
 libuv
 jsoncpp
@@ -245,7 +246,6 @@ openvpn
 libnsl
 squid
 redis
-libarchive
 pacman
 doxygen
 tcl

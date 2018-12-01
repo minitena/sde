@@ -3,7 +3,7 @@
 
 pkgname=('linux' 'linux-devel')
 pkgbase=linux
-pkgver=4.19.5
+pkgver=4.19.6
 zerover=$pkgver
 pkgrel=31
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'alpha' 'riscv64')
@@ -27,7 +27,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/$pkgbase-$pkgver.tar.xz"
 	'x86_64-config'
 	'60-linux.hook'
 	'90-linux.hook')
-md5sums=('989531c8194d70430a1497f1540e432a'
+md5sums=('9849a08e9e28e52837385a77f6dd67ca'
          '7b3ab85a63dc66092a3fff9c8a335520'
          'c7f667c2225f4294826f347d5d9582b5'
          'c534d53425f2fe39f2b50749fb1d8449'
