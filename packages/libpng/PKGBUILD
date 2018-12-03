@@ -2,8 +2,8 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libpng
-pkgver=1.6.35
-apngver=1.6.35
+pkgver=1.6.36
+apngver=1.6.36
 pkgrel=1
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -12,8 +12,8 @@ license=('custom')
 depends=('glibc' 'zlib')
 source=("https://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.xz"
 	"https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$apngver-apng.patch.gz")
-md5sums=('678b7e696a62a193ed3503b04bf449d6'
-         '9b09826862164e2302827f7af3c52431')
+md5sums=('df2be2d29c40937fe1f5349b16bc2826'
+         'bd1f5f7dd99003128d747c5597308a44')
 
 prepare() {
 	cd $pkgname-$pkgver
