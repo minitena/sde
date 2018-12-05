@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=wpa_supplicant
-pkgver=2.6
+pkgver=2.7
 pkgrel=1
 pkgdesc="A utility providing key negotiation for WPA wireless networks"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,18 +10,12 @@ url="http://hostap.epitest.fi/wpa_supplicant"
 license=('GPL')
 depends=('glibc' 'libressl' 'dbus' 'libnl')
 source=("https://w1.fi/releases/${pkgname}-${pkgver}.tar.gz"
-	'libressl.patch'
-	'fixes.patch'
 	'config')
-md5sums=('091569eb4440b7d7f2b4276dbfc03c3c'
-         'df604fec9ca4c387bc64b5fd6d42c370'
-         'a1d5773c02e27fcef1367e4b7ec1e999'
+md5sums=('a68538fb62766f40f890125026c42c10'
          '3124d9a6958b0c83c83bd03a72aee89b')
 
 prepare() {
 	cd $pkgname-$pkgver
-	patch -p1 -i $srcdir/libressl.patch
-	patch -p1 -i $srcdir/fixes.patch
 	cp $srcdir/config $pkgname/.config
 }
 

@@ -53,7 +53,6 @@ build() {
 		--enable-fpm \
 		--enable-ftp \
 		--enable-mbstring \
-		--enable-zip=shared \
 		--build=$CHOST
 	make
 }

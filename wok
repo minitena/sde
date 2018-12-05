@@ -342,7 +342,7 @@ setup_architecture() {
 			export XHOST="$(echo ${MACHTYPE} | sed -e 's/-[^-]*/-cross/')"
 			export XTARGET="riscv64-generic-linux"
 			export XKARCH="riscv"
-			export GCCOPTS="--with-arch=rv64imafdc"
+			export GCCOPTS=""
 			export BINUTILSOPTS=""
 			export GLIBCOPTS=""
 			export QEMUARCH="riscv64"
