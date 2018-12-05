@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=php
-pkgver=7.2.12
+pkgver=7.3.0
 pkgrel=1
 pkgdesc="A general-purpose scripting language that is especially suited to web development"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -15,7 +15,7 @@ backup=('etc/php/php.ini'
 depends=('glibc' 'zlib' 'gmp' 'libressl' 'bzip2' 'gdbm' 'db' 'readline' 'pcre' 'libxml2' 'curl' 'argon2' 'systemd-libs')
 makedepends=('systemd' 'apache' 'gettext')
 source=("https://php.net/distributions/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6be4a00ca29dd9a63a26f79a2e8752c8')
+md5sums=('6b58a59106b0da4fdcba3bcf12cc3ca5')
 
 build() {
 	cd $pkgname-$pkgver
