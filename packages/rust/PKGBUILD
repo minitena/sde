@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=rust
-pkgver=1.30.1
+pkgver=1.31.0
 pkgrel=1
 pkgdesc="Systems programming language focused on safety, speed and concurrency"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x')
@@ -15,7 +15,7 @@ conflicts=('cargo' 'rustfmt' 'rust-std')
 replaces=('cargo' 'rustfmt' 'rust-std')
 options=('!emptydirs')
 source=("https://static.rust-lang.org/dist/rustc-$pkgver-src.tar.gz")
-md5sums=('899d5946aa2bdd8d1632d1cc5d21775b')
+md5sums=('f360954192dd6ce924a77e4f41abf05b')
 
 prepare() {
 	cd rustc-$pkgver-src

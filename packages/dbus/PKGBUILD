@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=dbus
-pkgver=1.12.10
+pkgver=1.12.12
 pkgrel=6
 pkgdesc="Freedesktop.org message bus system"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,7 +10,7 @@ url="https://wiki.freedesktop.org/www/Software/dbus/"
 license=('GPL' 'custom')
 depends=('glibc' 'expat' 'xz-utils' 'systemd-libs' 'audit')
 source=("https://dbus.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('c3e12b4206e2a7da39d7cc42567790ef')
+md5sums=('ea11069521beeee4e47f0086596a43c8')
 
 build() {
 	cd $pkgname-$pkgver
