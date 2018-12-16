@@ -5,11 +5,11 @@ pkgbase=util-linux
 pkgname=('util-linux' 'util-linux-libs')
 _pkgmajor=2.33
 pkgver=${_pkgmajor}
-pkgrel=5
+pkgrel=6
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=('GPL')
-options=('strip' 'debug')
+options=('strip' 'debug' 'staticlibs')
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v${_pkgmajor}/$pkgname-$pkgver.tar.xz)
 md5sums=('3cdf1c652007610f92076ba4212381a9')
 
