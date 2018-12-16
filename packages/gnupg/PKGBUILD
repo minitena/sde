@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=gnupg
-pkgver=2.2.11
+pkgver=2.2.12
 pkgrel=1
 pkgdesc="Complete and free implementation of the OpenPGP standard"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -11,7 +11,7 @@ license=('GPL')
 depends=('glibc' 'bzip2' 'readline' 'sqlite' 
 	'libgpg-error' 'libgcrypt' 'libassuan' 'libksba' 'npth' 'pinentry')
 source=("https://www.gnupg.org/ftp/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('e23a896d634e8b81681314780f5158a4')
+md5sums=('421b17028878b253c5acfef056bc6141')
 
 prepare() {
 	cd $pkgname-$pkgver

@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=libressl
-pkgver=2.7.4
+pkgver=2.8.3
 pkgrel=4
 pkgdesc="Version of the TLS/crypto stack forked from OpenSSL"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,7 +10,7 @@ url="http://www.libressl.org/"
 license=('custom')
 depends=('glibc')
 source=("https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/$pkgname-$pkgver.tar.gz")
-md5sums=('94ce8f4cdbb6b57565da61e380d63045')
+md5sums=('0f1127bd21b4aa8495a910379c2ad936')
 
 build() {
 	cd $pkgname-$pkgver

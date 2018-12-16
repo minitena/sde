@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=cmake
-pkgver=3.13.1
+pkgver=3.13.2
 pkgrel=1
 pkgdesc="A cross-platform open-source make system"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,7 +10,7 @@ url="http://www.cmake.org/"
 license=('custom')
 depends=('glibc' 'curl' 'libarchive' 'libuv' 'jsoncpp' 'rhash')
 source=("https://www.cmake.org/files/v${pkgver%.*}/$pkgname-$pkgver.tar.gz")
-md5sums=('948acca8b070f08ab67d07b7b846391d')
+md5sums=('20925380a9fc9855acec8bc830d98451')
 
 build() {
 	cd $pkgname-$pkgver

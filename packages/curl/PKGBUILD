@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=curl
-pkgver=7.62.0
+pkgver=7.63.0
 pkgrel=3
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,12 +10,9 @@ url="https://curl.haxx.se/"
 license=('MIT')
 depends=('glibc' 'zlib' 'libressl' 'libidn2' 'libssh2')
 source=("https://curl.haxx.se/download/$pkgname-$pkgver.tar.xz")
-md5sums=('d4613e369a8ff80f23951d259808149e')
+md5sums=('f43d618cc49c1820d3a2fed31e451d4c')
 
 build() {
-	export CFLAGS="${CFLAGS/-O3/-Os}"
-	export CXXFLAGS="${CXXFLAGS/-O3/-Os}"
-
 	cd $pkgname-$pkgver
 	./configure \
 		--prefix=/usr \

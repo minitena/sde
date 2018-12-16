@@ -2,7 +2,7 @@
 # Contributor: protonesso <nagakamira@gmail.com>
 
 pkgname=linux-headers
-pkgver=4.19.8
+pkgver=4.19.9
 pkgrel=1
 pkgdesc="Header files and scripts for building modules for Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
@@ -10,7 +10,7 @@ url="https://www.kernel.org/"
 license=('GPL')
 options=('!strip')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-$pkgver.tar.xz")
-md5sums=('52f552cea1863c928cb8b9dd09cdaf29')
+md5sums=('d7e09d6be85ec8548c73e8713531e958')
 
 prepare() {
 	cd linux-$pkgver

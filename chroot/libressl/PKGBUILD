@@ -1,5 +1,5 @@
 pkgname=chroot-libressl
-pkgver=2.7.4
+pkgver=2.8.3
 pkgrel=1
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 source=(https://cdn.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$pkgver.tar.gz)
