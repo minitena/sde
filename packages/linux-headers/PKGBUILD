@@ -3,7 +3,7 @@
 
 pkgname=linux-headers
 pkgver=4.19.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Header files and scripts for building modules for Linux kernel"
 arch=('x86_64' 'i586' 'aarch64' 'armv7h' 'armv6h' 'armv5tel' 'powerpc64le' 'powerpc64' 'powerpc' 'sparc64' 's390x' 'riscv64')
 url="https://www.kernel.org/"
@@ -50,5 +50,8 @@ package() {
 	esac
 
 	make ARCH=$XKARCH INSTALL_HDR_PATH=$pkgdir/usr headers_install
+
+	rm -rf $pkgdir/usr/include/drm
+
 	find $pkgdir/usr/include \( -name .install -o -name ..install.cmd \) -delete
 }
